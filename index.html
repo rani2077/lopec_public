@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B9CW6L1BXZ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-B9CW6L1BXZ');
+    </script>
+    <!-- Naver meta tag -->
+    <meta name="naver-site-verification" content="19eca95cfbc6fe761f71d6856b37ecb36696896d" />
+    <meta name="description" content="로스트아크 스펙 점수 확인, 전투정보실, 캐릭터 정보, 랭킹">
+
+
+    <!-- 구글 소유권 확인 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+    crossorigin="anonymous"></script>
+    <!-- 구글 소유권 확인 -->
+
+
+
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0; minimum-scale=1.0; user-scalable=no," />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+
+    <link rel="icon" href="/./asset/image/lopec-ico.png">
+    <!-- 본고딕 -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;300;500;700&display=swap" rel="stylesheet"> -->
+    
+    <link rel="stylesheet" href="./asset/css/layout.css">
+    <link rel="stylesheet" href="./asset/css/main.css">
+    <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
+</head>
+
+
+<body>
+    <header class="sc-header shadow">
+        <div class="logo-group">
+            <h1 class="logo">
+                <span class="blind">로스트아크 전투정보실 전투력계산 스펙포인트</span>
+                <a href="./index.html" class="link-site"></a>
+            </h1>
+
+            <div class="link-box">
+                <a href="https://cool-kiss-ec2.notion.site/10a758f0e8da809ead94d78f142f671d" target="_blink" class="link-alert">공지사항</a>
+                <a href="https://cool-kiss-ec2.notion.site/10b758f0e8da802ca4bdccf9a3c5edec" target="_blink" class="link-alert">업데이트</a>
+                <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link-alert">후원문의</a>
+            </div>
+
+        </div>
+        <div class="group-search search-page">
+            <input id = "header-input" class="header-input character-name-search" type= "text" value = "" placeholder="캐릭터 검색">
+            <button class="search-btn"></button>
+        </div>
+        <div class="group-sns">
+            <a href="https://discord.gg/5B8SjX4ug4" class="link-sns" target="_blank" rel="noopener noreferrer">
+                <img class="sns-ico discord" src="./asset/image/discord-ico.png" alt="디스코드 채널 참여하기">
+            </a>
+            <a href="https://open.kakao.com/o/smvJ4DQg" class="link-sns" target="_blank" rel="noopener noreferrer">
+                <img class="sns-ico kakao" src="./asset/image/kakao-ico.png" alt="오픈카톡 문의하기">
+            </a>
+            <a href="https://forms.gle/eoBEK8pEicojfeuS8" class="link-sns" target="_blank" rel="noopener noreferrer">
+                <img class="sns-ico pawm" src="./asset/image/pawm-ico.png" alt="구글폼 설문조사하기">
+            </a>
+        </div>
+    </header>
+    <div class="wrapper">
+
+        <section class="sc-container main-page on" id="container">
+            <div class="group-logo">
+                <a href="./index.html" class="link-logo"><img src="./asset/image/logo.png" alt="로펙 바로가기" class="logo"></a>
+            </div>
+            
+            <form id="main-form" action="./search/search.html" method="GET">
+                <div class="group-input shadow">
+                    <input id = "nick-name" name="main-character-name" class="input-name main-page character-name-search" type= "text" value = "" placeholder="캐릭터 검색">
+                    <button type="submit" class="search-btn"></button>
+                    
+                </div>
+            </form>
+        </section>
+
+        <p style="text-align:center; margin-top:10px; font-size:25px"> 현재 로스트아크 API 서버 이슈로 검색이 불안정합니다. <br><br> (찐막)서폿 조정기간 연장되었습니다. 10/27까지 끝내보도록 하겠습니다. <p>
+        
+    </div>
+    <footer class="sc-footer">
+        <span>© 2024 lopec.kr / lopec.kr isn’t endorsed by Smilegate RPG and doesn’t reflect the views or opinions of Smilegate RPG or anyone officially involved in producing or managing Lostark. Lostark and Smilegate RPG are trademarks or registered trademarks of Smilegate RPG, Inc. Lostark © Smilegate RPG, Inc.</span>
+    </footer>
+
+    <script>
+        document.getElementById('nick-name').focus();
+    </script>
+
+    <!-- db관련 -->
+    <script type="module" src= "./asset/js/lopec.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- db관련 -->
+
+    <!-- <script type="module" src="./asset/js/skeleton.js"></script> -->
+    <script type="module" src="./asset/js/custom.js?v=0.9.41"></script>
+    <script type="module" src= "./asset/js/filter.js?v=1.0"></script>
+</body>
+
+
+
+</html>

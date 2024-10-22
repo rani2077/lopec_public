@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0; minimum-scale=1.0; user-scalable=no," /> 
+    <link rel="icon" href="/../asset/image/lopec-ico.png">
+    
+    <link rel="stylesheet" href="../asset/css/layout.css">
+    <link rel="stylesheet" href="../asset/css/main.css">
+    <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
+</head>
+
+
+<body>
+    <header class="sc-header shadow">
+        <div class="logo-group">
+            <h1 class="logo">
+                <span class="blind">로스트아크 전투정보실 전투력계산 스펙포인트</span>
+                <a href="../index.html" class="link-site"></a>
+
+            </h1>
+            <div class="link-box">
+                <a href="https://cool-kiss-ec2.notion.site/10a758f0e8da809ead94d78f142f671d" target="_blink" class="link-alert">공지사항</a>
+                <a href="https://cool-kiss-ec2.notion.site/10b758f0e8da802ca4bdccf9a3c5edec" target="_blink" class="link-alert">업데이트</a>
+                <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link-alert">후원문의</a>
+            </div>
+
+        </div>
+            <form action="./search.html" class="group-search search-page on">
+            <input id = "header-input" name="header-character-name" class="header-input character-name-search" type= "text" value = "" placeholder="캐릭터 검색">
+            <button class="search-btn"></button>
+        </form>
+        <div class="group-sns">
+            <a href="https://discord.gg/5B8SjX4ug4" class="link-sns" target="_blank" rel="noopener noreferrer">
+                <img class="sns-ico discord" src="../asset/image/discord-ico.png" alt="디스코드 채널 참여하기">
+            </a>
+            <a href="https://open.kakao.com/o/smvJ4DQg" class="link-sns" target="_blank" rel="noopener noreferrer">
+                <img class="sns-ico kakao" src="../asset/image/kakao-ico.png" alt="오픈카톡 문의하기">
+            </a>
+            <a href="https://forms.gle/eoBEK8pEicojfeuS8" class="link-sns" target="_blank" rel="noopener noreferrer">
+                <img class="sns-ico pawm" src="../asset/image/pawm-ico.png" alt="구글폼 설문조사하기">
+            </a>
+        </div>
+    </header>
+    <div class="wrapper">
+
+        <form action="./search.html" class="sc-mobile-search mobile search-page">
+            <input type="text" name="mobile-character-name" id="mobile-input" class="mobile-input character-name-search shadow minimum">
+        </form action="">
+
+
+        <section class="sc-info search-page" id="sc-info">
+            <div class="loader"></div>
+
+
+
+            <div class="group-profile">
+                <div class="img-area shadow">
+                    <img id="character-image" src="../asset/image/skeleton-img.png" alt="프로필 이미지">
+                    <p class="level" id="character-level">Lv.N/A</p>
+                    <p class="name" id="character-nickname">닉네임</p>
+                    <p class="class" id="character-class">직업</p>
+                </div>
+                <ul class="tag-list shadow">
+                    <li class="tag-item">
+                        <p class="tag radius">서버</p>
+                        <span class="name"></span>
+                    </li>
+                    <li class="tag-item">
+                        <p class="tag radius">레벨</p>
+                        <span class="name"></span>
+                    </li>
+                    <li class="tag-item">
+                        <p class="tag radius">길드</p>
+                        <span class="name"></span>
+                    </li>
+                    <li class="tag-item">
+                        <p class="tag radius">칭호</p>
+                        <span class="name"></span>
+                    </li>
+                    <li class="tag-item">
+                        <p class="tag radius">영지</p>
+                        <span class="name"></span>
+                    </li>
+                    <li class="tag-item">
+                        <p class="tag radius">카드</p>
+                        <span class="name"></span>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="group-info">
+                <div class="spec-area shadow minimum flag">
+                    <p class="title">스펙 포인트</p>
+                    <div class="tier-box">
+                        <img src="../asset/image/bronze.png" alt="">
+                        <!-- <p class="tier-info">티어정보</p> -->
+                    </div>
+                    <div class="spec-point">
+                        N/A
+                        <div class="question">
+                            <span class="detail">
+                                스펙포인트 정보 로딩중
+                            </span>
+                        </div>
+                    </div>
+                    <div class="spec-gauge">
+                        <span class="percent">N %</span>
+                        <span class="gauge"></span>
+                    </div>
+                    <div class="extra-info">
+                        <p class="detail-info">세부정보</p>
+                        <div class="info-box">
+                            <p class="text">전투레벨 : 100000</p>
+                            <div class="question">
+                                <span class="detail">세부전투력X9999</span>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <p class="text">전투레벨 : 100000</p>
+                            <div class="question">
+                                <span class="detail">세부전투력X9999</span>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <p class="text">전투레벨 : 100000</p>
+                            <div class="question">
+                                <span class="detail">세부전투력X9999</span>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <p class="text">전투레벨 : 100000</p>
+                            <div class="question">
+                                <span class="detail">세부전투력X9999</span>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <p class="text">전투레벨 : 100000</p>
+                            <div class="question">
+                                <span class="detail">세부전투력X9999</span>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <p class="text">전투레벨 : 100000</p>
+                            <div class="question">
+                                <span class="detail">세부전투력X9999</span>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <p class="text">전투레벨 : 100000</p>
+                            <div class="question">
+                                <span class="detail">세부전투력X9999</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="extra-btn" id="extra-btn"></span>
+                </div>
+                <div class="button-area">
+                    <a href="https://cool-kiss-ec2.notion.site/2024-10-16-121758f0e8da8029825ef61b65e22568" target="_blink" class="link-block">무효각인 목록</a>
+                    <form class="link-split" action="../split/split.html" method="get" >
+                        <button type="button" id="split-input">캐릭터 비교하기</button>
+                    </form>
+                </div>
+                <div class="engraving-area shadow">
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+
+                </div>
+            </div>
+            <div class="group-equip">
+                <div class="gem-area shadow">
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                    <div class="gem-box radius skeleton">
+                        <img src="../asset/image/skeleton-img.png" alt="">
+                    </div>
+                </div>
+                <div class="armor-wrap">
+                    <div class="armor-area shadow">
+                        <ul class="armor-list">
+                            <li class="armor-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                    <div class="elixir-wrap">
+                                    </div>
+                                    <div class="hyper-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="armor-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                    <div class="elixir-wrap">
+                                    </div>
+                                    <div class="hyper-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="armor-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                    <div class="elixir-wrap">
+                                    </div>
+                                    <div class="hyper-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="armor-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                    <div class="elixir-wrap">
+                                    </div>
+                                    <div class="hyper-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="armor-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                    <div class="elixir-wrap">
+                                    </div>
+                                    <div class="hyper-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="armor-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                    <div class="elixir-wrap">
+                                    </div>
+                                    <div class="hyper-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="armor-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                </div>
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="name-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="accessory-area shadow">
+                        <ul class="accessory-list">
+                            <li class="accessory-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="text-box">
+                                    <div class="grinding-wrap">
+                                    </div>
+                                    <div class="grinding-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="accessory-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="option-box">
+                                    <div class="option-wrap">
+                                    </div>
+                                    <div class="buff-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="accessory-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="option-box">
+                                    <div class="option-wrap">
+                                    </div>
+                                    <div class="buff-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="accessory-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="option-box">
+                                    <div class="option-wrap">
+                                    </div>
+                                    <div class="buff-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="accessory-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="option-box">
+                                    <div class="option-wrap">
+                                    </div>
+                                    <div class="buff-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="accessory-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="option-box">
+                                    <div class="option-wrap">
+                                    </div>
+                                    <div class="buff-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="accessory-item">
+                                <div class="img-box radius skeleton">
+                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <span class="progress"></span>
+                                </div>
+                                <div class="option-box">
+                                    <div class="option-wrap">
+                                    </div>
+                                    <div class="buff-wrap">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ark-area shadow">
+                    <div class="ark-title-wrap">
+                        <div class="title-box evolution">
+                            <span class="tag">진화</span>
+                            <span class="title">N/A</span>
+                        </div>
+                        <div class="title-box enlightenment">
+                            <span class="tag">진화</span>
+                            <span class="title">N/A</span>
+                        </div>
+                        <div class="title-box leap">
+                            <span class="tag">진화</span>
+                            <span class="title">N/A</span>
+                        </div>
+                    </div>
+                    <div class="ark-list-wrap">
+                        <ul class="ark-list evolution">
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="ark-list enlightenment">
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+
+                        </ul>
+                        <ul class="ark-list leap">
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+                            <li class="ark-item">
+                                <div class="img-box">
+                                    <span class="tier">N</span>
+                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                </div>
+                                <div class="text-box">
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="sc-footer">
+        <span>© 2024 lopec.kr / lopec.kr isn’t endorsed by Smilegate RPG and doesn’t reflect the views or opinions of Smilegate RPG or anyone officially involved in producing or managing Lostark. Lostark and Smilegate RPG are trademarks or registered trademarks of Smilegate RPG, Inc. Lostark © Smilegate RPG, Inc.</span>
+    </footer>
+
+    
+
+
+    <script type="module" src="../asset/js/custom.js"></script>
+    <script type="module" src="../asset/js/skeleton.js"></script>
+    <script type="module" src= "../asset/js/filter.js"></script>
+</body>
+
+
+
+</html>

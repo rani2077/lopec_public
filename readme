@@ -1,0 +1,85 @@
+심지우
+하드펀쳐
+도유미
+맨중의맨칼슘맨
+강호빈
+함예린
+하나나낫
+하나나낭
+홀나짱쌤홀나
+
+
+
+
+
+
+
+공격력+  = atkPlus
+공격력% = atkPer
+무기공격력+ = weaponAtkPlus
+무기공격력% = weaponAtkPer
+적에게 주는 피해 = finalDamagePer
+치명타 피해 = criticalDamagePer
+치명타 적중률 = criticalChancePer
+추가 피해 = addDamage
+치명타시 적에게 주는 피해 = criFinalDamagePer
+쿨타임 = skillCool
+
+
+
+투구
+
+
+5 : atkBuff = totalStar*0.01
+10 : atkBuff = totalStar*0.02   /   stats=totalStar*55
+15 : atkBuff = totalStar*0.03     /  weaponAtkPlus=totalstar*14
+20 : atkBuff = totalStar*0.04    /   atkPlus=totalstar*6
+
+
+견갑
+
+5 : atkBuff = 1    /  weaponAtkPlus = 1200
+10 : 0
+15 : atkBuff = 2   /  weaponAtkPlus = 2400
+20 : atkBuff = 3  /   weaponAtkPlus = 3600
+
+
+상의
+
+5 : weaponAtkPlus = 2000
+10 : 0
+15 : weaponAtkPlus = 4000
+20 : weaponAtkPlus = 7200
+
+
+하의
+
+5 : 0
+10 : atkBuff = 1.5
+15 : atkBuff = 3
+20 : finalDamagePer = 1.5    /     atkBuff = 6
+
+
+
+장갑
+
+5 : stats = 4200    /     atkBuff = 1
+10 : 0
+15 : stats = 8400   /     atkBuff = 2
+20 : stats = 12600  /     atkBuff = 3
+
+
+
+
+무기
+
+5 : stats = 4200    /     atkBuff = 1
+10 : 0
+15 : stats = 8400   /     atkBuff = 2
+20 : stats = 12600  /     atkBuff = 3
+
+
+
+
+objExtrudeFnc()
+plus값과 percent값을 분리하여 배열에 저장시키는 함수
