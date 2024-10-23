@@ -2312,7 +2312,12 @@ export async function getCharacterProfile(inputName,callback){
         
         
         // enlightenmentArry
-        if(arkPassiveValue(1) >= 96){ // arkPassiveValue(1) == 깨달음수치
+        if(arkPassiveValue(1) >= 98){ // arkPassiveValue(1) == 깨달음수치
+
+            arkObj.enlightenmentDamage += 1.38
+            arkObj.enlightenmentBuff += 1.37
+
+        }else if(arkPassiveValue(1) >= 96){
 
             arkObj.enlightenmentDamage += 1.36
             arkObj.enlightenmentBuff += 1.35

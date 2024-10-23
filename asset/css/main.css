@@ -78,8 +78,8 @@
 
 
 .sc-info{
-    padding-top: 120px;
-    margin-top: 45px;
+    padding-top: 0;
+    margin-top: 165px;
     display: flex;
     gap: 20px;
     position: relative;
