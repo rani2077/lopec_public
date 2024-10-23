@@ -101,7 +101,14 @@
     </footer>
 
     <script>
-        document.getElementById('nick-name').focus();
+        function footerPostionFnc(){
+            let footer = document.querySelector(".sc-footer")
+            footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
+            footer.style.display = "block"
+        }
+
+        window.addEventListener("resize",footerPostionFnc)
+        window.addEventListener("load",footerPostionFnc)
     </script>
 
     <!-- db관련 -->

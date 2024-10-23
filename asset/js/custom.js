@@ -4427,3 +4427,17 @@ export function specBtn(){
         }
     })    
 }
+
+
+
+// 에드센스 푸터 위치 깨짐 해결
+
+
+function footerPostionFnc(){
+    let footer = document.querySelector(".sc-footer")
+    footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
+    footer.style.display = "block"
+}
+
+window.addEventListener("resize",footerPostionFnc)
+window.addEventListener("load",footerPostionFnc)

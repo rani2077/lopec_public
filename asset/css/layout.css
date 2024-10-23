@@ -12,8 +12,11 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     font-family: 'Noto Sans KR', sans-serif;
+    height: auto;
+    min-height: 100%;
+    /* padding-bottom: 40px !important; */
+  
 }
 
 /* 콘텐츠 래퍼 스타일 */
@@ -120,13 +123,18 @@ body {
     background: rgb(233, 233, 233);
     font-size: 13px;
     padding: 5px 0;
-    position: absolute;
-    bottom: 0;
+    height: 40px;
+    position : absolute;
+    display: none;
+    /* top:calc(1236px - 40px); */
+  
 }
 
 .sc-footer span {
     font-weight: 400;
     color: #747474;
+    display: block;
+    height: 100%;
 }
 
 /* 메인 페이지 특정 스타일 */
