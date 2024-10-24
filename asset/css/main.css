@@ -77,6 +77,74 @@
 }
 
 
+
+
+
+.sc-ranking{
+    display: flex;
+    gap: 20px;
+    margin-top: 50px;
+    justify-content: center;
+
+ }
+.sc-ranking .group-ranking{
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+.sc-ranking .group-ranking.dealer{}
+.sc-ranking .group-ranking.support{
+    flex-direction:row-reverse;
+}
+.sc-ranking .group-ranking .ranking-box{
+    color: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction:column;
+    background: #15181d;
+    padding-bottom: 10px;
+    width: 170px;
+    position: relative;
+}
+.sc-ranking .group-ranking .ranking-box:after{
+    content:'N';
+    width: 30px;
+    height: 30px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+.sc-ranking .group-ranking .ranking-box:nth-child(1):after{content:'3';}
+.sc-ranking .group-ranking .ranking-box:nth-child(2):after{content:'2';}
+.sc-ranking .group-ranking .ranking-box:nth-child(3):after{content:'1';}
+.sc-ranking .group-ranking .ranking-box:last-child{
+    width: 250px;
+}
+.sc-ranking .group-ranking .ranking-box:last-child img{
+    height: 210px;
+}
+.sc-ranking .group-ranking img{
+    width: 180%;
+    height: 150px;
+    object-fit: cover;
+    object-position: 0 20%;
+}
+.sc-ranking .group-ranking .name{
+    margin: 8px 0;
+}
+.sc-ranking .group-ranking .point{}
+
+
+
+
+
+
 .sc-info{
     padding-top: 0;
     margin-top: 165px;
