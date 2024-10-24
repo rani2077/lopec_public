@@ -25,6 +25,8 @@ import { config } from '../../config.js';
 import {insertLopecMains} from '../js/lopec.js'
 
 
+
+
 // API키 랜덤 선택
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -4446,3 +4448,41 @@ function footerPostionFnc(){
 
 window.addEventListener("resize",footerPostionFnc)
 window.addEventListener("load",footerPostionFnc)
+
+
+
+
+
+
+// 다크모드 스크립트
+
+function enableDarkMode() {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('darkMode', 'enabled');
+}
+
+// Function to disable dark mode
+function disableDarkMode() {
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('darkMode', 'disabled');
+}
+
+if (localStorage.getItem('darkMode') == 'enabled') {
+    enableDarkMode();
+}
+
+
+document.querySelector('.dark-mode-button').addEventListener('click', () => {
+    if (localStorage.getItem('darkMode') == 'enabled') {
+        disableDarkMode();
+    } else {
+        enableDarkMode();
+    }
+});
+
+
+// let darkBtn = document.querySelector(".dark-mode-button")
+console.log(document.querySelector(".dark-mode-button").checked)
+if(localStorage.getItem('darkMode') == 'enabled'){
+    document.querySelector(".dark-mode-button").checked = false
+}

@@ -8,7 +8,7 @@
     width: auto;
     flex-direction:column;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 150px;
 }
 .sc-container.on{
     display: flex;
@@ -21,6 +21,8 @@
 }
 .sc-container.on .group-logo{
     display: block;
+    width: 400px;
+    /* height: 180px; */
 }
 .sc-container .group-logo .link-logo{
     display: block;
@@ -74,6 +76,193 @@
     font-size: 18px;
     background: #ececec;
 
+}
+
+
+
+
+
+.sc-ranking{
+    display: flex;
+    gap: 20px;
+    margin-top: 120px;
+    justify-content: center;
+
+ }
+.sc-ranking .group-ranking{
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+.sc-ranking .group-ranking.dealer{}
+.sc-ranking .group-ranking.support{
+    flex-direction:row-reverse;
+    
+}
+.sc-ranking .group-ranking.support img{
+    /* transform:rotateY(180deg); */
+}
+.sc-ranking .group-ranking .ranking-box{
+    color: #fff;
+    /* overflow: hidden; */
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction:column;
+    background: #15181d;
+    padding-bottom: 10px;
+    width: 170px;
+    position: relative;
+}
+.sc-ranking .group-ranking .ranking-box:after{
+    content:'';
+    display: block;
+    width: 50px;
+    height: 40px;
+    position: absolute;
+    bottom: 100%;
+    z-index:3;
+    background-size:contain;
+    background-position:center bottom;
+    background-repeat:no-repeat;
+}
+/* .sc-ranking .group-ranking .ranking-box:after{
+    content:'N';
+    width: 30px;
+    height: 30px;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    position: absolute;
+} */
+.sc-ranking .group-ranking .ranking-box:nth-child(1):after{
+    background-image:url("../image/crown-gold.png")
+}
+.sc-ranking .group-ranking .ranking-box:nth-child(2):after{
+    background-image:url("../image/crown-gold.png")
+}
+.sc-ranking .group-ranking .ranking-box:nth-child(3):after{
+    background-image:url("../image/crown-gold.png")
+}
+.sc-ranking .group-ranking .ranking-box:last-child{
+    width: 250px;
+}
+.sc-ranking .group-ranking .ranking-box:last-child .img-item{
+    height: 230px;
+}
+
+.sc-ranking .group-ranking .img-item{
+    border-radius: 5px;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.sc-ranking .group-ranking img{
+
+    width: 180%;
+    object-fit: cover;
+    transform:scale(100%);
+    transition:transform 300ms;
+    margin-top: -40px;
+
+
+}
+.sc-ranking .group-ranking .ranking-box:hover img{
+    transform:scale(115%);
+
+}
+
+.sc-ranking .group-ranking .name{
+    margin: 8px 0;
+}
+.sc-ranking .group-ranking .point{}
+
+
+
+
+.sc-user-rank{
+    margin: 0 auto;
+    margin-top: 90px;
+    width: 1050px;
+    position: relative;
+}
+
+.sc-user-rank .group-filter{
+    display: flex;
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+}
+.sc-user-rank .group-filter .filter{
+    padding: 5px 10px;
+    border-radius:10px 10px 0 0;
+    background: rgb(189, 189, 189);
+    color: #fff;
+    cursor:pointer;
+
+}
+.sc-user-rank .group-filter .filter.on{
+    background: rgb(71, 71, 71);
+}
+.sc-user-rank .group-user{
+    padding: 15px 50px;
+    padding-bottom:80px;
+}
+.sc-user-rank .group-user.dealer{}
+.sc-user-rank .group-user.support{
+    display: none;
+}
+
+.sc-user-rank .group-user .user-item{
+    color: #000;
+    display: flex;
+    padding: 25px 0;
+    padding-left: 15px;
+    border-bottom:1px solid gray;
+    background: #fff;
+    transition:background 300ms;
+}
+.sc-user-rank .group-user .user-item.tag:hover{
+    background: #fff;
+
+}
+.sc-user-rank .group-user .user-item:hover{
+    background: rgb(244, 244, 244);
+}
+
+.sc-user-rank .group-user .user-item span{
+    width:10%;
+}
+
+.sc-user-rank .group-user .user-item .rank{
+}
+.sc-user-rank .group-user .user-item .name{
+    width: 30%;
+}
+.sc-user-rank .group-user .user-item .level{}
+.sc-user-rank .group-user .user-item .class{}
+.sc-user-rank .group-user .user-item .server{}
+.sc-user-rank .group-user .user-item .guild{
+}
+.sc-user-rank .group-user .user-item .spec{
+    width: 20%;
+}
+.sc-user-rank .more-view{
+    position: absolute;
+    left: 50%;
+    bottom: 35px;
+    transform:translateX(-50%);
+    background:none;
+    color: rgb(36, 80, 255);
+    cursor:pointer;
 }
 
 
@@ -740,6 +929,7 @@
 .sc-info .ark-area{
     margin-top: 20px;
     padding: 15px;
+    background: #fff;
 }
 .sc-info .ark-area .ark-false{
     text-align: center;
