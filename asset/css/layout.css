@@ -36,6 +36,9 @@ body {
 
 /* 헤더 스타일 */
 .sc-header {
+    position: fixed;
+    top: 0;
+    z-index:3;
     width: 100%;
     height: 60px;
     background: rgb(236, 236, 236);
@@ -105,6 +108,7 @@ body {
 .sc-header .group-sns {
     width: calc(100%/3);
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 10px;
 }
@@ -115,6 +119,7 @@ body {
     object-fit: cover;
     border-radius:50px;
 }
+
 
 /* 푸터 스타일 */
 .sc-footer {

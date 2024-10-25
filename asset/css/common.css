@@ -289,41 +289,107 @@ font{
 
 
 
-/* 초소형 사이즈 업데이트 후 추후 제거*/ 
-/* @media (max-width:350px){ 
-    body, div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed, 
-    figure, figcaption, footer, header, hgroup, 
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video ,input{
-        display: none;
-    }
-    body{
-        min-height:initial !important;
-        height:auto !important;
-    }
-    .engraving-area, .sc-footer, .sc-header, .group-logo{
-        display: none !important;
-    }
-    .minimum{
-        display: block;
-    }
-    .sc-info{
-        margin-top: 10px !important;
-    }
-    .sc-mobile-search,.sc-info{
-        display: block !important;
-    }
-    .tier-box{
-        display: flex;
-        justify-content: center;
-    }
+/* 다크모드 */
+
+.dark-mode{
+    background: #121212;
+}
+.dark-mode .shadow{
+    box-shadow:none;
+}
+.dark-mode .sc-header{
+    background: #1d1e1f;
+    color: #fff;
+}
+body{
+    transition:background 300ms, color 300ms;
+}
+
+body.dark-mode .sc-info .tag-list,
+.dark-mode .sc-info .engraving-area,
+.dark-mode .sc-info .group-equip .gem-area,
+.dark-mode .sc-info .armor-wrap > div,
+.dark-mode .sc-info .ark-area,
+.dark-mode .sc-footer{
+    background: #2f2f2f;
+    color: #fff;
+}
+
+.dark-mode .sc-info .group-profile .tag-item .tag,
+.dark-mode .sc-info .text-box .elixir-wrap .elixir{
+    background: #15181d;
+}
+
+
+.dark-mode .sc-header .logo-group .link-site,
+.dark-mode .sc-container .group-logo .link-logo{
+    background: url("../image/dark-mode-logo.png") center center / contain no-repeat;
+}
+
+
+
+/* .dark-mode .sc-info .group-info .spec-area .question{
+    background: url('../image/dark-mode-question-ico.png') center center / cover no-repeat;
 } */
+
+
+
+
+.dark-mode-button {
+    --size: 40px;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    width: var(--size);
+    height: var(--size);
+    box-shadow: inset calc(var(--size) * 0.33) calc(var(--size) * -0.25) 0;
+    border-radius: 999px;
+    color: hsl(58, 100%, 69%);
+    transition: all 500ms;
+}
+
+.dark-mode-button:checked {
+    --ray-size: calc(var(--size) * -0.4);
+    --offset-orthogonal: calc(var(--size) * 0.65);
+    --offset-diagonal: calc(var(--size) * 0.45);
+    transform: scale(0.75);
+    color: hsl(40, 100%, 50%);
+    box-shadow: 
+        inset 0 0 0 var(--size),
+        calc(var(--offset-orthogonal) * -1) 0 0 var(--ray-size),
+        var(--offset-orthogonal) 0 0 var(--ray-size),
+        0 calc(var(--offset-orthogonal) * -1) 0 var(--ray-size),
+        0 var(--offset-orthogonal) 0 var(--ray-size),
+        calc(var(--offset-diagonal) * -1) calc(var(--offset-diagonal) * -1) 0 var(--ray-size),
+        var(--offset-diagonal) var(--offset-diagonal) 0 var(--ray-size),
+        calc(var(--offset-diagonal) * -1) var(--offset-diagonal) 0 var(--ray-size),
+        var(--offset-diagonal) calc(var(--offset-diagonal) * -1) 0 var(--ray-size);
+}
+
+.dark-mode-button {
+    z-index: 1;
+}
+
+.dark-mode-button:checked ~ .background {
+    --bg: white;
+}
+
+
+
+
+
+
+
+
+
+
+/* 광고 */
+
+.sc-top-ads{
+    /* opacity: 0; */
+    width: 730px;
+    height: 90px;
+    /* background: #f00; */
+    margin: 0 auto;
+    margin-top: 70px;
+}
