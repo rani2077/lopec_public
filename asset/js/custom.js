@@ -4442,12 +4442,12 @@ export function specBtn(){
 
 function footerPostionFnc(){
     let footer = document.querySelector(".sc-footer")
-    footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
     footer.style.display = "block"
+    footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
 }
 
+footerPostionFnc()
 window.addEventListener("resize",footerPostionFnc)
-window.addEventListener("load",footerPostionFnc)
 
 
 

@@ -114,7 +114,7 @@
             </form>
         </section>
 
-        <p style="text-align:center; margin-top:25px; font-size:25px">(찐막)서폿 조정기간 연장되었습니다. 10/27까지 끝내보도록 하겠습니다. <p>
+        <p style="text-align:center; margin-top:25px; font-size:22px" class="notice">(찐막)서폿 조정기간 연장되었습니다. 10/27까지 끝내보도록 하겠습니다. <p>
         
     </div>
     <footer class="sc-footer">
@@ -158,12 +158,12 @@
         // 푸터
         function footerPostionFnc(){
             let footer = document.querySelector(".sc-footer")
-            footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
             footer.style.display = "block"
+            footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
         }
 
+        footerPostionFnc()
         window.addEventListener("resize",footerPostionFnc)
-        window.addEventListener("load",footerPostionFnc)
 
     </script>
 
@@ -173,7 +173,7 @@
     <!-- db관련 -->
 
     <!-- <script type="module" src="./asset/js/skeleton.js"></script> -->
-    <script type="module" src="./asset/js/custom.js?v=0.9.6.50"></script>
+    <script type="module" src="./asset/js/custom.js?v=0.9.7.5"></script>
     <script type="module" src= "./asset/js/filter.js?v=1.0"></script>
 </body>
 
