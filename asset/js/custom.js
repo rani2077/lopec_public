@@ -17,7 +17,6 @@ import {
     engravingCheckFilterLowTier,
 } from './filter.js';
 
-import {skeleton} from './skeleton.js';
 
 // key
 import { config } from '../../config.js';
@@ -4349,7 +4348,6 @@ export async function getCharacterProfile(inputName,callback){
 }
 
 
-// window.getCharacterProfile = getCharacterProfile; 문제없을시 추후 제거
 
 
 
@@ -4361,7 +4359,6 @@ export async function getCharacterProfile(inputName,callback){
 // 검색 스크립트
 export let specDetail = {}
 export let gradeModule = {}
-let skeletonHtml = document.querySelector(".sc-info").innerHTML 
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -4437,52 +4434,5 @@ export function specBtn(){
 
 
 
-// 에드센스 푸터 위치 깨짐 해결
-
-
-function footerPostionFnc(){
-    let footer = document.querySelector(".sc-footer")
-    footer.style.display = "block"
-    footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
-}
-
-footerPostionFnc()
-window.addEventListener("resize",footerPostionFnc)
-
-
-
-
-
-
-// 다크모드 스크립트
-
-function enableDarkMode() {
-    document.body.classList.add('dark-mode');
-    localStorage.setItem('darkMode', 'enabled');
-}
-
-// Function to disable dark mode
-function disableDarkMode() {
-    document.body.classList.remove('dark-mode');
-    localStorage.setItem('darkMode', 'disabled');
-}
-
-if (localStorage.getItem('darkMode') == 'enabled') {
-    enableDarkMode();
-}
-
-
-document.querySelector('.dark-mode-button').addEventListener('click', () => {
-    if (localStorage.getItem('darkMode') == 'enabled') {
-        disableDarkMode();
-    } else {
-        enableDarkMode();
-    }
-});
-
-
-// let darkBtn = document.querySelector(".dark-mode-button")
-console.log(document.querySelector(".dark-mode-button").checked)
-if(localStorage.getItem('darkMode') == 'enabled'){
-    document.querySelector(".dark-mode-button").checked = false
-}
+// search.html 헤더 검색창 띄우기
+document.querySelector(".sc-header .group-search").classList.add("on")

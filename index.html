@@ -25,60 +25,36 @@
 
 
 
+
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0; minimum-scale=1.0; user-scalable=no," />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 
     <link rel="icon" href="/./asset/image/lopec-ico.png">
-    <!-- 본고딕 -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;300;500;700&display=swap" rel="stylesheet"> -->
+
+
     
     <link rel="stylesheet" href="./asset/css/layout.css">
     <link rel="stylesheet" href="./asset/css/main.css">
     <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
+
+
+
+
+
 </head>
 
 
 <body>
-    <header class="sc-header shadow">
-        <div class="logo-group">
-            <h1 class="logo">
-                <span class="blind">로스트아크 전투정보실 전투력계산 스펙포인트</span>
-                <a href="https://lopec.kr/" class="link-site"></a>
-            </h1>
 
-            <div class="link-box">
-                <a href="https://cool-kiss-ec2.notion.site/10a758f0e8da809ead94d78f142f671d" target="_blink" class="link-alert">공지사항</a>
-                <a href="https://cool-kiss-ec2.notion.site/10b758f0e8da802ca4bdccf9a3c5edec" target="_blink" class="link-alert">업데이트</a>
-                <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link-alert">후원하기</a>
-                <a href="https://cool-kiss-ec2.notion.site/12a758f0e8da807a936ae883e773f646" target="_blink" class="link-alert">문의/제보</a>
-            </div>
+    
 
-        </div>
-        <div class="group-search search-page">
-            <input id = "header-input" class="header-input character-name-search" type= "text" value = "" placeholder="캐릭터 검색">
-            <button class="search-btn"></button>
-        </div>
-        <div class="group-sns">
-            <!-- <a href="https://discord.gg/5B8SjX4ug4" class="link-sns" target="_blank" rel="noopener noreferrer">
-                <img class="sns-ico discord" src="./asset/image/discord-ico.png" alt="디스코드 채널 참여하기">
-            </a>
-            <a href="https://open.kakao.com/o/smvJ4DQg" class="link-sns" target="_blank" rel="noopener noreferrer">
-                <img class="sns-ico kakao" src="./asset/image/kakao-ico.png" alt="오픈카톡 문의하기">
-            </a>
-            <a href="https://forms.gle/eoBEK8pEicojfeuS8" class="link-sns" target="_blank" rel="noopener noreferrer">
-                <img class="sns-ico pawm" src="./asset/image/pawm-ico.png" alt="구글폼 설문조사하기">
-            </a> -->
-            <span class="light-dark">다크모드</span>
-            <input id="toggle" class="dark-mode-button" type="checkbox" alt="다크모드 전환" title="다크모드 전환하기" checked>
-            
+    <!-- 공용헤더 -->
+    <header class="sc-header shadow"></header>
+    <!-- 공용헤더 -->
 
-
-        </div>
-    </header>
     <div class="wrapper">
 
         <!-- 상단광고 -->
@@ -117,64 +93,24 @@
         <p style="text-align:center; margin-top:25px; font-size:22px" class="notice">(찐막)서폿 조정기간 연장되었습니다. 10/27까지 끝내보도록 하겠습니다. <p>
         
     </div>
-    <footer class="sc-footer">
-        <span>© 2024 lopec.kr / lopec.kr isn’t endorsed by Smilegate RPG and doesn’t reflect the views or opinions of Smilegate RPG or anyone officially involved in producing or managing Lostark. Lostark and Smilegate RPG are trademarks or registered trademarks of Smilegate RPG, Inc. Lostark © Smilegate RPG, Inc.</span>
-    </footer>
 
-    <script>
-
-        // 다크모드 스크립트
-
-        function enableDarkMode() {
-            document.body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'enabled');
-            
-        }
-        
-        function disableDarkMode() {
-            document.body.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'disabled');
-        }
-
-        if (localStorage.getItem('darkMode') == 'enabled') {
-            enableDarkMode();
-        }
+    <!-- 공요푸터 -->
+    <footer class="sc-footer"></footer>
+    <!-- 공요푸터 -->
 
 
-        document.querySelector('.dark-mode-button').addEventListener('click', () => {
-            if (localStorage.getItem('darkMode') == 'enabled') {
-                disableDarkMode();
-            } else {
-                enableDarkMode();
-            }
-        });
-
-        if(localStorage.getItem('darkMode') == 'enabled'){
-            document.querySelector(".dark-mode-button").checked = false
-        }
-
-
-
-        // 푸터
-        function footerPostionFnc(){
-            let footer = document.querySelector(".sc-footer")
-            footer.style.display = "block"
-            footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
-        }
-
-        footerPostionFnc()
-        window.addEventListener("resize",footerPostionFnc)
-
-    </script>
 
     <!-- db관련 -->
     <script type="module" src= "./asset/js/lopec.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- db관련 -->
 
-    <!-- <script type="module" src="./asset/js/skeleton.js"></script> -->
-    <script type="module" src="./asset/js/custom.js?v=0.9.7.5"></script>
-    <script type="module" src= "./asset/js/filter.js?v=1.0"></script>
+
+    <!-- 공용 헤더,푸터 -->
+
+
+    <script src="./asset/js/layout.js"></script>
+
 </body>
 
 

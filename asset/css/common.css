@@ -305,7 +305,7 @@ body{
     transition:background 300ms, color 300ms;
 }
 
-body.dark-mode .sc-info .tag-list,
+html.dark-mode .sc-info .tag-list,
 .dark-mode .sc-info .engraving-area,
 .dark-mode .sc-info .group-equip .gem-area,
 .dark-mode .sc-info .armor-wrap > div,

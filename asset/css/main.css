@@ -295,6 +295,11 @@
     width: 100%;
     height: 347px;
 }
+.sc-info .group-profile .img-area .image{
+    width: 100%;
+    height: 347px;
+    display: block;
+}
 .sc-info .group-profile .img-area .level{
     margin-top: 15px;
 }
