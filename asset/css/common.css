@@ -48,11 +48,16 @@ font{
 
 /* wrapper기본설정 */
 .wrapper{
-    transform: scale(0.95);
     width: 1300px;
     margin: 0 auto;
-    /* position: relative; */
+    position: relative;
     margin-bottom: 150px;
+
+}
+@media (max-width:768px){
+    .wrapper{
+        margin-top: 100px;
+    }
 }
 
 
@@ -400,6 +405,34 @@ html.dark-mode .sc-info .tag-list,
 @media (max-width: 768px) {
     .sc-top-ads{
         width: auto;
+        display: none;
+    }
+}
+
+
+.side-ads{
+    width: 160px;
+    height: 600px;
+    position: absolute;
+}
+.side-ads.left{
+    right: calc(100% + 100px);
+}
+.side-ads.right{
+    left: calc(100% + 100px);
+}
+
+.ads{
+    top:50%;
+    transform:translateY(-50%);
+    position: fixed;
+    width: inherit;
+    height: inherit;
+    /* background: #f00; */
+}
+
+@media (max-width:1027px) {
+    .side-ads{
         display: none;
     }
 }

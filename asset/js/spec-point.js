@@ -1,3 +1,4 @@
+// 필터
 import {
     keywordList,
     grindingFilter,
@@ -22,40 +23,117 @@ import {
 import { config } from '../../config.js';
 
 
-
 // db저장 스크립트
 import {insertLopecMains} from '../js/lopec.js'
 import {insertLopecApis} from '../js/api.js'
 
 
 
-
 // API키 랜덤 선택
 function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 let shuffledApiKeys = shuffleArray([...config.apiKeys]);
 let currentKeyIndex = 0;
-
-
+  
+  
 function getNextApiKey() {
-  if (currentKeyIndex >= shuffledApiKeys.length) {
+if (currentKeyIndex >= shuffledApiKeys.length) {
     shuffledApiKeys = shuffleArray([...config.apiKeys]);
     currentKeyIndex = 0;
-  }
-  
-  const key = atob(shuffledApiKeys[currentKeyIndex]);
-  currentKeyIndex++;
-  return key;
 }
 
+const key = atob(shuffledApiKeys[currentKeyIndex]);
+currentKeyIndex++;
+return key;
+}
+  
+
+
+  
+//   api 동작 스크립트
 let isRequesting = false;
 
 
+
+
+// 3티어 스펙포인트
+export let lowTierSpecPointObj = {
+    characterPoint:0,
+    armorPoint:0,
+    weaponPoint:0,
+    arkPoint:0,
+    accessoryPoint:0,
+    elixirPoint:0,
+    gemsPoint:0,
+    engravingPoint:0,
+    hyperPoint:0,
+    cardPoint:0,
+    abilityStonePoint:0,
+    setPoint:0,
+    banglePoint:0,
+    specPoint:0,
+}
+
+// 4티어 스펙포인트
+export let highTierSpecPointObj = {
+
+
+    // 딜러
+    dealerAttackPowResult:0, // 공격력
+    dealerTotalStatus:0, // 치특신 합계
+    dealerEngResult:0, // 각인 효율
+    dealerEvloutionResult:0, // 진화 효율
+    dealerEnlightResult:0, // 깨달음 효율
+    dealerLeapResult:0, // 도약 효율
+    dealerBangleResult:0, // 팔찌 효율
+
+
+    // 서포터
+    StigmaResult:0, // 낙인력
+    AllTimeBuff:0, // 상시버프
+    FullBuff:0, //풀버프
+    EngBonus:0, //각인 보너스
+    gemsCoolAvg:0, // 보석 쿨감
+    CarePowerResult:0, // 케어력
+    BangleResult:0, // 팔찌효율
+
+
+    // 서폿 최종 스펙포인트
+    supportSpecPoint:0,
+    // 딜러 최종 스펙포인트
+    lastFinalValue:0,
+}
+
+
+//공격력   attackPowResult
+//특성합   defaultObj.crit+defaultObj.haste+defaultObj.special
+//각인   engObj.finalDamagePer
+//진화   evolutionDamageResult
+//깨달음   (enlightResult-1)*100
+//도약   (arkObj.leapDamage-1)*100
+//팔찌   bangleEff*100-100
+
+
+
+
+//낙인력    finalStigmaPer
+//상시버프    allTimeBuffPower
+//풀버프    fullBuffPower
+//각인 보너스    (engObj.engBonusPer-1)*100
+//평균 쿨감    gemsCoolAvg
+//케어력    (finalCarePower/280000)*100
+//팔찌    supportBangleEff
+
+
+
+
+
+getCharacterProfile("청염각")
 export async function getCharacterProfile(inputName,callback){
     if (isRequesting) {
         return;
@@ -1229,7 +1307,7 @@ export async function getCharacterProfile(inputName,callback){
 
 
 
-
+        // 3티어 스펙포인트 최종값
         specPoint = characterPoint+
                     armorPoint+
                     weaponPoint+
@@ -1248,24 +1326,24 @@ export async function getCharacterProfile(inputName,callback){
 
 
 
+        // export용 3티어 스펙포인트 객체에 값 넣기
+        lowTierSpecPointObj.characterPoint = characterPoint
+        lowTierSpecPointObj.armorPoint = armorPoint
+        lowTierSpecPointObj.weaponPoint = weaponPoint
+        lowTierSpecPointObj.arkPoint = arkPoint
+        lowTierSpecPointObj.accessoryPoint = accessoryPoint
+        lowTierSpecPointObj.elixirPoint = elixirPoint
+        lowTierSpecPointObj.gemsPoint = gemsPoint
+        lowTierSpecPointObj.engravingPoint = engravingPoint
+        lowTierSpecPointObj.hyperPoint = hyperPoint
+        lowTierSpecPointObj.cardPoint = cardPoint
+        lowTierSpecPointObj.abilityStonePoint = abilityStonePoint
+        lowTierSpecPointObj.setPoint = setPoint
+        lowTierSpecPointObj.banglePoint = banglePoint
+        lowTierSpecPointObj.specPoint = specPoint
 
-        // 스펙포인트 세부정보 객체
-        specDetail = {
-            spec:specPoint,
-            character:characterPoint,
-            armor:armorPoint,
-            weapon:weaponPoint,
-            ark:arkPoint,
-            accessory:accessoryPoint,
-            elixir:elixirPoint,
-            gems:gemsPoint,
-            engraving:engravingPoint,
-            hyper:hyperPoint,
-            card:cardPoint,
-            abilityStone:abilityStonePoint,
-            set:setPoint,
-            bangle:banglePoint,
-        }
+
+        console.log(lowTierSpecPointObj)
 
 
         // -----------------------계산식 함수 끝-----------------------------------
@@ -2126,7 +2204,7 @@ export async function getCharacterProfile(inputName,callback){
             gemsCool = 1
             gemsCoolCount = 1
         }
-        console.log(gemsCool)
+        // console.log(gemsCool)
         let gemsCoolAvg = ((gemsCool / gemsCoolCount)).toFixed(1)
         
 
@@ -2291,6 +2369,15 @@ export async function getCharacterProfile(inputName,callback){
                 
             }
         })
+
+
+        function arkPassiveValue(e){
+            let arkPassiveVal = data.ArkPassive.Points[e].Value
+            return arkPassiveVal
+        }
+
+
+
         if(arkPassiveValue(0) >= 120){ // arkPassiveValue(0) == 진화수치
 
             arkObj.evolutionDamage += 1.70
@@ -2450,7 +2537,9 @@ export async function getCharacterProfile(inputName,callback){
             return result
         }
 
-        // 최종 계산식 ver 2.0
+        // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
+        // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
+        // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
         let attackBonus = ((gemAttackBonus() + abilityAttackBonus())/100)+1 // 기본 공격력 증가(보석, 어빌리티 스톤)
         let attackPowResult = (defaultObj.attackPow).toFixed(0) // 최종 공격력 (아드 등 각인 포함된)
         let criticalDamageResult = (defaultObj.criticalDamagePer + engObj.criticalDamagePer + accObj.criticalDamagePer + bangleObj.criticalDamagePer + arkObj.criticalDamagePer + elixirObj.criticalDamagePer + jobObj.criticalDamagePer) //치명타 피해량
@@ -2485,9 +2574,9 @@ export async function getCharacterProfile(inputName,callback){
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////팔찌 딜증율////
 
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////   
-        let lastFinalValue = ((attackPowResult**1.095) * evolutionDamageResult * (bangleFinalDamageResult**1.01) * enlightResult * arkObj.leapDamage * (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3)) 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////
+        /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////   
+        lastFinalValue = ((attackPowResult**1.095) * evolutionDamageResult * (bangleFinalDamageResult**1.01) * enlightResult * arkObj.leapDamage * (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3)) 
+        /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////
         //console.log("공격력"+attackPowResult)
         //console.log("진화" + evolutionDamageResult)
         //console.log("팔찌"+  (bangleFinalDamageResult**1.01))
@@ -2550,9 +2639,9 @@ export async function getCharacterProfile(inputName,callback){
         //console.log((bangleObj.special*0.017/100+1))
         //console.log((bangleObj.haste*0.017/100+1))
 
-        let supportSpecPoint = (fullBuffPower**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
-
-
+        // 4티어 서폿 최종 스펙포인트
+        supportSpecPoint = (fullBuffPower**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
+        
 
 
         let atkBuffMinusBangle = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+gemObj.atkBuff)/100)) // 팔찌 제외 아공강
@@ -2585,7 +2674,7 @@ export async function getCharacterProfile(inputName,callback){
 
 
         
-        
+
 
 
 
@@ -2596,15 +2685,15 @@ export async function getCharacterProfile(inputName,callback){
 
 
 
+        //console.log("아공강 총합 : " + atkBuff)
+        //console.log("낙인력 : "+finalStigmaPer + "%")
+        //console.log("기준 딜러 버프 전 : " + beforeBuff)
+        //console.log("기준 딜러 버프 후 : " + afterBuff )
 
 
 
 
         
-        //console.log("아공강 총합 : " + atkBuff)
-        //console.log("낙인력 : "+finalStigmaPer + "%")
-        //console.log("기준 딜러 버프 전 : " + beforeBuff)
-        //console.log("기준 딜러 버프 후 : " + afterBuff )
         
 
 
@@ -2621,28 +2710,28 @@ export async function getCharacterProfile(inputName,callback){
 
 
         // 기본 데이터 저장
-        try{
-            let lmanCharacterNickname = data.ArmoryProfile.CharacterName;
-            let lmanCharacterLevel = data.ArmoryProfile.CharacterLevel;
-            let lmanCharacterClass = data.ArmoryProfile.CharacterClassName;
-            let lmanCharacterImage = data.ArmoryProfile.CharacterImage;
-            let lmanServer = data.ArmoryProfile.ArmoryProfile;
-            let lmanLevel = data.ArmoryProfile.ItemMaxLevel;
-            let lmanGuild = data.ArmoryProfile.GuildName;
-            let lmanTitle = data.ArmoryProfile.Title;
-            let lmanDomain = data.ArmoryProfile.TownName;
-            let lmanCard = "temp";
-            let lmanSearchHit = "";
-            insertLopecMains(lmanCharacterNickname,lmanCharacterLevel,lmanCharacterClass,lmanCharacterImage,lmanServer,lmanLevel,lmanGuild,lmanTitle,lmanDomain,lmanCard,lmanSearchHit)
+        // try{
+        //     let lmanCharacterNickname = data.ArmoryProfile.CharacterName;
+        //     let lmanCharacterLevel = data.ArmoryProfile.CharacterLevel;
+        //     let lmanCharacterClass = data.ArmoryProfile.CharacterClassName;
+        //     let lmanCharacterImage = data.ArmoryProfile.CharacterImage;
+        //     let lmanServer = data.ArmoryProfile.ArmoryProfile;
+        //     let lmanLevel = data.ArmoryProfile.ItemMaxLevel;
+        //     let lmanGuild = data.ArmoryProfile.GuildName;
+        //     let lmanTitle = data.ArmoryProfile.Title;
+        //     let lmanDomain = data.ArmoryProfile.TownName;
+        //     let lmanCard = "temp";
+        //     let lmanSearchHit = "";
+        //     insertLopecMains(lmanCharacterNickname,lmanCharacterLevel,lmanCharacterClass,lmanCharacterImage,lmanServer,lmanLevel,lmanGuild,lmanTitle,lmanDomain,lmanCard,lmanSearchHit)
     
-        }catch(err){
-            console.log(err)
-        }
+        // }catch(err){
+        //     console.log(err)
+        // }
 
 
 
         // 유저 api 데이터 저장
-        insertLopecApis(inputName, data)
+        // insertLopecApis(inputName, data)
 
 
         // ---------------------------DB저장---------------------------
@@ -2650,1707 +2739,10 @@ export async function getCharacterProfile(inputName,callback){
         // ---------------------------DB저장---------------------------
 
 
-        
-        // HTML코드
 
 
-
-
-
-
-
-        // 프로필
-
-
-
-
-        // 카드
-
-        let cardEff
-        let cardStr
-        let cardSet
-
-        function cardNull(){
-            if(data.ArmoryCard == null){
-
-            }else{
-                cardEff = data.ArmoryCard.Effects
-                cardStr = JSON.stringify(cardEff)
-                cardSet = cardStr.includes(cardFilter[0])&&cardStr.includes(cardFilter[1])
-            }
-        }
-        
-        // let cardFilter = ['세 우마르가 오리라',"라제니스의 운명"]
-        cardNull()
-        
-
-
-        // 카드 복수 여부 체크
-        function cardArryCheckFnc(){
-            if(!(cardEff.length == 1)){
-                return "2개이상"
-            }
-        }
-        // console.log(cardEff[0].Items.length)
-        
-        let etcCardArry = ""
-
-        function cardArryFnc(){
-            try{
-                if(cardEff.length == 1){
-
-                    let cardLength = cardEff[0].Items.length
-                    let cardName = cardEff[0].Items[cardLength-1].Name
-                    let cardNameVal =  cardName.replace(/\s*\d+세트(?:\s*\((\d+)각.*?\))?/g, function(match, p1) {
-                        return p1 ? ` (${p1}각)` : '';
-                    }).trim();
-                    
-                    return`
-                    <li class="tag-item">
-                        <p class="tag radius">카드</p>
-                        <span class="name">${cardNameVal}</span>
-                    </li>`
-    
-                }else if(cardArryCheckFnc() == "2개이상" && cardSet){
-                    
-                    return `
-                    <li class="tag-item">
-                        <p class="tag radius">카드</p>
-                        <span class="name">세우라제</span>
-                    </li>`
-                }else{
-                    cardEff.forEach(function(arry,index){
-                        let cardName = arry.Items[arry.Items.length - 1].Name;
-                        let cardNameList = cardName.replace(/\s*\d+세트(?:\s*\((\d+)각.*?\))?/g, function(match, p1) {
-                            return p1 ? ` (${p1}각)` : '';
-                        }).trim();
-    
-                        
-                        return etcCardArry += 
-                        `<li class="tag-item">
-                            <p class="tag radius invisible${index}">카드</p>
-                            <span class="name">${cardNameList} </span>
-                        </li>`
-                    })
-                    return etcCardArry
-                }
-            }catch{
-                return`
-                <li class="tag-item">
-                    <p class="tag radius invisible">카드</p>
-                    <span class="name">없음</span>
-                </li>`
-            }
-        }
-
-
-    
-
-
-
-        // let groupProfile = 
-        // `<div class="group-profile">        
-        //     <div class="img-area shadow">
-        //         <img id="character-image" src="${characterImage}" alt="프로필 이미지">
-        //         <p class="level" id="character-level">Lv.${characterLevel}</p>
-        //         <p class="name" id="character-nickname">${characterNickName}</p>
-        //         <p class="class" id="character-class">${characterClass}</p>
-        //     </div>
-        //     <ul class="tag-list shadow">
-        //         ${tagItemFnc("서버",serverName)}
-        //         ${tagItemFnc("레벨",itemLevel)}
-        //         ${tagItemFnc("길드",guildName())}
-        //         ${tagItemFnc("칭호",titleName())}
-        //         ${tagItemFnc("영지",townName)}
-        //         ${cardArryFnc()}
-        //     </ul>
-        // </div>`
-
-
-        // 정보
-        function tagItemFnc(a,b){ //("태그명","태그내용")
-            return `
-            <li class="tag-item">
-                <p class="tag radius">${a}</p>
-                <span class="name">${b}</span>
-            </li>`; 
-        }
-
-
-
-
-
-
-
-
-
-        // function tagCardFnc(){
-        //     return`
-        //     <li class="tag-item">
-        //         <p class="tag radius">카드</p>
-        //         <div class="name-box>
-        //             <span class="name">${cardArryFnc()} </span>
-        //         </div>
-        //     </li>`
-        // }
-
-
-
-        // groupInfo 영역
-
-
-        // 아크패시브 활성화의 경우 각인
-        // console.log(data.ArmoryEngraving)
-        function arkGradeCheck(idx){
-            try{
-                switch (idx.Grade) {
-                    case "유물":
-                        return "orange";
-                        case "전설":
-                            return "yellow";
-                            case "영웅":
-                                return "puple"
-                                default:
-                                    return "unknown";
-                                }    
-                            }catch(err){
-                                console.log(err)
-                                return "unknown";
-                            }
-                        }
-                        function arkNullCheck(checkVal){
-                            if(checkVal == null){
-                                return "unknown"
-                            }else if(checkVal == -1){
-                                return "red"
-                            }
-                        }
-                        function arkMinusCheck(checkVal){
-                            if(checkVal < 0){
-                                return "LV."+Math.abs(checkVal)
-                            }else if(checkVal == null){
-                                return ""
-                            }else if(checkVal>0){
-                                return "LV."+checkVal
-                            }
-        }
-
-        
-        
-        let arkPassiveEffects = null
-        let disableArkPassive = []
-        if(!(data.ArmoryEngraving == null)){
-            arkPassiveEffects = data.ArmoryEngraving.ArkPassiveEffects
-            disableArkPassive = data.ArmoryEngraving.Effects
-        }
-
-        function engravingBox(){
-
-            let engravingResult = ""
-            if(!(data.ArmoryEngraving == null)){
-                if(!(arkPassiveEffects == null)){
-                    // console.log(arkPassiveEffects)
-                    arkPassiveEffects.forEach(function(arry, idx){
-                        // console.log(arkGradeCheck(arry))
-        
-        
-                        engravingImg.forEach(function(filterArry){
-                            let engravingInput = filterArry.split("^")[0]
-                            let engravingOutput = filterArry.split("^")[1]
-        
-                            if(arry.Name.includes(engravingInput)){
-                                
-                                return engravingResult += `
-                                <div class="engraving-box">
-                                    <img src="${engravingOutput}" class="engraving-img" alt="">
-                                    <div class="relic-ico engraving-ico ${arkGradeCheck(arry)}"></div>
-                                    <span class="grade ${arkGradeCheck(arry)}">X ${arry.Level}</span>
-                                    <span class="engraving-name">${arry.Name}</span>
-                                    <div class="ability-ico engraving-ico ${arkNullCheck(arry.AbilityStoneLevel)}"></div>
-                                    <span class="ability-level">${arkMinusCheck(arry.AbilityStoneLevel)}</span>
-                                    ${jobBlockEngAlert(engravingInput)}
-
-                                </div>`
-                            }
-                        })
-                    })
-                    return engravingResult    
-                }else{
-                    disableArkPassive.forEach(function(arry){
-                        // console.log(arry)
-                        return engravingResult +=`
-                            <div class="engraving-box">
-                                <img src="${arry.Icon}" class="engraving-img" alt="">
-                                <span class="engraving-name">${arry.Name}</span>
-                            </div>`
-                    })
-                    return engravingResult    
-                }
-            }else{
-                return engravingResult = "각인 미장착"
-            }
-        }
-
-
-                
-
-        function jobBlockEngAlert(realEng){
-            let result = ""
-
-            engravingCalFilter.forEach(function(filter){
-                if(supportCheck() == filter.job){
-                    filter.block.forEach(function(blockEng){
-                        if(blockEng == realEng){
-                            result = `
-                                <div class="alert">
-                                    <span class="block-text">무효각인 장착중</span>
-                                </div>`
-                            return result
-                        }
-                    })
-                }
-            })
-            return result
-        }
-
-
-
-
-
-
-        // 스펙포인트 레벨대 평균 점수
-        function averageLevelPoint(){
-            let itemLevel =  Number( data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '') )
-            let range =""
-            
-
-            if( !(supportCheck() == "서폿" ) ){
-                range = (levelRange, value) =>  `레벨 구간 : ` + levelRange + `<br>` + `평균 점수 : ` + value + `<br>` + `카던 세팅 등의 허수는 제외 <br><br> ※딜러 티어 <br> 브론즈 : 200만점 미만 <br> 실버 : 200만점 이상 <br> 골드 : 320만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
-                if(itemLevel >= 1725 ){
-                    return range("1725이상 1740이하","1017만")
-                }else if(itemLevel >= 1715 ){
-                    return range("1715이상 1725미만","861만")
-                }else if(itemLevel >= 1710 ){
-                    return range("1710이상 1715미만","787만")
-                }else if(itemLevel >= 1705 ){
-                    return range("1705이상 1710미만","740만")
-                }else if(itemLevel >= 1700 ){
-                    return range("1700이상 1705미만","709만")
-                }else if(itemLevel >= 1695 ){
-                    return range("1695이상 1700미만","662만")
-                }else if(itemLevel >= 1690 ){
-                    return range("1690이상 1695미만","614만")
-                }else if(itemLevel >= 1685 ){
-                    return range("1685이상 1690미만","586만")
-                }else if(itemLevel >= 1680 ){
-                    return range("1680이상 1685미만","560만")
-                }else if(itemLevel >= 1675 ){
-                    return range("1675이상 1680미만","-데이터 수집 중-")
-                }else if(itemLevel >= 1670 ){
-                    return range("1670이상 1675미만","432만")
-                }else if(itemLevel >= 1665 ){
-                    return range("1665이상 1670미만","-데이터 수집 중-")
-                }else if(itemLevel >= 1660 ){
-                    return range("1660이상 1665미만","-데이터 수집 중-")
-                } else {
-                    '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
-                }
-    
-            }else{
-                // if(itemLevel >= 1725 ){
-                //     range += ("1725이상 1740이하","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1715 ){
-                //     range += ("1715이상 1725미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1710 ){
-                //     range += ("1710이상 1715미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1705 ){
-                //     range += ("1705이상 1710미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1700 ){
-                //     range += ("1700이상 1705미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1695 ){
-                //     range += ("1695이상 1700미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1690 ){
-                //     range += ("1690이상 1695미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1685 ){
-                //     range += ("1685이상 1690미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1680 ){
-                //     range += ("1680이상 1685미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1675 ){
-                //     range += ("1675이상 1680미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1670 ){
-                //     range += ("1670이상 1675미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1665 ){
-                //     range += ("1665이상 1670미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1660 ){
-                //     range += ("1660이상 1665미만","-데이터 수집 중-<br>")
-                // } else {
-                //     '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
-                // }
-                return range += `풀버프를 기준으로 한 점수입니다.<br> 평균 점수는 데이터 수집 중입니다. <br><br> ※서폿 티어 <br> 브론즈 : 300만점 미만 <br> 실버 : 300만점 이상 <br> 골드 : 400만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 720만점 이상 <br> 에스더 : 920만점 이상`
-
-            }
-
-
-        }
-
-
-        // 7,238,805 만점
-        
-        function specPointGauge(){
-            return (specPoint/7238805*100).toFixed(2)
-        }
-
-        function specPointGaugeColor(percent){
-            if(percent >= 90){
-                return "legendary-progressbar"
-            }else if(percent >= 70){
-                return "epic-progressbar"
-            }else if(percent >= 50){
-                return "rare-progressbar"
-            }else if(percent >= 30){
-                return "uncommon-progressbar"
-            }else if(percent >= 0){
-                return "common-progressbar"
-            }
-        }
-
-
-        // group-info 점수별 등급 아이콘
-        
-
-
-
-        
-        let gradeIco = ""
-        let gradeInfo = ""
-
-
-        function characterGradeCheck(){ 
-
-            function grade(ico, info){
-                return `
-                <div class="tier-box">
-                    <img src="${ico}" alt="">
-                    <p class="tier-info">${info}</p>
-                </div>`;
-            }
-            
-            function point(point, average){
-                return `
-                <div class="spec-point">
-                    ${point}
-                    <div class="question">
-                        <span class="detail">
-                            ${average}
-                        </span>
-                    </div>
-                </div>`
-            }
-        
-            if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){// 4티어 딜러 스펙포인트
-                if(lastFinalValue < 2000000){ //브론즈
-                    gradeIco="../asset/image/bronze.png"
-                    gradeInfo = "브론즈 티어"
-                }else if(lastFinalValue >= 2000000 && lastFinalValue < 3200000){ //실버
-                    gradeInfo = "실버 티어"
-                    gradeIco="../asset/image/silver.png"
-                }else if(lastFinalValue >= 3200000 && lastFinalValue < 5500000){ //골드
-                    gradeInfo = "골드 티어"
-                    gradeIco="../asset/image/gold.png"
-                }else if(lastFinalValue >= 5500000 && lastFinalValue < 8000000){ //다이아
-                    gradeInfo = "다이아몬드 티어"
-                    gradeIco="../asset/image/diamond.png"
-                }else if(lastFinalValue >= 8000000 && lastFinalValue < 10000000){ //마스터
-                    gradeInfo = "마스터 티어"
-                    gradeIco="../asset/image/master.png"
-                }else if(lastFinalValue >= 10000000){ //에스더
-                    gradeInfo = "에스더 티어"
-                    gradeIco="../asset/image/esther.png"
-                }
-
-
-                return `
-                ${grade(gradeIco, gradeInfo)}
-                ${point( formatNumber(Math.round(lastFinalValue)), averageLevelPoint())}
-
-                <div class="spec-gauge">
-                    <span class="percent">${specPointGauge()} %</span>
-                    <span class="gauge ${specPointGaugeColor(specPointGauge())}" style="width:${specPointGauge()}%"></span>
-                </div>`;
-
-            }else if(supportCheck() == "서폿" && data.ArkPassive.IsArkPassive){ //4티어 서폿 스펙포인트
-                if(supportSpecPoint < 3000000){ //브론즈
-                    gradeIco="../asset/image/bronze.png"
-                    gradeInfo = "브론즈 티어"
-                }else if(supportSpecPoint >= 3000000 && supportSpecPoint < 4000000){ //실버
-                    gradeInfo = "실버 티어"
-                    gradeIco="../asset/image/silver.png"
-                }else if(supportSpecPoint >= 4000000 && supportSpecPoint < 5500000){ //골드
-                    gradeInfo = "골드 티어"
-                    gradeIco="../asset/image/gold.png"
-                }else if(supportSpecPoint >= 5500000 && supportSpecPoint < 7200000){ //다이아
-                    gradeInfo = "다이아몬드 티어"
-                    gradeIco="../asset/image/diamond.png"
-                }else if(supportSpecPoint >= 7200000 && supportSpecPoint < 9200000){ //마스터
-                    gradeInfo = "마스터 티어"
-                    gradeIco="../asset/image/master.png"
-                }else if(supportSpecPoint >= 9200000){ //에스더
-                    gradeInfo = "에스더 티어"
-                    gradeIco="../asset/image/esther.png"
-                }
-                
-                
-                return `
-                ${grade(gradeIco, gradeInfo)}
-                ${point( formatNumber(Math.round(supportSpecPoint)), averageLevelPoint() )}
-
-                <div class="spec-gauge">
-                    <span class="percent">${specPointGauge()} %</span>
-                    <span class="gauge ${specPointGaugeColor(specPointGauge())}" style="width:${specPointGauge()}%"></span>
-                </div>`;
-
-            }else{ //3티어 스펙포인트
-
-                let detail = `스펙포인트 변경 준비중<br>기존 스펙포인트로 제공됩니다.`
-
-                if(specPoint < 2000000){ //브론즈
-                    gradeIco="../asset/image/bronze.png"
-                    gradeInfo = "브론즈 티어"
-                }else if(specPoint >= 2000000 && specPoint < 3200000){ //실버
-                    gradeInfo = "실버 티어"
-                    gradeIco="../asset/image/silver.png"
-                }else if(specPoint >= 3200000 && specPoint < 4200000){ //골드
-                    gradeInfo = "골드 티어"
-                    gradeIco="../asset/image/gold.png"
-                }else if(specPoint >= 4200000 && specPoint < 5200000){ //다이아
-                    gradeInfo = "다이아몬드 티어"
-                    gradeIco="../asset/image/diamond.png"
-                }else if(specPoint >= 5200000 && specPoint < 6200000){ //마스터
-                    gradeInfo = "마스터 티어"
-                    gradeIco="../asset/image/master.png"
-                }else if(specPoint >= 6200000){ //에스더
-                    gradeInfo = "에스더 티어"
-                    gradeIco="../asset/image/esther.png"
-                }
-        
-                return `
-                    ${grade(gradeIco, gradeInfo)}
-                    ${point( formatNumber(specPoint) , detail )}
-                `;
-            }
-        }
-        gradeModule = {
-            ico:gradeIco,
-            info:gradeInfo
-        }
-
-
-
-
-        // 표본조사용 임시 함수
-
-
-        // if( !(supportCheck() == '서폿') && data.ArkPassive.IsArkPassive && data.ArmoryGem.Gems.length == 11){
-        //     console.log('=====================================')
-        //     console.log(formatNumber(Math.round(lastFinalValue)))
-        //     console.log('=====================================')
-        // }
-
-
-
-
-        
-        // group-info HTML
-        let groupInfo = ""
-
-        function groupInfoUseCheck(){
-
-            function infoBox(name, point, message){
-                return `
-                    <div class="info-box">
-                        <p class="text">${name} : ${  point  }</p>
-                        <div class="question">
-                            <span class="detail">
-                                ${message}
-                            </span>
-                        </div>
-                    </div>`
-                }
-
-
-            let infoStart =`
-                <div class="group-info">
-                    <div class="spec-area shadow minimum flag">
-                        <p class="title">스펙 포인트</p>
-                        ${characterGradeCheck()}
-                    <div class="extra-info">
-                    <p class="detail-info">세부정보</p>
-            `;
-
-
-            let infoEnd = `
-                </div>
-
-                <span class="extra-btn" id="extra-btn"></span>
-
-                </div>
-                <div class="button-area">
-                    <a href="https://cool-kiss-ec2.notion.site/2024-10-16-121758f0e8da8029825ef61b65e22568" target="_blink" class="link-block">무효각인 목록</a>
-                    <form class="link-split" target="_blink" action="../split/split.html" method="get" >
-                        <button type="button" id="split-input">캐릭터 비교하기</button>
-                    </form>
-                </div>
-                    <div class="engraving-area shadow">
-                        ${engravingBox()}
-                    </div>
-                </div>
-            `;
-
-            if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){ //4티어 딜러
-
-                infoStart += infoBox("기존 스펙포인트", specPoint, '업데이트 전 스펙포인트입니다.')
-                infoStart += infoBox("공격력", attackPowResult, '공격력 수치입니다.<br>만찬/버프 등으로 변할 수 있습니다.')
-                infoStart += infoBox("특성합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계')
-                infoStart += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("진화", ((evolutionDamageResult-1)*100).toFixed(1) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("깨달음", ((enlightResult-1)*100).toFixed(0) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("도약", ((arkObj.leapDamage-1)*100).toFixed(1) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("팔찌", (bangleEff*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoEnd
-
-                return infoStart
-
-        
-            }else if(supportCheck() == "서폿" && data.ArkPassive.IsArkPassive){ //4티어 서폿
-
-                infoStart += infoBox("기존 스펙포인트", specPoint, '업데이트 전 스펙포인트입니다.')
-                infoStart += infoBox("낙인력", finalStigmaPer + "%", '낙인 데미지 증가율')
-                infoStart += infoBox("상시버프", (allTimeBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("풀버프", (fullBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("각인 보너스", ((engObj.engBonusPer-1)*100).toFixed(2) + "%", '각인 보너스 점수')
-                infoStart += infoBox("평균 쿨감", gemsCoolAvg + "%", '보석으로 인한 쿨감 평균')
-                infoStart += infoBox("케어력", ((finalCarePower/280000)*100).toFixed(2) + "%", '최대 생명력 기반 케어력 <br> 스펙포인트에 포함되지 않습니다.')
-                infoStart += infoBox("팔찌", (supportBangleEff).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.<br>아직은 재미로만 봐주세요.')
-                infoStart += infoEnd
-
-                return infoStart
-
-
-
-            }else{  //3티어 서폿,딜러
-
-                infoStart += infoBox("기존 스펙포인트", specPoint, '업데이트 전 스펙포인트입니다.')
-                infoStart += infoBox("공격력", attackPowResult, '공격력 수치입니다.<br>만찬/버프 등으로 변할 수 있습니다.')
-                infoStart += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("팔찌", (bangleEff*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("팔찌", (bangleEff*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoEnd
-
-                return infoStart
-
-        
-            }
-    
-        }
-
-
-
-        // 억천만
-        function formatNumber(num) {
-            if (num >= 100000000) {
-                return Math.floor(num / 100000000) + '억 ' + formatNumber(num % 100000000);
-            } else if (num >= 10000) {
-                const remainder = num % 10000;
-                return Math.floor(num / 10000) + '만' + (remainder > 0 ? ' ' + formatNumber(remainder) : '');
-            } else {
-                return num.toString();
-            }
-        }
-
-            
-
-
-
-        
-
-        // 보석
-
-        let gemImage = data.ArmoryGem.Gems //보석이미지
-
-        
-        // null값 체크하기
-        function nullCheck(checkVal, trueVal, falseVal){
-            if(checkVal == null || checkVal == undefined){
-                return(falseVal)
-            }else{
-                return(trueVal)
-            }
-        }
-
-
-        
-        function gemBox(e){
-
-            return`
-            <div class="gem-box radius ${
-                (() => {
-                    try{
-                        return nullCheck(gemImage,gradeCheck(gemImage[e]),"빈값")
-                    }catch{
-                        return nullCheck(gemImage,true,"empty")
-                    }
-                })()
-            }">
-            <img src="
-            ${
-                (() => {
-                    // gemImage[e]가 없는 값일 경우 오류가 생겨 try문을 사용
-                    try{
-                        return nullCheck(gemImage,gemImage[e].Icon,"빈값")//gemImage[e].Icon가 있을경우 실행됨
-                    }catch{
-                        return nullCheck(gemImage,true,"../asset/image/skeleton-img.png")//위의gemImage[e].Icon가 없을경우 실행됨
-                    }
-                })()
-            }
-            " alt="">
-            <span class="level">
-            ${
-                (() => {
-                    try{
-                        return nullCheck(gemImage,gemImage[e].Level," ")
-                    }catch{
-                        return nullCheck(gemImage,true,"N")
-                    }
-                })()
-            }</span>
-            </div>`
-        }
-        
-        // 보석 아이콘의 개수만큼 자동 추가
-        let gemArea = '<div class="gem-area shadow">';
-        try{
-            for (let i = 0; i < gemImage.length; i++) {
-                gemArea += gemBox(i);
-            }     
-        }catch{
-            for (let i = 0; i < 12; i++) {
-                gemArea += gemBox(i);
-            }     
-        }
-        // for (let i = 0; i < gemImage.length; i++) {
-        //     gemArea += gemBox(i);
-        // }     
-        gemArea += '</div>';
-
-
-
-
-
-        // 장비티어
-
-        let armorEquipment = data.ArmoryEquipment //착용장비목록
-        
-
-        function equipTierSet(e){
-            let equipTier = armorEquipment[e].Tooltip;
-            let equipTierSliceStart = equipTier.indexOf('(티어 ') + 1
-            let equipTierSliceEnd = equipTier.indexOf(')')
-    
-            let equipTierSlice = equipTier.substring(equipTierSliceStart,equipTierSliceEnd)
-    
-            let equipTierNum = equipTierSlice.slice(3,4);
-
-            return(equipTierNum)
-            // console.log(equipTierNum)
-        }
-        // 착용장비 품질
-        function qualityValSet(e){
-            let qualityValJson = JSON.parse(armorEquipment[e].Tooltip)
-            let qualityVal = qualityValJson.Element_001.value.qualityValue;
-            if(qualityVal == -1 ){
-                return armorEquipment[e].Grade
-            }else{
-                return qualityVal
-            }
-
-            return(qualityVal)
-            // console.log(qualityVal)
-        }
-
-        // 상급재련 수치
-        function reforgeValSet(e){
-            let reforgeValJson = JSON.parse(armorEquipment[e].Tooltip)
-            let reforgeVal = reforgeValJson.Element_005.value
-
-            
-            if (typeof reforgeVal === 'string' && reforgeVal.includes("상급 재련")) {
-                // console.log("상급 재련이 포함되어 있습니다.");
-                let reforgeValArry = reforgeVal.match(/\d+/g); // 숫자를 찾는 정규 표현식
-                let reforgeValLastNum = reforgeValArry.length
-                // console.log(reforgeValArry[reforgeValLastNum-1]); 
-                return("X"+reforgeValArry[reforgeValLastNum-1])//상급재련 값
-                
-            } else {
-                // console.log("상급 재련이 포함되어 있지 않습니다.");
-                return("")
-            }
-           
-        }
-
-
-        // 태그명
-        function tagValSet(e){
-            let tagValCheck = JSON.parse(armorEquipment[e].Tooltip)
-            let tagVal = tagValCheck.Element_010?.value?.firstMsg;
-
-            if(tagVal){
-                // console.log("태그가 있습니다.")
-                let extractedTag = tagVal.replace(/<[^>]*>/g, '').trim();
-                return(extractedTag)
-            }else{
-                // console.log("태그가 없습니다.")
-                return("")
-            }
-
-        }
-
-
-        // 엘릭서
-        // 엘릭서 키워드 lv추출
-        function elixirVal(e){ 
-            let elixirValJson = JSON.parse(armorEquipment[e].Tooltip);
-            
-            const elixirValString = JSON.stringify(elixirValJson);
-            
-            const matchedKeywordsWithContext = keywordList.flatMap(keyword => {
-                const index = elixirValString.indexOf(keyword);
-                if (index !== -1) {
-                  const endIndex = Math.min(index + keyword.length + 4, elixirValString.length);
-                  return [elixirValString.slice(index, endIndex).replace(/<[^>]*>/g, '')];
-                }
-                return [];
-            });
-            
-
-            // span태그로 반환
-            let elixirSpan =""
-            let i           
-            for(i = 0 ; i < matchedKeywordsWithContext.length ; i++){
-                elixirSpan +=
-                `<span class="elixir radius">${matchedKeywordsWithContext[i]}</span>`
-            }
-            return(elixirSpan)
-        }
-
-
-
-        
-
-
-        // 초월
-
-        let hyperImg = `<img src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png" alt="꽃모양 아이콘">`
-        
-        function hyperWrap(e){
-            // let hyperValJson = JSON.parse(armorEquipment[e].Tooltip); // 추후 문제없을시 삭제
-            // let hyperStr = JSON.stringify(hyperValJson) // 추후 문제없을시 삭제
-            let hyperStr = armorEquipment[e].Tooltip
-
-
-            const regex = /(\[초월\]\s*.*?\s*<\/img>\s*\d{1,2})/;
-            const hyperMatch = hyperStr.match(regex);
-
-            try{
-                let hyperReplace = hyperMatch[0].replace(/<[^>]*>/g, ' ')
-                hyperReplace = hyperReplace.replace(/\s+/g, ',')
-                let hyperArry = hyperReplace.split(","); //초월,N(단계),단계,N(성)
-                // console.log(hyperArry)
-                return`
-                <div class="hyper-wrap">
-                    <span class="hyper">${hyperImg}${hyperArry[3]}</span>
-                    <span class="level">${hyperArry[1]}단계</span>
-                    </div>`
-            }catch{
-                return""
-            }
-        }
-
-
-
-
-
-
-
-        // 장비 
-
-
-        function gradeCheck(idx){
-            try{
-                switch (idx.Grade) {
-                    case "고대":
-                        return "ultra-background";
-                    case "유물":
-                        return "rare-background";
-                    case "전설":
-                        return "common-background";
-                    case "영웅":
-                        return "hero-background"
-                    default:
-                        return "unknown";
-                }    
-            }catch(err){
-                console.log(err)
-                return "unknown";
-            }
-        }
-
-
-        let armorEmpty = `
-        <li class="armor-item">
-            <div class="img-box radius skeleton">
-                <img src="../asset/image/skeleton-img.png" alt="정보를 불러오지 못함">
-            </div>
-            <div class="text-box">
-            </div>
-        </li>
-        `
-        let i
-
-        // console.log(armorEquipment)
-        // 장비 슬롯 검사
-        function equipmentCheck(checkEquip){
-            for(i=0 ; i < armorEquipment.length + 1 ; i++){
-                try{
-                    if(armorEquipment[i].Type == checkEquip){
-                        return armorItem(i);
-                    }    
-                }catch{
-                    return armorEmpty
-                }
-            }
-        }
-
-
-
-        function progress(idx){
-            if(idx <= 9){
-                return "common-progressbar"
-            }else if(idx <= 29){
-                return "uncommon-progressbar"
-            }else if(idx <= 69){
-                return "rare-progressbar"
-            }else if(idx <= 89){
-                return "epic-progressbar"
-            }else if(idx <= 99){
-                return "legendary-progressbar"
-            }else if(idx == 100){
-                return "mythic-progressbar"
-            }else if(idx == "고대"){
-                return "mythic-progressbar"
-            }else if(idx == "유물"){
-                return "relics-progressbar"
-            }else if(idx == "영웅"){
-                return "legendary-progressbar"
-            }else{
-                return 'unknown'
-            }
-        }
-
-
-        function armorItem(e){
-
-
-
-            return`
-            <li class="armor-item">
-                <div class="img-box radius ${gradeCheck(armorEquipment[e])}">
-                    <img src="${armorEquipment[e].Icon}" alt="착용장비프로필">
-                    <span class="tier">T${equipTierSet(e)}</span>
-                    <span class="progress ${progress(qualityValSet(e))}">${qualityValSet(e)}</span>
-                </div>
-                <div class="text-box">
-
-                    <div class="name-wrap">
-                        <span class="tag">${tagValSet(e)}</span>
-                        <span class="armor-name">${armorEquipment[e].Name} ${reforgeValSet(e)}</span>
-                    </div>
-
-                    <div class="elixir-wrap">
-                        ${elixirVal(e)}
-                    </div>
-                    ${hyperWrap(e)}
-                </div>
-            </li>`
-        }
-
-
-
-
-        // 장비 최하단 초월 엘릭서 요약 표시
-
-        let elixirDouble = ["회심","달인 (","강맹","칼날방패","선봉대","행운","선각자","진군","신념"]
-        let elixirDoubleVal
-
-        function elixirDoubleCheck(){
-            let result
-            elixirDouble.forEach(function(elixirDoubleArry){
-                result = elixirData.filter(item => item.name.includes(elixirDoubleArry)).length;
-                if(result >= 2){
-                    elixirDoubleVal = elixirDoubleArry
-                }else{
-                }
-            })
-        }
-        elixirDoubleCheck()
-
-
-        function nameWrap(){
-            if(!(elixirDoubleVal == undefined) && elixirLevel >= 35 && elixirLevel < 40){
-                return `
-                    <div class="name-wrap">
-                        ${elixirDoubleVal.replace(/\(/g, "").trim()} 1단계
-                    </div>`
-            }else if(!(elixirDoubleVal == undefined) && elixirLevel >= 40){
-                return `
-                    <div class="name-wrap">
-                        ${elixirDoubleVal.replace(/\(/g, "").trim()} 2단계
-                    </div>`
-    
-            }else{
-                return `
-                    <div class="name-wrap">
-                        비활성화
-                    </div>`
-            }    
-        }
-
-        
-        // let hyperSum = hyperWeaponLevel+hyperArmoryLevel
-
-        function elixirProgressGrade(){
-            if(elixirLevel < 35){
-                return "common"
-            }else if(elixirLevel < 40){
-                return "epic"
-            }else if(elixirLevel < 50){
-                return "legendary"
-            }else if(elixirLevel < 999){
-                return "mythic"
-            }
-        }
-        
-        function hyperProgressGrade(){
-            if(hyperSum < 100){
-                return "common"
-            }else if(hyperSum < 120){
-                return "epic"
-            }else if(hyperSum < 126){
-                return "legendary"
-            }else if(hyperSum < 999){
-                return "mythic"
-            }
-        }
-
-
-        let armorEtc = `
-            <li class="armor-item">
-                <div class="img-box radius ultra-background">
-                    <img src="../asset/image/elixir.png" alt="">
-                    <span class="progress ${elixirProgressGrade()}-progressbar">${elixirLevel}</span>
-                </div>
-                <div class="text-box">
-                    <div class="name-wrap">
-                        엘릭서
-                    </div>
-                    ${nameWrap()}
-                </div>
-                <div class="img-box radius ultra-background">
-                    <img src="../asset/image/hyper.png" alt="">
-                    <span class="progress ${hyperProgressGrade()}-progressbar">${hyperSum}</span>
-                </div>
-                <div class="text-box">
-                    <div class="name-wrap">
-                        초월
-                    </div>
-                    <div class="name-wrap">
-                        평균 ${(hyperSum/6).toFixed(1)}성
-                    </div>
-                </div>
-            </li>`
-        ;
-
-
-
-
-
-        // 장신구
-
-        // 부위별 장신구 확인
-        let accessoryEmpty = `
-        <li class="accessory-item">
-            <div class="img-box radius skeleton">
-                <img src="../asset/image/skeleton-img.png" alt="">
-            </div>
-            <div class="option-box">
-            </div>
-        </li>`
-
-        function equipmentCheckAcc(checkEquip){
-            for(i=0 ; i < armorEquipment.length + 1 ; i++){
-                try{
-                    if(armorEquipment[i].Type == checkEquip){
-                        return accessoryItem(i);
-                    }    
-                }catch{
-                    return accessoryEmpty
-                }
-            }
-        }
-        function equipmentCheckAccDouble(checkEquip){
-            for(i=0 ; i < armorEquipment.length + 1 ; i++){
-                try{
-                    if(armorEquipment[i].Type == checkEquip){
-                        return accessoryItem(i+1);
-                    }    
-                }catch{
-                    return accessoryEmpty
-                }
-            }
-        }
-
-
-        // 장신구 티어 확인 함수
-        function accessoryTierFnc(e){
-            let accessoryTier = JSON.parse(armorEquipment[e].Tooltip);
-            let accessoryTierSlice = accessoryTier.Element_001.value.leftStr2.replace(/<[^>]*>|아이템|티어|\s/g, '');
-
-            return(accessoryTierSlice)
-        }
-                
-        function accessoryItem(e){ 
-
-
-            return`
-            <li class="accessory-item">
-                <div class="img-box radius ${gradeCheck(armorEquipment[e])}">
-                    <img src="${armorEquipment[e].Icon}" alt="">
-                    <span class="tier">T${accessoryTierFnc(e)}</span>
-                    <span class="progress ${progress(qualityValSet(e))}">${qualityValSet(e)}</span>
-                </div>
-                ${accessoryOptionBox(e)}
-            </li>`
-        }
-
-
-
-
-
-        // 장신구(버프디버프)
-        function accessoryOptionBox(e){
-            return`
-            <div class="option-box">
-                ${accessoryVal(e)}
-                ${buffVal(e)}
-            </div>`
-        }
-
-        // 상중하 판별 필터
-        // 악세서리 스텟
-
-
-        let grindingFilterMtl = grindingFilter.map(item => item.split(':'));
-        // console.log(grindingFilterMtl[0])
-        function accessoryVal(e){
-            let accessoryJson = JSON.parse(armorEquipment[e].Tooltip);
-            try{
-                let accessoryOptionVal = accessoryJson.Element_005.value.Element_001;
-                let accessorySplitVal = accessoryOptionVal.split("<BR>");
-                
-                // console.log(accessorySplitVal[0].replace(/<[^>]*>/g, ''))
-                // console.log(grindingFilterMtl[i][0])
-
-                function qualityCheck(q){
-                    if (accessorySplitVal[q]) {
-                        for(i=0; i<grindingFilterMtl.length +1; i++){
-                            if(accessorySplitVal[q].replace(/<[^>]*>/g, '') === grindingFilterMtl[i][0]){
-                                // console.log(grindingFilterMtl[i][1])
-                                return grindingFilterMtl[i][1];
-                            }
-                        }
-                    }
-                    return null;
-                }
-                function getGrade(level) {
-                    switch(level) {
-                      case 'high':
-                        return '상';
-                      case 'middle':
-                        return '중';
-                      case 'low':
-                        return '하';
-                      default:
-                        return '알 수 없음';
-                    }
-                  }
-                if(accessorySplitVal[1] == undefined){
-                    return`
-                    <div class="option-wrap">
-                        <span class="option">${accessorySplitVal[0]}</span>
-                    </div>`
-                }else if(accessorySplitVal[2] == undefined){
-                    return`
-                    <div class="option-wrap">
-                        <span class="option">${accessorySplitVal[0]}</span>
-                        <span class="option">${accessorySplitVal[1]}</span>
-                    </div>`
-                }else{
-                    return`
-                    <div class="text-box">
-                        <div class="grinding-wrap">
-                            <span class="quality ${qualityCheck(0)}">${getGrade(qualityCheck(0))}</span>
-                            <span class="option">${accessorySplitVal[0]}</span>
-                        </div>
-                        <div class="grinding-wrap">
-                            <span class="quality ${qualityCheck(1)}">${getGrade(qualityCheck(1))}</span>
-                            <span class="option">${accessorySplitVal[1]}</span>
-                        </div>
-                        <div class="grinding-wrap">
-                            <span class="quality ${qualityCheck(2)}">${getGrade(qualityCheck(2))}</span>
-                            <span class="option">${accessorySplitVal[2]}</span>
-                        </div>
-                    </div>
-                    `
-
-                }
-                }catch(err){
-                    console.log(err)
-                return `<span class="option">${armorEquipment[e].Name}</span>`
-            }
-        }
-
-
-
-        
-        // 버프 스텟
-        function buffVal(e){
-            let buffJson = JSON.parse(armorEquipment[e].Tooltip);
-
-            try{
-                let buffVal1 = buffJson.Element_006.value.Element_000.contentStr.Element_000.contentStr.replace(/[\[\]]|<[^>]*>|활성도|[+]/g, '');
-                let buffVal2 = buffJson.Element_006.value.Element_000.contentStr.Element_001.contentStr.replace(/[\[\]]|<[^>]*>|활성도|[+]/g, '');
-                let buffVal3 = buffJson.Element_006.value.Element_000.contentStr.Element_002.contentStr.replace(/[\[\]]|<[^>]*>|활성도|[+]/g, '');
-    
-                return`
-                <div class="buff-wrap">
-                    <span class="buff">${buffVal1}</span>
-                    <span class="buff">${buffVal2}</span>
-                    <span class="buff minus">${buffVal3}</span>
-                </div>
-                `
-            }catch{
-                return``
-            }
-        }
-
-
-
-        // 팔찌 HTML
-
-        let bangleStats = ["치명","특화","신속","제압","인내","숙련"]
-        let bangleOptionWrap = "" //.option-wrap
-        let bangleOption = "" //.option
-        let bangleTmlWrap = "" //.grinding-wrap
-        let bangleTextbox = "" //.text-box
-
-        
-        function bangleCheck(){
-            let result = ""
-            data.ArmoryEquipment.forEach(function(arry,idx){
-                if(arry.Type == "팔찌"){
-                    let bangleTier = JSON.parse(arry.Tooltip).Element_001.value.leftStr2.replace(/<[^>]*>/g, '').replace(/\D/g, '')
-                    result = 
-                    `<li class="accessory-item">
-                        <div class="img-box radius ${gradeCheck(data.ArmoryEquipment[idx])}">
-                            <img src="${arry.Icon}" alt="">
-                            <span class="tier">T${bangleTier}</span>
-                            <span class="progress ${progressColor(arry.Grade)}-progressbar">${arry.Grade}</span>
-                        </div>
-                        <div class="option-box">
-                            ${bangleOptionWrap}
-                            ${bangleTextbox}
-                        </div>
-                    </li>`
-                }
-            })
-            return result
-        }
-        // console.log(bangleOptionArry)
-
-        bangleOptionArry.forEach(function(optionArry,optionIndex){
-
-            // 일반 스텟 표시
-            bangleStats.forEach(function(statsArry){
-                let regex = new RegExp(`${statsArry} \\+\\d+`);
-                // console.log(statsArry+":"+regex.test(optionArry))
-
-                if(regex.test(optionArry)){
-                    bangleOption += `<span class="option">${optionArry.match(regex)[0]}</span>`
-                    bangleOptionWrap = `
-                    <div class="option-wrap">
-                        ${bangleOption}
-                    </div>`
-                }
-
-            })
-
-            // 특수 스텟 표시
-            bangleSpecialStats.forEach(function(specialStatsArry){
-                let regex = new RegExp(`${specialStatsArry} \\+\\d+`);
-                if(regex.test(optionArry)){
-                    let tml ="", tmlClass ="", val = optionArry.replace(/\D/g, '')
-                    if(val >= 6400 && val <= 12160){
-                        tml = "하", tmlClass ="low"
-                    }else if(val > 12160 && val <= 14080){
-                        tml = "중", tmlClass ="middle"
-                    }else if(val > 14080 && val <= 16000){
-                        tml = "상", tmlClass ="high"
-                    }else if(val >= 0){
-                        tml = "하", tmlClass ="low"
-                    }
-                    console.log()
-                    bangleTmlWrap += `
-                    <div class="grinding-wrap">
-                        <span class="quality ${tmlClass}">
-                            ${tml}
-                        </span>
-                        <span class="option">
-                            ${optionArry}
-                        </span>
-                    </div>
-                    `;
-        
-                    bangleTextbox = `
-                    <div class="text-box">
-                        ${bangleTmlWrap}
-                    </div>
-                    `;
-
-                }
-            })
-
-
-
-
-            // 문장형 옵션 표시
-            bangleFilter.forEach(function(filterArry){
-                let bangleCheck = optionArry == filterArry.name && bangleOptionArry[optionIndex+1] == filterArry.option
-                // console.log(optionArry)
-                if(bangleCheck && filterArry.secondCheck == null){
-
-                    bangleTmlWrap += `
-                    <div class="grinding-wrap">
-                        <span class="quality ${filterArry.tier.replace(/[0-9]/g, '')}">
-                            ${bangleTierCheck(filterArry.tier)}
-                        </span>
-                        <span class="option">
-                            ${bangleFilterInitialCheck(filterArry.initial,filterArry.name)}
-                        </span>
-                    </div>
-                    `;
-        
-                    bangleTextbox = `
-                    <div class="text-box">
-                        ${bangleTmlWrap}
-                    </div>
-                    `;
-                }else if(optionArry == filterArry.name && filterArry.option == null){
-                    bangleTmlWrap += `
-                    <div class="grinding-wrap">
-                        <span class="quality ${filterArry.tier.replace(/[0-9]/g, '')}">
-                            ${bangleTierCheck(filterArry.tier)}
-                        </span>
-                        <span class="option">
-                            ${bangleFilterInitialCheck(filterArry.initial,filterArry.option)}
-                        </span>
-                    </div>
-                    `;
-        
-                    bangleTextbox = `
-                    <div class="text-box">
-                        ${bangleTmlWrap}
-                    </div>
-                    `;
-
-                }else if(bangleCheck && !(bangleOptionArry[optionIndex+2] == filterArry.secondCheck)){
-                    bangleTmlWrap += `
-                    <div class="grinding-wrap">
-                        <span class="quality ${filterArry.tier.replace(/[0-9]/g, '')}">
-                            ${bangleTierCheck(filterArry.tier)}
-                        </span>
-                        <span class="option">
-                            ${bangleFilterInitialCheck(filterArry.initial,filterArry.option)}
-                        </span>
-                    </div>
-                    `;
-        
-                    bangleTextbox = `
-                    <div class="text-box">
-                        ${bangleTmlWrap}
-                    </div>
-                    `;
-                }
-
-            })
-
-
-
-        })
-        // console.log(bangleTmlWrap)
-
-        function bangleFilterNullCheck(option){
-            if(!(option == null)){
-                return option
-            }else{
-                return ""
-            }
-        }
-        // 팔찌 상중하 축약어 표시하기
-        function bangleFilterInitialCheck(initial,name){
-            if(!(initial == undefined)){
-                return initial
-            }else{
-                return name
-            }
-        }
-
-
-
-        // 팔찌 상중하 체크
-        function bangleTierCheck(tier){
-            // 접두사 z = 무효 / Sp = 서폿용 / P = 더 높은 점수 / L = 낮은 점수 
-            
-
-
-            let tierName = {
-                Flow1: "하",
-                Flow2: "하",
-                Fmiddle: "중",
-                Fhigh: "상",
-
-                low1: "하",
-                low2: "하",
-                middle: "중",
-                high: "상",
-
-                zlow1:"하",
-                zlow2:"하",
-                zmiddle:"중",
-                zhigh:"상",
-
-                Duellow1:"하",
-                Duellow2:"하",
-                Duelmiddle:"중",
-                Duelhigh:"상",
-
-                SpPlow1:"하",
-                SpPlow2:"하",
-                SpPmiddle:"중",
-                SpPhigh:"상",
-
-                SpMlow1:"하",
-                SpMlow2:"하",
-                SpMmiddle:"중",
-                SpMhigh:"상",
-
-                SpLlow1:"하",
-                SpLlow2:"하",
-                SpLmiddle:"중",
-                SpLhigh:"상",
-
-                Splow1:"하",
-                Splow2:"하",
-                Spmiddle:"중",
-                Sphigh:"상",
-
-                Plow1:"하",
-                Plow2:"하",
-                Pmiddle:"중",
-                Phigh:"상",
-
-                Llow1:"하",
-                Llow2:"하",
-                Lmiddle:"중",
-                Lhigh:"상",
-                
-                DuelPlow1:"하",
-                DuelPlow2:"하",
-                DuelPmiddle:"중",
-                DuelPhigh:"상",
-
-                Duellow1:"하",
-                Duellow2:"하",
-                Duelmiddle:"중",
-                Duelhigh:"상",
-
-                DuelLlow1:"하",
-                DuelLlow2:"하",
-                DuelLmiddle:"중",
-                DuelLhigh:"상",
-            };
-            return tierName[tier]
-        }
-
-        // 유물 고대 띠 이미지
-        function progressColor(tier){
-            if(tier == "고대"){
-                return "mythic"
-            }else if(tier == "유물"){
-                return "relics"
-            }else if(tier == "영웅"){
-                return "legendary"
-            }
-        }
-
-
-
-
-        // 장비장신구 합치기
-        let armorWrap = 
-        `<div class="armor-wrap">
-            <div class="armor-area shadow">
-                <ul class="armor-list">
-                    ${equipmentCheck("투구")}
-                    ${equipmentCheck("어깨")}
-                    ${equipmentCheck("상의")}
-                    ${equipmentCheck("하의")}
-                    ${equipmentCheck("장갑")}
-                    ${equipmentCheck("무기")}
-                    ${armorEtc}
-                </ul>
-            </div>
-            <div class="accessory-area shadow">
-                <ul class="accessory-list">
-                    ${equipmentCheckAcc("목걸이")}
-                    ${equipmentCheckAcc("귀걸이")}
-                    ${equipmentCheckAccDouble("귀걸이")}
-                    ${equipmentCheckAcc("반지")}
-                    ${equipmentCheckAccDouble("반지")}
-                    ${equipmentCheckAcc("어빌리티 스톤")}
-                    ${bangleCheck()}
-                </ul>
-            </div>
-        </div>`
-
-
-                    
-        
-
-        // 아크패시브 타이틀 wrap
-        let evolutionImg ='https://pica.korlark.com/2018/obt/assets/images/common/game/ico_arkpassive_evolution.png'
-        let enlightenmentImg ='https://pica.korlark.com/2018/obt/assets/images/common/game/ico_arkpassive_enlightenment.png'
-        let leapImg ='https://pica.korlark.com/2018/obt/assets/images/common/game/ico_arkpassive_leap.png?502a2419e143bd895b66'
-        function arkPassiveValue(e){
-            let arkPassiveVal = data.ArkPassive.Points[e].Value
-            return arkPassiveVal
-        }
-        let arkTitleWrap = 
-        `
-        <div class="ark-title-wrap">
-            <div class="title-box evolution">
-                <span class="tag">진화</span>
-                <span class="title">${arkPassiveValue(0)}</span>
-            </div>
-            <div class="title-box enlightenment">
-                <span class="tag">깨달음</span>
-                <span class="title">${arkPassiveValue(1)}</span>
-            </div>
-            <div class="title-box leap">
-                <span class="tag">도약</span>
-                <span class="title">${arkPassiveValue(2)}</span>
-            </div>
-        </div>`
-
-
-        // 아크패시브 리스트 wrap
-        
-        //console.log(data.ArkPassive.Effects)
-        let enlightenment =[]
-        let evolution =[]
-        let leap =[]
-        data.ArkPassive.Effects.forEach(function(arkArry){
-            if(arkArry.Name == '깨달음'){
-                enlightenment.push(arkArry)
-            }else if(arkArry.Name == '진화'){
-                evolution.push(arkArry)
-            }else if(arkArry.Name == '도약'){
-                leap.push(arkArry)
-            }
-        })
-        // console.log(enlightenment)
-        // console.log(evolution)
-        // console.log(leap)
-
-
-        
-        // // 아크패시브 아이콘, 이름, 
-
-        function arkNameArry(arkName){
-            let arkItem =""
-            arkName.map(function(arkNameArry){
-                // 아크이름 남기기
-                let arkName = arkNameArry.Description.replace(/<[^>]*>/g, '').replace(/.*티어 /, '')
-                arkItem += 
-                `
-                <li class="ark-item">
-                    <div class="img-box">
-                        <span class="tier">${arkNameArry.Description.replace(/.*?(\d)티어.*/, '$1')}</span>
-                        <img src="${arkNameArry.Icon}" alt="">
-                    </div>
-                    <div class="text-box">
-                        <span class="name">${arkName}</span>
-                    </div>
-                </li>
-                `
-                
-            });
-            return arkItem;
-        }
-
-
-
-        // function arkJob(){  삭제예정
-        //     let arkResult =""
-        //     try{
-        //         arkFilter.forEach(function(arry){
-        //             let arkInput = arry.name;
-        //             let arkOutput = arry.initial;
-                    
-        //             // console.log(arkInput)
-        //             if(arkNameArry(enlightenment).includes(arkInput)){
-        //                 arkResult = arkOutput
-        //                 return arkResult
-        //             }
-        //         })
-        //     }catch(err){
-        //         console.log(err)
-        //     }
-        //     return arkResult
-        // }
-
-
-
-
-
-
-                    
-
-        // 모바일 검색영역
-
-        
-        
-        
-        
-
-        // group-profile HTML
-        let groupProfile = 
-        `
-        <div class="group-profile">        
-            <div class="img-area shadow">
-                <img id="character-image" src="${characterImage}" alt="프로필 이미지">
-                <p class="level" id="character-level">Lv.${characterLevel}</p>
-                <p class="name" id="character-nickname">${characterNickName}</p>
-                <p class="class" id="character-class">${supportCheck()} ${characterClass}</p>
-            </div>
-            <ul class="tag-list shadow">
-                ${tagItemFnc("서버",serverName)}
-                ${tagItemFnc("레벨",itemLevel)}
-                ${tagItemFnc("길드",guildName())}
-                ${tagItemFnc("칭호",titleName())}
-                ${tagItemFnc("영지",townName)}
-                ${cardArryFnc()}
-            </ul>
-        </div>`
-
-
-
-        // 아크패시브 리스트 wrap HTML
-        let arkListWrap =
-        `<div class="ark-list-wrap">
-            <ul class="ark-list evolution">
-                ${arkNameArry(evolution)}
-            </ul>
-            <ul class="ark-list enlightenment">
-                ${arkNameArry(enlightenment)}
-            </ul>
-            <ul class="ark-list leap">
-                ${arkNameArry(leap)}
-            </ul>
-        </div>`
-
-        // console.log(arkNameArry(enlightenment))
-        
-
-        // 아크패시브
-        // let arkArea = 
-        // `<div class="ark-area shadow">
-        //     ${arkTitleWrap}
-        //     ${arkListWrap}
-        // </div>`
-                
-        function arkArea(){
-            if(data.ArkPassive.IsArkPassive == true){
-                return`
-                <div class="ark-area shadow">
-                ${arkTitleWrap}
-                ${arkListWrap}
-                </div>`
-            }else{
-                return `
-                <div class="ark-area shadow">
-                <p class="ark-false">아크패시브 비활성화</p>
-                </div>`
-            }
-        }
-        
-        
-        // 장비칸 HTML 합치기
-        let groupEquip = 
-        `<div class="group-equip">`
-        groupEquip += gemArea
-        groupEquip += armorWrap
-        groupEquip += arkArea()
-        groupEquip += '</div>';
-        
-        
-        
-        
-        
-        
-        
-        // 최종 HTML합치기
-        let scInfoHtml;
-        scInfoHtml = groupProfile;
-        scInfoHtml += groupInfoUseCheck();
-        scInfoHtml += groupEquip;
-        
-        
-        
-        // 최종 HTML렌더어링
-        try{
-            document.getElementById("sc-info").innerHTML = scInfoHtml
-        }catch{}
-
-
-        // 
-        splitSearchFnc(data.ArmoryProfile.CharacterName)
-
-
-        // 스펙포인트 on/off 버튼 실행
-        specBtn()
-
-
-        // 스펙포인트 상세점수 return
-        callback()
+        // 매개변수(콜백)
+        // callback()
         
     })
     .catch((error) => console.error('Fetch error:', error))
@@ -4358,90 +2750,3 @@ export async function getCharacterProfile(inputName,callback){
         isRequesting = false;
     });
 }
-
-
-
-
-
-
-
-
-// .character-name-search클래스명의 input 엔터 검색 스크립트
-
-// 검색 스크립트
-export let specDetail = {}
-export let gradeModule = {}
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    // input name 변경 필요함
-    
-    const paramNames = ['mainCharacterName', 'headerCharacterName', 'mobileCharacterName'];
-    let inputText = '';
-    let inputFlag = 1;
-
-    paramNames.forEach(function(param){
-        let value = urlParams.get(param);
-        if (value) {
-            inputText = value;
-            getCharacterProfile(inputText);
-            document.getElementById('headerInput').focus();
-        }
-    })
-
-    
-    if (inputText) {
-        let inputs = document.querySelectorAll('.character-name-search');
-        inputs.forEach(function(inputArry){
-            inputArry.value = inputText;
-            inputArry.addEventListener('input', function(inputEvent) {
-                if(inputFlag == 1){
-                    inputEvent.target.value = '';
-                    inputFlag = 0
-                }
-            });
-        })
-    }
-
-});
-
-
-function splitSearchFnc(userName){
-    document.getElementById("split-input").addEventListener("click",function(event){
-        event.preventDefault();
-        let hiddenInput = document.createElement("input");
-        hiddenInput.type = "hidden";
-        hiddenInput.name = "split-character-name";
-        hiddenInput.value = userName;
-
-        // hidden input을 form에 추가
-        document.querySelector(".link-split").appendChild(hiddenInput);
-
-        // form 전송
-        document.querySelector(".link-split").submit();
-
-    })    
-
-}
-
-
-
-// 스펙포인트 더보기 버튼
-specBtn()
-export function specBtn(){
-    document.getElementById("extra-btn").addEventListener("click",function(){
-        let specAreaClass = document.querySelector(".spec-area").classList
-        // console.log(specAreaClass)
-        if(specAreaClass.contains("on")){
-            specAreaClass.remove('on')
-        }else{
-            specAreaClass.add('on')
-        }
-    })    
-}
-
-
-
-// search.html 헤더 검색창 띄우기
-document.querySelector(".sc-header .group-search").classList.add("on");

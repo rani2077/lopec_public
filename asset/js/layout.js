@@ -27,8 +27,8 @@ document.querySelector('.sc-header').innerHTML = `
     </div>
 
 </div>
-<form action="./search.html" class="group-search search-page">
-    <input id="header-input" name="header-character-name" class="header-input character-name-search" type="text" value="" placeholder="캐릭터 검색">
+<form action="./search.php" class="group-search search-page">
+    <input id="headerInput" name="headerCharacterName" class="header-input character-name-search" type="text" value="" placeholder="캐릭터 검색">
     <button class="search-btn"></button>
 </form>
 <div class="group-sns">
@@ -80,7 +80,57 @@ function footerPostionFnc(){
     let footer = document.querySelector(".sc-footer")
     footer.style.display = "block"
     footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
+    footer.style.width = window.offsetWidth+"px"
 }
 
 footerPostionFnc()
 window.addEventListener("resize",footerPostionFnc)
+
+
+
+
+// 상단 광고
+
+// document.querySelector(".sc-top-ads").innerHTML = `
+//     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+//         crossorigin="anonymous">
+//     </script>
+//     <ins class="adsbygoogle"
+//         style="display:inline-block;width:728px;height:90px"
+//         data-ad-client="ca-pub-5125145415518329"
+//         data-ad-slot="5389359448">
+//     </ins>
+//     <script>
+//         (adsbygoogle = window.adsbygoogle || []).push({});
+//     </script>`;
+
+
+// // 사이드광고
+
+// document.querySelector(".side-ads.left .ads").innerHTML = `
+// <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+//     crossorigin="anonymous">
+// </script>
+// <ins class="adsbygoogle"
+//     style="display:inline-block;width:160px;height:600px"
+//     data-ad-client="ca-pub-5125145415518329"
+//     data-ad-slot="2763196104">
+// </ins>
+// <script>
+//     (adsbygoogle = window.adsbygoogle || []).push({});
+// </script>`;
+
+
+
+// document.querySelector(".side-ads.right .ads").innerHTML = `
+// <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+//     crossorigin="anonymous">
+// </script>
+// <ins class="adsbygoogle"
+//     style="display:inline-block;width:160px;height:600px"
+//     data-ad-client="ca-pub-5125145415518329"
+//     data-ad-slot="1340463485">
+// </ins>
+// <script>
+//     (adsbygoogle = window.adsbygoogle || []).push({});
+// </script>`;

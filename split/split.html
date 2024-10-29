@@ -23,8 +23,8 @@
 </head>
 <body>
     <h2 class="blind">로펙 캐릭터 비교하기</h2>
-    <iframe src="../search/search.html?main-character-name=" id="origin-character" frameborder="0"></iframe>
-    <iframe src="../index.html" frameborder="0"></iframe>
+    <iframe src="../search/search.php?main-character-name=" id="origin-character" frameborder="0"></iframe>
+    <iframe src="../index.php" frameborder="0"></iframe>
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -39,7 +39,7 @@
                 let value = urlParams.get(param);
                 if (value) {
                     inputText = value;
-                    origin.src = "../search/search.html?main-character-name="+inputText
+                    origin.src = "../search/search.php?main-character-name="+inputText
                 }
             })
         });
