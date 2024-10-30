@@ -2344,9 +2344,10 @@ export async function getCharacterProfile(inputName,callback){
 
             arkObj.enlightenmentDamage += 1.15
             arkObj.enlightenmentBuff += 1.30
-
+            
         }else{
             arkObj.enlightenmentDamage += 1
+            arkObj.enlightenmentBuff += 1
         }
 
 
@@ -2453,10 +2454,6 @@ export async function getCharacterProfile(inputName,callback){
         }
 
         // 최종 계산식 ver 2.0
-
-        function newSpecPointDealer(){
-            
-        }
         let attackBonus = ((gemAttackBonus() + abilityAttackBonus())/100)+1 // 기본 공격력 증가(보석, 어빌리티 스톤)
         let attackPowResult = (defaultObj.attackPow).toFixed(0) // 최종 공격력 (아드 등 각인 포함된)
         let criticalDamageResult = (defaultObj.criticalDamagePer + engObj.criticalDamagePer + accObj.criticalDamagePer + bangleObj.criticalDamagePer + arkObj.criticalDamagePer + elixirObj.criticalDamagePer + jobObj.criticalDamagePer) //치명타 피해량
@@ -2535,7 +2532,7 @@ export async function getCharacterProfile(inputName,callback){
 
         let supportSpecPoint = (fullBuffPower**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
 
-
+        console.log("서포터 스펙 포인트"+enlightBuffResult)
 
 
         let atkBuffMinusBangle = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+gemObj.atkBuff)/100)) // 팔찌 제외 아공강
