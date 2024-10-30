@@ -26,6 +26,8 @@ import { config } from '../../config.js';
 // db저장 스크립트
 import {insertLopecMains} from '../js/lopec.js'
 import {insertLopecApis} from '../js/api.js'
+import {insertLopecCharacters} from '../js/character.js'
+import {insertLopecSearch} from '../js/search.js'
 
 
 

@@ -632,8 +632,7 @@
     <?php //  공용 헤더,푸터 ?>
     <script src="../asset/js/layout.js"></script>
 
-    <script type="module" src="../asset/js/custom.js?v=0.9.7.60"></script>
-    <script type="module" src="../asset/js/filter.js?v=1.012"></script>
+    <script type="module" src="../asset/js/custom.js?v=0.9.7.61"></script>
 </body>
 
 

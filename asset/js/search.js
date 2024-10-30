@@ -1,6 +1,6 @@
 // /* ############################## 검색 저장  */
 // 검색과 동시에 캐릭터명 넘겨 주면 검색에 저장 / 검색 횟수 등을 판단하기 위한 용도
-var insertLopecSearch = function(lschCharactername) {
+export var insertLopecSearch = function(lschCharactername) {
 	var atMode = "insertSearch"; 	
 	var saveDatas = {
 		atMode : atMode

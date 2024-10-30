@@ -26,6 +26,8 @@ import { config } from '../../config.js';
 // db저장 스크립트
 import {insertLopecMains} from '../js/lopec.js'
 import {insertLopecApis} from '../js/api.js'
+import {insertLopecCharacters} from '../js/character.js'
+import {insertLopecSearch} from '../js/search.js'
 
 
 
@@ -2451,6 +2453,10 @@ export async function getCharacterProfile(inputName,callback){
         }
 
         // 최종 계산식 ver 2.0
+
+        function newSpecPointDealer(){
+            
+        }
         let attackBonus = ((gemAttackBonus() + abilityAttackBonus())/100)+1 // 기본 공격력 증가(보석, 어빌리티 스톤)
         let attackPowResult = (defaultObj.attackPow).toFixed(0) // 최종 공격력 (아드 등 각인 포함된)
         let criticalDamageResult = (defaultObj.criticalDamagePer + engObj.criticalDamagePer + accObj.criticalDamagePer + bangleObj.criticalDamagePer + arkObj.criticalDamagePer + elixirObj.criticalDamagePer + jobObj.criticalDamagePer) //치명타 피해량
@@ -2488,12 +2494,6 @@ export async function getCharacterProfile(inputName,callback){
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////   
         let lastFinalValue = ((attackPowResult**1.095) * evolutionDamageResult * (bangleFinalDamageResult**1.01) * enlightResult * arkObj.leapDamage * (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3)) 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////
-        //console.log("공격력"+attackPowResult)
-        //console.log("진화" + evolutionDamageResult)
-        //console.log("팔찌"+  (bangleFinalDamageResult**1.01))
-        //console.log("깨달음"+enlightResult)
-        //console.log("초월"+arkObj.leapDamage )
-        //console.log("특성 딜증" + (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
 
 
         function formatNumber(num) {
@@ -2533,23 +2533,6 @@ export async function getCharacterProfile(inputName,callback){
         let fullBuffPower = ((afterFullBuff-beforeBuff)/beforeBuff)*100
 
 
-        //console.log("최종 공증" + finalAtkBuff)
-        //console.log("진피" + evolutionBuff)
-        //console.log("낙인력" + finalStigmaPer)
-        //console.log("최종 피증" + finalDamageBuff)
-        //console.log("팔찌 추가" + (bangleObj.atkBuffPlus/100+1))
-        //console.log("풀버프 전" + beforeBuff)
-        //console.log("풀버프 후" + afterFullBuff)
-
-
-
-
-        //console.log(bangleObj.atkBuff/100+1)
-        //console.log(bangleObj.atkBuffPlus/100+1)
-        //console.log((bangleObj.damageBuff/100)/30+1)
-        //console.log((bangleObj.special*0.017/100+1))
-        //console.log((bangleObj.haste*0.017/100+1))
-
         let supportSpecPoint = (fullBuffPower**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
 
 
@@ -2583,21 +2566,9 @@ export async function getCharacterProfile(inputName,callback){
         let finalCarePower = (defaultObj.hp*0.3) * (engObj.carePower/100+1) * (accObj.carePower/100+1) * (elixirObj.carePower/100+1)
     
 
-
-        
-        
-
-
-
-
         //console.log("각인 케어력 : " + engObj.carePower)
         //console.log("악세 케어력 : " + accObj.carePower)
         //console.log("엘릭서 케어력 : " + elixirObj.carePower)
-
-
-
-
-
 
 
         
@@ -2634,7 +2605,7 @@ export async function getCharacterProfile(inputName,callback){
             let lmanCard = "temp";
             let lmanSearchHit = "";
             insertLopecMains(lmanCharacterNickname,lmanCharacterLevel,lmanCharacterClass,lmanCharacterImage,lmanServer,lmanLevel,lmanGuild,lmanTitle,lmanDomain,lmanCard,lmanSearchHit)
-    
+
         }catch(err){
             console.log(err)
         }
@@ -2642,7 +2613,29 @@ export async function getCharacterProfile(inputName,callback){
 
 
         // 유저 api 데이터 저장
-        insertLopecApis(inputName, data)
+        insertLopecApis( inputName, JSON.stringify(data) )
+
+
+        // 검색로그저장
+        insertLopecSearch(inputName)
+
+
+        // 유저 캐릭터 정보
+        function insertCharacter(){
+            let level = data.ArmoryProfile.CharacterLevel
+            let image = data.ArmoryProfile.CharacterImage
+            let server = data.ArmoryProfile.ServerName
+            let itemLevel = data.ArmoryProfile.ItemMaxLevel
+            let guild = data.ArmoryProfile.GuildName
+            let title = data.ArmoryProfile.Title
+
+            insertLopecCharacters( inputName,level,supportCheck(),image,server,itemLevel,guild,title,lastFinalValue,supportSpecPoint,allTimeBuffPower,fullBuffPower)
+        }
+        insertCharacter()
+
+
+
+
 
 
         // ---------------------------DB저장---------------------------
