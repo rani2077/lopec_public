@@ -624,7 +624,6 @@
 
     
     <?php //  db관련 ?>
-    <script type="module" src= "./asset/js/lopec.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 ?>
 

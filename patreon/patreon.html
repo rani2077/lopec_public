@@ -9,14 +9,44 @@
 <body>
 
 
-    <form id="patreon-form" class="sc-search" onsubmit="return false;" accept-charset="UTF-8">
-        <input type="text" id="mobile-input" class="mobile-input character-name-search-minimum shadow" placeholder="캐릭터 검색">
+    <form id="patreon-form" class="sc-search" action="./patreon.html" accept-charset="UTF-8">
+        <input type="text" id="patreonInput" name="patreonCharacterName" class="mobile-input character-name-search shadow" placeholder="캐릭터 검색">
     </form>
-    <div class="sc-result">
-        
-    </div>
+    <a href="#" target="_blink" class="sc-result">
+        <div class="simple-group">
+            <span class="name">청염각</span>
+            <span class="grade"><img src="../asset/image/bronze.png" alt=""></span>
+            <span class="point">999만9999</span>
+        </div>
+        <div class="patron-group">
 
-    <script type="module" src="../asset/js/patreon(test).js"></script>
+        </div>
+        <div class="detail-group">
+            <div class="gem-area">
+                <div class="gem-box">
+                    <span class="level">7</span>
+                    <span class="tag">겁화</span>
+                    <span class="count">3개</span>
+                </div>
+            </div>
+            <div class="accessory-area">
+                <div class="accessory-box">
+                    <span class="name">목걸이</span>
+                    <span class="grade">중</span>
+                </div>
+            </div>
+            <div class="engraving-area">
+                <div class="engraving-box">
+                    <span class="name">원한</span>
+                    <div class="tag">유각</div>
+                    <div class="level">2</div>
+                </div>
+            </div>
+
+        </div>
+    </a>
+
+    <script type="module" src="../asset/js/patreon.js"></script>
     
 </body>
 </html>

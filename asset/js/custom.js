@@ -58,6 +58,9 @@ function getNextApiKey() {
 let isRequesting = false;
 
 
+let temptemptemp = ""
+
+
 export async function getCharacterProfile(inputName,callback){
     if (isRequesting) {
         return;
@@ -1251,24 +1254,6 @@ export async function getCharacterProfile(inputName,callback){
 
 
 
-        // 스펙포인트 세부정보 객체
-        specDetail = {
-            spec:specPoint,
-            character:characterPoint,
-            armor:armorPoint,
-            weapon:weaponPoint,
-            ark:arkPoint,
-            accessory:accessoryPoint,
-            elixir:elixirPoint,
-            gems:gemsPoint,
-            engraving:engravingPoint,
-            hyper:hyperPoint,
-            card:cardPoint,
-            abilityStone:abilityStonePoint,
-            set:setPoint,
-            bangle:banglePoint,
-        }
-
 
         // -----------------------계산식 함수 끝-----------------------------------
         // -----------------------계산식 함수 끝-----------------------------------
@@ -1584,7 +1569,6 @@ export async function getCharacterProfile(inputName,callback){
         }
 
 
-        // hyperObj객체에 무언가 영향을 미침 원인 해명 필요
         data.ArmoryEquipment.forEach(function(equip,equipIdx){
             
             // function hyperInfoFnc(e ,parts){
@@ -2825,8 +2809,8 @@ export async function getCharacterProfile(inputName,callback){
                             }
         }
 
-        
-        
+
+
         let arkPassiveEffects = null
         let disableArkPassive = []
         if(!(data.ArmoryEngraving == null)){
@@ -2912,7 +2896,7 @@ export async function getCharacterProfile(inputName,callback){
         function averageLevelPoint(){
             let itemLevel =  Number( data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '') )
             let range =""
-            
+
 
             if( !(supportCheck() == "서폿" ) ){
                 range = (levelRange, value) =>  `레벨 구간 : ` + levelRange + `<br>` + `평균 점수 : ` + value + `<br>` + `카던 세팅 등의 허수는 제외 <br><br> ※딜러 티어 <br> 브론즈 : 200만점 미만 <br> 실버 : 200만점 이상 <br> 골드 : 320만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
@@ -2945,7 +2929,7 @@ export async function getCharacterProfile(inputName,callback){
                 } else {
                     '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
                 }
-    
+
             }else{
                 // if(itemLevel >= 1725 ){
                 //     range += ("1725이상 1740이하","-데이터 수집 중-<br>")
@@ -2979,8 +2963,6 @@ export async function getCharacterProfile(inputName,callback){
                 return range += `풀버프를 기준으로 한 점수입니다.<br> 평균 점수는 데이터 수집 중입니다. <br><br> ※서폿 티어 <br> 브론즈 : 300만점 미만 <br> 실버 : 300만점 이상 <br> 골드 : 400만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 720만점 이상 <br> 에스더 : 920만점 이상`
 
             }
-
-
         }
 
 
@@ -3011,12 +2993,12 @@ export async function getCharacterProfile(inputName,callback){
 
 
         
-        let gradeIco = ""
-        let gradeInfo = ""
 
 
         function characterGradeCheck(){ 
-
+            let gradeIco = ""
+            let gradeInfo = ""
+    
             function grade(ico, info){
                 return `
                 <div class="tier-box">
@@ -3036,7 +3018,7 @@ export async function getCharacterProfile(inputName,callback){
                     </div>
                 </div>`
             }
-        
+
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){// 4티어 딜러 스펙포인트
                 if(lastFinalValue < 2000000){ //브론즈
                     gradeIco="../asset/image/bronze.png"
@@ -3129,10 +3111,6 @@ export async function getCharacterProfile(inputName,callback){
                 `;
             }
         }
-        gradeModule = {
-            ico:gradeIco,
-            info:gradeInfo
-        }
 
 
 
@@ -3149,7 +3127,7 @@ export async function getCharacterProfile(inputName,callback){
 
 
 
-        
+
         // group-info HTML
         let groupInfo = ""
 
@@ -3267,7 +3245,7 @@ export async function getCharacterProfile(inputName,callback){
 
         let gemImage = data.ArmoryGem.Gems //보석이미지
 
-        
+
         // null값 체크하기
         function nullCheck(checkVal, trueVal, falseVal){
             if(checkVal == null || checkVal == undefined){
@@ -3337,7 +3315,6 @@ export async function getCharacterProfile(inputName,callback){
 
 
         // 장비티어
-
         let armorEquipment = data.ArmoryEquipment //착용장비목록
         
 
@@ -4359,8 +4336,6 @@ export async function getCharacterProfile(inputName,callback){
 // .character-name-search클래스명의 input 엔터 검색 스크립트
 
 // 검색 스크립트
-export let specDetail = {}
-export let gradeModule = {}
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -4419,7 +4394,7 @@ function splitSearchFnc(userName){
 
 // 스펙포인트 더보기 버튼
 specBtn()
-export function specBtn(){
+function specBtn(){
     document.getElementById("extra-btn").addEventListener("click",function(){
         let specAreaClass = document.querySelector(".spec-area").classList
         // console.log(specAreaClass)

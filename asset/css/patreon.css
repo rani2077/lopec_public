@@ -7,4 +7,90 @@ body{
     width:280px;
     margin: 0 auto;
     padding: 0 10px;
+    margin-top: 100px;
 }
+
+.sc-search{
+    width: 100%;
+}
+.sc-search .character-name-search{
+    width: 100%;
+    padding-left: 10px;
+}
+
+
+
+.sc-result{
+    display: block;
+    width: 100%;
+    background: #0f0;
+    padding: 0 15px;
+    height: 300px;
+    color: initial;
+}
+.sc-result .simple-group{
+    display: flex;
+    align-items: center;
+    
+}
+.sc-result .simple-group .name{
+
+}
+.sc-result .simple-group .grade{
+    width: 25px;
+    height: 25px;
+
+}
+.sc-result .simple-group .grade img{
+    width: 100%;
+    height: 100%;
+}
+.sc-result .simple-group .point{
+}
+
+.sc-result .patron-group{
+    /* background: #f00; */
+    width: 100%;
+    height: 10px;
+}
+
+
+.sc-result .detail-group{
+    display: flex;
+}
+.sc-result .detail-group > *{
+    width: calc(100% / 3);
+}
+
+
+
+
+.sc-result .gem-area{
+}
+.sc-result .gem-area .gem-box{}
+.sc-result .gem-area .tag{}
+.sc-result .gem-area .count{}
+
+
+
+.sc-result .accessory-area{
+    
+}
+.sc-result .accessory-area .accessory-box{}
+.sc-result .accessory-area .name{}
+.sc-result .accessory-area .grade{}
+
+
+
+
+
+.sc-result .engraving-area{
+    
+}
+.sc-result .engraving-area .engraving-box{
+    display: flex;
+}
+.sc-result .engraving-area .name{}
+.sc-result .engraving-area .tag{}
+.sc-result .engraving-area .level{}
+
