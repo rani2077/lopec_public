@@ -76,8 +76,14 @@ body{
 .sc-result .accessory-area{
     
 }
-.sc-result .accessory-area .accessory-box{}
-.sc-result .accessory-area .name{}
+.sc-result .accessory-area .accessory-box{
+    display: flex;
+    gap: 5px;
+}
+.sc-result .accessory-area .name{
+    width: 45px;
+    text-align: right;
+}
 .sc-result .accessory-area .grade{}
 
 
@@ -89,6 +95,7 @@ body{
 }
 .sc-result .engraving-area .engraving-box{
     display: flex;
+    gap: 5px;
 }
 .sc-result .engraving-area .name{}
 .sc-result .engraving-area .tag{}

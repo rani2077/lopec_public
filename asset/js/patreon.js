@@ -1,6 +1,7 @@
 import {lowTierSpecPointObj, highTierSpecPointObj, gradeObj,apiData, getCharacterProfile} from './spec-point.js'
 
 
+import {engravingFilter} from './filter.js'
 
 
 
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     <div class="simple-group">
                         <span class="name">${inputText}</span>
                         <span class="grade"><img src="${gradeObj.ico}" alt=""></span>
-                        <span class="point">${specPoint}</span>
+                        <span class="point">${formatNumber(specPoint.toFixed(0))}</span>
                     </div>
                     <div class="patron-group"></div>`;
             }
@@ -59,17 +60,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     }
                 })
                 let value = {};
-
+                
                 gemsArry.forEach(item => {
                     let key = `${item.level}${item.name}`;
                     if (value[key]) {
-                      value[key]++;
+                        value[key]++;
                     } else {
-                      value[key] = 1;
+                        value[key] = 1;
                     }
                 });
                 console.log(value)
-                  
+
+                                                      
                 Object.entries(value).forEach(([keyWord, count]) => {
                     gemBox += 
                         `<div class="gem-box">
@@ -191,12 +193,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
             function engravingArea(){
                 let engravingBox = ""
 
+
                 data.ArmoryEngraving.ArkPassiveEffects.forEach(function(engraving){
+
+                    let engName = ""
+                    engravingFilter.forEach(function(engFilter){
+                        if(engFilter.name == engraving.Name){
+                            engName = engFilter.short
+                        }
+                    })
+    
+
+
+
                     engravingBox += `
                         <div class="engraving-box">
-                            <span class="name">${engraving.Name}</span>
-                            <div class="tag">${engraving.Grade}</div>
-                            <div class="level">${engraving.Level}</div>
+                            <span class="name">${engName}</span>
+                            <div class="tag">${engraving.Grade} ${engraving.Level}</div>
                         </div>`;
                 })
 
@@ -240,22 +253,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-function simpleGroup(){
-
-    let specPoint = Math.max( highTierSpecPointObj.supportSpecPoint, highTierSpecPointObj.dealerlastFinalValue )
-    
-    return`
-        <div class="simple-group">
-            <span class="name">청염각</span>
-            <span class="grade"><img src="${gradeObj.ico}" alt=""></span>
-            <span class="point">${specPoint}</span>
-        </div>`
-}
 
 
 
-
-
+// 숫자 단위 표현
 function formatNumber(num) {
     if (num >= 100000000) {
         return Math.floor(num / 100000000) + '억 ' + formatNumber(num % 100000000);

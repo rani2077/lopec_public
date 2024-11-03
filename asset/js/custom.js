@@ -25,7 +25,6 @@ import { config } from '../../config.js';
 
 // db저장 스크립트
 import {insertLopecMains} from '../js/lopec.js'
-import {insertLopecApis} from '../js/api.js'
 import {insertLopecCharacters} from '../js/character.js'
 import {insertLopecSearch} from '../js/search.js'
 
@@ -2335,7 +2334,12 @@ export async function getCharacterProfile(inputName,callback){
         }
 
 
-        if(arkPassiveValue(2) >= 62){ // arkPassiveValue(2) == 도약 수치
+
+        if(arkPassiveValue(2) >= 70){ // arkPassiveValue(2) == 도약 수치
+
+            arkObj.leapDamage += 1.15
+
+        }else if(arkPassiveValue(2) >= 62){ // arkPassiveValue(2) == 도약 수치
 
             arkObj.leapDamage += 1.11
 
@@ -2586,6 +2590,7 @@ export async function getCharacterProfile(inputName,callback){
             let lmanCard = "temp";
             let lmanSearchHit = "";
             insertLopecMains(lmanCharacterNickname,lmanCharacterLevel,lmanCharacterClass,lmanCharacterImage,lmanServer,lmanLevel,lmanGuild,lmanTitle,lmanDomain,lmanCard,lmanSearchHit)
+            // insertLopecMains(lmanCharacterNickname,"캐릭터 레벨","1차전직","캐릭터 이미지","서버","템렙","길드","칭호","영지","카드","검색로그")
 
         }catch(err){
             console.log(err)
@@ -2594,7 +2599,7 @@ export async function getCharacterProfile(inputName,callback){
 
 
         // 유저 api 데이터 저장
-        insertLopecApis( inputName, JSON.stringify(data) )
+        // insertLopecApis( inputName, JSON.stringify(data) )
 
 
         // 검색로그저장
@@ -2611,9 +2616,11 @@ export async function getCharacterProfile(inputName,callback){
             let title = data.ArmoryProfile.Title
 
             insertLopecCharacters( inputName,level,supportCheck(),image,server,itemLevel,guild,title,lastFinalValue,supportSpecPoint,allTimeBuffPower,fullBuffPower)
+            // insertLopecCharacters( inputName,"레벨","2차전직","프로필 이미지","서버","템렙","길드","칭호","딜러스펙포인트","서폿스펙포인트","상시 버프 효율","풀버프 효율")
         }
-        insertCharacter()
 
+
+        insertCharacter()
 
 
 
@@ -3210,7 +3217,6 @@ export async function getCharacterProfile(inputName,callback){
                 infoStart += infoBox("기존 스펙포인트", specPoint, '업데이트 전 스펙포인트입니다.')
                 infoStart += infoBox("공격력", attackPowResult, '공격력 수치입니다.<br>만찬/버프 등으로 변할 수 있습니다.')
                 infoStart += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                infoStart += infoBox("팔찌", (bangleEff*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("팔찌", (bangleEff*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoEnd
 
@@ -4316,8 +4322,6 @@ export async function getCharacterProfile(inputName,callback){
         specBtn()
 
 
-        // 스펙포인트 상세점수 return
-        callback()
         
     })
     .catch((error) => console.error('Fetch error:', error))

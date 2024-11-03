@@ -134,7 +134,7 @@ let arkFilter = [
     {name:"오의난무",initial:"난무",criticalChancePer:30, atkSpeed:8, finalDamagePer:6},
     {name:"권왕파천무",initial:"권왕", atkSpeed:20, finalDamagePer:6, criticalChancePer:15},
     {name:"수라의 길",initial:"수라", moveSpeed:15, finalDamagePer:6},
-    {name:"강화 무기",initial:"강무",criticalChancePer:34, finalDamagePer:6},
+    {name:"전술 탄환",initial:"강무",criticalChancePer:34, finalDamagePer:6},
     {name:"핸드 거너",initial:"핸건",criticalChancePer:10, moveSpeed:8, atkSpeed:8, skillCool:5, finalDamagePer:6},
     {name:"죽음의 습격",initial:"죽습", finalDamagePer:6},
     {name:"두 번째 동료",initial:"두동", moveSpeed:8, finalDamagePer:6, criticalChancePer:40},
@@ -166,6 +166,7 @@ let arkFilter = [
     {name:"이슬비",initial:"이슬비",criticalChancePer:10, finalDamagePer:6},
 
     {name:"핸드거너",initial:"핸건",criticalChancePer:10, moveSpeed:8, atkSpeed:8, skillCool:5, finalDamagePer:6},
+    {name:"강화 무기",initial:"강무",criticalChancePer:34, finalDamagePer:6},
     {name:"고독한 기사",initial:"고기", finalDamagePer:6, criticalChancePer:15},
     {name:"전투 태세",initial:"전태", finalDamagePer:6},
     {name:"광전사의 비기",initial:"비기", moveSpeed:20, atkSpeed:20, finalDamagePer:6, criticalChancePer:63.2},
@@ -175,7 +176,7 @@ let arkFilter = [
     {name:"축복의 오라",initial:"서폿", stigmaPer:10},
     {name:"처단자",initial:"처단",criticalChancePer:10, moveSpeed:20, atkSpeed:20, finalDamagePer:6, criticalChancePer:30},
     {name:"포식자",initial:"포식",criticalChancePer:10, moveSpeed:20, atkSpeed:20, finalDamagePer:6, criticalChancePer:30},
-    {name:"극의",initial:"체술",criticalChancePer:10, finalDamagePer:6},
+    {name:"극의: 체술",initial:"체술",criticalChancePer:10, finalDamagePer:6},
     {name:"충격 단련",initial:"충단",criticalChancePer:10, atkSpeed:20, finalDamagePer:6},
     {name:"초심",initial:"초심", criticalChancePer:30, moveSpeed:16, atkSpeed:20.8, finalDamagePer:6},
     {name:"오의 강화",initial:"오의",criticalChancePer:30, moveSpeed:16, atkSpeed:20.8, finalDamagePer:6},
@@ -357,7 +358,55 @@ let engravingImg = [
     "공격력 감소^https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_218.png",
 ]
 
-
+export let engravingFilter = [
+    , {name:"각성",short:"각성",}
+    , {name:"강령술",short:"강령",}
+    , {name:"강화 방패",short:"강화방패",}
+    , {name:"결투의 대가",short:"결대",}
+    , {name:"구슬동자",short:"구동",}
+    , {name:"굳은의지",short:"굳은의지",}
+    , {name:"급소 타격",short:"급타",}
+    , {name:"기습의 대가",short:"기습",}
+    , {name:"긴급구조",short:"긴급구조",}
+    , {name:"달인의 저력",short:"달저",}
+    , {name:"돌격대장",short:"돌대",}
+    , {name:"마나 효율 증가",short:"마효증",}
+    , {name:"마나의 흐름",short:"마흐",}
+    , {name:"바리케이드",short:"바리",}
+    , {name:"번개의분노",short:"번개의분노",}
+    , {name:"부러진 뼈",short:"부뼈",}
+    , {name:"분쇄의 주먹",short:"분쇄의주먹",}
+    , {name:"불굴",short:"불굴",}
+    , {name:"선수필승",short:"선필",}
+    , {name:"속전속결",short:"속속",}
+    , {name:"슈퍼 차지",short:"슈차",}
+    , {name:"승부사",short:"승부사",}
+    , {name:"시선 집중",short:"시집",}
+    , {name:"실드 관통",short:"실드관통",}
+    , {name:"아드레날린",short:"아드",}
+    , {name:"안정된 상태",short:"안상",}
+    , {name:"약자 무시",short:"약무",}
+    , {name:"에테르 포식자",short:"에포",}
+    , {name:"여신의 가호",short:"가호",}
+    , {name:"예리한 둔기",short:"예둔",}
+    , {name:"원한",short:"원한",}
+    , {name:"위기 모면",short:"위모",}
+    , {name:"저주받은 인형",short:"저받",}
+    , {name:"전문의",short:"전문의",}
+    , {name:"정기 흡수",short:"정흡",}
+    , {name:"정밀 단도",short:"정단",}
+    , {name:"중갑 착용",short:"중갑",}
+    , {name:"질량 증가",short:"질증",}
+    , {name:"최대 마나 증가",short:"최마증",}
+    , {name:"추진력",short:"추진력",}
+    , {name:"타격의 대가",short:"타대",}
+    , {name:"탈출의 명수",short:"탈출",}
+    , {name:"폭발물 전문가",short:"폭전",}
+    , {name:"이동속도 감소",short:"이속감",}
+    , {name:"공격속도 감소",short:"공속감",}
+    , {name:"방어력 감소",short:"방감",}
+    , {name:"공격력 감소",short:"공감",}
+]
 
 
 
