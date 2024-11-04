@@ -21,6 +21,7 @@ export var insertLopecCharacters = function(lchaCharacterNickname, lchaCharacter
 		, lchaFullbuff : lchaFullbuff
 		, lchaSearchHit : lchaSearchHit
 	}
+	console.log("서포터 스펙포인트 :"+lchaTotalsumSupport)
 	$.ajax({ 
 		dataType	: "json"
 		, type		: "POST"

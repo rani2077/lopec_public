@@ -2520,7 +2520,6 @@ export async function getCharacterProfile(inputName,callback){
 
         let supportSpecPoint = (fullBuffPower**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
 
-        console.log("서포터 스펙 포인트"+enlightBuffResult)
 
 
         let atkBuffMinusBangle = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+gemObj.atkBuff)/100)) // 팔찌 제외 아공강
@@ -2554,7 +2553,7 @@ export async function getCharacterProfile(inputName,callback){
         //console.log("각인 케어력 : " + engObj.carePower)
         //console.log("악세 케어력 : " + accObj.carePower)
         //console.log("엘릭서 케어력 : " + elixirObj.carePower)
-
+        
 
         
         //console.log("아공강 총합 : " + atkBuff)
@@ -2614,9 +2613,9 @@ export async function getCharacterProfile(inputName,callback){
             let itemLevel = data.ArmoryProfile.ItemMaxLevel
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
+            let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName
 
-            insertLopecCharacters( inputName,level,supportCheck(),image,server,itemLevel,guild,title,lastFinalValue,supportSpecPoint,allTimeBuffPower,fullBuffPower)
-            // insertLopecCharacters( inputName,"레벨","2차전직","프로필 이미지","서버","템렙","길드","칭호","딜러스펙포인트","서폿스펙포인트","상시 버프 효율","풀버프 효율")
+            insertLopecCharacters( inputName,level,classFullName,image,server,itemLevel,guild,title,lastFinalValue,supportSpecPoint,allTimeBuffPower,fullBuffPower)
         }
 
 
