@@ -1,4 +1,11 @@
-import {lowTierSpecPointObj, highTierSpecPointObj, gradeObj,apiData, getCharacterProfile} from './spec-point.js'
+import {
+    lowTierSpecPointObj ,
+    highTierSpecPointObj ,  //4티어 스펙포인트 객체
+    gradeObj ,              //등급 아이콘및 이미지
+    userSecondClass ,       //2차전직명
+    apiData ,               //유저 데이터
+    getCharacterProfile     //스펙포인트 계산 함수
+} from './spec-point.js'
 
 
 import {engravingFilter} from './filter.js'
@@ -27,10 +34,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             // 스펙포인트 표시
             function simpleGroup(){
+                let originClass = data.ArmoryProfile.CharacterClassName
                 let specPoint = Math.max( highTierSpecPointObj.supportSpecPoint, highTierSpecPointObj.dealerlastFinalValue )
                 return`
                     <div class="simple-group">
                         <span class="name">${inputText}</span>
+                        <span class="class">(${userSecondClass + " " + originClass})</span>
                         <span class="grade"><img src="${gradeObj.ico}" alt=""></span>
                         <span class="point">${formatNumber(specPoint.toFixed(0))}</span>
                     </div>
@@ -61,6 +70,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 })
                 let value = {};
                 
+                gemsArry.sort(function(a, b) {
+                    if (a.name < b.name) return -1;
+                    if (a.name > b.name) return 1;
+                    if (a.level < b.level) return -1;
+                    if (a.level > b.level) return 1;
+                    return 0;
+                });
+                
+                console.log(gemsArry)
                 gemsArry.forEach(item => {
                     let key = `${item.level}${item.name}`;
                     if (value[key]) {
@@ -83,6 +101,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 return `
                     <div class="gem-area">
+                        <p class="gem-title sub-title">보석</p>
                         ${gemBox}
                     </div>`
             }
@@ -182,6 +201,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 return `
                     <div class="accessory-area">
+                        <p class="accessory-title sub-title">악세서리</p>
                         ${accessoryBox}
                     </div>`;
 
@@ -193,31 +213,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
             function engravingArea(){
                 let engravingBox = ""
 
+                if(data.ArmoryEngraving.ArkPassiveEffects){
+                    data.ArmoryEngraving.ArkPassiveEffects.forEach(function(engraving){
 
-                data.ArmoryEngraving.ArkPassiveEffects.forEach(function(engraving){
-
-                    let engName = ""
-                    engravingFilter.forEach(function(engFilter){
-                        if(engFilter.name == engraving.Name){
-                            engName = engFilter.short
-                        }
+                        let engName = ""
+                        engravingFilter.forEach(function(engFilter){
+                            if(engFilter.name == engraving.Name){
+                                engName = engFilter.short
+                            }
+                        })
+        
+    
+    
+    
+                        engravingBox += `
+                            <div class="engraving-box">
+                                <span class="name">${engName}</span>
+                                <div class="tag">${engraving.Grade} ${engraving.Level}</div>
+                            </div>`;
                     })
     
-
-
-
-                    engravingBox += `
-                        <div class="engraving-box">
-                            <span class="name">${engName}</span>
-                            <div class="tag">${engraving.Grade} ${engraving.Level}</div>
+                    return `
+                        <div class="engraving-area">
+                            <p class="engraving-title sub-title">각인</p>
+                            ${engravingBox}
                         </div>`;
-                })
-
-                return `
-                    <div class="engraving-area">
-                        ${engravingBox}
-                    </div>`;
-            }
+                    }
+                }
 
 
             function detailGroup(){
@@ -241,6 +263,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 document.querySelector(".sc-result").innerHTML = html
             }
             completeHtml()
+
+            // if(data.ArkPassive.IsArkPassive){
+            //     completeHtml()
+            // }else{
+            //     document.querySelector(".sc-result").innerHTML = `3티어 캐릭터의 경우 현재 지원되지 않습니다.`
+            // }
            
             
         });

@@ -24,7 +24,6 @@ import { config } from '../../config.js';
 
 
 // db저장 스크립트
-import {insertLopecMains} from '../js/lopec.js'
 import {insertLopecCharacters} from '../js/character.js'
 import {insertLopecSearch} from '../js/search.js'
 
@@ -2553,7 +2552,7 @@ export async function getCharacterProfile(inputName,callback){
         //console.log("각인 케어력 : " + engObj.carePower)
         //console.log("악세 케어력 : " + accObj.carePower)
         //console.log("엘릭서 케어력 : " + elixirObj.carePower)
-        
+
 
         
         //console.log("아공강 총합 : " + atkBuff)
@@ -2575,25 +2574,6 @@ export async function getCharacterProfile(inputName,callback){
 
 
 
-        // 기본 데이터 저장
-        try{
-            let lmanCharacterNickname = data.ArmoryProfile.CharacterName;
-            let lmanCharacterLevel = data.ArmoryProfile.CharacterLevel;
-            let lmanCharacterClass = data.ArmoryProfile.CharacterClassName;
-            let lmanCharacterImage = data.ArmoryProfile.CharacterImage;
-            let lmanServer = data.ArmoryProfile.ArmoryProfile;
-            let lmanLevel = data.ArmoryProfile.ItemMaxLevel;
-            let lmanGuild = data.ArmoryProfile.GuildName;
-            let lmanTitle = data.ArmoryProfile.Title;
-            let lmanDomain = data.ArmoryProfile.TownName;
-            let lmanCard = "temp";
-            let lmanSearchHit = "";
-            insertLopecMains(lmanCharacterNickname,lmanCharacterLevel,lmanCharacterClass,lmanCharacterImage,lmanServer,lmanLevel,lmanGuild,lmanTitle,lmanDomain,lmanCard,lmanSearchHit)
-            // insertLopecMains(lmanCharacterNickname,"캐릭터 레벨","1차전직","캐릭터 이미지","서버","템렙","길드","칭호","영지","카드","검색로그")
-
-        }catch(err){
-            console.log(err)
-        }
 
 
 
@@ -2610,7 +2590,7 @@ export async function getCharacterProfile(inputName,callback){
             let level = data.ArmoryProfile.CharacterLevel
             let image = data.ArmoryProfile.CharacterImage
             let server = data.ArmoryProfile.ServerName
-            let itemLevel = data.ArmoryProfile.ItemMaxLevel
+            let itemLevel = Number(data.ArmoryProfile.ItemMaxLevel)
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
             let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName

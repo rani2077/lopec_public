@@ -27,13 +27,20 @@ body{
     height: 300px;
     color: initial;
 }
+.sc-result .sub-title{
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
 .sc-result .simple-group{
     display: flex;
     align-items: center;
-    
+    justify-content: center;
 }
-.sc-result .simple-group .name{
 
+.sc-result .simple-group .name{
+    /* margin-right: 5px; */
 }
 .sc-result .simple-group .grade{
     width: 25px;
@@ -46,11 +53,18 @@ body{
 }
 .sc-result .simple-group .point{
 }
+.sc-result .simple-group .skeleton{
+    margin-top: 10px;
+    width: 50%;
+    height: 20px;
+}
+
 
 .sc-result .patron-group{
     /* background: #f00; */
     width: 100%;
     height: 10px;
+    display: none;
 }
 
 
@@ -66,7 +80,9 @@ body{
 
 .sc-result .gem-area{
 }
-.sc-result .gem-area .gem-box{}
+.sc-result .gem-area .gem-box{
+    text-align: center;
+}
 .sc-result .gem-area .tag{}
 .sc-result .gem-area .count{}
 
@@ -77,6 +93,7 @@ body{
 }
 .sc-result .accessory-area .accessory-box{
     display: flex;
+    justify-content: center;
 }
 .sc-result .accessory-area .name{
     width: 45px;
@@ -94,7 +111,7 @@ body{
 }
 .sc-result .engraving-area .engraving-box{
     display: flex;
-    /* gap: 5px; */
+    justify-content: center;
 }
 .sc-result .engraving-area .name{
     margin-right: 5px;

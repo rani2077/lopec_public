@@ -24,7 +24,6 @@ import { config } from '../../config.js';
 
 
 // db저장 스크립트
-import {insertLopecMains} from '../js/lopec.js'
 import {insertLopecApis} from '../js/api.js'
 import {insertLopecCharacters} from '../js/character.js'
 import {insertLopecSearch} from '../js/search.js'
@@ -120,6 +119,11 @@ export let gradeObj = {
 }
 
 
+// 2차전직명
+export let userSecondClass = ""
+
+
+// 유저 json데이터
 export let apiData
 
   
@@ -245,6 +249,9 @@ export function getCharacterProfile(inputName, callback){
             }
             return arkResult
         }
+
+
+        userSecondClass = supportCheck()
         
         // console.log(supportCheck())
 
