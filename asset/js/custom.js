@@ -2590,7 +2590,8 @@ export async function getCharacterProfile(inputName,callback){
             let level = data.ArmoryProfile.CharacterLevel
             let image = data.ArmoryProfile.CharacterImage
             let server = data.ArmoryProfile.ServerName
-            let itemLevel = Number(data.ArmoryProfile.ItemMaxLevel)
+            let itemLevel = parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, ''))
+            console.log(itemLevel)
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
             let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName

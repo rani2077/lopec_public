@@ -38,8 +38,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 let specPoint = Math.max( highTierSpecPointObj.supportSpecPoint, highTierSpecPointObj.dealerlastFinalValue )
                 return`
                     <div class="simple-group">
-                        <span class="name">${inputText}</span>
-                        <span class="class">(${userSecondClass + " " + originClass})</span>
+                        <span class="name">${inputText}<br>${userSecondClass + " " + originClass}</span>
                         <span class="grade"><img src="${gradeObj.ico}" alt=""></span>
                         <span class="point">${formatNumber(specPoint.toFixed(0))}</span>
                     </div>
@@ -52,7 +51,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 let regex = />([^<>]+)</g;
                 const gemsArry = [];
-                let gemsCategory = ['작열','겁화','멸화','홍염']
                 let gemBox = ""
 
                 data.ArmoryGem.Gems.forEach(function(gem){
@@ -113,25 +111,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 data.ArmoryEquipment.forEach(function(accessory,index){
                     let grade = ""
                     if(accessory.Type == "목걸이"){
-                        let filterObjFirst = [
-                            {name:'적에게 주는 피해 +2.00%',grade:'상'},
-                            {name:'적에게 주는 피해 +1.20%',grade:'중'},
-                            {name:'적에게 주는 피해 +0.55%',grade:'하'},
-                        ]
-                        let filterObjSecond = [
-                            {name:'추가 피해 +2.60%',grade:'상'},
-                            {name:'추가 피해 +1.60%',grade:'중'},
-                            {name:'추가 피해 +0.60%',grade:'하'},
-                        ]
-                        
+                        let filterObjFirst = []
+                        if(!(userSecondClass == "서폿")){ //딜러
+                            filterObjFirst = [
+                                {name:'적에게 주는 피해 +2.00%',grade:'상'},
+                                {name:'적에게 주는 피해 +1.20%',grade:'중'},
+                                {name:'적에게 주는 피해 +0.55%',grade:'하'},
+                                {name:'추가 피해 +2.60%',grade:'상'},
+                                {name:'추가 피해 +1.60%',grade:'중'},
+                                {name:'추가 피해 +0.60%',grade:'하'},
+                            ]
+                        }else if(userSecondClass == "서폿"){ // 서폿
+                            filterObjFirst = [
+                                {name:'세레나데, 신앙, 조화 게이지 획득량 +6.00%',grade:'상'},
+                                {name:'세레나데, 신앙, 조화 게이지 획득량 +3.60%',grade:'중'},
+                                {name:'세레나데, 신앙, 조화 게이지 획득량 +1.60%',grade:'하'},
+                                {name:'낙인력 +8.00%',grade:'<em>상<small>낙</small></em>'},
+                                {name:'낙인력 +4.80%',grade:'<em>중<small>낙</small></em>'},
+                                {name:'낙인력 +2.15%',grade:'<em>하<small>낙</small></em>'},
+                            ]
+                        }
+
                         filterObjFirst.forEach(function(firstFilter){
                             if(accessory.Tooltip.includes(firstFilter.name)){
                                 grade += firstFilter.grade
-                            }
-                        })
-                        filterObjSecond.forEach(function(secondFilter){
-                            if(accessory.Tooltip.includes(secondFilter.name)){
-                                grade += secondFilter.grade
                             }
                         })
                         accessoryBox +=`
@@ -144,21 +147,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             {name:'무기 공격력 +3.00%',grade:'상'},
                             {name:'무기 공격력 +1.80%',grade:'중'},
                             {name:'무기 공격력 +0.80%',grade:'하'},
-                        ]
-                        let filterObjSecond = [
                             {name:'공격력 +1.55%',grade:'상'},
                             {name:'공격력 +0.95%',grade:'중'},
                             {name:'공격력 +0.40%',grade:'하'},
+
                         ]
                         
                         filterObjFirst.forEach(function(firstFilter){
                             if(accessory.Tooltip.includes(firstFilter.name)){
                                 grade += firstFilter.grade
-                            }
-                        })
-                        filterObjSecond.forEach(function(secondFilter){
-                            if(accessory.Tooltip.includes(secondFilter.name)){
-                                grade += secondFilter.grade
                             }
                         })
                         accessoryBox +=`
@@ -167,25 +164,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             <span class="grade">${grade}</span>
                         </div>`;
                     }else if(accessory.Type == "반지"){
-                        let filterObjFirst = [
-                            {name:'치명타 피해 +4.00%',grade:'상'},
-                            {name:'치명타 피해 +2.40%',grade:'중'},
-                            {name:'치명타 피해 +1.10%',grade:'하'},
-                        ]
-                        let filterObjSecond = [
-                            {name:'치명타 적중률 +1.55%',grade:'상'},
-                            {name:'치명타 적중률 +0.95%',grade:'중'},
-                            {name:'치명타 적중률 +0.40%',grade:'하'},
-                        ]
+                        let filterObjFirst = []
                         
+                        if(!(userSecondClass == "서폿")){ //딜러
+                            filterObjFirst = [
+                                {name:'치명타 피해 +4.00%',grade:'상'},
+                                {name:'치명타 피해 +2.40%',grade:'중'},
+                                {name:'치명타 피해 +1.10%',grade:'하'},
+                                {name:'치명타 적중률 +1.55%',grade:'상'},
+                                {name:'치명타 적중률 +0.95%',grade:'중'},
+                                {name:'치명타 적중률 +0.40%',grade:'하'},
+                                ]
+                        }else if(userSecondClass == "서폿"){ // 서폿
+                            filterObjFirst = [
+                                {name:'아군 공격력 강화 효과 +5.00%',grade:'상'},
+                                {name:'아군 공격력 강화 효과 +3.00%',grade:'중'},
+                                {name:'아군 공격력 강화 효과 +1.35%',grade:'하'},
+                                {name:'아군 피해량 강화 효과 +7.50%',grade:'상'},
+                                {name:'아군 피해량 강화 효과 +4.50%',grade:'중'},
+                                {name:'아군 피해량 강화 효과 +2.00%',grade:'하'},
+                                ]
+                        }
+
                         filterObjFirst.forEach(function(firstFilter){
                             if(accessory.Tooltip.includes(firstFilter.name)){
                                 grade += firstFilter.grade
-                            }
-                        })
-                        filterObjSecond.forEach(function(secondFilter){
-                            if(accessory.Tooltip.includes(secondFilter.name)){
-                                grade += secondFilter.grade
                             }
                         })
                         accessoryBox +=`
@@ -201,7 +204,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 return `
                     <div class="accessory-area">
-                        <p class="accessory-title sub-title">악세서리</p>
+                        <p class="accessory-title sub-title">악세(특옵)</p>
                         ${accessoryBox}
                     </div>`;
 

@@ -41,6 +41,7 @@ body{
 
 .sc-result .simple-group .name{
     /* margin-right: 5px; */
+    text-align: center;
 }
 .sc-result .simple-group .grade{
     width: 25px;
@@ -89,18 +90,50 @@ body{
 
 
 .sc-result .accessory-area{
-    
+    position: relative;
 }
+.sc-result .accessory-area:before{
+    content:'';
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 80%;
+    background: #f00;
+    top: 20%;
+    left: 0;
+}
+.sc-result .accessory-area:after{
+    content:'';
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 80%;
+    background: #f00;
+    top: 20%;
+    right: 0;
+}
+
 .sc-result .accessory-area .accessory-box{
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
 }
 .sc-result .accessory-area .name{
     width: 45px;
     text-align: right;
     margin-right: 5px;
+    margin-left: 13px;
 }
 .sc-result .accessory-area .grade{}
+.sc-result .accessory-area .grade em{
+    position: relative;
+}
+.sc-result .accessory-area .grade small{
+    position: absolute;
+    bottom: 80%;
+    left: 50%;
+    transform:translateX(-50%);
+    font-size:8px;
+}
 
 
 
@@ -111,10 +144,12 @@ body{
 }
 .sc-result .engraving-area .engraving-box{
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
 }
 .sc-result .engraving-area .name{
     margin-right: 5px;
+    width: 45px;
+    text-align:right;
 }
 .sc-result .engraving-area .tag{}
 .sc-result .engraving-area .level{}
