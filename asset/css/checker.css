@@ -7,6 +7,8 @@ body{
     width:280px;
     margin: 0 auto;
     /* padding: 0 10px; */
+    border:1px solid white;
+    position: relative;
 }
 
 .sc-search{
@@ -15,6 +17,8 @@ body{
 .sc-search .character-name-search{
     width: 100%;
     padding-left: 10px;
+    border:1px solid rgb(80, 80, 80);
+    /* border-radius:3px; */
 }
 
 
@@ -22,18 +26,36 @@ body{
 .sc-result{
     display: block;
     width: 100%;
-    background: #0f0;
-    padding: 0 15px;
-    height: 300px;
-    color: initial;
+    background: #2f2f2f;
+    /* padding: 0 15px; */
+    /* height: 300px; */
+    padding-bottom: 41px;
+    color: #fff;
 }
 .sc-result .sub-title{
     text-align: center;
     margin-bottom: 10px;
     margin-top: 15px;
 }
+.sc-result .sub-title.skeleton{
+    height:16px;
+    width:50px;
+    margin-left:auto;
+    margin-right:auto;
+    border-radius:3px;
+    
+}
+.sc-result .sub-title ~ div .skeleton{
+    height:12px;
+    width:70%;
+    margin:0 auto;
+    border-radius:3px;
+    margin-top:4px;
+
+}
 
 .sc-result .simple-group{
+    padding-top: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,11 +63,45 @@ body{
 
 .sc-result .simple-group .name{
     /* margin-right: 5px; */
+    width: calc(50% - 38px/2);
     text-align: center;
 }
+.sc-result .simple-group .name a{
+    display: inline-block;
+    color: #fff;
+    position: relative;
+}
+.sc-result .simple-group .name a::after{
+    content:'로펙사이트에서 보기';
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgb(189, 189, 189);
+    padding: 5px 8px;
+    width: 140px;
+    border-radius:3px;
+    z-index:3;
+    color: #000;
+  
+}
+.sc-result .simple-group .name a:hover:after{
+    display: block;
+}
+.sc-result .simple-group .name strong{
+    font-size: 17px;
+    display: block;
+    text-align: center;
+    margin-bottom: 4px;
+}
+.sc-result .simple-group .name em{
+    display: block;
+    text-align: center;
+    font-size: 13px;
+}
 .sc-result .simple-group .grade{
-    width: 25px;
-    height: 25px;
+    width: 38px;
+    height: 38px;
 
 }
 .sc-result .simple-group .grade img{
@@ -53,6 +109,8 @@ body{
     height: 100%;
 }
 .sc-result .simple-group .point{
+    font-size: 20px;
+    width: calc(50% - 38px / 2);
 }
 .sc-result .simple-group .skeleton{
     margin-top: 10px;
@@ -84,7 +142,11 @@ body{
 .sc-result .gem-area .gem-box{
     text-align: center;
 }
-.sc-result .gem-area .tag{}
+.sc-result .gem-area .tag{
+    display: inline-block;
+    width: 48px;
+    text-align: right;
+}
 .sc-result .gem-area .count{}
 
 
@@ -92,38 +154,37 @@ body{
 .sc-result .accessory-area{
     position: relative;
 }
-.sc-result .accessory-area:before{
-    content:'';
-    display: block;
-    position: absolute;
-    width: 1px;
-    height: 80%;
-    background: #f00;
-    top: 20%;
-    left: 0;
-}
+.sc-result .accessory-area:before,
 .sc-result .accessory-area:after{
     content:'';
     display: block;
     position: absolute;
     width: 1px;
     height: 80%;
-    background: #f00;
+    background: rgb(173, 173, 173);
     top: 20%;
+
+}
+.sc-result .accessory-area:before{
+    left: 0;
+}
+.sc-result .accessory-area:after{
     right: 0;
 }
 
 .sc-result .accessory-area .accessory-box{
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
 }
 .sc-result .accessory-area .name{
     width: 45px;
     text-align: right;
     margin-right: 5px;
-    margin-left: 13px;
+    /* margin-left: 18px; */
 }
-.sc-result .accessory-area .grade{}
+.sc-result .accessory-area .grade{
+    width: 30px;
+}
 .sc-result .accessory-area .grade em{
     position: relative;
 }
@@ -153,4 +214,19 @@ body{
 }
 .sc-result .engraving-area .tag{}
 .sc-result .engraving-area .level{}
+
+
+
+
+/* 하단광고 */
+.bottom-ads{
+    width: 343px;
+    height: 60px;
+    background: #2f2f2f;
+    position: absolute;
+    top: 231px;
+    left: 0;
+}
+
+
 

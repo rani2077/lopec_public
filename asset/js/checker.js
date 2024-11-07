@@ -1,5 +1,5 @@
 import {
-    lowTierSpecPointObj ,
+    lowTierSpecPointObj ,   //3티어 스펙포인트
     highTierSpecPointObj ,  //4티어 스펙포인트 객체
     gradeObj ,              //등급 아이콘및 이미지
     userSecondClass ,       //2차전직명
@@ -35,12 +35,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // 스펙포인트 표시
             function simpleGroup(){
                 let originClass = data.ArmoryProfile.CharacterClassName
-                let specPoint = Math.max( highTierSpecPointObj.supportSpecPoint, highTierSpecPointObj.dealerlastFinalValue )
+                let specPoint = ""
+                if(data.ArmoryEngraving.ArkPassiveEffects){
+                    specPoint = formatNumber(Math.max( highTierSpecPointObj.supportSpecPoint, highTierSpecPointObj.dealerlastFinalValue ).toFixed(0))
+                }else{
+                    specPoint = formatNumber(lowTierSpecPointObj.specPoint)
+                }
+
                 return`
                     <div class="simple-group">
-                        <span class="name">${inputText}<br>${userSecondClass + " " + originClass}</span>
+                        <div class="name">
+                            <a href="https://lopec.kr/search/search.php?mainCharacterName=${inputText}" target="_blink"><strong>${inputText}</strong><em>${userSecondClass + " " + originClass}</em></a>
+                        </div>
                         <span class="grade"><img src="${gradeObj.ico}" alt=""></span>
-                        <span class="point">${formatNumber(specPoint.toFixed(0))}</span>
+                        <span class="point">${specPoint}</span>
                     </div>
                     <div class="patron-group"></div>`;
             }
@@ -53,19 +61,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 const gemsArry = [];
                 let gemBox = ""
 
-                data.ArmoryGem.Gems.forEach(function(gem){
-                    let match;
-                    while ((match = regex.exec(gem.Name)) !== null) {
-                        let regex = /(\d+).*(작열|겁화|멸화|홍염)/;
-                        match[1].match(regex);
-                        
-                        let result = {
-                            level : match[1].match(regex)[1] ,
-                            name : match[1].match(regex)[2]
+                if(!(data.ArmoryGem.Gems == null)){
+                    data.ArmoryGem.Gems.forEach(function(gem){
+                        let match;
+                        while ((match = regex.exec(gem.Name)) !== null) {
+                            let regex = /(\d+).*(작열|겁화|멸화|홍염)/;
+                            match[1].match(regex);
+                            
+                            let result = {
+                                level : match[1].match(regex)[1] ,
+                                name : match[1].match(regex)[2]
+                            }
+                            gemsArry.push(result);
                         }
-                        gemsArry.push(result);
-                    }
-                })
+                    })    
+                }
                 let value = {};
                 
                 gemsArry.sort(function(a, b) {
@@ -104,10 +114,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     </div>`
             }
 
-
+            // 악세서리
             function accessoryArea(){
                 let accessoryBox = ""
-                
+                let homeLess = "떡"
                 data.ArmoryEquipment.forEach(function(accessory,index){
                     let grade = ""
                     if(accessory.Type == "목걸이"){
@@ -137,6 +147,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                                 grade += firstFilter.grade
                             }
                         })
+                        if(grade == ""){
+                            grade += homeLess
+                        }
                         accessoryBox +=`
                         <div class="accessory-box">
                             <span class="name">${accessory.Type}</span>
@@ -158,6 +171,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                                 grade += firstFilter.grade
                             }
                         })
+                        if(grade == ""){
+                            grade += homeLess
+                        }
                         accessoryBox +=`
                         <div class="accessory-box">
                             <span class="name">${accessory.Type}</span>
@@ -191,6 +207,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                                 grade += firstFilter.grade
                             }
                         })
+                        if(grade == ""){
+                            grade += homeLess
+                        }
                         accessoryBox +=`
                         <div class="accessory-box">
                             <span class="name">${accessory.Type}</span>
@@ -212,7 +231,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-
+            // 각인
             function engravingArea(){
                 let engravingBox = ""
 
@@ -225,25 +244,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
                                 engName = engFilter.short
                             }
                         })
-        
-    
-    
-    
                         engravingBox += `
                             <div class="engraving-box">
                                 <span class="name">${engName}</span>
                                 <div class="tag">${engraving.Grade} ${engraving.Level}</div>
                             </div>`;
                     })
-    
                     return `
                         <div class="engraving-area">
                             <p class="engraving-title sub-title">각인</p>
                             ${engravingBox}
                         </div>`;
-                    }
+                }else{
+                    let engName = ""
+                    let engBox = ""
+                    data.ArmoryEngraving.Effects.forEach(function(lowEng){
+                        engravingFilter.forEach(function(engFilter){
+                            if(engFilter.name == lowEng.Name.replace(/Lv\. \d+/g, "").trim()){
+                                engName = engFilter.short
+                            }
+                        })
+                        engBox +=`
+                        <div class="engraving-box" style="justify-content:center;">
+                                <span class="">${engName}</span>
+                        </div>`
+                    })
+                    return `
+                        <div class="engraving-area">
+                            <p class="engraving-title sub-title">각인</p>
+                            ${engBox}
+                        </div>`;
                 }
 
+            }
 
             function detailGroup(){
                 return`
