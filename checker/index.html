@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+
+    <title>Document</title>
+    <link rel="stylesheet" href="../asset/css/checker.css">
+</head>
+<body>
+
+
+    <form id="patreon-form" class="sc-search" action="./index.html" accept-charset="UTF-8">
+        <input type="text" id="patreonInput" name="patreonCharacterName" class="mobile-input character-name-search" placeholder="캐릭터 검색" maxlength='12'>
+    </form>
+    <div class="sc-result">
+        <div class="simple-group" style="height:43px">
+            <!-- <span class="name">청염각</span>
+            <span class="class">(일격 스트라이커)</span>
+            <span class="grade"><img src="../asset/image/bronze.png" alt=""></span>
+            <span class="point">999만9999</span> -->
+            <div class="skeleton"></div>
+        </div>
+        <div class="patron-group">
+
+        </div>
+        <div class="detail-group">
+            <div class="gem-area">
+                <p class="gem-title sub-title">보석</p>
+                <div class="gem-box" >
+                    <div class="skeleton"></div>
+                </div>
+                <div class="gem-box" >
+                    <div class="skeleton"></div>
+                </div>
+                <div class="gem-box" >
+                    <div class="skeleton"></div>
+                </div>
+            </div>
+            <div class="accessory-area">
+                <p class="accessory-title sub-title">악세(특옵)</p>
+                <div class="accessory-box">
+                    <div class="skeleton"></div>
+                </div>
+                <div class="accessory-box">
+                    <div class="skeleton"></div>
+                </div>
+                <div class="accessory-box">
+                    <div class="skeleton"></div>
+                </div>
+
+            </div>
+            <div class="engraving-area">
+                <p class="engraving-title sub-title">각인</p>
+                <div class="engraving-box">
+                    <div class="skeleton"></div>
+                </div>
+                <div class="engraving-box">
+                    <div class="skeleton"></div>
+                </div>
+                <div class="engraving-box">
+                    <div class="skeleton"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- <div class="alert-group">
+            <div class="alert-area">
+                <div class="img-box"><img src="../asset/image/discord-ico.png" alt="로펙체커로고"></div>
+                <div class="text-box">
+                    <span class="alert">업데이트 가능</span>
+                    <p class="desc">새로운 기능 추가 및 버그 수정.<br>자세한 내용은 업데이트 후 확인하세요.</p>
+                </div>
+                <div class="button-box">
+                    <a href="" class="agree">업데이트</a>
+                    <button id="update-disagree" class="disagree">나중에</button>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+    <!-- 하단광고 -->
+    <!-- <div class="patreon bottom-ads">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:inline-block;width:343px;height:60px" data-ad-client="ca-pub-5125145415518329" data-ad-slot="4477227287"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>        
+    </div> -->
+
+    
+    <!-- DB로그저장 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+           insertLopecLog ();
+        //    $("#main-character-name").keypress(function(e) { 
+        //       if (e.keyCode == 13){
+        //           goCharacterSearch();
+        //       }    
+        //    });
+        });
+        
+        var insertLopecLog = function() {
+           var atMode = "insertlog";    
+           var llogUrl = document.URL;
+           var saveDatas = {
+              atMode : atMode
+              , llogUrl : llogUrl
+           }
+           $.ajax({ 
+              dataType   : "json"
+              , type      : "POST"
+              , url      : "/applications/process/lopecLog/"
+              , data      : saveDatas
+              , success   : function(msg) {
+                 //console.log("msg : " + msg);
+                 //console.log("msg.result : " + msg.result);
+                 if(msg.result == "S") {
+                    console.log("log insert result : LOPEC_LOG 저장 성공");
+                 } else if(msg.result == "F") {
+                    console.log("log insert result : LOPEC_LOG 저장 실패");
+                 } else if(msg.result == "E") {
+                    console.log("log insert result : LOPEC_LOG 저장 Exception");
+                 } 
+              }
+               , error   : function(request, status, error) {
+                 console.log("log insert result : LOPEC_LOG 저장 Error");
+                 //console.log("request.status : " + request.status);
+                 //console.log("request.responseText : " + request.responseText);
+                 //console.log("request.error : " + request.error);
+              }
+           });   
+        }
+    </script>
+
+    <script type="module" src="../asset/js/checker.js"></script>
+    
+</body>
+</html>

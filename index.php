@@ -274,7 +274,7 @@
             <p class="rainbow-text event">
                 !!!로펙 전용 프로그램 출시<br>
                 <a href="https://cool-kiss-ec2.notion.site/137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="temp">여기</a>
-                클릭시이동!!!
+                를 눌러 확인하세요!!!
             </p>
 
             <style> .rainbow-text { display: inline-block; animation: rainbow 5s ease-in-out infinite; transition: color 0.5s; } @keyframes rainbow { 0% { color: red; } 14.28% { color: orange; } 28.56% { color: yellow; } 42.84% { color: green; } 57.12% { color: blue; } 71.40% { color: indigo; } 85.68% { color: violet; } 100% { color: red; } } .temp:hover .rainbow-text { animation: rainbow 3s ease-in-out infinite; }</style>

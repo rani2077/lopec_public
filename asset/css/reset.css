@@ -27,6 +27,12 @@ time, mark, audio, video ,input, button{
 	font-weight:500;
 	text-decoration:none;
 }
+html{
+	color:initial;
+}
+a{
+	color:inherit;
+}
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
