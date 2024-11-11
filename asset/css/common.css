@@ -401,6 +401,9 @@ html.dark-mode .sc-info .tag-list,
     margin: 0 auto;
     margin-top: 70px;
 }
+.sc-top-ads img{
+    object-fit: contain;
+}
 
 @media (max-width: 768px) {
     .sc-top-ads{

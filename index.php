@@ -186,17 +186,22 @@
 
         <?php //  상단광고 ?>
         <div class="sc-top-ads">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                crossorigin="anonymous">
-            </script>
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:728px;height:90px"
-                data-ad-client="ca-pub-5125145415518329"
-                data-ad-slot="5389359448">
-            </ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+            
+            <?php //  광고
+            // <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+            //     crossorigin="anonymous">
+            // </script>
+            // <ins class="adsbygoogle"
+            //     style="display:inline-block;width:728px;height:90px"
+            //     data-ad-client="ca-pub-5125145415518329"
+            //     data-ad-slot="5389359448">
+            // </ins>
+            // <script>
+            //     (adsbygoogle = window.adsbygoogle || []).push({});
+            // </script>
+            ?>
+
+            <img src="./asset/donate/001.png" alt="">
         </div>
         <?php //  상단광고 ?>
 
