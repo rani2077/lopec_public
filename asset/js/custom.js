@@ -3165,7 +3165,7 @@ export async function getCharacterProfile(inputName,callback){
 
                 infoStart += infoBox("기존 스펙포인트", specPoint, '업데이트 전 스펙포인트입니다.')
                 infoStart += infoBox("공격력", attackPowResult, '공격력 수치입니다.<br>만찬/버프 등으로 변할 수 있습니다.')
-                infoStart += infoBox("특성합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계')
+                infoStart += infoBox("특성합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계<br>※아크패시브 미적용 지역에서 접속 종료시<br>수치가 낮아질 수 있습니다.')
                 infoStart += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("진화", ((evolutionDamageResult-1)*100).toFixed(1) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("깨달음", ((enlightResult-1)*100).toFixed(0) + "%", '로펙 환산이 적용된 수치입니다.')

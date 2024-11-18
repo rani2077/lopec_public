@@ -24,17 +24,16 @@
 
     <?php //  상단광고 ?>
         <div class="sc-top-ads">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                crossorigin="anonymous">
-            </script>
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:728px;height:90px"
-                data-ad-client="ca-pub-5125145415518329"
-                data-ad-slot="5389359448">
-            </ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+            crossorigin="anonymous"></script>
+        <!-- main-search -->
+        <ins class="adsbygoogle"
+            style="display:inline-block;width:728px;height:90px"
+            data-ad-client="ca-pub-5125145415518329"
+            data-ad-slot="4483465713"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
         </div>
         <?php //  상단광고 ?>
 

@@ -12,6 +12,7 @@
 
 
 
+// 헤더
 document.querySelector('.sc-header').innerHTML = `
 <div class="logo-group">
     <h1 class="logo">
@@ -21,7 +22,7 @@ document.querySelector('.sc-header').innerHTML = `
     </h1>
     <div class="link-box">
         <a href="https://cool-kiss-ec2.notion.site/10a758f0e8da809ead94d78f142f671d" target="_blink" class="link-alert">공지사항</a>
-        <a href="https://cool-kiss-ec2.notion.site/10b758f0e8da802ca4bdccf9a3c5edec" target="_blink" class="link-alert">업데이트</a>
+        <a href="https://cool-kiss-ec2.notion.site/v1-0-137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="link-alert">로펙체커</a>
         <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link-alert">후원/배너</a>
         <a href="https://cool-kiss-ec2.notion.site/12a758f0e8da807a936ae883e773f646" target="_blink" class="link-alert">문의/제보</a>
     </div>
