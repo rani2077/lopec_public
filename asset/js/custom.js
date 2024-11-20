@@ -1397,7 +1397,7 @@ export async function getCharacterProfile(inputName,callback){
             addDamagePer:0,
             finalDamagePer:1,
             weaponAtkPlus:0,
-            weaponAtkPer:1,
+            weaponAtkPer:0,
             atkPlus:0,
             atkPer:0,
             criticalChancePer:0,
@@ -1434,7 +1434,7 @@ export async function getCharacterProfile(inputName,callback){
                 }else if(optionCheck&&filterArry.attr=="WeaponAtkPlus"){ //무기 공격력 +
                     accObj.weaponAtkPlus += filterArry.value
                 }else if(optionCheck&&filterArry.attr=="WeaponAtkPer"){ //무기 공격력 %
-                    accObj.weaponAtkPer += (filterArry.value/100)
+                    accObj.weaponAtkPer += filterArry.value
                 }else if(optionCheck&&filterArry.attr=="AtkPlus"){ //공격력 +
                     accObj.atkPlus += filterArry.value
                 }else if(optionCheck&&filterArry.attr=="AtkPer"){ //공격력 %   
@@ -2886,69 +2886,68 @@ export async function getCharacterProfile(inputName,callback){
 
 
             if( !(supportCheck() == "서폿" ) ){
-                range = (levelRange, value) =>  `레벨 구간 : ` + levelRange + `<br>` + `평균 점수 : ` + value + `<br>` + `카던 세팅 등의 허수는 제외 <br><br> ※딜러 티어 <br> 브론즈 : 200만점 미만 <br> 실버 : 200만점 이상 <br> 골드 : 320만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.11.20 <br><br> ※딜러 티어 <br> 브론즈 : 200만점 미만 <br> 실버 : 200만점 이상 <br> 골드 : 320만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
                 if(itemLevel >= 1725 ){
-                    return range("1725이상 1740이하","1017만")
+                    return range("1725이상 1740이하","1047만")
                 }else if(itemLevel >= 1715 ){
-                    return range("1715이상 1725미만","861만")
+                    return range("1715이상 1725미만","903만")
                 }else if(itemLevel >= 1710 ){
-                    return range("1710이상 1715미만","787만")
+                    return range("1710이상 1715미만","830만")
                 }else if(itemLevel >= 1705 ){
-                    return range("1705이상 1710미만","740만")
+                    return range("1705이상 1710미만","778만")
                 }else if(itemLevel >= 1700 ){
-                    return range("1700이상 1705미만","709만")
+                    return range("1700이상 1705미만","732만")
                 }else if(itemLevel >= 1695 ){
-                    return range("1695이상 1700미만","662만")
+                    return range("1695이상 1700미만","697만")
                 }else if(itemLevel >= 1690 ){
-                    return range("1690이상 1695미만","614만")
+                    return range("1690이상 1695미만","658만")
                 }else if(itemLevel >= 1685 ){
-                    return range("1685이상 1690미만","586만")
+                    return range("1685이상 1690미만","625만")
                 }else if(itemLevel >= 1680 ){
-                    return range("1680이상 1685미만","560만")
+                    return range("1680이상 1685미만","582만")
                 }else if(itemLevel >= 1675 ){
-                    return range("1675이상 1680미만","-데이터 수집 중-")
+                    return range("1675이상 1680미만","482만")
                 }else if(itemLevel >= 1670 ){
-                    return range("1670이상 1675미만","432만")
+                    return range("1670이상 1675미만","464만")
                 }else if(itemLevel >= 1665 ){
-                    return range("1665이상 1670미만","-데이터 수집 중-")
+                    return range("1665이상 1670미만","439만")
                 }else if(itemLevel >= 1660 ){
-                    return range("1660이상 1665미만","-데이터 수집 중-")
+                    return range("1660이상 1665미만","412만")
                 } else {
                     '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
                 }
 
             }else{
-                // if(itemLevel >= 1725 ){
-                //     range += ("1725이상 1740이하","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1715 ){
-                //     range += ("1715이상 1725미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1710 ){
-                //     range += ("1710이상 1715미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1705 ){
-                //     range += ("1705이상 1710미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1700 ){
-                //     range += ("1700이상 1705미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1695 ){
-                //     range += ("1695이상 1700미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1690 ){
-                //     range += ("1690이상 1695미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1685 ){
-                //     range += ("1685이상 1690미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1680 ){
-                //     range += ("1680이상 1685미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1675 ){
-                //     range += ("1675이상 1680미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1670 ){
-                //     range += ("1670이상 1675미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1665 ){
-                //     range += ("1665이상 1670미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1660 ){
-                //     range += ("1660이상 1665미만","-데이터 수집 중-<br>")
-                // } else {
-                //     '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
-                // }
-                return range += `풀버프를 기준으로 한 점수입니다.<br> 평균 점수는 데이터 수집 중입니다. <br><br> ※서폿 티어 <br> 브론즈 : 300만점 미만 <br> 실버 : 300만점 이상 <br> 골드 : 400만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 720만점 이상 <br> 에스더 : 920만점 이상`
-
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.11.20 <br><br> ※서폿 티어 <br> 브론즈 : 300만점 미만 <br> 실버 : 300만점 이상 <br> 골드 : 400만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 720만점 이상 <br> 에스더 : 920만점 이상` 
+                if(itemLevel >= 1725 ){
+                    range("1725이상 1740이하","1093만")
+                }else if(itemLevel >= 1715 ){
+                    range("1715이상 1725미만","977만")
+                }else if(itemLevel >= 1710 ){
+                    range("1710이상 1715미만","926만")
+                }else if(itemLevel >= 1705 ){
+                    range("1705이상 1710미만","873만")
+                }else if(itemLevel >= 1700 ){
+                    range("1700이상 1705미만","835만")
+                }else if(itemLevel >= 1695 ){
+                    range("1695이상 1700미만","771만")
+                }else if(itemLevel >= 1690 ){
+                    range("1690이상 1695미만","723만")
+                }else if(itemLevel >= 1685 ){
+                    range("1685이상 1690미만","673만")
+                }else if(itemLevel >= 1680 ){
+                    range("1680이상 1685미만","627만")
+                }else if(itemLevel >= 1675 ){
+                    range("1675이상 1680미만","589만")
+                }else if(itemLevel >= 1670 ){
+                    range("1670이상 1675미만","544만")
+                }else if(itemLevel >= 1665 ){
+                    range("1665이상 1670미만","532만")
+                }else if(itemLevel >= 1660 ){
+                    range("1660이상 1665미만","495만")
+                } else {
+                    '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
+                }
             }
         }
 
@@ -2986,11 +2985,11 @@ export async function getCharacterProfile(inputName,callback){
             let gradeIco = ""
             let gradeInfo = ""
     
-            function grade(ico, info){
+            function grade(ico, info, lowtier){
                 return `
                 <div class="tier-box">
-                    <img src="${ico}" alt="">
-                    <p class="tier-info">${info}</p>
+                    <img src="${ico}" ${lowtier} alt="">
+                    <p class="tier-info" ${lowtier}>${info}</p>
                 </div>`;
             }
             
@@ -3070,31 +3069,33 @@ export async function getCharacterProfile(inputName,callback){
 
             }else{ //3티어 스펙포인트
 
-                let detail = `스펙포인트 변경 준비중<br>기존 스펙포인트로 제공됩니다.`
+                let detail = `스펙포인트는 아크패시브<br>개방 후 제공됩니다.`
 
-                if(specPoint < 2000000){ //브론즈
-                    gradeIco="../asset/image/bronze.png"
-                    gradeInfo = "브론즈 티어"
-                }else if(specPoint >= 2000000 && specPoint < 3200000){ //실버
-                    gradeInfo = "실버 티어"
-                    gradeIco="../asset/image/silver.png"
-                }else if(specPoint >= 3200000 && specPoint < 4200000){ //골드
-                    gradeInfo = "골드 티어"
-                    gradeIco="../asset/image/gold.png"
-                }else if(specPoint >= 4200000 && specPoint < 5200000){ //다이아
-                    gradeInfo = "다이아몬드 티어"
-                    gradeIco="../asset/image/diamond.png"
-                }else if(specPoint >= 5200000 && specPoint < 6200000){ //마스터
-                    gradeInfo = "마스터 티어"
-                    gradeIco="../asset/image/master.png"
-                }else if(specPoint >= 6200000){ //에스더
-                    gradeInfo = "에스더 티어"
-                    gradeIco="../asset/image/esther.png"
-                }
+
+                
+                // if(specPoint < 2000000){ //브론즈
+                //     gradeIco="../asset/image/bronze.png"
+                //     gradeInfo = "브론즈 티어"
+                // }else if(specPoint >= 2000000 && specPoint < 3200000){ //실버
+                //     gradeInfo = "실버 티어"
+                //     gradeIco="../asset/image/silver.png"
+                // }else if(specPoint >= 3200000 && specPoint < 4200000){ //골드
+                //     gradeInfo = "골드 티어"
+                //     gradeIco="../asset/image/gold.png"
+                // }else if(specPoint >= 4200000 && specPoint < 5200000){ //다이아
+                //     gradeInfo = "다이아몬드 티어"
+                //     gradeIco="../asset/image/diamond.png"
+                // }else if(specPoint >= 5200000 && specPoint < 6200000){ //마스터
+                //     gradeInfo = "마스터 티어"
+                //     gradeIco="../asset/image/master.png"
+                // }else if(specPoint >= 6200000){ //에스더
+                //     gradeInfo = "에스더 티어"
+                //     gradeIco="../asset/image/esther.png"
+                // }
         
                 return `
-                    ${grade(gradeIco, gradeInfo)}
-                    ${point( formatNumber(specPoint) , detail )}
+                    ${grade("미제공", "미제공", "style='display:none;'")}
+                    ${point( "<em style='font-size:20px;'>스펙포인트 미제공</em>" , detail )}
                 `;
             }
         }

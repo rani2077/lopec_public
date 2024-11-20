@@ -134,8 +134,8 @@
                     
                 </div>
             </form>
-
-
+            <p class="temp-text" style="margin-top:20px;font-size:23px;text-align:center;">로펙 점수체계 변경 설문조사<br>즉시☞☞<a href="https://forms.gle/mdr5AyoDsWLrf7U7A" target="_blink" style="text-decoration:underline;color:#00f;">참여하기</a>☜☜</p>
+            
         </section>
         
         <script type="text/javascript">

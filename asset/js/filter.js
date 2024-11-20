@@ -490,6 +490,7 @@ let calAccessoryFilter = [
     {name:"</img>공격력 +390",attr:"AtkPlus",value:390},
     {name:"</img>공격력 +0.40%",attr:"AtkPer",value:0.4},
     {name:"</img>공격력 +0.95%",attr:"AtkPer",value:0.95},
+    // {name:"</img>무기 공격력 +3.00%",attr:"AtkPer",value:0.95},
     {name:"</img>공격력 +1.55%",attr:"AtkPer",value:1.55},
     {name:"</img>치명타 적중률 +0.40%",attr:"CriticalChancePer",value:0.4},
     {name:"</img>치명타 적중률 +0.95%",attr:"CriticalChancePer",value:0.95},
