@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 if(data.ArmoryEngraving.ArkPassiveEffects){
                     specPoint = formatNumber(Math.max( highTierSpecPointObj.supportSpecPoint, highTierSpecPointObj.dealerlastFinalValue ).toFixed(0))
                 }else{
-                    specPoint = formatNumber(lowTierSpecPointObj.specPoint)
+                    specPoint = "스펙포인트 미제공"
                 }
 
                 return`
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         <div class="name">
                             <a href="https://lopec.kr/search/search.php?mainCharacterName=${inputText}" target="_blink"><strong>${inputText}</strong><em>${userSecondClass + " " + originClass}</em></a>
                         </div>
-                        <span class="grade"><img src="${gradeObj.ico}" alt=""></span>
+                        <span class="grade"  ${gradeObj.lowTier}><img src="${gradeObj.ico}" alt=""></span>
                         <span class="point">${specPoint}</span>
                     </div>
                     <div class="patron-group"></div>`;
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                                 {name:'적에게 주는 피해 +0.55%',grade:bottom},
                                 {name:'추가 피해 +2.60%',grade:top},
                                 {name:'추가 피해 +1.60%',grade:middle},
-                                {name:'추가 피해 +0.60%',grade:bottom},
+                                {name:'추가 피해 +0.70%',grade:bottom},
                             ]
                         }else if(userSecondClass == "서폿"){ // 서폿
                             filterObjFirst = [
@@ -162,15 +162,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             <span class="grade">${grade}</span>
                         </div>`;
                     }else if(accessory.Type == "귀걸이"){
-                        let filterObjFirst = [
-                            {name:'무기 공격력 +3.00%',grade:top},
-                            {name:'무기 공격력 +1.80%',grade:middle},
-                            {name:'무기 공격력 +0.80%',grade:bottom},
-                            {name:'공격력 +1.55%',grade:top},
-                            {name:'공격력 +0.95%',grade:middle},
-                            {name:'공격력 +0.40%',grade:bottom},
+                        
+                        let filterObjFirst = []
+                        if( !(userSecondClass == "서폿")){ //딜러
+                            filterObjFirst = [
+                                {name:'무기 공격력 +3.00%',grade:top},
+                                {name:'무기 공격력 +1.80%',grade:middle},
+                                {name:'무기 공격력 +0.80%',grade:bottom},
+                                {name:'공격력 +1.55%',grade:top},
+                                {name:'공격력 +0.95%',grade:middle},
+                                {name:'공격력 +0.40%',grade:bottom},
+                            ]
+                        }else if(userSecondClass == "서폿"){ // 서폿
+                            filterObjFirst = [
+                                {name:'파티원 보호막 효과 +3.50%',grade:top},
+                                {name:'파티원 보호막 효과 +2.10%',grade:middle},
+                                {name:'파티원 보호막 효과 +0.95%',grade:bottom},
+                                {name:'파티원 회복 효과 +3.50%',grade:top},
+                                {name:'파티원 회복 효과 +2.10%',grade:middle},
+                                {name:'파티원 회복 효과 +0.95%',grade:bottom},
+                                {name:'무기 공격력 +3.00%',grade:top},
+                                {name:'무기 공격력 +1.80%',grade:middle},
+                                {name:'무기 공격력 +0.80%',grade:bottom},
+                            ]
+                        }
 
-                        ]
                         
                         filterObjFirst.forEach(function(firstFilter){
                             if(accessory.Tooltip.includes(firstFilter.name)){
@@ -253,8 +269,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             gradeClass = "low"
                             
                         }
-                        
-                        
+
 
                         let engName = ""
                         engravingFilter.forEach(function(engFilter){
@@ -262,6 +277,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                                 engName = engFilter.short
                             }
                         })
+                        console.log(engName)
                         engravingBox += `
                             <div class="engraving-box">
                                 <span class="name">${engName}</span>

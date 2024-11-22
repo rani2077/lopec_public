@@ -323,7 +323,7 @@ let engravingImg = [
     "마나 효율 증가^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_166.png",
     "마나의 흐름^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_63.png",
     "바리케이드^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_170.png",
-    "번개의분노^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_191.png",
+    "번개의 분노^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_191.png",
     "부러진 뼈^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_94.png",
     "분쇄의 주먹^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_83.png",
     "불굴^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_66.png",
@@ -373,7 +373,7 @@ export let engravingFilter = [
     , {name:"마나 효율 증가",short:"마효증",}
     , {name:"마나의 흐름",short:"마흐",}
     , {name:"바리케이드",short:"바리",}
-    , {name:"번개의분노",short:"번개의분노",}
+    , {name:"번개의 분노",short:"번분",}
     , {name:"부러진 뼈",short:"부뼈",}
     , {name:"분쇄의 주먹",short:"분쇄의주먹",}
     , {name:"불굴",short:"불굴",}

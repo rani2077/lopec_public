@@ -108,7 +108,6 @@ export let highTierSpecPointObj = {
     supportSpecPoint:0,
     // 딜러 최종 스펙포인트
     dealerlastFinalValue:0,
-    
 }
 
 
@@ -116,15 +115,20 @@ export let highTierSpecPointObj = {
 export let gradeObj = {
     ico:"image" ,
     info:"info" ,
+    lowTier:"",
 }
 
 
 // 2차전직명
-export let userSecondClass = ""
+export let userSecondClass = "";
 
 
 // 유저 json데이터
 export let apiData
+
+
+// search.php 모든 html
+export let searchHtml = '';
 
   
 
@@ -1468,7 +1472,7 @@ export function getCharacterProfile(inputName, callback){
             addDamagePer:0,
             finalDamagePer:1,
             weaponAtkPlus:0,
-            weaponAtkPer:1,
+            weaponAtkPer:0,
             atkPlus:0,
             atkPer:0,
             criticalChancePer:0,
@@ -1505,7 +1509,7 @@ export function getCharacterProfile(inputName, callback){
                 }else if(optionCheck&&filterArry.attr=="WeaponAtkPlus"){ //무기 공격력 +
                     accObj.weaponAtkPlus += filterArry.value
                 }else if(optionCheck&&filterArry.attr=="WeaponAtkPer"){ //무기 공격력 %
-                    accObj.weaponAtkPer += (filterArry.value/100)
+                    accObj.weaponAtkPer += filterArry.value
                 }else if(optionCheck&&filterArry.attr=="AtkPlus"){ //공격력 +
                     accObj.atkPlus += filterArry.value
                 }else if(optionCheck&&filterArry.attr=="AtkPer"){ //공격력 %   
@@ -2413,7 +2417,11 @@ export function getCharacterProfile(inputName, callback){
         }
 
 
-        if(arkPassiveValue(2) >= 62){ // arkPassiveValue(2) == 도약 수치
+        if(arkPassiveValue(2) >= 70){ // arkPassiveValue(2) == 도약 수치
+
+            arkObj.leapDamage += 1.15
+
+        }else if(arkPassiveValue(2) >= 62){ // arkPassiveValue(2) == 도약 수치
 
             arkObj.leapDamage += 1.11
 
@@ -2432,6 +2440,7 @@ export function getCharacterProfile(inputName, callback){
         }else{
             arkObj.leapDamage += 1
         }
+
 
 
 
@@ -3141,20 +3150,15 @@ export function getCharacterProfile(inputName, callback){
         // group-info 점수별 등급 아이콘
         
 
-
-
-        
-
-
         function characterGradeCheck(){ 
             let gradeIco = ""
             let gradeInfo = ""
     
-            function grade(ico, info){
+            function grade(ico, info, lowtier){
                 return `
                 <div class="tier-box">
-                    <img src="${ico}" alt="">
-                    <p class="tier-info">${info}</p>
+                    <img src="${ico}" ${lowtier} alt="">
+                    <p class="tier-info" ${lowtier}>${info}</p>
                 </div>`;
             }
             
@@ -3190,8 +3194,10 @@ export function getCharacterProfile(inputName, callback){
                     gradeInfo = "에스더 티어"
                     gradeIco="../asset/image/esther.png"
                 }
+
                 gradeObj.ico = gradeIco
                 gradeObj.info = gradeInfo
+
                 return `
                 ${grade(gradeIco, gradeInfo)}
                 ${point( formatNumber(Math.round(lastFinalValue)), averageLevelPoint())}
@@ -3223,6 +3229,8 @@ export function getCharacterProfile(inputName, callback){
                 }
                 gradeObj.ico = gradeIco
                 gradeObj.info = gradeInfo
+
+                
                 return `
                 ${grade(gradeIco, gradeInfo)}
                 ${point( formatNumber(Math.round(supportSpecPoint)), averageLevelPoint() )}
@@ -3234,35 +3242,20 @@ export function getCharacterProfile(inputName, callback){
 
             }else{ //3티어 스펙포인트
 
-                let detail = `스펙포인트 변경 준비중<br>기존 스펙포인트로 제공됩니다.`
+                let detail = `스펙포인트는 아크패시브<br>개방 후 제공됩니다.`
 
-                if(specPoint < 2000000){ //브론즈
-                    gradeIco="../asset/image/bronze.png"
-                    gradeInfo = "브론즈 티어"
-                }else if(specPoint >= 2000000 && specPoint < 3200000){ //실버
-                    gradeInfo = "실버 티어"
-                    gradeIco="../asset/image/silver.png"
-                }else if(specPoint >= 3200000 && specPoint < 4200000){ //골드
-                    gradeInfo = "골드 티어"
-                    gradeIco="../asset/image/gold.png"
-                }else if(specPoint >= 4200000 && specPoint < 5200000){ //다이아
-                    gradeInfo = "다이아몬드 티어"
-                    gradeIco="../asset/image/diamond.png"
-                }else if(specPoint >= 5200000 && specPoint < 6200000){ //마스터
-                    gradeInfo = "마스터 티어"
-                    gradeIco="../asset/image/master.png"
-                }else if(specPoint >= 6200000){ //에스더
-                    gradeInfo = "에스더 티어"
-                    gradeIco="../asset/image/esther.png"
-                }
+
                 gradeObj.ico = gradeIco
                 gradeObj.info = gradeInfo
+                gradeObj.lowTier = ` style="display:none;" `
+
                 return `
-                    ${grade(gradeIco, gradeInfo)}
-                    ${point( formatNumber(specPoint) , detail )}
+                    ${grade("미제공", "미제공", "style='display:none;'")}
+                    ${point( "<em style='font-size:20px;'>스펙포인트 미제공</em>" , detail )}
                 `;
             }
         }
+
 
 
 
@@ -4430,8 +4423,8 @@ export function getCharacterProfile(inputName, callback){
                 </div>`
             }
         }
-        
-        
+
+
         // 장비칸 HTML 합치기
         let groupEquip = 
         `<div class="group-equip">`
@@ -4439,21 +4432,24 @@ export function getCharacterProfile(inputName, callback){
         groupEquip += armorWrap
         groupEquip += arkArea()
         groupEquip += '</div>';
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
         // 최종 HTML합치기
         let scInfoHtml;
         scInfoHtml = groupProfile;
         scInfoHtml += groupInfoUseCheck();
         scInfoHtml += groupEquip;
-        
-        
-        
+
+
+        //search.php용 html코드
+        searchHtml = scInfoHtml
+
+
 
 
 
