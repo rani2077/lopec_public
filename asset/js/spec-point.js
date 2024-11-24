@@ -3059,68 +3059,68 @@ export function getCharacterProfile(inputName, callback){
 
 
             if( !(supportCheck() == "서폿" ) ){
-                range = (levelRange, value) =>  `레벨 구간 : ` + levelRange + `<br>` + `평균 점수 : ` + value + `<br>` + `카던 세팅 등의 허수는 제외 <br><br> ※딜러 티어 <br> 브론즈 : 200만점 미만 <br> 실버 : 200만점 이상 <br> 골드 : 320만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.11.20 <br><br> ※딜러 티어 <br> 브론즈 : 200만점 미만 <br> 실버 : 200만점 이상 <br> 골드 : 320만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
                 if(itemLevel >= 1725 ){
-                    return range("1725이상 1740이하","1017만")
+                    return range("1725이상 1740이하","1047만")
                 }else if(itemLevel >= 1715 ){
-                    return range("1715이상 1725미만","861만")
+                    return range("1715이상 1725미만","903만")
                 }else if(itemLevel >= 1710 ){
-                    return range("1710이상 1715미만","787만")
+                    return range("1710이상 1715미만","830만")
                 }else if(itemLevel >= 1705 ){
-                    return range("1705이상 1710미만","740만")
+                    return range("1705이상 1710미만","778만")
                 }else if(itemLevel >= 1700 ){
-                    return range("1700이상 1705미만","709만")
+                    return range("1700이상 1705미만","732만")
                 }else if(itemLevel >= 1695 ){
-                    return range("1695이상 1700미만","662만")
+                    return range("1695이상 1700미만","697만")
                 }else if(itemLevel >= 1690 ){
-                    return range("1690이상 1695미만","614만")
+                    return range("1690이상 1695미만","658만")
                 }else if(itemLevel >= 1685 ){
-                    return range("1685이상 1690미만","586만")
+                    return range("1685이상 1690미만","625만")
                 }else if(itemLevel >= 1680 ){
-                    return range("1680이상 1685미만","560만")
+                    return range("1680이상 1685미만","582만")
                 }else if(itemLevel >= 1675 ){
-                    return range("1675이상 1680미만","-데이터 수집 중-")
+                    return range("1675이상 1680미만","482만")
                 }else if(itemLevel >= 1670 ){
-                    return range("1670이상 1675미만","432만")
+                    return range("1670이상 1675미만","464만")
                 }else if(itemLevel >= 1665 ){
-                    return range("1665이상 1670미만","-데이터 수집 중-")
+                    return range("1665이상 1670미만","439만")
                 }else if(itemLevel >= 1660 ){
-                    return range("1660이상 1665미만","-데이터 수집 중-")
+                    return range("1660이상 1665미만","412만")
                 } else {
                     '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
                 }
 
-            }else{
-                // if(itemLevel >= 1725 ){
-                //     range += ("1725이상 1740이하","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1715 ){
-                //     range += ("1715이상 1725미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1710 ){
-                //     range += ("1710이상 1715미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1705 ){
-                //     range += ("1705이상 1710미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1700 ){
-                //     range += ("1700이상 1705미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1695 ){
-                //     range += ("1695이상 1700미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1690 ){
-                //     range += ("1690이상 1695미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1685 ){
-                //     range += ("1685이상 1690미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1680 ){
-                //     range += ("1680이상 1685미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1675 ){
-                //     range += ("1675이상 1680미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1670 ){
-                //     range += ("1670이상 1675미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1665 ){
-                //     range += ("1665이상 1670미만","-데이터 수집 중-<br>")
-                // }else if(itemLevel >= 1660 ){
-                //     range += ("1660이상 1665미만","-데이터 수집 중-<br>")
-                // } else {
-                //     '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
-                // }
-                return range += `풀버프를 기준으로 한 점수입니다.<br> 평균 점수는 데이터 수집 중입니다. <br><br> ※서폿 티어 <br> 브론즈 : 300만점 미만 <br> 실버 : 300만점 이상 <br> 골드 : 400만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 720만점 이상 <br> 에스더 : 920만점 이상`
+            }else if(supportCheck() == "서폿"){
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.11.20 <br><br> ※서폿 티어 <br> 브론즈 : 300만점 미만 <br> 실버 : 300만점 이상 <br> 골드 : 400만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 720만점 이상 <br> 에스더 : 920만점 이상` 
+                if(itemLevel >= 1725 ){
+                    return range("1725이상 1740이하","1093만")
+                }else if(itemLevel >= 1715 ){
+                    return range("1715이상 1725미만","977만")
+                }else if(itemLevel >= 1710 ){
+                    return range("1710이상 1715미만","926만")
+                }else if(itemLevel >= 1705 ){
+                    return range("1705이상 1710미만","873만")
+                }else if(itemLevel >= 1700 ){
+                    return range("1700이상 1705미만","835만")
+                }else if(itemLevel >= 1695 ){
+                    return range("1695이상 1700미만","771만")
+                }else if(itemLevel >= 1690 ){
+                    return range("1690이상 1695미만","723만")
+                }else if(itemLevel >= 1685 ){
+                    return range("1685이상 1690미만","673만")
+                }else if(itemLevel >= 1680 ){
+                    return range("1680이상 1685미만","627만")
+                }else if(itemLevel >= 1675 ){
+                    return range("1675이상 1680미만","589만")
+                }else if(itemLevel >= 1670 ){
+                    return range("1670이상 1675미만","544만")
+                }else if(itemLevel >= 1665 ){
+                    return range("1665이상 1670미만","532만")
+                }else if(itemLevel >= 1660 ){
+                    return range("1660이상 1665미만","495만")
+                } else {
+                    '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
+                }
 
             }
         }
@@ -3321,7 +3321,6 @@ export function getCharacterProfile(inputName, callback){
 
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){ //4티어 딜러
 
-                infoStart += infoBox("기존 스펙포인트", specPoint, '업데이트 전 스펙포인트입니다.')
                 infoStart += infoBox("공격력", attackPowResult, '공격력 수치입니다.<br>만찬/버프 등으로 변할 수 있습니다.')
                 infoStart += infoBox("특성합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계')
                 infoStart += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
@@ -3336,8 +3335,8 @@ export function getCharacterProfile(inputName, callback){
         
             }else if(supportCheck() == "서폿" && data.ArkPassive.IsArkPassive){ //4티어 서폿
 
-                infoStart += infoBox("기존 스펙포인트", specPoint, '업데이트 전 스펙포인트입니다.')
                 infoStart += infoBox("낙인력", finalStigmaPer + "%", '낙인 데미지 증가율')
+                infoStart += infoBox("특성합", (defaultObj.haste+defaultObj.special), '특신 합계')
                 infoStart += infoBox("상시버프", (allTimeBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("풀버프", (fullBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("각인 보너스", ((engObj.engBonusPer-1)*100).toFixed(2) + "%", '각인 보너스 점수')
@@ -4368,6 +4367,7 @@ export function getCharacterProfile(inputName, callback){
         `
         <div class="group-profile">        
             <div class="img-area shadow">
+                <button class="renew-button">갱신하기</button>
                 <img id="character-image" src="${characterImage}" alt="프로필 이미지">
                 <p class="level" id="character-level">Lv.${characterLevel}</p>
                 <p class="name" id="character-nickname">${characterNickName}</p>
@@ -4381,6 +4381,15 @@ export function getCharacterProfile(inputName, callback){
                 ${tagItemFnc("영지",townName)}
                 ${cardArryFnc()}
             </ul>
+                <div class="alert-area">
+                    <div class="alert-wrap">
+                        <p class="desc">접속을 종료해야 API가 갱신됩니다.<BR>캐릭터 선택창으로 이동 후 갱신 버튼을 눌러주세요.</p>
+                        <div class="button-box">
+                            <button class="refresh">갱신</button>
+                            <button class="cancle">취소</button>
+                        </div>
+                    </div>
+                </div>
         </div>`
 
 

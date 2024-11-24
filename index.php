@@ -29,6 +29,9 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     
     <link rel="icon" type="image/png" href="./asset/image/lopec-ico.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
     
     <link rel="stylesheet" href="./asset/css/layout.css">
     <link rel="stylesheet" href="./asset/css/main.css">
@@ -48,9 +51,26 @@
         <?php //  상단광고 ?>
         <div class="sc-top-ads">
 
+            <div class="group-top-ads swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">광고1</div>
+                    <div class="swiper-slide">광고2</div>
+                    <div class="swiper-slide">광고3</div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="group-top-ads swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">광고1</div>
+                    <div class="swiper-slide">광고2</div>
+                    <div class="swiper-slide">광고3</div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
             <?php //  광고?>
 
-             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+             <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
                  crossorigin="anonymous">
              </script>
              <ins class="adsbygoogle"
@@ -60,7 +80,7 @@
              </ins>
              <script>
                  (adsbygoogle = window.adsbygoogle || []).push({});
-             </script>
+             </script> -->
 
 
         </div>
@@ -225,6 +245,28 @@
 		});	
 	}
 	</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script type="text/javascript">
+        var swiper = new Swiper(".group-top-ads", {
+            spaceBetween: 30,
+            centeredSlides: true,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
 
 
 </body>

@@ -87,6 +87,7 @@
             <div class="group-profile">
                 <div class="img-area shadow">
                     <?php //  <img id="character-image" src="../asset/image/skeleton-img.png" alt="프로필 이미지"> ?>
+                    <?php //  <button class="renew-button">갱신하기</button> ?>
                     <span class="image skeleton"></span>
                     <p class="level" id="character-level">Lv.N/A</p>
                     <p class="name" id="character-nickname">닉네임</p>
@@ -119,6 +120,16 @@
                     </li>
                 </ul>
 
+
+                <div class="alert-area">
+                    <div class="alert-wrap">
+                        <p class="desc">대충어쩌구저쩌구 api갱신의 조건에 대해 설명하는 문장을 길게 작성해야 하는데 기억이 안나 대충 작성하는 중</p>
+                        <div class="button-box">
+                            <button class="refresh">갱신하기</button>
+                            <button class="cancle">취소하기</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="group-info">
                 <div class="spec-area shadow minimum flag">

@@ -4341,8 +4341,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             
             getCharacterProfile(inputText,function(){
                 document.getElementById("sc-info").innerHTML = searchHtml;
-                splitSearchFnc(inputText);
-                specBtn();
+                splitSearchFnc(inputText); //비교검색
+                specBtn();                 //스펙포인트 상세정보보기
+                renewFnc();                //갱신하기 버튼
             });
             document.getElementById('headerInput').focus();
         }
@@ -4401,5 +4402,24 @@ function specBtn(){
 
 
 
-// search.html 헤더 검색창 띄우기
+// search.html 전용 헤더 검색창 띄우기
 document.querySelector(".sc-header .group-search").classList.add("on");
+
+
+
+// 갱신하기 버튼 스크립트
+function renewFnc(){
+    let alertArea = document.querySelector(".alert-area")
+
+    document.querySelector(".group-profile .renew-button").addEventListener("click",function(){
+        alertArea.style.display = "block";
+    })
+
+    document.querySelector(".group-profile .refresh").addEventListener("click",function(){
+        window.location.reload();
+    })
+
+    document.querySelector(".group-profile .cancle").addEventListener("click",function(){
+        alertArea.style.display = "none";
+    })
+}

@@ -397,10 +397,15 @@ html.dark-mode .sc-info .tag-list,
 .sc-top-ads{
     /* opacity: 0; */
     width: 730px;
-    height: 90px;
-    /* background: #f00; */
+    height: 100px;
     margin: 0 auto;
     margin-top: 70px;
+    display: flex;
+}
+.sc-top-ads .group-top-ads{
+    background: #f00;
+    width:50%;
+    height: 100%;
 }
 .sc-top-ads img{
     object-fit: contain;
