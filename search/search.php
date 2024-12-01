@@ -20,6 +20,8 @@
     <header class="sc-header shadow"></header>
     <?php //  공용헤더 ?>
 
+
+
     <div class="wrapper">
 
     <?php //  상단광고 ?>
@@ -75,7 +77,7 @@
 
 
         <form action="./search.php" class="sc-mobile-search mobile search-page">
-            <input type="text" name="mobileCharacterName" id="mobile-input" class="mobile-input character-name-search shadow minimum">
+            <input type="text" autocomplete="off" name="mobileCharacterName" id="mobile-input" class="mobile-input character-name-search shadow minimum">
         </form action="">
 
 
@@ -123,7 +125,7 @@
 
                 <div class="alert-area">
                     <div class="alert-wrap">
-                        <p class="desc">대충어쩌구저쩌구 api갱신의 조건에 대해 설명하는 문장을 길게 작성해야 하는데 기억이 안나 대충 작성하는 중</p>
+                        <p class="desc">api갱신 조건에 대한 문장</p>
                         <div class="button-box">
                             <button class="refresh">갱신하기</button>
                             <button class="cancle">취소하기</button>
@@ -641,7 +643,7 @@
     <?php //  공용 헤더,푸터 ?>
     <script src="../asset/js/layout.js"></script>
     
-    <script type="module" src="../asset/js/custom.js?v=0006"></script>
+    <script type="module" src="../asset/js/custom.js?v=0008"></script>
 
 
 </body>

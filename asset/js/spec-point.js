@@ -4363,12 +4363,25 @@ export function getCharacterProfile(inputName, callback){
         
 
         // group-profile HTML
+        function userBookmarkCheck(){  //즐겨찾기 체크여부
+
+            let userBookmark = JSON.parse(localStorage.getItem("userBookmark")) || []
+
+            if(userBookmark.includes(characterNickName)){
+                return "full"
+            }else{
+                return ""
+            }
+
+        }
+
         let groupProfile = 
         `
         <div class="group-profile">        
             <div class="img-area shadow">
                 <button class="renew-button">갱신하기</button>
                 <img id="character-image" src="${characterImage}" alt="프로필 이미지">
+                <em class="star ${userBookmarkCheck()}" style="user-select:none;">☆</em>
                 <p class="level" id="character-level">Lv.${characterLevel}</p>
                 <p class="name" id="character-nickname">${characterNickName}</p>
                 <p class="class" id="character-class">${supportCheck()} ${characterClass}</p>

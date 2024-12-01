@@ -158,7 +158,150 @@ body.home .page-content {
 
 
 
+/* 최근검색 */
+.group-recent{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #fff;
+    width: 300px;
+    height: 245px;
+    z-index:3;
+    border:1px solid rgb(55, 55, 55);
+    border-radius:5px;
+    overflow:hidden;
+}
+.group-recent .name-area{
+    height: 43px;
+    display: flex;
+    width: 100%;
+}
+.group-recent .name-area .sort{
+    width: 50%;
+    height: 100%;
+    line-height:43px;
+    text-align: center;
+    display: block;
+    cursor:pointer;
+    background: #d8d8d8;
+}
+.group-recent .name-area .sort.on{
+    background: #fff;
+}
 
+
+.group-recent .memo{
+    display: none;
+}
+.group-recent .memo.on{
+    display: block;
+}
+.group-recent .memo .name-box{
+    display: flex;
+    height: 40px;
+    font-size: 18px;
+    align-items: center;
+    position: relative;
+    transition:background 300ms;
+    background:initial;
+}
+.group-recent .memo .name-box:hover{
+    background: rgb(245, 245, 245);
+}
+.group-recent .memo .name-box:after{
+    content:'';
+    display: block;
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgb(165, 165, 165);
+}
+.group-recent .memo .name-box:nth-child(5):after{
+    display: none;
+}
+.group-recent .memo .name-box .name{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+    padding-left: 10px;
+}
+
+
+
+
+.group-recent .memo .name-box .remove{
+    cursor:pointer;
+}
+.group-recent .memo .name-box .star{
+    color: #ddd;
+    font-size: 20px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform:translateY(-50%);
+}
+.group-recent .memo .name-box .star:before{
+    text-shadow: 0 0 2px rgba(0,0,0,0.7);
+    color: #FDE16D;
+    content: '\2605'; /* Full star in UTF-8 */
+    position: absolute;
+    left: 0;
+
+}
+.group-recent .memo .name-box .del{
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform:translateY(-50%);
+}
+.group-recent .memo .name-box .del:before,
+.group-recent .memo .name-box .del:after{
+    content:'';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: rgba(48, 48, 48, 0.7);
+    transform-origin:top center;
+    transition:background 300ms;
+    cursor:pointer;
+}
+.group-recent .memo .name-box .del:before{
+    top: 50%;
+    left: 0;
+    transform:translateY(-50%);
+    rotate:45deg
+}
+.group-recent .memo .name-box .del:after{
+    top: 50%;
+    left: 0;
+    transform:translateY(-50%);
+    rotate:-45deg
+}
+.group-recent .memo .name-box .del:hover:before,
+.group-recent .memo .name-box .del:hover:after{
+    background: rgba(28, 28, 28, 1);
+
+}
+
+
+.group-recent .bookmark-area{
+
+}
+.group-recent .recent-area{
+}
+
+
+
+
+
+/* 반응형 */
 
 @media (max-width:1431px){
     .sc-header .logo-group .logo {

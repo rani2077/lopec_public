@@ -149,12 +149,11 @@
             <!-- <form id="main-form" onsubmit="return false;" accept-charset="UTF-8"> -->
             <form id="main-form" action="./search/search.php"  method="GET">
                 <div class="group-input shadow">
-                    <input id = "nickName" name="mainCharacterName" class="input-name main-page character-name-search" type= "text" value = "" placeholder="캐릭터 검색">
+                    <input id = "nickName" autocomplete="off" name="mainCharacterName" class="input-name main-page character-name-search" type= "text" value = "" placeholder="캐릭터 검색">
                     <button type="submit" class="search-btn"></button>
                     
                 </div>
             </form>
-            <p class="temp-text" style="margin-top:20px;font-size:23px;text-align:center;">로펙 점수체계 변경 설문조사<br>즉시☞☞<a href="https://forms.gle/mdr5AyoDsWLrf7U7A" target="_blink" style="text-decoration:underline;color:#00f;">참여하기</a>☜☜</p>
             
         </section>
         
@@ -193,7 +192,9 @@
     <script type="module" src= "./asset/js/lopec.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 ?>
-    
+
+
+
     <?php //  공용 헤더,푸터 ?>
     <script src="./asset/js/layout.js"></script>
 

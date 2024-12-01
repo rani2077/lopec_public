@@ -29,7 +29,7 @@ document.querySelector('.sc-header').innerHTML = `
 
 </div>
 <form action="./search.php" class="group-search search-page">
-    <input id="headerInput" name="headerCharacterName" class="header-input character-name-search" type="text" value="" placeholder="캐릭터 검색">
+    <input id="headerInput" autocomplete="off" name="headerCharacterName" class="header-input character-name-search" type="text" value="" placeholder="캐릭터 검색">
     <button class="search-btn"></button>
 </form>
 <div class="group-sns">
@@ -73,6 +73,169 @@ if(localStorage.getItem('darkMode') == 'enabled'){
 
 
 
+// 최근검색및 즐겨찾기
+function recentBookmark(){
+
+    
+    let nameListStorage = JSON.parse(localStorage.getItem("nameList"))  || []           //로컬스토리지 최근 검색어
+    let userBookmarkStorage = JSON.parse(localStorage.getItem("userBookmark")) || []    //로컬스토리지 즐겨찾기 목록
+    nameListStorage = nameListStorage.reverse()                                         //최신순으로 정렬
+    userBookmarkStorage = userBookmarkStorage.reverse()                                 //최신순으로 정렬
+
+
+    let recentNameBox = ""
+    let bookmarkNameBox = ""
+
+    nameListStorage.forEach(function(recentNameArry){                                       //최근검색HTML목록
+
+        recentNameBox += `
+            <div class="name-box" data-sort="recent">
+                <a href="https://lopec.kr/search/search.php?mainCharacterName=${recentNameArry}" class="name">${recentNameArry}</a>
+                <em class="del remove"></em>
+            </div>`;
+    })
+
+    userBookmarkStorage.forEach(function(bookmarkArry){
+
+        bookmarkNameBox +=`
+        <div class="name-box" data-sort="bookmark">
+            <a href="https://lopec.kr/search/search.php?mainCharacterName=${bookmarkArry}" class="name">${bookmarkArry}</a>
+            <em class="star remove">☆</em>
+        </div>`;
+    })
+
+
+
+    return `
+    <div class="group-recent" tabindex="0">
+        <div class="name-area">
+            <span data-sort="recent" class="recent sort on">최근검색</span>
+            <span data-sort="bookmark" class="bookmark sort">즐겨찾기</span>
+        </div>
+        <div class="recent-area memo on">
+            ${recentNameBox}
+        </div>
+
+        <div class="bookmark-area memo">
+            ${bookmarkNameBox}
+        </div>
+    </div>`;
+}
+
+
+document.querySelectorAll("input[type='text']").forEach(function(inputArry){
+    inputArry.addEventListener("click",userInputMemoHtml(inputArry))
+})
+
+let recentFlag = 0;
+function userInputMemoHtml(inputElement){
+    inputElement.addEventListener("focus",function(input){
+        let leftPos = input.target.getBoundingClientRect().left;
+        let topPos = input.target.getBoundingClientRect().top;
+    
+        // 브라우저 외부에서 브라우저로 포커스시 좌표 버그 해결 코드
+        if(recentFlag == 0){
+            document.body.appendChild( 
+                document.createRange().createContextualFragment(recentBookmark())
+            )    
+        }
+    
+    
+        
+        let recentHtml = document.querySelector(".group-recent")
+        
+        recentHtml.style.top = topPos+55+"px";
+        recentHtml.style.left = leftPos+"px";
+        
+        
+        // 분류명 클릭
+        document.querySelectorAll(".group-recent .name-area .sort").forEach(function(sort){
+            sort.addEventListener("click", function(){
+                let nowSort = sort.getAttribute("data-sort")
+                
+    
+                document.querySelectorAll(".group-recent .memo").forEach(function(memo){
+                    memo.classList.remove("on");
+                })
+                document.querySelectorAll(".group-recent .name-area .sort").forEach(function(removeSort){
+                    removeSort.classList.remove("on");
+                })
+                
+                document.querySelector("."+nowSort+"-area").classList.add("on");
+                document.querySelector("."+nowSort).classList.add("on");
+    
+            })
+        })
+        
+        // 목록제거버튼
+    
+        let nowUserName = JSON.parse(localStorage.getItem("nameList")).reverse()[0]                  // 현재 검색된 유저명
+    
+    
+        document.querySelectorAll(".group-recent .memo .remove").forEach(function(removeBtn){
+    
+            removeBtn.addEventListener("click",function(){
+                let nowRecentName = removeBtn.parentElement.querySelector(".name").textContent       // 선택한 유저명
+                console.log(removeBtn.parentElement.getAttribute("data-sort"))
+    
+                if(removeBtn.parentElement.getAttribute("data-sort") == "recent"){
+    
+                    let nameListStorage = JSON.parse(localStorage.getItem("nameList")).reverse()     // 로컬스토리지 최근 검색어
+    
+    
+                    nameListStorage = nameListStorage.filter(item => item !== nowRecentName);
+                    localStorage.setItem("nameList",JSON.stringify(nameListStorage.reverse()))
+    
+                }else if(removeBtn.parentElement.getAttribute("data-sort") == "bookmark"){
+    
+                    let nameListStorage = JSON.parse(localStorage.getItem("userBookmark")).reverse() // 즐겨찾기 리스트
+    
+    
+                    nameListStorage = nameListStorage.filter(item => item !== nowRecentName);
+                    localStorage.setItem("userBookmark",JSON.stringify(nameListStorage.reverse()))
+                    
+                    if(document.querySelector(".star.full") && nowRecentName == nowUserName){
+                        
+                        document.querySelector(".star.full").classList.remove("full");
+                    }
+                }
+                
+                removeBtn.parentElement.remove()
+            })
+        })
+        
+    
+    
+        //.group-recent포커스해제
+        recentHtml.addEventListener("blur",inputBlur)
+        recentFlag = 1;
+    })
+    
+}
+
+// input포커스해제
+document.querySelectorAll("input[type='text']").forEach(function(inputArry){
+    inputArry.addEventListener("blur",inputBlur)
+})
+
+
+
+function inputBlur(){
+    let recentHTML = document.querySelector(".group-recent")
+    let input = document.querySelector("input")
+
+    // console.log("input포커스 : "+!input.contains(document.activeElement))
+    // console.log("검색기록 포커스 : "+!recentHTML.contains(document.activeElement))
+    setTimeout(function(){
+        if( !input.contains(document.activeElement) &&  !recentHTML.contains(document.activeElement) ){
+            recentHTML.remove()
+            recentFlag = 0;
+        }
+    },0)
+}
+
+
+
 // 푸터
 document.querySelector('.sc-footer').innerHTML = `<span>© 2024 lopec.kr / lopec.kr isn’t endorsed by Smilegate RPG and doesn’t reflect the views or opinions of Smilegate RPG or anyone officially involved in producing or managing Lostark. Lostark and Smilegate RPG are trademarks or registered trademarks of Smilegate RPG, Inc. Lostark © Smilegate RPG, Inc.</span>`;
 
@@ -86,52 +249,3 @@ function footerPostionFnc(){
 
 footerPostionFnc()
 window.addEventListener("resize",footerPostionFnc)
-
-
-
-
-// 상단 광고
-
-// document.querySelector(".sc-top-ads").innerHTML = `
-//     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-//         crossorigin="anonymous">
-//     </script>
-//     <ins class="adsbygoogle"
-//         style="display:inline-block;width:728px;height:90px"
-//         data-ad-client="ca-pub-5125145415518329"
-//         data-ad-slot="5389359448">
-//     </ins>
-//     <script>
-//         (adsbygoogle = window.adsbygoogle || []).push({});
-//     </script>`;
-
-
-// // 사이드광고
-
-// document.querySelector(".side-ads.left .ads").innerHTML = `
-// <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-//     crossorigin="anonymous">
-// </script>
-// <ins class="adsbygoogle"
-//     style="display:inline-block;width:160px;height:600px"
-//     data-ad-client="ca-pub-5125145415518329"
-//     data-ad-slot="2763196104">
-// </ins>
-// <script>
-//     (adsbygoogle = window.adsbygoogle || []).push({});
-// </script>`;
-
-
-
-// document.querySelector(".side-ads.right .ads").innerHTML = `
-// <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-//     crossorigin="anonymous">
-// </script>
-// <ins class="adsbygoogle"
-//     style="display:inline-block;width:160px;height:600px"
-//     data-ad-client="ca-pub-5125145415518329"
-//     data-ad-slot="1340463485">
-// </ins>
-// <script>
-//     (adsbygoogle = window.adsbygoogle || []).push({});
-// </script>`;

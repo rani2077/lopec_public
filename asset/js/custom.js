@@ -4339,13 +4339,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (value) {
             inputText = value;
             
+            // 검색기록
+            
+            let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
+            // localStorage.removeItem("userBookmark");    //로컬스토리지 비우기
+
+            if(nameListStorage.includes(inputText)){
+
+                nameListStorage = nameListStorage.filter(item => item !== inputText)
+                nameListStorage.push(inputText)
+                localStorage.setItem('nameList', JSON.stringify(nameListStorage));
+
+            }else{
+
+                if(nameListStorage.length >= 5){
+                    nameListStorage.shift();
+                }
+                nameListStorage.push(inputText);
+                localStorage.setItem('nameList', JSON.stringify(nameListStorage));
+
+            }
+
+            
+            
+            // 캐릭터 검색
             getCharacterProfile(inputText,function(){
                 document.getElementById("sc-info").innerHTML = searchHtml;
                 splitSearchFnc(inputText); //비교검색
                 specBtn();                 //스펙포인트 상세정보보기
                 renewFnc();                //갱신하기 버튼
+                userBookmarkSave(inputText)//즐겨찾기 기능
             });
-            document.getElementById('headerInput').focus();
+
+
         }
     })
 
@@ -4408,6 +4434,7 @@ document.querySelector(".sc-header .group-search").classList.add("on");
 
 
 // 갱신하기 버튼 스크립트
+
 function renewFnc(){
     let alertArea = document.querySelector(".alert-area")
 
@@ -4423,3 +4450,39 @@ function renewFnc(){
         alertArea.style.display = "none";
     })
 }
+
+
+
+// 즐겨찾기 추가
+
+function userBookmarkSave(userName){
+
+    document.querySelector(".group-profile .star").addEventListener("click",bookmarkToggle)
+    // localStorage.removeItem("userBookmark");                                             //로컬스토리지 비우기
+    // localStorage.clear();                                                                //로컬스토리지 전체 제거
+    function bookmarkToggle(el){
+
+        let userBookmarkList = JSON.parse( localStorage.getItem("userBookmark") ) || []     //북마크 리스트
+        
+        el.target.classList.toggle("full");                                                 //북마크 아이콘 토글  
+        if( userBookmarkList.length < 5 && el.target.classList.contains("full")){
+            
+            userBookmarkList.push(userName)                                                 //북마크 추가하기
+            localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
+            
+        }else if( !el.target.classList.contains("full") ){
+            
+            userBookmarkList = userBookmarkList.filter(item => item !== userName)
+            localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
+            
+        }else if( userBookmarkList.length >= 5 ){
+            el.target.classList.remove("full");                                              //북마크 아이콘 토글  
+            alert("즐겨찾기는 5개까지 저장됩니다.")
+        }
+
+        console.log(userBookmarkList)
+
+
+    }
+}
+
