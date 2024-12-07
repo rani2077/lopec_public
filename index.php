@@ -51,26 +51,27 @@
         <?php //  상단광고 ?>
         <div class="sc-top-ads">
 
-            <div class="group-top-ads swiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">광고1</div>
-                    <div class="swiper-slide">광고2</div>
-                    <div class="swiper-slide">광고3</div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-            <div class="group-top-ads swiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">광고1</div>
-                    <div class="swiper-slide">광고2</div>
-                    <div class="swiper-slide">광고3</div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
+            <?php // 
+            // <div class="group-top-ads swiper">
+            //     <div class="swiper-wrapper">
+            //         <div class="swiper-slide">광고1</div>
+            //         <div class="swiper-slide">광고2</div>
+            //         <div class="swiper-slide">광고3</div>
+            //     </div>
+            //     <div class="swiper-pagination"></div>
+            // </div>
+            // <div class="group-top-ads swiper">
+            //     <div class="swiper-wrapper">
+            //         <div class="swiper-slide">광고1</div>
+            //         <div class="swiper-slide">광고2</div>
+            //         <div class="swiper-slide">광고3</div>
+            //     </div>
+            //     <div class="swiper-pagination"></div>
+            // </div>
+            ?>
             <?php //  광고?>
 
-             <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
                  crossorigin="anonymous">
              </script>
              <ins class="adsbygoogle"
@@ -80,10 +81,12 @@
              </ins>
              <script>
                  (adsbygoogle = window.adsbygoogle || []).push({});
-             </script> -->
-
-
+             </script>
         </div>
+        <div class="sc-top-ads-mobile">
+            
+        </div>
+
         <?php //  상단광고 ?>
 
         

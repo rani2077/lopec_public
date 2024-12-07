@@ -1142,6 +1142,8 @@
 
 @media(max-width: 768px) {
 
+    
+
     .sc-container{
         padding: 0 10px;
         width: 100%;
@@ -1155,6 +1157,7 @@
     .sc-container .group-logo .logo{
         object-fit:contain;
     }
+
 
 
     

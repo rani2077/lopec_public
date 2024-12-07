@@ -175,6 +175,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             ]
                         }else if(userSecondClass == "서폿"){ // 서폿
                             filterObjFirst = [
+                                {name:'최대 마나 +6',grade:top}, //테스트용 코드
+
                                 {name:'파티원 보호막 효과 +3.50%',grade:top},
                                 {name:'파티원 보호막 효과 +2.10%',grade:middle},
                                 {name:'파티원 보호막 효과 +0.95%',grade:bottom},
@@ -244,10 +246,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 })
 
                 return `
-                    <div class="accessory-area">
-                        <p class="accessory-title sub-title">악세(특옵)</p>
-                        ${accessoryBox}
-                    </div>`;
+                <div class="accessory-area">
+                    <p class="accessory-title sub-title">악세(특옵)</p>
+                    ${accessoryBox}
+                </div>`;
+
 
             }
 
@@ -313,6 +316,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
 
             function detailGroup(){
+
+
                 return`
                 <div class="detail-group">
                     ${gemArea()}
@@ -326,11 +331,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             // 요약 최종 정보 렌더링
             function completeHtml(){
+
                 let html = ""
                 
                 html += simpleGroup()
                 html += detailGroup()
                 document.querySelector(".sc-result").innerHTML = html
+
+                
+                gradeWideDec()                                              //유효옵 3개 너비조정
             }
             completeHtml()
 
@@ -367,6 +376,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
+
+function gradeWideDec(){
+    document.querySelectorAll(".accessory-area .grade").forEach(function(grade){
+        if(grade.children.length > 2){
+            document.querySelector(".accessory-area").classList.add("wide")
+        }
+    })
+}
 
 
 

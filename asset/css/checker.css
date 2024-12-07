@@ -182,6 +182,9 @@ body{
     margin-right: 5px;
     /* margin-left: 18px; */
 }
+.sc-result .accessory-area.wide .grade{
+    width: 48px;
+}
 .sc-result .accessory-area .grade{
     width: 32px;
 }

@@ -410,11 +410,21 @@ html.dark-mode .sc-info .tag-list,
 .sc-top-ads img{
     object-fit: contain;
 }
+.sc-top-ads-mobile{
+    display: none;
+    width: 360px;
+    height: 100px;
+    background: #f00;
+    margin: 0 auto;
+}
 
 @media (max-width: 768px) {
     .sc-top-ads{
         width: auto;
         display: none;
+    }
+    .sc-top-ads-mobile{
+        display: block;
     }
 }
 
