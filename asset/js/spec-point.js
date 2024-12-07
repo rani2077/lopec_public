@@ -24,7 +24,7 @@ import { config } from '../../config.js';
 
 
 // db저장 스크립트
-import {insertLopecApis} from '../js/api.js'
+import {insertLopecApis} from '../js/api.js'              //제거예정
 import {insertLopecCharacters} from '../js/character.js'
 import {insertLopecSearch} from '../js/search.js'
 
@@ -2754,29 +2754,30 @@ export function getCharacterProfile(inputName, callback){
 
 
 
-        // 기본 데이터 저장
-        // try{
-        //     let lmanCharacterNickname = data.ArmoryProfile.CharacterName;
-        //     let lmanCharacterLevel = data.ArmoryProfile.CharacterLevel;
-        //     let lmanCharacterClass = data.ArmoryProfile.CharacterClassName;
-        //     let lmanCharacterImage = data.ArmoryProfile.CharacterImage;
-        //     let lmanServer = data.ArmoryProfile.ArmoryProfile;
-        //     let lmanLevel = data.ArmoryProfile.ItemMaxLevel;
-        //     let lmanGuild = data.ArmoryProfile.GuildName;
-        //     let lmanTitle = data.ArmoryProfile.Title;
-        //     let lmanDomain = data.ArmoryProfile.TownName;
-        //     let lmanCard = "temp";
-        //     let lmanSearchHit = "";
-        //     insertLopecMains(lmanCharacterNickname,lmanCharacterLevel,lmanCharacterClass,lmanCharacterImage,lmanServer,lmanLevel,lmanGuild,lmanTitle,lmanDomain,lmanCard,lmanSearchHit)
-    
-        // }catch(err){
-        //     console.log(err)
-        // }
-
-
-
         // 유저 api 데이터 저장
-        // insertLopecApis(inputName, data)
+        // insertLopecApis( inputName, JSON.stringify(data) )
+
+
+        // 검색로그저장
+        insertLopecSearch(inputName)
+
+
+        // 유저 캐릭터 정보
+        function insertCharacter(){
+            let level = data.ArmoryProfile.CharacterLevel
+            let image = data.ArmoryProfile.CharacterImage
+            let server = data.ArmoryProfile.ServerName
+            let itemLevel = parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, ''))
+            console.log(itemLevel)
+            let guild = data.ArmoryProfile.GuildName
+            let title = data.ArmoryProfile.Title
+            let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName
+
+            insertLopecCharacters( inputName,level,classFullName,image,server,itemLevel,guild,title,lastFinalValue,supportSpecPoint,allTimeBuffPower,fullBuffPower)
+        }
+
+
+        insertCharacter()
 
 
         // ---------------------------DB저장---------------------------
@@ -3161,17 +3162,33 @@ export function getCharacterProfile(inputName, callback){
                     <p class="tier-info" ${lowtier}>${info}</p>
                 </div>`;
             }
-            
+            // 스펙포인트
             function point(point, average){
-                return `
-                <div class="spec-point">
-                    ${point}
-                    <div class="question">
-                        <span class="detail">
-                            ${average}
-                        </span>
-                    </div>
-                </div>`
+
+            
+                if(defaultObj.crit+defaultObj.haste+defaultObj.special < 1000){ // 기원의 섬 경고
+                    return `
+                    <div class="spec-point">
+                        ${point}
+                        <div class="question alert">
+                            <span class="detail">
+                                현재 캐릭터가 보정지역에 있는 것으로 예상됩니다.<br>
+                                비조정 지역(마을, 도시 등)으로 이동한 뒤 갱신해주세요.
+                            </span>
+                        </div>
+                    </div>`  
+                }else{
+                    return `
+                    <div class="spec-point">
+                        ${point}
+                        <div class="question">
+                            <span class="detail">
+                                ${average}
+                            </span>
+                        </div>
+                    </div>`
+  
+                }
             }
 
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){// 4티어 딜러 스펙포인트
@@ -3322,7 +3339,7 @@ export function getCharacterProfile(inputName, callback){
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){ //4티어 딜러
 
                 infoStart += infoBox("공격력", attackPowResult, '공격력 수치입니다.<br>만찬/버프 등으로 변할 수 있습니다.')
-                infoStart += infoBox("특성합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계')
+                infoStart += infoBox("특트합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계')
                 infoStart += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("진화", ((evolutionDamageResult-1)*100).toFixed(1) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("깨달음", ((enlightResult-1)*100).toFixed(0) + "%", '로펙 환산이 적용된 수치입니다.')

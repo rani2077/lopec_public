@@ -484,6 +484,10 @@
     right: -25px;
     transform:translateY(-50%);
 }
+.sc-info .group-info .spec-area .spec-point .question.alert{
+    background: url("../image/alert-icon.png") center no-repeat;
+    background-size:cover;
+}
 .sc-info .group-info .spec-area .spec-point .detail{
     text-align-last: left;
 }
