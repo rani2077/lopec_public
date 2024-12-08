@@ -160,7 +160,7 @@ body.home .page-content {
 
 /* 최근검색 */
 .group-recent{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     background: #fff;

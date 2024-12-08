@@ -3168,12 +3168,12 @@ export function getCharacterProfile(inputName, callback){
             
                 if(defaultObj.crit+defaultObj.haste+defaultObj.special < 1000){ // 기원의 섬 경고
                     return `
-                    <div class="spec-point">
+                    <div class="spec-point" style="color:#f00">
                         ${point}
                         <div class="question alert">
                             <span class="detail">
                                 현재 캐릭터가 보정지역에 있는 것으로 예상됩니다.<br>
-                                비조정 지역(마을, 도시 등)으로 이동한 뒤 갱신해주세요.
+                                비보정 지역(마을, 도시 등)으로 이동한 뒤 갱신해주세요.
                             </span>
                         </div>
                     </div>`  
@@ -3339,7 +3339,7 @@ export function getCharacterProfile(inputName, callback){
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){ //4티어 딜러
 
                 infoStart += infoBox("공격력", attackPowResult, '공격력 수치입니다.<br>만찬/버프 등으로 변할 수 있습니다.')
-                infoStart += infoBox("특트합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계')
+                infoStart += infoBox("특성합", (defaultObj.crit+defaultObj.haste+defaultObj.special), '치특신 합계')
                 infoStart += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("진화", ((evolutionDamageResult-1)*100).toFixed(1) + "%", '로펙 환산이 적용된 수치입니다.')
                 infoStart += infoBox("깨달음", ((enlightResult-1)*100).toFixed(0) + "%", '로펙 환산이 적용된 수치입니다.')
