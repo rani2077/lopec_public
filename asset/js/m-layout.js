@@ -25,8 +25,11 @@ name()
 
 
 
+
 // 헤더
 
+
+console.log("현재 URL: " + window.location.href);
 
 function scHeader() {
 
@@ -39,6 +42,7 @@ function scHeader() {
         searchPath = "/search/search.php"
     )
 
+    console.log(searchPath)
     
 
     return `
@@ -46,43 +50,81 @@ function scHeader() {
         <div class="logo-group">
             <h1 class="logo">
                 <span class="blind">로스트아크 전투정보실 전투력계산 스펙포인트</span>
-                <a href="https://lopec.kr/" class="link-site"></a>
+                <a href="https://lopec.kr/mobile/" class="link-site"></a>
 
             </h1>
 
         </div>
         <div class="group-search">
+            <span class="recent-close"><span class="blind">검색화면 나가기 버튼</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m12.718 4.707-1.413-1.415L2.585 12l8.72 8.707 1.413-1.415L6.417 13H20v-2H6.416l6.302-6.293z"/></svg></span>
             <form action="${searchPath}" class="search-area search-page on">
                 <input id="headerInput" autocomplete="off" name="headerCharacterName" class="header-input character-name-search" type="text" value="" placeholder="캐릭터 검색">
                 <button class="search-btn"></button>
             </form>
-            <div class="dark-area" style="display:flex;align-items:center;">
-                
 
-                <div  class="button b2 dark-mode-button" id="button-17">
-                    <input type="checkbox" class="checkbox" />
-                    <div class="knobs">
-                        <span></span>
-                    </div>
-                    <div class="layer"></div>
+
+        </div>
+
+
+    </div>
+
+    <span class="side-btn">
+
+        <em class="blind">사이드메뉴 토글 버튼</em>
+        <em class="line1"></em>
+        <em class="line2"></em>
+        <em class="line3"></em>
+    </span>
+    <div class="side-blur"></div>
+    
+    <aside class="sc-sidemenu">
+
+        <div class="group-link">
+            <a href="https://open.kakao.com/o/smvJ4DQg" class="link-item" target="_blink">1:1문의</a>
+            <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link-item">후원안내</a>
+            <a href="https://discord.gg/5B8SjX4ug4" class="link-item" target="_blink">디스코드</a>
+            <a href="https://cool-kiss-ec2.notion.site/v1-0-137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="link-item">로펙체커</a>
+        </div>
+
+
+        <div class="group-darkmode">
+            <div  class="button b2 dark-mode-button" id="button-17">
+                <input type="checkbox" class="checkbox" />
+                <div class="knobs">
+                    <span></span>
                 </div>
-
+                <div class="layer"></div>
             </div>
         </div>
-    </div>`;
+    </aside>
+    `;
 }
 
 
 document.querySelector('header').innerHTML = scHeader();
 
 
-// 좌우스크롤
-window.addEventListener("scroll",function(){
-    document.querySelector("header").style.left = "-" + window.scrollX + "px"
+
+// 사이드메뉴 토글
+document.querySelector(".side-btn").addEventListener("click",function(){
+    this.classList.toggle("on");
+
+    if(this.classList.contains("on")){
+        document.documentElement.style.overflow = "hidden";
+    }else{
+        document.documentElement.style.overflow = "";
+    }
+
+    document.querySelector("header .sc-sidemenu").classList.toggle("on")
+    document.querySelector("header .side-blur").classList.toggle("on")
+})
+document.querySelector(".side-blur").addEventListener("click",function(){
+    document.documentElement.style.overflow = "";
+    document.querySelector(".side-btn").classList.remove("on")
+    document.querySelector("header .sc-sidemenu").classList.remove("on")
+    document.querySelector("header .side-blur").classList.remove("on")
 })
 
-
-// <input id="toggle" class="dark-mode-button" type="checkbox" alt="다크모드 전환" title="다크모드 전환하기" checked="">
 
 
 // 다크모드 스크립트
@@ -179,7 +221,6 @@ function userInputMemoHtml(inputElement) {
         let leftPos = input.target.getBoundingClientRect().left;
         let topPos = input.target.getBoundingClientRect().top;
 
-        console.log(topPos)
 
         // 브라우저 외부에서 브라우저로 포커스시 좌표 버그 해결 코드
         if (recentFlag == 0) {
@@ -188,12 +229,16 @@ function userInputMemoHtml(inputElement) {
             )
         }
 
+        // 모바일 검색화면 뒤로가기 버튼 & 스크롤 금지
+        document.querySelector(".group-search").classList.add("on");
+        document.documentElement.style.overflow = 'hidden';
 
 
-        let recentHtml = document.querySelector(".group-recent")
+        let recentHtml = document.querySelector(".group-recent");
 
-        recentHtml.style.top = topPos + 55 + "px";
-        recentHtml.style.left = leftPos + "px";
+
+        // recentHtml.style.top = topPos + 55 + "px";
+        // recentHtml.style.left = leftPos + "px";
 
 
         // 분류명 클릭
@@ -272,12 +317,15 @@ function inputBlur() {
     let recentHTML = document.querySelector(".group-recent")
     let input = document.querySelector("input")
 
-    // console.log("input포커스 : "+!input.contains(document.activeElement))
-    // console.log("검색기록 포커스 : "+!recentHTML.contains(document.activeElement))
+
+    
     setTimeout(function () {
         if (!input.contains(document.activeElement) && !recentHTML.contains(document.activeElement)) {
+            document.querySelector(".group-search").classList.remove("on")
+            document.documentElement.style.overflow = '';
             recentHTML.remove()
             recentFlag = 0;
+            
         }
     }, 0)
 }
@@ -285,14 +333,7 @@ function inputBlur() {
 
 
 // 푸터
-document.querySelector('.sc-footer').innerHTML = `
-    <div class="group-link">
-        <a href="https://open.kakao.com/o/smvJ4DQg" class="link" target="_blink">1:1문의</a>
-        <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link">후원안내</a>
-        <a href="https://discord.gg/5B8SjX4ug4" class="link" target="_blink">디스코드</a>
-        <a href="https://cool-kiss-ec2.notion.site/v1-0-137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="link">로펙체커</a>
-    </div>
-    <span>Copyright 2024 lopec.kr All rights reserved.</span>`;
+document.querySelector('footer').innerHTML = `<span>Copyright 2024 lopec.kr All rights reserved.</span>`;
 
 // 푸터 하단 고정 스크립트(앵커광고 삽입시 레이아웃 깨짐 대책)
 function footerPositionFnc() {
@@ -314,14 +355,3 @@ var resizeObserver = new ResizeObserver(function (entries) {
 resizeObserver.observe(document.body);
 window.addEventListener("resize", footerPositionFnc)
 
-
-
-// 헤더푸터 너비조정
-
-window.addEventListener("resize",widthSetFnc)
-
-function widthSetFnc(){
-    document.querySelector("header").style.width = document.querySelector("body").offsetWidth + "px"
-    document.querySelector("footer").style.width = document.querySelector("body").offsetWidth + "px"
-}
-widthSetFnc()

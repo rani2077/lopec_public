@@ -1,6 +1,5 @@
 body {
     /* background: #dcdcdc; */
-    min-width: 1300px;
 }
 
 
@@ -37,13 +36,13 @@ font {
 
 /* wrapper기본설정 */
 .wrapper {
-    width: 1300px;
-    margin: 0 auto;
+    width: 100%;
+    padding: 20px;
+    margin: 110px auto 80px;
     position: relative;
-    margin-bottom: 220px;
+    margin-bottom: 150px;
 
 }
-
 
 
 
@@ -131,43 +130,6 @@ font {
 }
 
 
-/* 로딩 아이콘 */
-.loader {
-    border: 16px solid #f3f3f3;
-    /* Light grey */
-    border-top: 16px solid #3498db;
-    /* Blue */
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    animation: spin 2s linear infinite;
-    position: absolute;
-    left: calc(50% - 60px);
-    top: -30px;
-    z-index: 4;
-    display: none;
-
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-
-
-
-
-@media (max-width:1027px) {
-    .wrapper {
-        width: initial;
-    }
-}
 
 
 /* 악세서리영역 상중하 색상 */
@@ -316,7 +278,7 @@ font {
 
 /* 다크모드 */
 
-.dark-mode {
+.dark-mode{
     background: #121212;
 }
 
@@ -324,9 +286,14 @@ font {
     box-shadow: none;
 }
 
-.dark-mode header {
-    background: #1d1e1f;
+.dark-mode header,
+.dark-mode .group-recent,
+.dark-mode .group-recent .name-area .sort{
+    background: #1e1e1e;
     color: #fff;
+}
+.dark-mode .group-recent .name-area .sort{
+    color: rgb(132, 132, 132);
 }
 
 body {
@@ -334,6 +301,7 @@ body {
 }
 
 html.dark-mode .sc-info .tag-list,
+.dark-mode .sc-info .group-info .engraving-area,
 .dark-mode .sc-info .engraving-area,
 .dark-mode .sc-info .group-equip .gem-area,
 .dark-mode .sc-info .armor-wrap>div,
@@ -341,6 +309,11 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .sc-notice,
 .dark-mode .sc-notice .group-notice .name-box,
 .dark-mode .sc-answer .group-answer,
+.dark-mode .sc-sidemenu,
+.dark-mode .sc-header .search-area.on .header-input,
+.dark-mode .sc-header .search-area.on .search-btn,
+.dark-mode .group-recent .name-area .sort.on,
+.dark-mode .group-recent .memo .name-box,
 .dark-mode .sc-footer {
     background: #2f2f2f;
     color: #fff;
@@ -357,9 +330,20 @@ html.dark-mode .sc-info .tag-list,
 }
 
 
+.dark-mode header .side-btn > em,
+.dark-mode .group-recent .memo .name-box .del:before,
+.dark-mode .group-recent .memo .name-box .del:after{
+    background: #fff;
+}
+.dark-mode header svg{
+    fill:#919191;
+}
+.dark-mode .group-recent{
+    border-top: 1px solid #373737;
+}
+
 .dark-mode .sc-header .logo-group .link-site{
     background: url("../image/dark-mode-header-logo.png") center center / contain no-repeat;
-
 }
 .dark-mode .sc-container .group-logo .link-logo {
     background: url("../image/dark-mode-logo.png") center center / contain no-repeat;
@@ -554,60 +538,3 @@ html.dark-mode .sc-info .tag-list,
 
 
 
-
-
-
-
-
-
-/* 광고 */
-
-.sc-top-ads {
-    /* opacity: 0; */
-    width: 730px;
-    height: 100px;
-    margin: 0 auto;
-    margin-top: 70px;
-    display: flex;
-}
-
-.sc-top-ads .group-top-ads {
-    background: #f00;
-    width: 50%;
-    height: 100%;
-}
-
-.sc-top-ads img {
-    object-fit: contain;
-}
-
-
-
-.side-ads {
-    width: 160px;
-    height: 600px;
-    position: absolute;
-}
-
-.side-ads.left {
-    right: calc(100% + 100px);
-}
-
-.side-ads.right {
-    left: calc(100% + 100px);
-}
-
-.ads {
-    top: 50%;
-    transform: translateY(-50%);
-    position: fixed;
-    width: inherit;
-    height: inherit;
-    
-}
-
-/* @media (max-width:1027px) {
-    .side-ads {
-        display: none;
-    }
-} */

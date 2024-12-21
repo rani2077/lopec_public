@@ -23,10 +23,10 @@ export var insertLopecSearch = function(lschCharactername) {
 			} 
 		}
 	 	, error	: function(request, status, error) {
-			console.log("log insert result : LOPEC_SEARCH 저장 Error");
-			console.log("request.status : " + request.status);
-			console.log("request.responseText : " + request.responseText);
-			console.log("request.error : " + request.error);
+			// console.log("log insert result : LOPEC_SEARCH 저장 Error");
+			// console.log("request.status : " + request.status);
+			// console.log("request.responseText : " + request.responseText);
+			// console.log("request.error : " + request.error);
 		}
 	});	
 }

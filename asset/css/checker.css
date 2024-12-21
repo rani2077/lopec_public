@@ -4,11 +4,12 @@
 
 
 body{
-    width:280px;
+    width:345px;
     margin: 0 auto;
     /* padding: 0 10px; */
     border:1px solid #f0f0f0;
     position: relative;
+    min-width:initial;
 }
 
 .sc-search{

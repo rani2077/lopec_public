@@ -108,6 +108,9 @@ export let highTierSpecPointObj = {
     supportSpecPoint:0,
     // 딜러 최종 스펙포인트
     dealerlastFinalValue:0,
+
+    // 통합된 최종 스펙포인트
+    completeSpecPoint:0,
 }
 
 
@@ -1535,9 +1538,9 @@ export function getCharacterProfile(inputName, callback){
         accObj.finalDamagePer *= ((accObj.criticalDamagePer * 0.3625)/100+1)
         //console.log (accObj.criticalDamagePer)
         //console.log("치적,치피 적용"+accObj.finalDamagePer)
-        accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.9246)/100+1)
+        accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.4989)/100+1)
         //console.log("치적,치피,무공퍼 적용" + accObj.finalDamagePer)
-        accObj.finalDamagePer *= ((accObj.atkPer * 0.4989)/100+1)
+        accObj.finalDamagePer *= ((accObj.atkPer * 0.9246)/100+1)
 
 
 
@@ -2364,42 +2367,84 @@ export function getCharacterProfile(inputName, callback){
 
             arkObj.evolutionDamage += 1.70
 
-        }else if(arkPassiveValue(0) >= 108){
+        }else if(arkPassiveValue(0) >= 105){
 
             arkObj.evolutionDamage += 1.60
 
-        }else if(arkPassiveValue(0) >= 96){
+        }else if(arkPassiveValue(0) >= 90){
 
             arkObj.evolutionDamage += 1.50
 
-        }else if(arkPassiveValue(0) >= 84){
+        }else if(arkPassiveValue(0) >= 80){
 
             arkObj.evolutionDamage += 1.35
 
-        }else if(arkPassiveValue(0) >= 72){
+        }else if(arkPassiveValue(0) >= 70){
 
             arkObj.evolutionDamage += 1.25
 
         }else if(arkPassiveValue(0) >= 60){
 
+            arkObj.evolutionDamage += 1.15
+            
+        }else if(arkPassiveValue(0) >= 50){
+
+            arkObj.evolutionDamage += 1.10
+
+        }else if(arkPassiveValue(0) >= 40){
+
             arkObj.evolutionDamage += 1
         }
+        
+        
+        
+        
         
         
         // enlightenmentArry
         if(arkPassiveValue(1) >= 98){ // arkPassiveValue(1) == 깨달음수치
 
-            arkObj.enlightenmentDamage += 1.38
+            arkObj.enlightenmentDamage += 1.40
             arkObj.enlightenmentBuff += 1.37
 
         }else if(arkPassiveValue(1) >= 96){
 
+            arkObj.enlightenmentDamage += 1.37
+            arkObj.enlightenmentBuff += 1.35
+
+        }else if(arkPassiveValue(1) >= 94){
+
             arkObj.enlightenmentDamage += 1.36
             arkObj.enlightenmentBuff += 1.35
+        
+        }else if(arkPassiveValue(1) >= 92){
+
+            arkObj.enlightenmentDamage += 1.35
+            arkObj.enlightenmentBuff += 1.35
+
+        }else if(arkPassiveValue(1) >= 90){
+
+            arkObj.enlightenmentDamage += 1.34
+            arkObj.enlightenmentBuff += 1.35    
 
         }else if(arkPassiveValue(1) >= 88){
 
             arkObj.enlightenmentDamage += 1.33
+            arkObj.enlightenmentBuff += 1.33
+
+        }else if(arkPassiveValue(1) >= 86){
+
+            arkObj.enlightenmentDamage += 1.28
+            arkObj.enlightenmentBuff += 1.33
+
+        }else if(arkPassiveValue(1) >= 84){
+
+            arkObj.enlightenmentDamage += 1.27
+            arkObj.enlightenmentBuff += 1.33
+
+        }else if(arkPassiveValue(1) >= 82){
+
+            arkObj.enlightenmentDamage += 1.26
             arkObj.enlightenmentBuff += 1.33
 
         }else if(arkPassiveValue(1) >= 80){
@@ -2407,9 +2452,54 @@ export function getCharacterProfile(inputName, callback){
             arkObj.enlightenmentDamage += 1.25
             arkObj.enlightenmentBuff += 1.31
 
+        }else if(arkPassiveValue(1) >= 78){
+
+            arkObj.enlightenmentDamage += 1.18
+            arkObj.enlightenmentBuff += 1.31
+
+        }else if(arkPassiveValue(1) >= 76){
+
+            arkObj.enlightenmentDamage += 1.17
+            arkObj.enlightenmentBuff += 1.31
+
+        }else if(arkPassiveValue(1) >= 74){
+
+            arkObj.enlightenmentDamage += 1.16
+            arkObj.enlightenmentBuff += 1.31
+
         }else if(arkPassiveValue(1) >= 72){
 
             arkObj.enlightenmentDamage += 1.15
+            arkObj.enlightenmentBuff += 1.30
+
+        }else if(arkPassiveValue(1) >= 64){
+
+            arkObj.enlightenmentDamage += 1.13
+            arkObj.enlightenmentBuff += 1.30
+
+        }else if(arkPassiveValue(1) >= 56){
+
+            arkObj.enlightenmentDamage += 1.125
+            arkObj.enlightenmentBuff += 1.30
+
+        }else if(arkPassiveValue(1) >= 48){
+
+            arkObj.enlightenmentDamage += 1.12
+            arkObj.enlightenmentBuff += 1.30
+
+        }else if(arkPassiveValue(1) >= 40){
+
+            arkObj.enlightenmentDamage += 1.115
+            arkObj.enlightenmentBuff += 1.30
+
+        }else if(arkPassiveValue(1) >= 32){
+
+            arkObj.enlightenmentDamage += 1.11
+            arkObj.enlightenmentBuff += 1.30
+
+        }else if(arkPassiveValue(1) >= 24){
+
+            arkObj.enlightenmentDamage += 1.10
             arkObj.enlightenmentBuff += 1.30
 
         }else{
@@ -2421,13 +2511,21 @@ export function getCharacterProfile(inputName, callback){
 
             arkObj.leapDamage += 1.15
 
-        }else if(arkPassiveValue(2) >= 62){ // arkPassiveValue(2) == 도약 수치
+        }else if(arkPassiveValue(2) >= 68){
+
+            arkObj.leapDamage += 1.14
+
+        }else if(arkPassiveValue(2) >= 66){
+
+            arkObj.leapDamage += 1.13
+
+        }else if(arkPassiveValue(2) >= 64){
+
+            arkObj.leapDamage += 1.12
+
+        }else if(arkPassiveValue(2) >= 62){
 
             arkObj.leapDamage += 1.11
-
-        }else if(arkPassiveValue(2) >= 61){
-
-            arkObj.leapDamage += 1.105
 
         }else if(arkPassiveValue(2) >= 60){
 
@@ -2436,6 +2534,10 @@ export function getCharacterProfile(inputName, callback){
         }else if(arkPassiveValue(2) >= 50){
 
             arkObj.leapDamage += 1.05
+
+        }else if(arkPassiveValue(2) >= 40){
+
+            arkObj.leapDamage += 1.03
 
         }else{
             arkObj.leapDamage += 1
@@ -2733,6 +2835,12 @@ export function getCharacterProfile(inputName, callback){
 
 
 
+        // 스펙포인트 db저장 통합
+        if( !(supportCheck() == "서폿") ){   // 딜러
+            highTierSpecPointObj.completeSpecPoint = lastFinalValue
+        }else if(supportCheck() == "서폿"){
+            highTierSpecPointObj.completeSpecPoint = supportSpecPoint
+        }
 
 
         // ---------------------------NEW 계산식 Ver 2.0 끗---------------------------
@@ -2768,7 +2876,7 @@ export function getCharacterProfile(inputName, callback){
             let image = data.ArmoryProfile.CharacterImage
             let server = data.ArmoryProfile.ServerName
             let itemLevel = parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, ''))
-            console.log(itemLevel)
+            // console.log(itemLevel);
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
             let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName
@@ -3060,67 +3168,67 @@ export function getCharacterProfile(inputName, callback){
 
 
             if( !(supportCheck() == "서폿" ) ){
-                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.11.20 <br><br> ※딜러 티어 <br> 브론즈 : 200만점 미만 <br> 실버 : 200만점 이상 <br> 골드 : 320만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.12.20 <br><br> ※딜러 티어 <br> 브론즈 : 250만점 미만 <br> 실버 : 250만점 이상 <br> 골드 : 370만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 850만점 이상 <br> 에스더 : 1050만점 이상` 
                 if(itemLevel >= 1725 ){
-                    return range("1725이상 1740이하","1047만")
+                    return range("1725이상 1740이하","1097만")
                 }else if(itemLevel >= 1715 ){
-                    return range("1715이상 1725미만","903만")
+                    return range("1715이상 1725미만","953만")
                 }else if(itemLevel >= 1710 ){
-                    return range("1710이상 1715미만","830만")
+                    return range("1710이상 1715미만","868만")
                 }else if(itemLevel >= 1705 ){
-                    return range("1705이상 1710미만","778만")
+                    return range("1705이상 1710미만","804만")
                 }else if(itemLevel >= 1700 ){
-                    return range("1700이상 1705미만","732만")
+                    return range("1700이상 1705미만","749만")
                 }else if(itemLevel >= 1695 ){
-                    return range("1695이상 1700미만","697만")
+                    return range("1695이상 1700미만","705만")
                 }else if(itemLevel >= 1690 ){
-                    return range("1690이상 1695미만","658만")
+                    return range("1690이상 1695미만","664만")
                 }else if(itemLevel >= 1685 ){
                     return range("1685이상 1690미만","625만")
                 }else if(itemLevel >= 1680 ){
-                    return range("1680이상 1685미만","582만")
+                    return range("1680이상 1685미만","574만")
                 }else if(itemLevel >= 1675 ){
-                    return range("1675이상 1680미만","482만")
+                    return range("1675이상 1680미만","455만")
                 }else if(itemLevel >= 1670 ){
-                    return range("1670이상 1675미만","464만")
+                    return range("1670이상 1675미만","428만")
                 }else if(itemLevel >= 1665 ){
-                    return range("1665이상 1670미만","439만")
+                    return range("1665이상 1670미만","400만")
                 }else if(itemLevel >= 1660 ){
-                    return range("1660이상 1665미만","412만")
+                    return range("1660이상 1665미만","339만")
                 } else {
-                    '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
+                    return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※딜러 티어 <br> 브론즈 : 250만점 미만 <br> 실버 : 250만점 이상 <br> 골드 : 370만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 850만점 이상 <br> 에스더 : 1050만점 이상'
                 }
 
             }else if(supportCheck() == "서폿"){
-                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.11.20 <br><br> ※서폿 티어 <br> 브론즈 : 300만점 미만 <br> 실버 : 300만점 이상 <br> 골드 : 400만점 이상 <br> 다이아 : 550만점 이상 <br> 마스터 : 720만점 이상 <br> 에스더 : 920만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : 2024.12.20 <br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 650만점 이상 <br> 마스터 : 820만점 이상 <br> 에스더 : 1020만점 이상` 
                 if(itemLevel >= 1725 ){
-                    return range("1725이상 1740이하","1093만")
+                    return range("1725이상 1740이하","1112만")
                 }else if(itemLevel >= 1715 ){
-                    return range("1715이상 1725미만","977만")
+                    return range("1715이상 1725미만","983만")
                 }else if(itemLevel >= 1710 ){
-                    return range("1710이상 1715미만","926만")
+                    return range("1710이상 1715미만","939만")
                 }else if(itemLevel >= 1705 ){
-                    return range("1705이상 1710미만","873만")
+                    return range("1705이상 1710미만","880만")
                 }else if(itemLevel >= 1700 ){
-                    return range("1700이상 1705미만","835만")
+                    return range("1700이상 1705미만","816만")
                 }else if(itemLevel >= 1695 ){
-                    return range("1695이상 1700미만","771만")
+                    return range("1695이상 1700미만","747만")
                 }else if(itemLevel >= 1690 ){
-                    return range("1690이상 1695미만","723만")
+                    return range("1690이상 1695미만","702만")
                 }else if(itemLevel >= 1685 ){
                     return range("1685이상 1690미만","673만")
                 }else if(itemLevel >= 1680 ){
-                    return range("1680이상 1685미만","627만")
+                    return range("1680이상 1685미만","631만")
                 }else if(itemLevel >= 1675 ){
-                    return range("1675이상 1680미만","589만")
+                    return range("1675이상 1680미만","551만")
                 }else if(itemLevel >= 1670 ){
-                    return range("1670이상 1675미만","544만")
+                    return range("1670이상 1675미만","532만")
                 }else if(itemLevel >= 1665 ){
-                    return range("1665이상 1670미만","532만")
+                    return range("1665이상 1670미만","515만")
                 }else if(itemLevel >= 1660 ){
-                    return range("1660이상 1665미만","495만")
+                    return range("1660이상 1665미만","507만")
                 } else {
-                    '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.'
+                   return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 650만점 이상 <br> 마스터 : 820만점 이상 <br> 에스더 : 1020만점 이상'
                 }
 
             }
@@ -3192,24 +3300,24 @@ export function getCharacterProfile(inputName, callback){
             }
 
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){// 4티어 딜러 스펙포인트
-                if(lastFinalValue < 2000000){ //브론즈
-                    gradeIco="../asset/image/bronze.png"
+                if(lastFinalValue < 2500000){ //브론즈
+                    gradeIco="/asset/image/bronze.png"
                     gradeInfo = "브론즈 티어"
-                }else if(lastFinalValue >= 2000000 && lastFinalValue < 3200000){ //실버
+                }else if(lastFinalValue >= 2500000 && lastFinalValue < 3700000){ //실버
                     gradeInfo = "실버 티어"
-                    gradeIco="../asset/image/silver.png"
-                }else if(lastFinalValue >= 3200000 && lastFinalValue < 5500000){ //골드
+                    gradeIco="/asset/image/silver.png"
+                }else if(lastFinalValue >= 3700000 && lastFinalValue < 6000000){ //골드
                     gradeInfo = "골드 티어"
-                    gradeIco="../asset/image/gold.png"
-                }else if(lastFinalValue >= 5500000 && lastFinalValue < 8000000){ //다이아
+                    gradeIco="/asset/image/gold.png"
+                }else if(lastFinalValue >= 6000000 && lastFinalValue < 8500000){ //다이아
                     gradeInfo = "다이아몬드 티어"
-                    gradeIco="../asset/image/diamond.png"
-                }else if(lastFinalValue >= 8000000 && lastFinalValue < 10000000){ //마스터
+                    gradeIco="/asset/image/diamond.png"
+                }else if(lastFinalValue >= 8500000 && lastFinalValue < 10500000){ //마스터
                     gradeInfo = "마스터 티어"
-                    gradeIco="../asset/image/master.png"
-                }else if(lastFinalValue >= 10000000){ //에스더
+                    gradeIco="/asset/image/master.png"
+                }else if(lastFinalValue >= 10500000){ //에스더
                     gradeInfo = "에스더 티어"
-                    gradeIco="../asset/image/esther.png"
+                    gradeIco="/asset/image/esther.png"
                 }
 
                 gradeObj.ico = gradeIco
@@ -3217,32 +3325,27 @@ export function getCharacterProfile(inputName, callback){
 
                 return `
                 ${grade(gradeIco, gradeInfo)}
-                ${point( formatNumber(Math.round(lastFinalValue)), averageLevelPoint())}
-
-                <div class="spec-gauge">
-                    <span class="percent">${specPointGauge()} %</span>
-                    <span class="gauge ${specPointGaugeColor(specPointGauge())}" style="width:${specPointGauge()}%"></span>
-                </div>`;
+                ${point( formatNumber(Math.round(lastFinalValue)), averageLevelPoint())}`;
 
             }else if(supportCheck() == "서폿" && data.ArkPassive.IsArkPassive){ //4티어 서폿 스펙포인트
-                if(supportSpecPoint < 3000000){ //브론즈
-                    gradeIco="../asset/image/bronze.png"
+                if(supportSpecPoint < 4000000){ //브론즈
+                    gradeIco="/asset/image/bronze.png"
                     gradeInfo = "브론즈 티어"
-                }else if(supportSpecPoint >= 3000000 && supportSpecPoint < 4000000){ //실버
+                }else if(supportSpecPoint >= 4000000 && supportSpecPoint < 5000000){ //실버
                     gradeInfo = "실버 티어"
-                    gradeIco="../asset/image/silver.png"
-                }else if(supportSpecPoint >= 4000000 && supportSpecPoint < 5500000){ //골드
+                    gradeIco="/asset/image/silver.png"
+                }else if(supportSpecPoint >= 5000000 && supportSpecPoint < 6500000){ //골드
                     gradeInfo = "골드 티어"
-                    gradeIco="../asset/image/gold.png"
-                }else if(supportSpecPoint >= 5500000 && supportSpecPoint < 7200000){ //다이아
+                    gradeIco="/asset/image/gold.png"
+                }else if(supportSpecPoint >= 6500000 && supportSpecPoint < 8200000){ //다이아
                     gradeInfo = "다이아몬드 티어"
-                    gradeIco="../asset/image/diamond.png"
-                }else if(supportSpecPoint >= 7200000 && supportSpecPoint < 9200000){ //마스터
+                    gradeIco="/asset/image/diamond.png"
+                }else if(supportSpecPoint >= 8200000 && supportSpecPoint < 10200000){ //마스터
                     gradeInfo = "마스터 티어"
-                    gradeIco="../asset/image/master.png"
-                }else if(supportSpecPoint >= 9200000){ //에스더
+                    gradeIco="/asset/image/master.png"
+                }else if(supportSpecPoint >= 10200000){ //에스더
                     gradeInfo = "에스더 티어"
-                    gradeIco="../asset/image/esther.png"
+                    gradeIco="/asset/image/esther.png"
                 }
                 gradeObj.ico = gradeIco
                 gradeObj.info = gradeInfo
@@ -3250,26 +3353,8 @@ export function getCharacterProfile(inputName, callback){
                 
                 return `
                 ${grade(gradeIco, gradeInfo)}
-                ${point( formatNumber(Math.round(supportSpecPoint)), averageLevelPoint() )}
+                ${point( formatNumber(Math.round(supportSpecPoint)), averageLevelPoint() )}`;
 
-                <div class="spec-gauge">
-                    <span class="percent">${specPointGauge()} %</span>
-                    <span class="gauge ${specPointGaugeColor(specPointGauge())}" style="width:${specPointGauge()}%"></span>
-                </div>`;
-
-            }else{ //3티어 스펙포인트
-
-                let detail = `스펙포인트는 아크패시브<br>개방 후 제공됩니다.`
-
-
-                gradeObj.ico = gradeIco
-                gradeObj.info = gradeInfo
-                gradeObj.lowTier = ` style="display:none;" `
-
-                return `
-                    ${grade("미제공", "미제공", "style='display:none;'")}
-                    ${point( "<em style='font-size:20px;'>스펙포인트 미제공</em>" , detail )}
-                `;
             }
         }
 
@@ -3294,6 +3379,17 @@ export function getCharacterProfile(inputName, callback){
         let groupInfo = ""
 
         function groupInfoUseCheck(){
+
+            let userDevice = navigator.userAgent.toLowerCase();
+            let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userDevice);
+            let searchPath = ""
+            if (mobileCheck) {    //모바일
+                searchPath = "/mobile/split/split.html"
+            } else (              //데스크탑
+                searchPath = "/split/split.html"
+            )
+        
+
 
             function infoBox(name, point, message){
                 return `
@@ -3326,7 +3422,7 @@ export function getCharacterProfile(inputName, callback){
                 </div>
                 <div class="button-area">
                     <a href="https://cool-kiss-ec2.notion.site/2024-10-16-121758f0e8da8029825ef61b65e22568" target="_blink" class="link-block">무효각인 목록</a>
-                    <form class="link-split" target="_blink" action="../split/split.html" method="get" >
+                    <form class="link-split" target="_blink" action="${searchPath}" method="get" >
                         <button type="button" id="split-input">캐릭터 비교하기</button>
                     </form>
                 </div>
@@ -3437,7 +3533,7 @@ export function getCharacterProfile(inputName, callback){
                     try{
                         return nullCheck(gemImage,gemImage[e].Icon,"빈값")//gemImage[e].Icon가 있을경우 실행됨
                     }catch{
-                        return nullCheck(gemImage,true,"../asset/image/skeleton-img.png")//위의gemImage[e].Icon가 없을경우 실행됨
+                        return nullCheck(gemImage,true,"/asset/image/skeleton-img.png")//위의gemImage[e].Icon가 없을경우 실행됨
                     }
                 })()
             }
@@ -3636,7 +3732,7 @@ export function getCharacterProfile(inputName, callback){
         let armorEmpty = `
         <li class="armor-item">
             <div class="img-box radius skeleton">
-                <img src="../asset/image/skeleton-img.png" alt="정보를 불러오지 못함">
+                <img src="/asset/image/skeleton-img.png" alt="정보를 불러오지 못함">
             </div>
             <div class="text-box">
             </div>
@@ -3783,7 +3879,7 @@ export function getCharacterProfile(inputName, callback){
         let armorEtc = `
             <li class="armor-item">
                 <div class="img-box radius ultra-background">
-                    <img src="../asset/image/elixir.png" alt="">
+                    <img src="/asset/image/elixir.png" alt="">
                     <span class="progress ${elixirProgressGrade()}-progressbar">${elixirLevel}</span>
                 </div>
                 <div class="text-box">
@@ -3793,7 +3889,7 @@ export function getCharacterProfile(inputName, callback){
                     ${nameWrap()}
                 </div>
                 <div class="img-box radius ultra-background">
-                    <img src="../asset/image/hyper.png" alt="">
+                    <img src="/asset/image/hyper.png" alt="">
                     <span class="progress ${hyperProgressGrade()}-progressbar">${hyperSum}</span>
                 </div>
                 <div class="text-box">
@@ -3817,7 +3913,7 @@ export function getCharacterProfile(inputName, callback){
         let accessoryEmpty = `
         <li class="accessory-item">
             <div class="img-box radius skeleton">
-                <img src="../asset/image/skeleton-img.png" alt="">
+                <img src="/asset/image/skeleton-img.png" alt="">
             </div>
             <div class="option-box">
             </div>
@@ -3920,16 +4016,22 @@ export function getCharacterProfile(inputName, callback){
                         return '알 수 없음';
                     }
                   }
-                if(accessorySplitVal[1] == undefined){
+                if(accessorySplitVal[1] == undefined && false){
                     return`
                     <div class="option-wrap">
                         <span class="option">${accessorySplitVal[0]}</span>
                     </div>`
                 }else if(accessorySplitVal[2] == undefined){
                     return`
-                    <div class="option-wrap">
-                        <span class="option">${accessorySplitVal[0]}</span>
-                        <span class="option">${accessorySplitVal[1]}</span>
+                    <div class="text-box">
+                        <div class="grinding-wrap">
+                            <span class="quality ${qualityCheck(0)}">${getGrade(qualityCheck(0))}</span>
+                            <span class="option">${accessorySplitVal[0]}</span>
+                        </div>
+                        <div class="grinding-wrap">
+                            <span class="quality ${qualityCheck(1)}">${getGrade(qualityCheck(1))}</span>
+                            <span class="option">${accessorySplitVal[1]}</span>
+                        </div>
                     </div>`
                 }else{
                     return`
@@ -3946,8 +4048,7 @@ export function getCharacterProfile(inputName, callback){
                             <span class="quality ${qualityCheck(2)}">${getGrade(qualityCheck(2))}</span>
                             <span class="option">${accessorySplitVal[2]}</span>
                         </div>
-                    </div>
-                    `
+                    </div>`
 
                 }
                 }catch(err){
@@ -4281,22 +4382,22 @@ export function getCharacterProfile(inputName, callback){
             let arkPassiveVal = data.ArkPassive.Points[e].Value
             return arkPassiveVal
         }
-        let arkTitleWrap = 
-        `
-        <div class="ark-title-wrap">
-            <div class="title-box evolution">
-                <span class="tag">진화</span>
-                <span class="title">${arkPassiveValue(0)}</span>
-            </div>
-            <div class="title-box enlightenment">
-                <span class="tag">깨달음</span>
-                <span class="title">${arkPassiveValue(1)}</span>
-            </div>
-            <div class="title-box leap">
-                <span class="tag">도약</span>
-                <span class="title">${arkPassiveValue(2)}</span>
-            </div>
-        </div>`
+        // let arkTitleWrap =   //제거예정
+        // `
+        // <div class="ark-title-wrap">
+        //     <div class="title-box evolution">
+        //         <span class="tag">진화</span>
+        //         <span class="title">${arkPassiveValue(0)}</span>
+        //     </div>
+        //     <div class="title-box enlightenment">
+        //         <span class="tag">깨달음</span>
+        //         <span class="title">${arkPassiveValue(1)}</span>
+        //     </div>
+        //     <div class="title-box leap">
+        //         <span class="tag">도약</span>
+        //         <span class="title">${arkPassiveValue(2)}</span>
+        //     </div>
+        // </div>`
 
 
         // 아크패시브 리스트 wrap
@@ -4428,12 +4529,27 @@ export function getCharacterProfile(inputName, callback){
         let arkListWrap =
         `<div class="ark-list-wrap">
             <ul class="ark-list evolution">
+                <div class="title-box evolution">
+                    <span class="tag">진화</span>
+                    <span class="title">${arkPassiveValue(0)}</span>
+                </div>
+
                 ${arkNameArry(evolution)}
             </ul>
             <ul class="ark-list enlightenment">
+                <div class="title-box enlightenment">
+                    <span class="tag">깨달음</span>
+                    <span class="title">${arkPassiveValue(1)}</span>
+                </div>
+
                 ${arkNameArry(enlightenment)}
             </ul>
             <ul class="ark-list leap">
+                <div class="title-box leap">
+                    <span class="tag">도약</span>
+                    <span class="title">${arkPassiveValue(2)}</span>
+                </div>
+
                 ${arkNameArry(leap)}
             </ul>
         </div>`
@@ -4452,7 +4568,6 @@ export function getCharacterProfile(inputName, callback){
             if(data.ArkPassive.IsArkPassive == true){
                 return`
                 <div class="ark-area shadow">
-                ${arkTitleWrap}
                 ${arkListWrap}
                 </div>`
             }else{

@@ -1,31 +1,31 @@
-import {
-    keywordList,
-    grindingFilter,
-    arkFilter,
-    bangleJobFilter,
-    engravingImg,
-    engravingCalFilter,
-    dealerAccessoryFilter,
-    calAccessoryFilter,
-    elixirFilter,
-    cardPointFilter,
-    bangleFilter,
-    engravingCheckFilter,
-    stoneCheckFilter,
-    elixirCalFilter,
-    arkCalFilter,
-    engravingCheckFilterLowTier,
-} from './filter.js';
+// import {
+//     keywordList,
+//     grindingFilter,
+//     arkFilter,
+//     bangleJobFilter,
+//     engravingImg,
+//     engravingCalFilter,
+//     dealerAccessoryFilter,
+//     calAccessoryFilter,
+//     elixirFilter,
+//     cardPointFilter,
+//     bangleFilter,
+//     engravingCheckFilter,
+//     stoneCheckFilter,
+//     elixirCalFilter,
+//     arkCalFilter,
+//     engravingCheckFilterLowTier,
+// } from './filter.js';
 
 
-// key
-import { config } from '../../config.js';
+// // key
+// import { config } from '../../config.js';
 
 
 
-// db저장 스크립트
-import {insertLopecCharacters} from '../js/character.js'
-import {insertLopecSearch} from '../js/search.js'
+// // db저장 스크립트
+// import {insertLopecCharacters} from '../js/character.js'
+// import {insertLopecSearch} from '../js/search.js'
 
 
 // spec-point.js html코드
@@ -34,32 +34,32 @@ import {getCharacterProfile,searchHtml} from '../js/spec-point.js'
 
 
 // API키 랜덤 선택
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-let shuffledApiKeys = shuffleArray([...config.apiKeys]);
-let currentKeyIndex = 0;
+// function shuffleArray(array) {
+//   for (let i = array.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [array[i], array[j]] = [array[j], array[i]];
+//   }
+//   return array;
+// }
+// let shuffledApiKeys = shuffleArray([...config.apiKeys]);
+// let currentKeyIndex = 0;
 
 
-function getNextApiKey() {
-  if (currentKeyIndex >= shuffledApiKeys.length) {
-    shuffledApiKeys = shuffleArray([...config.apiKeys]);
-    currentKeyIndex = 0;
-  }
+// function getNextApiKey() {
+//   if (currentKeyIndex >= shuffledApiKeys.length) {
+//     shuffledApiKeys = shuffleArray([...config.apiKeys]);
+//     currentKeyIndex = 0;
+//   }
   
-  const key = atob(shuffledApiKeys[currentKeyIndex]);
-  currentKeyIndex++;
-  return key;
-}
+//   const key = atob(shuffledApiKeys[currentKeyIndex]);
+//   currentKeyIndex++;
+//   return key;
+// }
 
-let isRequesting = false;
+// let isRequesting = false;
 
 
-let temptemptemp = ""
+// let temptemptemp = ""
 
 
 // export async function getCharacterProfile(inputName,callback){
@@ -4427,9 +4427,6 @@ function specBtn(){
 }
 
 
-
-// search.html 전용 헤더 검색창 띄우기
-document.querySelector(".sc-header .group-search").classList.add("on");
 
 
 

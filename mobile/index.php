@@ -27,20 +27,21 @@
     
     
     
-    <link rel="icon" type="image/png" href="./asset/image/lopec-ico.png">
+    
+    <link rel="icon" type="image/png" href="../asset/image/lopec-ico.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
     
-    <link rel="stylesheet" href="./asset/css/layout.css">
-    <link rel="stylesheet" href="./asset/css/main.css">
+    <link rel="stylesheet" href="../asset/css/m-layout.css">
+    <link rel="stylesheet" href="../asset/css/m-main.css">
     <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
 </head>
 
 <body>
 
     <?php //  공용헤더 ?>
-    <header></header>
+    <header class="shadow"></header>
     <?php //  공용헤더 ?>
 
 
@@ -48,108 +49,11 @@
     <div class="wrapper">
 
         <?php //  상단광고 ?>
-        <div class="sc-top-ads">
-
-            <?php // 
-            // <div class="group-top-ads swiper">
-            //     <div class="swiper-wrapper">
-            //         <div class="swiper-slide">광고1</div>
-            //         <div class="swiper-slide">광고2</div>
-            //         <div class="swiper-slide">광고3</div>
-            //     </div>
-            //     <div class="swiper-pagination"></div>
-            // </div>
-            // <div class="group-top-ads swiper">
-            //     <div class="swiper-wrapper">
-            //         <div class="swiper-slide">광고1</div>
-            //         <div class="swiper-slide">광고2</div>
-            //         <div class="swiper-slide">광고3</div>
-            //     </div>
-            //     <div class="swiper-pagination"></div>
-            // </div>
-            ?>
-            <?php //  광고?>
-
-             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                 crossorigin="anonymous">
-             </script>
-             <ins class="adsbygoogle"
-                 style="display:inline-block;width:728px;height:90px"
-                 data-ad-client="ca-pub-5125145415518329"
-                 data-ad-slot="5389359448">
-             </ins>
-             <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-             </script>
+        <div class="sc-top-ads-mobile" style="display:none">
         </div>
-        <?php // <div class="sc-top-ads-mobile"> ?>
-            
-        <?php // </div> ?>
-
-        <?php //  상단광고 ?>
-
-        
-        <?php // 좌우광고 ?>
-        <aside class="side-ads left">
-            <div class="ads">
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous">
-                </script>
-                <ins class="adsbygoogle"
-                    style="display:inline-block;width:160px;height:600px"
-                    data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="2763196104">
-                </ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </aside>
-
-        <aside class="side-ads right">
-            <div class="ads">
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous">
-                </script>
-                <ins class="adsbygoogle"
-                    style="display:inline-block;width:160px;height:600px"
-                    data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="1340463485">
-                </ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </aside>
-        <?php // 좌우광고 ?>
 
 
-        <section class="sc-container main-page on" id="container">
-            <div class="group-logo">
-                <a href="https://lopec.kr/" class="link-logo">
-                    <span class="blind">로펙 바로가기</span>
-                    <?php //  <img src="./asset/image/logo.png" alt="로펙 바로가기" class="logo"> ?>
-                </a>
-            </div>
 
-            <?php 
-            // 작업 사항 
-            // 1. id = "nick-name" name="main-character-name"
-            // id name 에서 이름을 특수기호 넣으면 좋지 않음 / 변수 넘어가다 보면 다른 변수로 판단하는 경우가 발생힘
-            // nickname / maincharactername 또는 nickName / mainCharacterName 을 변경
-            // 2. form 변경
-            // <form id="main-form" action="./search/search.php" method="GET"> => <form id="main-form" onsubmit="return false;" accept-charset="UTF-8"> 으로 변경
-            // 실제 동작은 아래 goCharacterSearch 담당함
-            // $(document).ready(function(){ 캐릭터명 input name 으로 엔터키 적용되게 해 두었음
-            // <button type="submit" class="search-btn"></button> => <button type="button" class="search-btn" onClick="javascript:goCharacterSearch();"></button> 으로 변경 
-            // custom.js 보니 엔터 이벤트가 있으므로 해당 이벤트에서 value 를 받은 후 location.href = "./search/search.php?main-character-name="+main-character-name; 해도 됨
-
-            // 검색 누르는 시점에 로그 저장 필요 
-            // 
-            ?>
-            
-            
-        </section>
         <div class="notice-wrapper">
             <section class="sc-notice shadow">
                 <div class="scrollbar">
@@ -157,12 +61,6 @@
                         <p class="title">공지 / 업데이트</p>
                     </div>
                     <div class="group-notice">
-                    <div class="notice-list">
-                            <div class="name-box">
-                                <span class="name skeleton" style="display:block;width:200px;height:15px;"></span>
-                                <span class="detail-btn"></span>
-                            </div>
-                        </div>
                         <div class="notice-list">
                             <div class="name-box">
                                 <span class="name skeleton" style="display:block;width:200px;height:15px;"></span>
@@ -199,6 +97,25 @@
                                 <span class="detail-btn"></span>
                             </div>
                         </div>
+                        <div class="notice-list">
+                            <div class="name-box">
+                                <span class="name skeleton" style="display:block;width:200px;height:15px;"></span>
+                                <span class="detail-btn"></span>
+                            </div>
+                        </div>
+                        <div class="notice-list">
+                            <div class="name-box">
+                                <span class="name skeleton" style="display:block;width:200px;height:15px;"></span>
+                                <span class="detail-btn"></span>
+                            </div>
+                        </div>
+                        <div class="notice-list">
+                            <div class="name-box">
+                                <span class="name skeleton" style="display:block;width:200px;height:15px;"></span>
+                                <span class="detail-btn"></span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             
@@ -214,7 +131,6 @@
                             모든 스펙업 요소의 딜/버프 증가 수치를 보편적인 값으로 환산하여 
                             곱연산으로 적용한 환산 점수 시스템입니다.
                             로펙은 실제 스펙에 기반한 점수를 추구합니다.
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -282,7 +198,7 @@
     <?php //  공요푸터 ?>
 
     <?php //  db관련 ?>
-    <script type="module" src= "./asset/js/lopec.js"></script>
+    <script type="module" src= "/asset/js/lopec.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 ?>
 
@@ -341,14 +257,17 @@
 
 	</script>
 
+    
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <script>
-        document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/m-layout.js?' + (new Date).getTime() + '"><\/script>');
     </script>
     <script>
         document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
     </script>
 
+    
 
 
 </body>

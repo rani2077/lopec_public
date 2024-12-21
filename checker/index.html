@@ -137,7 +137,10 @@
         }
     </script>
 
-    <script type="module" src="../asset/js/checker.js"></script>
+    <script>
+        document.write('<script type="module" src="/asset/js/checker.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+
     
 </body>
 </html>

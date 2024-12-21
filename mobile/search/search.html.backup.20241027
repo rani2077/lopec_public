@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;" /> 
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta name="description" content="로스트아크 스펙 점수 확인, 전투정보실, 캐릭터 정보, 랭킹">
-    <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0; minimum-scale=1.0; user-scalable=no," /> 
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 
-    <link rel="icon" type="image/png" href="../asset/image/lopec-ico.png">
+
+    
+
+
+    <link rel="icon" href="/../asset/image/lopec-ico.png">
     
     <link rel="stylesheet" href="../asset/css/layout.css">
     <link rel="stylesheet" href="../asset/css/main.css">
@@ -17,66 +20,34 @@
 
 <body class="">
 
-    <?php //  공용헤더 ?>
-    <header></header>
-    <?php //  공용헤더 ?>
-
-
+    <!-- 공용헤더 -->
+    <header class="sc-header shadow"></header>
+    <!-- 공용헤더 -->
 
     <div class="wrapper">
 
-    <?php //  상단광고 ?>
+        <!-- 상단광고 -->
         <div class="sc-top-ads">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-            crossorigin="anonymous"></script>
-        <!-- main-search -->
-        <ins class="adsbygoogle"
-            style="display:inline-block;width:728px;height:90px"
-            data-ad-client="ca-pub-5125145415518329"
-            data-ad-slot="4483465713"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+                    crossorigin="anonymous"></script>
+            <!-- main1 -->
+            <ins class="adsbygoogle"
+                    style="display:inline-block;width:728px;height:90px"
+                    data-ad-client="ca-pub-5125145415518329"
+                    data-ad-slot="5389359448"></ins>
+            <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            
         </div>
-        <?php //  상단광고 ?>
 
+        <!-- 상단광고 -->
         
-        <?php // 좌우광고 ?>
-        <aside class="side-ads left">
-            <div class="ads">
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous">
-                </script>
-                <ins class="adsbygoogle"
-                    style="display:inline-block;width:160px;height:600px"
-                    data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="2763196104">
-                </ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </aside>
-
-        <aside class="side-ads right">
-            <div class="ads">
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous">
-                </script>
-                <ins class="adsbygoogle"
-                    style="display:inline-block;width:160px;height:600px"
-                    data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="1340463485">
-                </ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </aside>
-        <?php // 좌우광고 ?>
 
 
-
+        <form action="./search.html" class="sc-mobile-search mobile search-page">
+            <input type="text" name="mobile-character-name" id="mobile-input" class="mobile-input character-name-search shadow minimum">
+        </form action="">
 
 
         <section class="sc-info search-page" id="sc-info">
@@ -86,8 +57,7 @@
 
             <div class="group-profile">
                 <div class="img-area shadow">
-                    <?php //  <img id="character-image" src="../asset/image/skeleton-img.png" alt="프로필 이미지"> ?>
-                    <?php //  <button class="renew-button">갱신하기</button> ?>
+                    <!-- <img id="character-image" src="../asset/image/skeleton-img.png" alt="프로필 이미지"> -->
                     <span class="image skeleton"></span>
                     <p class="level" id="character-level">Lv.N/A</p>
                     <p class="name" id="character-nickname">닉네임</p>
@@ -120,23 +90,13 @@
                     </li>
                 </ul>
 
-
-                <div class="alert-area">
-                    <div class="alert-wrap">
-                        <p class="desc">api갱신 조건에 대한 문장</p>
-                        <div class="button-box">
-                            <button class="refresh">갱신하기</button>
-                            <button class="cancle">취소하기</button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="group-info">
                 <div class="spec-area shadow minimum flag">
                     <p class="title">스펙 포인트</p>
                     <div class="tier-box">
                         <img src="../asset/image/bronze.png" alt="">
-                        <?php //  <p class="tier-info">티어정보</p> ?>
+                        <!-- <p class="tier-info">티어정보</p> -->
                     </div>
                     <div class="spec-point">
                         N/A
@@ -145,6 +105,10 @@
                                 스펙포인트 정보 로딩중
                             </span>
                         </div>
+                    </div>
+                    <div class="spec-gauge">
+                        <span class="percent">N %</span>
+                        <span class="gauge"></span>
                     </div>
                     <div class="extra-info">
                         <p class="detail-info">세부정보</p>
@@ -451,12 +415,22 @@
                     </div>
                 </div>
                 <div class="ark-area shadow">
+                    <div class="ark-title-wrap">
+                        <div class="title-box evolution">
+                            <span class="tag">진화</span>
+                            <span class="title">N/A</span>
+                        </div>
+                        <div class="title-box enlightenment">
+                            <span class="tag">진화</span>
+                            <span class="title">N/A</span>
+                        </div>
+                        <div class="title-box leap">
+                            <span class="tag">진화</span>
+                            <span class="title">N/A</span>
+                        </div>
+                    </div>
                     <div class="ark-list-wrap">
                         <ul class="ark-list evolution">
-                            <li class="title-box evolution">
-                                <span class="tag">진화</span>
-                                <span class="title">N/A</span>
-                            </li>
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
@@ -507,10 +481,6 @@
                             </li>
                         </ul>
                         <ul class="ark-list enlightenment">
-                            <li class="title-box enlightenment">
-                                <span class="tag">진화</span>
-                                <span class="title">N/A</span>
-                            </li>
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
@@ -562,11 +532,6 @@
 
                         </ul>
                         <ul class="ark-list leap">
-                            <li class="title-box leap">
-                                <span class="tag">진화</span>
-                                <span class="title">N/A</span>
-                            </li>
-
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
@@ -623,25 +588,22 @@
         </section>
     </div>
 
-    <?php //  공요푸터 ?>
+    <!-- 공요푸터 -->
     <footer class="sc-footer"></footer>
-    <?php //  공요푸터 ?>
+    <!-- 공요푸터 -->
 
     
-    <?php //  db관련 ?>
+    <!-- db관련 -->
+    <script type="module" src= "./asset/js/lopec.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <?php //  db관련 ?>
+    <!-- db관련 -->
 
 
-    <?php //  공용 헤더,푸터 ?>
-    <script>
-        document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
-    </script>
-    <script>
-        document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
-    </script>
+    <!-- 공용 헤더,푸터 -->
+    <script src="../asset/js/layout.js"></script>
 
-
+    <script type="module" src="../asset/js/custom.js?v=0.9.7.5"></script>
+    <script type="module" src= "../asset/js/filter.js?v=1.012"></script>
 </body>
 
 

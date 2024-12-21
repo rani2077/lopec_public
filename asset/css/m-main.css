@@ -1,102 +1,18 @@
-
-
-
-
-.sc-container{
-    display: none;
-    width: auto;
-    flex-direction:column;
-    align-items: center;
-    margin-top: 35px;
-}
-.sc-container.on{
-    display: flex;
-}
-.sc-container .group-logo{
-    display: none;
-    width: 480px;
-    height: 180px;
-
-}
-.sc-container.on .group-logo{
-    display: block;
-    width: 330px;
-    /* height: 180px; */
-}
-.sc-container .group-logo .link-logo{
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: url("../image/logo.png") center center /contain no-repeat;
-}
-.sc-container .group-logo .logo{
-    object-fit:cover;
-    width: 100%;
-    height: 100%;
-}
-
-.sc-container.on .group-input{
-    margin-top: 50px;
-}
-.sc-container .group-input{
-    margin-top: 0;
-    display: flex;
-    border-radius:50px;
-}
-
-.sc-container .group-input .input-name{
-    width: 600px;
-    height: 50px;
-    padding-left:40px;
-    font-size: 18px;
-    border:none;
-    border-radius:50px 0 0 50px;
-    outline:none;
-    display: block;
-    margin: 0 auto;
-    /* box-shadow: 0px 2px 10px 0px rgb(221, 221, 221); */
-
-}
-.sc-container .group-input .search-btn{
-    width: 50px;
-    border-radius:0 50px 50px 0;
-}
-
-.sc-container .group-input .name-button{
-    display: none;
-}
-
-.sc-container .group-announcement{
-    margin-top: 50px;
-}
-.sc-container .group-announcement .link-announcement{
-    color: #000000;
-    padding: 5px 15px;
-    border-radius:30px;
-    font-size: 18px;
-    background: #ececec;
-
-}
-
-
-
-
-
-
 .notice-wrapper{
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 50px;
+    flex-direction:column;
+    align-items: center;
 }
 
 .sc-notice{
-    width: 550px;
+    max-width: 600px;
+    width: 100%;
     padding: 20px;
     padding-right: 5px;
+    margin-bottom: 20px;
     background: #fff;
     overflow-y: auto;
-    height:400px;
+    height:auto;
 }
 
 .sc-notice .scrollbar{
@@ -143,6 +59,7 @@
     font-weight: 600;
 }
 .sc-notice .group-notice .name-box .detail-btn{
+    min-width:20px;
     width: 20px;
     height: 20px;
     display: block;
@@ -222,14 +139,15 @@
 
 
 .sc-answer{
-    width: 550px;
+    max-width: 600px;
+    width: 100%;
 }
 
 
 .sc-answer .group-answer{
     padding: 20px;
     padding-right: 5px;
-    height:calc(400px / 2 - 10px);
+    height:auto;
     background: #fff;
 }
 .sc-answer .group-answer:last-child{
@@ -449,10 +367,11 @@
 
 .sc-info{
     padding-top: 0;
-    margin-top: 50px;
-    display: flex;
-    gap: 20px;
     position: relative;
+    display: flex;
+    flex-direction:column;
+    gap: 20px;
+    align-items: center;
 }
 
 #characterNames{
@@ -461,25 +380,22 @@
 }
 
 .sc-info .group-profile{
-    width: 300px;
+    max-width:600px;
+    width: 100%;
     position: relative;
 }
-.sc-info .group-profile .renew-button{
-    background:transparent;
+.sc-info .group-profile .renew-button {
+    background: transparent;
     color: #fff;
-    border:1px solid #fff;
-    border-radius:3px;
+    border: 1px solid #fff;
+    border-radius: 3px;
     padding: 5px 8px;
     display: inline-block;
-    cursor:pointer;
+    cursor: pointer;
     position: absolute;
     right: 5px;
     top: 5px;
-    transition:background 300ms, color 300ms;
-}
-.sc-info .group-profile .renew-button:hover{
-    background: rgba(160, 160, 160, 1);
-    color: #000;
+    transition: background 300ms, color 300ms;
 }
 .sc-info .group-profile .img-area{
     width: 100%;
@@ -493,6 +409,7 @@
 .sc-info .group-profile .img-area img{
     width: 100%;
     height: 347px;
+    object-fit:contain;
 }
 .sc-info .group-profile .img-area .image{
     width: 100%;
@@ -571,7 +488,8 @@
 .sc-info .group-profile .alert-wrap{
     position: fixed;
     background: #f5f5f5;
-    width: 439px;
+    max-width:439px;
+    width: 90%;
     padding: 20px;
     border-radius:5px;
     top: 50%;
@@ -609,7 +527,8 @@
 
 
 .sc-info .group-info{
-    width: 300px;
+    max-width:600px;
+    width: 100%;
 }
 
 
@@ -706,7 +625,7 @@
 
 }
 .sc-info .group-info .spec-area .percent{
-    z-index:2;
+    z-index:1;
     color: #fff;
     position: absolute;
     left: 50%;
@@ -722,7 +641,7 @@
     left: 0;
     transform:translateY(-50%);
     border-radius:3px;
-    z-index:1;
+    z-index:0;
 }
 .sc-info .spec-area .extra-info{
     height: 0;
@@ -843,6 +762,7 @@
     flex-direction:column;
     justify-content: space-between;
     gap: 22px;
+    background:#fff;
 }
 
 .sc-info .engraving-area .engraving-box{
@@ -898,18 +818,18 @@
 
 
 .sc-info .group-equip{
-    width: 660px;
-    /* display: flex;
-    flex-wrap:wrap; */
+    max-width:600px;
+    width: 100%;
 }
 
 .sc-info .group-equip .gem-area{
     background: #fff;
     display: flex;
+    gap: 8px;
+    flex-wrap:wrap;
     font-size: 0;
-    height: 75px;
     padding: 15px;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
 }
 .sc-info .gem-area .gem-box{
@@ -940,7 +860,7 @@
 
 .sc-info .armor-wrap{
     display: flex;
-    justify-content: space-between;
+    flex-direction:column;
     margin-top: 20px;
 }
 
@@ -956,7 +876,7 @@
 
 
 .sc-info .armor-area{
-    width: 320px;
+    width: 100%;
     background: #fff;
     padding: 15px;
     align-self: flex-start;
@@ -1066,9 +986,10 @@
 
 
 .sc-info .accessory-area{
-    width: 320px;
+    width: 100%;
     background: #fff;
     padding: 15px;
+    margin-top: 20px;
     align-self: flex-start;
 }
 .sc-info .accessory-area .accessory-list{
@@ -1147,7 +1068,7 @@
     background: #4671ff;
 } */
 .sc-info .text-box .option{
-    font-size:13px;
+    font-size: 13px;
     border:1px solid rgb(179, 179, 179);
     border-left:none;
     letter-spacing: -1px;
@@ -1215,26 +1136,30 @@
 }
 .sc-info .ark-area .ark-list-wrap{
     display: flex;
+    flex-direction:column;
 }
 .sc-info .ark-area .ark-list{
-    width: calc(100%/3);
+    width: 100%;
     position: relative;
+    margin-top: 30px;
 }
-
+.sc-info .ark-area .ark-list:first-child{
+    margin-top: 0;
+}
 .sc-info .ark-area .title-box{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     gap: 7px;
-    padding: 8px 0;
+    padding-bottom:13px;
     margin-bottom: 9px;
     position: relative;
 }
 .sc-info .ark-area .title-box:after{
     content:'';
     display: block;
-    width: 90%;
+    width: 98%;
     height: 1px;
     background: #adadad;
     position: absolute;
@@ -1259,15 +1184,19 @@
 }
 .sc-info .ark-area .title-box .title{}
 
+
+
+
+
 .sc-info .ark-area .ark-list.evolution{}
 .sc-info .ark-area .ark-list.enlightenment{}
 .sc-info .ark-area .ark-list.leap{}
 .sc-info .ark-area .ark-item{
-    padding-left: 10px;
     display: flex;
     align-items: center;
     gap: 5px;
     margin-bottom: 8px;
+    padding-left: 10px;
 }
 .sc-info .ark-area .ark-item:last-child{
     margin-bottom: 0;
@@ -1299,131 +1228,3 @@
     font-size: 14px;
 }
 .sc-info .ark-area .ark-item .text-box .name{}
-
-
-
-
-
-
-
-/* @media (max-width:1027px){
-    .sc-info{
-        width: 660px;
-        flex-wrap:wrap;
-        gap: 20px 60px;
-    }
-
-    .sc-header .logo-group{
-        flex-direction:column;
-        align-items: flex-start;
-    }
-
-
-}
-
-
-@media(max-width: 768px) {
-
-    
-
-    .sc-container{
-        padding: 0 10px;
-        width: 100%;
-    }
-
-
-
-    .sc-container .group-logo{
-        width: 260px;
-    }
-    .sc-container .group-logo .logo{
-        object-fit:contain;
-    }
-
-
-
-    
-    .sc-container.on .group-input{
-        margin-top: 0;
-        max-width:480px;
-        width: 100%;
-    }
-    .sc-container.on .group-input .input-name{
-        width: 100%;
-    }
-
-
-
-    .sc-info .group-search{}
-    .sc-container .group-annoucement{}
-
-
-
-
-
-    .sc-info{
-        flex-direction:column;
-        padding: 0 20px;
-        align-items: center;
-        width: 100%;
-    }
-    .sc-info .group-equip{
-        width: initial;
-    }
-    .sc-info .group-equip .gem-area{
-        max-width:300px;
-        flex-wrap:wrap;
-        height: initial;
-        gap: 10px;
-    }
-    .sc-info .group-equip .armor-area{
-        margin-bottom: 20px;
-        width: 100%;
-    }
-    .sc-info .group-equip .accessory-area{
-        width: 100%;
-    }
-
-
-
-
-    
-    .sc-info .group-equip .armor-wrap{
-        flex-direction:column;
-        gap: 10px;
-        max-width:300px;
-    }
-
-
-    .sc-info .ark-area{}
-    .sc-info .ark-area .ark-title-wrap{
-        display: none;
-    }
-    .sc-info .ark-area .ark-list-wrap{
-        flex-direction:column;
-    }
-    .sc-info .ark-area .ark-list{
-        width: 100%;
-    }
-
-    .sc-mobile-search.on{
-        display: block;
-    }
-    .sc-mobile-search{
-        max-width:300px;
-        width: 100%;
-        margin: 0 auto;
-        margin-top: 30px;
-    }
-    .sc-mobile-search .mobile-input{
-        border:1px solid rgb(228, 228, 228);
-        border-radius:50px;
-        width:100%;
-        padding: 0 15px;
-        height: 35px;
-    }
-
-
-
-} */
-
