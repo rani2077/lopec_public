@@ -14,7 +14,7 @@
         document.write('<script type="module" src="/asset/js/lopecApi.js?' + (new Date).getTime() + '"><\/script>');
     </script> -->
     <script type="module">
-        import {getCharacterProfile, apiData, highTierSpecPointObj} from '/asset/js/spec-point.js';
+        import {getCharacterProfile, apiData, highTierSpecPointObj, gradeObj, userSecondClass} from '/asset/js/spec-point.js';
         
 
         let urlParams = new URLSearchParams(window.location.search);
@@ -23,22 +23,24 @@
         getCharacterProfile(inputName, function(){
             // console.log(apiData)
             // console.log(highTierSpecPointObj)
+            // console.log(gradeObj)
+            // console.log(userSecondClass)
 
 
             let divide = "|"
             let lopecApiArry = [
-                inputName,                                      // 닉네임
-                apiData.ArmoryProfile.CharacterLevel,           // 캐릭터 레벨
-                apiData.ArmoryProfile.CharacterClassName,       // 캐릭터 1차 직업
-                apiData.ArmoryProfile.CharacterImage,           // 캐릭터 이미지
-                apiData.ArmoryProfile.ServerName,               // 서버명
-                apiData.ArmoryProfile.ItemMaxLevel,             // 아이템 레벨
-                apiData.ArmoryProfile.GuildName,                // 길드명
-                apiData.ArmoryProfile.Title,                    // 칭호
-                highTierSpecPointObj.dealerlastFinalValue,      // 딜러 스펙포인트
-                highTierSpecPointObj.supportSpecPoint,          // 서폿 스펙포인트
-                highTierSpecPointObj.supportAllTimeBuff,        // 상시버프
-                highTierSpecPointObj.supportFullBuff,           // 풀버프
+                inputName,                                                            // 닉네임
+                apiData.ArmoryProfile.CharacterLevel,                                 // 캐릭터 레벨
+                userSecondClass +" "+ apiData.ArmoryProfile.CharacterClassName,       // 캐릭터 직업
+                apiData.ArmoryProfile.CharacterImage,                                 // 캐릭터 이미지
+                apiData.ArmoryProfile.ServerName,                                     // 서버명
+                apiData.ArmoryProfile.ItemMaxLevel,                                   // 아이템 레벨
+                apiData.ArmoryProfile.GuildName,                                      // 길드명
+                apiData.ArmoryProfile.Title,                                          // 칭호
+                highTierSpecPointObj.completeSpecPoint,                               // 스펙포인트
+                window.location.origin + gradeObj.ico,                                // 티어 아이콘
+                highTierSpecPointObj.supportAllTimeBuff,                              // 상시버프
+                highTierSpecPointObj.supportFullBuff,                                 // 풀버프
 
             ];
 
