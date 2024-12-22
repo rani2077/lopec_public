@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const urlParams = new URLSearchParams(window.location.search);
     
     // input name 변경 필요함
-    
+
     const paramNames = ['patreonCharacterName'];
     let inputFlag = 1;
     let nowVerstion = "?v1.0"

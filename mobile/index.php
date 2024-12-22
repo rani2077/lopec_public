@@ -7,24 +7,13 @@
     <meta name="description" content="로스트아크 스펙 점수 확인, 전투정보실, 캐릭터 정보, 랭킹">
     <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보">
 
-    <?php //  Google tag (gtag.js) 애널리틱스 ?>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B9CW6L1BXZ"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { 
-            dataLayer.push(arguments); 
-        }
-    gtag('js', new Date());
-    gtag('config', 'G-B9CW6L1BXZ');
-    </script>
     <?php //  Naver meta tag ?>
     <meta name="naver-site-verification" content="19eca95cfbc6fe761f71d6856b37ecb36696896d" />
     
     
     <?php //  START - 구글 소유권 확인및 에드센스 ?>
-    <?php // 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329" crossorigin="anonymous"></script>  ?>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329" crossorigin="anonymous"></script>
     <?php //  END - 구글 소유권 확인및 에드센스 ?>
-    
     
     
     
@@ -35,7 +24,7 @@
     
     <link rel="stylesheet" href="../asset/css/m-layout.css">
     <link rel="stylesheet" href="../asset/css/m-main.css">
-    <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
+    <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보 - 모바일</title>
 </head>
 
 <body>

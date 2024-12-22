@@ -6,6 +6,12 @@
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 
+
+    <?php //  START - 구글 소유권 확인및 에드센스 ?>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329" crossorigin="anonymous"></script>
+    <?php //  END - 구글 소유권 확인및 에드센스 ?>
+
+
     <link rel="icon" type="image/png" href="../../asset/image/lopec-ico.png">
     
     <link rel="stylesheet" href="../../asset/css/m-layout.css">

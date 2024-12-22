@@ -7,6 +7,9 @@
     <meta name="description" content="로스트아크 스펙 점수 확인, 전투정보실, 캐릭터 정보, 랭킹">
     <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보">
 
+
+
+    
     <link rel="icon" type="image/png" href="../asset/image/lopec-ico.png">
     
     <link rel="stylesheet" href="../asset/css/layout.css">

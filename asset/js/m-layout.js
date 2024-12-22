@@ -335,6 +335,8 @@ function inputBlur() {
 // 푸터
 document.querySelector('footer').innerHTML = `<span>Copyright 2024 lopec.kr All rights reserved.</span>`;
 
+
+
 // 푸터 하단 고정 스크립트(앵커광고 삽입시 레이아웃 깨짐 대책)
 function footerPositionFnc() {
     let footer = document.querySelector(".sc-footer")
@@ -343,15 +345,40 @@ function footerPositionFnc() {
     footer.style.width = window.offsetWidth + "px"
 }
 
+
+let observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0) {
+            footerPositionFnc();
+        }
+    });
+});
+let config = {
+    childList: true,
+    subtree: true
+};
+observer.observe(document.body, config);
+
 footerPositionFnc()
 
-var resizeObserver = new ResizeObserver(function (entries) {
+let resizeObserver = new ResizeObserver(function (entries) {
     entries.forEach(function (entry) {
         if (entry.target === document.body) {
             footerPositionFnc();
         }
     });
 });
+
+
 resizeObserver.observe(document.body);
 window.addEventListener("resize", footerPositionFnc)
 
+
+
+// 하단 부분에서 새로고침시 스크롤을 맨 위로 올려 footer 깨짐 방지
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.addEventListener("load", function() {
+    window.scrollTo(0, 0);
+});
