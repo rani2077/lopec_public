@@ -45,6 +45,7 @@
 
 
 
+
     <div class="wrapper">
 
         <?php //  상단광고 ?>
@@ -91,7 +92,7 @@
         
         <?php // 좌우광고 ?>
         <aside class="side-ads left">
-            <div class="ads">
+            <!-- <div class="ads">
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
                     crossorigin="anonymous">
                 </script>
@@ -103,7 +104,20 @@
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
-            </div>
+            </div> -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+                crossorigin="anonymous"></script>
+            <!-- side1 -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-5125145415518329"
+                data-ad-slot="2763196104"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
         </aside>
 
         <aside class="side-ads right">

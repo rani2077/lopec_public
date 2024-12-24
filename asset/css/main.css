@@ -843,6 +843,7 @@
     flex-direction:column;
     justify-content: space-between;
     gap: 22px;
+    background:#fff;
 }
 
 .sc-info .engraving-area .engraving-box{

@@ -382,3 +382,83 @@ if ('scrollRestoration' in history) {
 window.addEventListener("load", function() {
     window.scrollTo(0, 0);
 });
+
+
+
+// )***********************************************크리스마스용 눈 효과 (제거예정)***********************************************
+// )***********************************************크리스마스용 눈 효과 (제거예정)***********************************************
+// )***********************************************크리스마스용 눈 효과 (제거예정)***********************************************
+
+
+let snowString = `
+    <div class="main">
+        <div class="initial-snow">
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+            <div class="snow">&#10052;</div>
+        </div>
+    </div>
+`;
+
+let parse = new DOMParser()
+
+let snowHtml = parse.parseFromString(snowString, 'text/html').body.firstElementChild ;
+
+
+console.log(snowHtml)
+
+document.body.appendChild(snowHtml)
+
+
+
+
+// )***********************************************크리스마스용 눈 효과 (제거예정)***********************************************
+// )***********************************************크리스마스용 눈 효과 (제거예정)***********************************************
+// )***********************************************크리스마스용 눈 효과 (제거예정)***********************************************

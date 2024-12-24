@@ -1,62 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;" /> 
+    <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta name="description" content="로스트아크 스펙 점수 확인, 전투정보실, 캐릭터 정보, 랭킹">
     <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보">
-    
+
+
+
+    <script type="module">
+        import { getCharacterProfile, apiData, highTierSpecPointObj, gradeObj, userSecondClass } from '/asset/js/spec-point.js';
+
+
+        // let urlParams = new URLSearchParams(window.location.search);
+        // let inputName = urlParams.get('mainCharacterName');
+
+
+
+        fetch(window.location.origin + "curlTest/abc.php", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+        })
+            .then(response => response.text()) // 응답 데이터를 JSON으로 파싱
+            .then(data => {
+                console.log(data); // 받아온 데이터 사용
+
+
+                getCharacterProfile(data, function () {
+                    // console.log(apiData)
+                    // console.log(highTierSpecPointObj)
+                    // console.log(gradeObj)
+                    // console.log(userSecondClass)
+
+
+                    let divide = "|"
+                    let lopecApiArry = [
+                        inputName,                                                            // 닉네임
+                        apiData.ArmoryProfile.CharacterLevel,                                 // 캐릭터 레벨
+                        userSecondClass + " " + apiData.ArmoryProfile.CharacterClassName,       // 캐릭터 직업
+                        apiData.ArmoryProfile.CharacterImage,                                 // 캐릭터 이미지
+                        apiData.ArmoryProfile.ServerName,                                     // 서버명
+                        apiData.ArmoryProfile.ItemMaxLevel,                                   // 아이템 레벨
+                        apiData.ArmoryProfile.GuildName,                                      // 길드명
+                        apiData.ArmoryProfile.Title,                                          // 칭호
+                        highTierSpecPointObj.completeSpecPoint,                               // 스펙포인트
+                        window.location.origin + gradeObj.ico,                                // 티어 아이콘
+                        highTierSpecPointObj.supportAllTimeBuff,                              // 상시버프
+                        highTierSpecPointObj.supportFullBuff,                                 // 풀버프
+
+                    ];
+
+                    let lopecApi = ""
+                    function dataDivide() {
+                        lopecApiArry.forEach(function (arry) {
+
+                            lopecApi += arry + "|";
+                        })
+                    }
+                    dataDivide()
+
+
+
+                    document.body.innerHTML = lopecApi
+                })
+
+            })
+            .catch(error => {
+                console.error('Error:', error); // 오류 처리
+            });
+    </script>
+
     <title>로펙API</title>
 </head>
+
 <body>
-    <!-- <script>
-        document.write('<script type="module" src="/asset/js/lopecApi.js?' + (new Date).getTime() + '"><\/script>');
-    </script> -->
-    <script type="module">
-        import {getCharacterProfile, apiData, highTierSpecPointObj, gradeObj, userSecondClass} from '/asset/js/spec-point.js';
-        
-
-        let urlParams = new URLSearchParams(window.location.search);
-        let inputName = urlParams.get('mainCharacterName');
-
-        getCharacterProfile(inputName, function(){
-            // console.log(apiData)
-            // console.log(highTierSpecPointObj)
-            // console.log(gradeObj)
-            // console.log(userSecondClass)
-
-
-            let divide = "|"
-            let lopecApiArry = [
-                inputName,                                                            // 닉네임
-                apiData.ArmoryProfile.CharacterLevel,                                 // 캐릭터 레벨
-                userSecondClass +" "+ apiData.ArmoryProfile.CharacterClassName,       // 캐릭터 직업
-                apiData.ArmoryProfile.CharacterImage,                                 // 캐릭터 이미지
-                apiData.ArmoryProfile.ServerName,                                     // 서버명
-                apiData.ArmoryProfile.ItemMaxLevel,                                   // 아이템 레벨
-                apiData.ArmoryProfile.GuildName,                                      // 길드명
-                apiData.ArmoryProfile.Title,                                          // 칭호
-                highTierSpecPointObj.completeSpecPoint,                               // 스펙포인트
-                window.location.origin + gradeObj.ico,                                // 티어 아이콘
-                highTierSpecPointObj.supportAllTimeBuff,                              // 상시버프
-                highTierSpecPointObj.supportFullBuff,                                 // 풀버프
-
-            ];
-
-            let lopecApi = ""
-            function dataDivide(){
-                lopecApiArry.forEach(function(arry){
-
-                    lopecApi += arry+"|";
-                })
-            }
-            dataDivide()
-
-
-
-            document.body.innerHTML = lopecApi
-        })
-    </script>
 </body>
+
 </html>
