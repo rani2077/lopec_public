@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+
+    <meta property="og:title" content="로펙 : 스펙포인트">
+    <meta property="og:description" content="클릭하여 상세 스펙을 확인하세요">
+    <meta property="og:image" content="https://lopec.kr/asset/image/diamond-og.png">
+    <meta property="og:url" content="https://lopec.kr/">
+    <meta property="og:type" content="website">
+
+    <title>다이아몬드 티어</title>
+</head>
+
+<body>
+
+
+
+
+    <script>
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+
+
+
+        window.location.href = `https://lopec.kr/search/search.php?mainCharacterName=${name}`;
+
+    </script>
+</body>
+
+</html>

@@ -30,16 +30,16 @@
 
     <?php //  상단광고 ?>
         <div class="sc-top-ads">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-            crossorigin="anonymous"></script>
-        <!-- main-search -->
-        <ins class="adsbygoogle"
-            style="display:inline-block;width:728px;height:90px"
-            data-ad-client="ca-pub-5125145415518329"
-            data-ad-slot="4483465713"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+                crossorigin="anonymous"></script>
+            <!-- main1 -->
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:800px;height:120px"
+                data-ad-client="ca-pub-5125145415518329"
+                data-ad-slot="5389359448"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
         <?php //  상단광고 ?>
 
@@ -48,13 +48,14 @@
         <aside class="side-ads left">
             <div class="ads">
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous">
-                </script>
+                    crossorigin="anonymous"></script>
+                <!-- side1 -->
                 <ins class="adsbygoogle"
-                    style="display:inline-block;width:160px;height:600px"
+                    style="display:block"
                     data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="2763196104">
-                </ins>
+                    data-ad-slot="2763196104"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
@@ -64,13 +65,14 @@
         <aside class="side-ads right">
             <div class="ads">
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous">
-                </script>
+                    crossorigin="anonymous"></script>
+                <!-- side1 -->
                 <ins class="adsbygoogle"
-                    style="display:inline-block;width:160px;height:600px"
+                    style="display:block"
                     data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="1340463485">
-                </ins>
+                    data-ad-slot="2763196104"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>

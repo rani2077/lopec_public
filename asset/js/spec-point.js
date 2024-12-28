@@ -59,6 +59,7 @@ return key;
   
 
 
+
   
 //   api 동작 스크립트
 let isRequesting = false;
