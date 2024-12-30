@@ -11,6 +11,9 @@
 
     
     <link rel="icon" type="image/png" href="../asset/image/lopec-ico.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
     
     <link rel="stylesheet" href="../asset/css/layout.css">
     <link rel="stylesheet" href="../asset/css/main.css">
@@ -30,16 +33,36 @@
 
     <?php //  상단광고 ?>
         <div class="sc-top-ads">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                crossorigin="anonymous"></script>
-            <!-- main1 -->
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:800px;height:120px"
-                data-ad-client="ca-pub-5125145415518329"
-                data-ad-slot="5389359448"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+
+            <div class="group-top-ads swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">광고1</div>
+                    <div class="swiper-slide">광고2</div>
+                    <div class="swiper-slide">광고3</div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="group-top-ads swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">광고1</div>
+                    <div class="swiper-slide">광고2</div>
+                    <div class="swiper-slide">광고3</div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+            <?php //
+            // <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+            // crossorigin="anonymous"></script>
+            // <!-- main1 -->
+            // <ins class="adsbygoogle"
+            // style="display:inline-block;width:800px;height:120px"
+            // data-ad-client="ca-pub-5125145415518329"
+            // data-ad-slot="5389359448"></ins>
+            // <script>
+            //     (adsbygoogle = window.adsbygoogle || []).push({});
+            // </script>
+            ?>
         </div>
         <?php //  상단광고 ?>
 
@@ -636,6 +659,17 @@
     <?php //  db관련 ?>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 ?>
+    
+    
+    
+    <?php //  스와이퍼 광고 ?>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+    <?php //  스와이퍼 광고 ?>
+
+
 
 
     <?php //  공용 헤더,푸터 ?>

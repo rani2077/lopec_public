@@ -577,7 +577,7 @@ html.dark-mode .sc-info .tag-list,
 }
 
 .sc-top-ads .group-top-ads {
-    /* background: #f00; */
+    background: #f00;
     width: 50%;
     height: 100%;
 }
@@ -611,13 +611,3 @@ html.dark-mode .sc-info .tag-list,
     height: inherit;
     
 }
-
-
-
-
-
-
-
-
-
-
