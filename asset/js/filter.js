@@ -239,7 +239,7 @@ let grindingFilter = [
 let arkFilter = [
     {name:"창술 수련",initial:"고기", finalDamagePer:6, criticalChancePer:15},
     {name:"철옹성",initial:"전태", finalDamagePer:6},
-    {name:"강인한 육체",initial:"비기", moveSpeed:20, atkSpeed:20, finalDamagePer:6, criticalChancePer:63.2},
+    {name:"강인한 육체",initial:"비기", moveSpeed:20, atkSpeed:20, finalDamagePer:6, criticalChancePer:63.2,},
     {name:"광기",initial:"광기", moveSpeed:15, atkSpeed:15, finalDamagePer:6, criticalChancePer:33.2},
     {name:"중력 갑옷",initial:"분망", finalDamagePer:6.4, criticalChancePer:18},
     {name:"중력 충격",initial:"중수", finalDamagePer:6.4, criticalChancePer:30},
@@ -1887,7 +1887,7 @@ export let arkCalFilter = [
     {name:"축복의 여신",level:2,moveSpeed:6,atkSpeed:6},
     {name:"축복의 여신",level:3,moveSpeed:9,atkSpeed:9},
 
-    //// 여기부터 2티어
+    //// 여기부터 3티어
 
     {name:"무한한 마력",level:1,evolutionDamage:0,skillCool:7},
     {name:"무한한 마력",level:2,evolutionDamage:0,skillCool:14},
@@ -1907,7 +1907,7 @@ export let arkCalFilter = [
     {name:"정열의 춤사위",level:1,evolutionDamage:0, evolutionBuff:7},
     {name:"정열의 춤사위",level:2,evolutionDamage:0, evolutionBuff:14},
 
-    //// 여기부터 3티어
+    //// 여기부터 4티어
 
     {name:"인파이팅",level:1,evolutionDamage:0},
     {name:"인파이팅",level:2,evolutionDamage:0},
@@ -2069,6 +2069,42 @@ export let arkCalFilter = [
 
 
 ]
+
+
+
+  
+export let classGemFilter = [
+    {
+        class: "일격",
+        specialSkill: 1,
+        skill: [
+            { name: "오의 : 뇌호격", per: 0.45 },
+            { name: "방천격", per: 0.1 },
+            { name: "오의 : 호왕출현", per: 0.4 },
+            { name: "월섬각", per: 0.05 },
+        ],
+    },
+    {
+        class: "난무",
+        specialSkill: 1,
+        skill: [
+            { name: "오의 : 뇌호격", per: 10 },
+            { name: "방천격", per: 10 },
+            { name: "스킬명3", per: 10 },
+            { name: "스킬명4", per: 10 },
+        ],
+    },
+    {
+        class: "점화",
+        specialSkill: 1,
+        skill: [
+            { name: "인페르노", per: 0.25 },
+            { name: "천벌", per: 0.20 },
+            { name: "종말의 날", per: 0.35 },
+            { name: "숭고한 해일", per: 0.20 },
+        ],
+    },
+];
 
 export {
         keywordList,

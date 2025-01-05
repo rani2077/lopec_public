@@ -94,7 +94,7 @@ noticeArry.reverse().forEach(function(notice){
     noticeListHtml += noticeList(notice.name, notice.desc)
 })
 
-console.log(noticeListHtml)
+// console.log(noticeListHtml)
 
 function noticeList(name,desc) {
 

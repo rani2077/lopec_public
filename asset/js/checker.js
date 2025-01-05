@@ -175,8 +175,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             ]
                         }else if(userSecondClass == "서폿"){ // 서폿
                             filterObjFirst = [
-                                {name:'최대 마나 +6',grade:top}, //테스트용 코드
-
                                 {name:'파티원 보호막 효과 +3.50%',grade:top},
                                 {name:'파티원 보호막 효과 +2.10%',grade:middle},
                                 {name:'파티원 보호막 효과 +0.95%',grade:bottom},

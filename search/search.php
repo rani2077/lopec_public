@@ -34,35 +34,35 @@
     <?php //  상단광고 ?>
         <div class="sc-top-ads">
 
-            <div class="group-top-ads swiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">광고1</div>
-                    <div class="swiper-slide">광고2</div>
-                    <div class="swiper-slide">광고3</div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-            <div class="group-top-ads swiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">광고1</div>
-                    <div class="swiper-slide">광고2</div>
-                    <div class="swiper-slide">광고3</div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
             <?php //
-            // <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-            // crossorigin="anonymous"></script>
-            // <!-- main1 -->
-            // <ins class="adsbygoogle"
-            // style="display:inline-block;width:800px;height:120px"
-            // data-ad-client="ca-pub-5125145415518329"
-            // data-ad-slot="5389359448"></ins>
-            // <script>
-            //     (adsbygoogle = window.adsbygoogle || []).push({});
-            // </script>
-            ?>
+            // <div class="group-top-ads swiper">
+            //     <div class="swiper-wrapper">
+            //         <div class="swiper-slide">광고1</div>
+            //         <div class="swiper-slide">광고2</div>
+            //         <div class="swiper-slide">광고3</div>
+            //     </div>
+            //     <div class="swiper-pagination"></div>
+            // </div>
+            // <div class="group-top-ads swiper">
+            //     <div class="swiper-wrapper">
+            //         <div class="swiper-slide">광고1</div>
+            //         <div class="swiper-slide">광고2</div>
+            //         <div class="swiper-slide">광고3</div>
+            //     </div>
+            //     <div class="swiper-pagination"></div>
+            // </div>
+            //?>
+
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+            crossorigin="anonymous"></script>
+            <!-- main1 -->
+            <ins class="adsbygoogle"
+            style="display:inline-block;width:800px;height:120px"
+            data-ad-client="ca-pub-5125145415518329"
+            data-ad-slot="5389359448"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
         <?php //  상단광고 ?>
 

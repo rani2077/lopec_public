@@ -20,6 +20,7 @@ import {
     elixirCalFilter,
     arkCalFilter,
     engravingCheckFilterLowTier,
+    classGemFilter,
 } from './filter.js';
 
 
@@ -455,7 +456,10 @@ export function getCharacterProfile(inputName, callback){
             return armorPoint
         }
         armorCal()
-    //    console.log(armorCal())
+        //  console.log(armorCal())
+
+
+
 
 
 
@@ -1842,8 +1846,28 @@ export function getCharacterProfile(inputName, callback){
 
 
 
+        // 투구, 상의, 하의, 장갑, 어깨 힘민지 구하기
+        function armorStatus(){
+            let result = 0;
+            data.ArmoryEquipment.forEach(function(armor){
 
+                if( /^(투구|상의|하의|장갑|어깨)$/.test(armor.Type) ){
 
+                    
+                    let firstExtract = armor.Tooltip.match(/>([^<]+)</g).map(match => match.replace(/[><]/g, ''))
+                    let secondExtract = firstExtract.filter(item => item.match(/^(힘|민첩|지능) \+\d+$/));
+                    let thirdExtract = secondExtract[0].match(/\d+/)[0]
+                    console.log(thirdExtract)
+                    result += Number(thirdExtract)
+
+                }
+                
+
+            })
+            return result
+
+        }
+        console.log("장비 힘민지 : "+armorStatus())
         
 
         // 각인
@@ -2558,6 +2582,116 @@ export function getCharacterProfile(inputName, callback){
         }
 
 
+
+        let gemPerObj = [
+            {name:"겁화",level1:8, level2:12, level3:16, level4:20, level5:24, level6:28, level7:32, level8:36, level9:40, level10:44 },
+            {name:"멸화",level1:3, level2:6, level3:9, level4:12, level5:15, level6:18, level7:21, level8:24, level9:30, level10:40 },
+            {name:"홍염",level1:2, level2:4, level3:6, level4:8, level5:10, level6:12, level7:14, level8:16, level9:18, level10:20 },
+            {name:"작열",level1:6, level2:8, level3:10, level4:12, level5:14, level6:16, level7:18, level8:20, level9:22, level10:24 },
+        ]
+        
+
+        // 직업별 보석 지분율 필터
+        let classGemEquip = classGemFilter.filter(function(filterArry){
+            return filterArry.class == supportCheck();
+        })
+
+        console.log(classGemEquip)
+
+
+        function gemCheckFnc(){
+
+            let gemList = [];
+            data.ArmoryGem.Gems.forEach(function( currentGems ){
+
+                let gemDesc = JSON.parse( currentGems.Tooltip );
+                let name = gemDesc.Element_000.value.match(/멸화|겁화|홍염|작열/g)[0];
+                let level = gemDesc.Element_004.value.replace(/\D/g, "");
+                let skill = gemDesc.Element_006.value.Element_001.match(/>([^<]+)</)[1];
+
+                let obj = {};
+                obj.name = name;
+                obj.level = level;
+                obj.skill = skill;
+
+                gemList.push(obj)
+                
+            })
+            console.log(gemList)
+            
+            let realGemValue = classGemEquip[0].skill.map(skillObj =>{
+
+                let matchValue = gemList.filter(item => item.skill == skillObj.name);
+                if( !(matchValue.length == 0)  ){
+                    console.log(matchValue)
+                    return{
+                        name: skillObj.name,
+                        per: skillObj.per,
+                        gem: matchValue,
+                    }
+                }
+            }).filter(Boolean);
+            
+            console.log(realGemValue)
+            // gemPerObj.name == realGemValue.name && realGemValue.gem.match(/멸화|겁화/g)[0];
+            
+
+            let coolGemTotal = 0;
+            let count = 0;
+
+            gemList.forEach(function(gemListArry){
+                if( gemListArry.name == "홍염" || gemListArry.name == "작열" ){
+                    let perValue = gemPerObj.filter(item => gemListArry.name == item.name);
+                    // console.log(perValue[0][`level${gemListArry.level}`]);
+
+                    coolGemTotal += perValue[0][`level${gemListArry.level}`]; 
+                    count++;
+                }
+            })
+
+            let averageValue = count > 0 ? coolGemTotal / count : 0;
+
+            console.log("평균값 : "+averageValue)
+
+
+            // 실제 유저가 장착한 보석의 비율을 가져오는 함수
+            function getLevels(gemPerObj, skillArray) {
+                let result = [];
+                skillArray.forEach(skill => {
+                    skill.gem.forEach(gem => {
+                        let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화"|| gem.name == "멸화"));
+                        if (!(gemObj == undefined)) {
+                            let level = gemObj[`level${gem.level}`];
+                            result.push({skill: skill.name, gem: gem.name, per: level, skillPer:skill.per});
+                        }
+                    });
+                });
+                return result;
+            }
+
+            let gemValue = getLevels(gemPerObj, realGemValue).reduce( (gemResultValue, finalGemValue) => {
+                return gemResultValue + finalGemValue.per*finalGemValue.skillPer
+            },0)
+
+            // console.log(gemValue)
+            // console.log(getLevels(gemPerObj, realGemValue));
+
+
+
+            // 홍염,작열 평균레벨
+
+            return {
+                gemValue:(gemValue*classGemEquip[0].specialSkill)/100+1,
+                gemAvg : averageValue
+            }
+        }
+        // gemCheckFnc() // <==보석 딜지분 최종값
+        console.log( gemCheckFnc() )
+
+                
+
+        // console.log( Math.floor(( data.ArmoryProfile.ExpeditionLevel - 1 ) / 2) * 5 + 5)
+
         // "천상의 축복" > atkBuff 
         // "천상의 연주" > atkBuff
         // "묵법 : 해그리기" > atkBuff
@@ -2567,9 +2701,7 @@ export function getCharacterProfile(inputName, callback){
         // "음양 스킬" > damageBuff
 
 
-
-
-
+        
 
         // 서폭용 보석 스킬명, 스킬수치 구하기
 
