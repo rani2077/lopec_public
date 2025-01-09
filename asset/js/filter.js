@@ -289,6 +289,8 @@ let arkFilter = [
     {name:"회귀",initial:"회귀"},
     {name:"질풍노도",initial:"질풍",criticalChancePer:10, criticalDamagePer:102.08, finalDamagePer:6},
     {name:"이슬비",initial:"이슬비",criticalChancePer:10, finalDamagePer:6},
+    {name:"야성",initial:"야성",},
+    {name:"환수 각성",initial:"환수",},
 
     {name:"핸드거너",initial:"핸건",criticalChancePer:10, moveSpeed:8, atkSpeed:8, skillCool:5, finalDamagePer:6},
     {name:"강화 무기",initial:"강무",criticalChancePer:34, finalDamagePer:6},
@@ -370,7 +372,8 @@ let bangleJobFilter = [
     {job:"회귀",option:"int",tier:4},
     {job:"질풍노도",option:"int",tier:4},
     {job:"이슬비",option:"int",tier:4},
-
+    {job:"야성",option:"int",tier:4},
+    {job:"환수 각성",option:"int",tier:4},
 
 
     {job:"광기",option:"pow",tier:3},
@@ -425,6 +428,7 @@ let bangleJobFilter = [
     {job:"만개",option:"int",tier:3,class:"support"},
     {job:"질풍노도",option:"int",tier:3},
     {job:"이슬비",option:"int",tier:3}
+
 
 ]
 
@@ -1188,7 +1192,9 @@ let bangleFilter = [
         {job:"그믐",block:['결투의 대가','타격의 대가','속전속결','슈퍼 차지','달인의 저력','바리케이드','추진력']},
         {job:"회귀",block:['결투의 대가','기습의 대가','타격의 대가','속전속결','슈퍼 차지','달인의 저력','바리케이드','추진력']},
         {job:"질풍",block:['결투의 대가','기습의 대가','속전속결','슈퍼 차지','달인의 저력','바리케이드','추진력']},
-        {job:"이슬비",block:['결투의 대가','기습의 대가','속전속결','슈퍼 차지','달인의 저력','바리케이드','추진력']}
+        {job:"이슬비",block:['결투의 대가','기습의 대가','속전속결','슈퍼 차지','달인의 저력','바리케이드','추진력']},
+        {job:"야성",block:['']},
+        {job:"환수",block:['']}
 
   ,'추진력'  ]
 
@@ -2077,16 +2083,19 @@ export let classGemFilter = [
     {
         class: "일격",
         specialSkill: 1,
+        etcValue:1,
         skill: [
             { name: "오의 : 뇌호격", per: 0.45 },
-            { name: "방천격", per: 0.1 },
-            { name: "오의 : 호왕출현", per: 0.4 },
-            { name: "월섬각", per: 0.05 },
+            { name: "방천격", per: 0.03 },
+            { name: "오의 : 호왕출현", per: 0.3 },
+            { name: "월섬각", per: 0.02 },
         ],
     },
     {
         class: "난무",
         specialSkill: 1,
+        etcValue:1,
+        etcValue:1,
         skill: [
             { name: "오의 : 뇌호격", per: 10 },
             { name: "방천격", per: 10 },
@@ -2097,6 +2106,7 @@ export let classGemFilter = [
     {
         class: "점화",
         specialSkill: 1,
+        etcValue:1,
         skill: [
             { name: "인페르노", per: 0.25 },
             { name: "천벌", per: 0.20 },
@@ -2118,3 +2128,4 @@ export {
         cardPointFilter,
         bangleFilter,
     };
+
