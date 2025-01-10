@@ -2616,17 +2616,24 @@ export function getCharacterProfile(inputName, callback){
 
         let specialClass;
         if( /(일격|난무|워로드)/.test( supportCheck() ) ){
+
+            let per = ["홍염", "작열"];
+            let dmg = ["겁화", "멸화"];
             
-            data.ArmorySkills.some(function(skill){
+            data.ArmoryGem.Gems.some(function(gems){
+
                 
-                function classCheck(className, skillName){
-                    return ( supportCheck() == className && skill.Name == skillName && skill.Level > 1 )
+                
+                
+                function classCheck(className, skillName, gemSort){
+                    return ( supportCheck() == className && gems.Tooltip.includes(skillName) && gemSort.some(item => gems.Tooltip.includes(item) ))
                 }
+
     
-                if( classCheck( "일격", "붕천퇴" ) ){
+                if( classCheck("일격", "방천격", dmg) ){
                     specialClass = "일격";
                     return true;
-                }else if( classCheck( "난무", "오의 : 뇌호격" ) ){
+                }else if( classCheck("난무", "월섬각", per) ){
                     specialClass = "난무어쩌구";
                     return true;
                 }else{
@@ -2725,17 +2732,23 @@ export function getCharacterProfile(inputName, callback){
     
                 // console.log(gemValue)
                 // console.log(getLevels(gemPerObj, realGemValue));
-    
-    
-    
+
+
+                // 짤딜 지분 분배
+                console.log( classGemEquip[0].skill.filter(item => item.per == "etc").length )
+                console.log( classGemEquip[0].etcValue )
+
+                let etcValue = classGemEquip[0].etcValue;
+                let etcLength = classGemEquip[0].skill.filter(item => item.per == "etc").length;
+
                 // 홍염,작열 평균레벨
                 return {
                     gemValue:(gemValue*classGemEquip[0].specialSkill)/100+1,
                     gemAvg : averageValue
                 }
             }
-            // gemCheckFnc() // <==보석 딜지분 최종값
-            console.log( gemCheckFnc() )
+            gemCheckFnc() // <==보석 딜지분 최종값
+            // console.log( gemCheckFnc() )
     
         }catch(error){}
         // // gemCheckFnc() // <==보석 딜지분 최종값

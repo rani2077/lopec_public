@@ -2083,12 +2083,14 @@ export let classGemFilter = [
     {
         class: "일격",
         specialSkill: 1,
-        etcValue:1,
+        etcValue:100,
         skill: [
             { name: "오의 : 뇌호격", per: 0.45 },
             { name: "방천격", per: 0.03 },
             { name: "오의 : 호왕출현", per: 0.3 },
             { name: "월섬각", per: 0.02 },
+            { name: "번개의 속삭임", per: "etc" },
+            { name: "격호각", per: "etc" },
         ],
     },
     {
