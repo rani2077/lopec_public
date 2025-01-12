@@ -661,7 +661,7 @@
     line-height:28px;
     font-size: 28px;
     font-weight: 600;
-    padding: 10px 0 20px;
+    padding: 10px 0 15px;
     display: inline-block;
     justify-content: center;
     position: relative;
@@ -728,6 +728,10 @@
     height: 0;
     overflow: hidden;
     transition:height 300ms;
+    position: relative;
+    padding-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
 }
 .sc-info .spec-area.on .extra-info{
     overflow:initial;
@@ -738,17 +742,27 @@
     text-align-last: left;
     padding-bottom: 15px;
 }
+.sc-info .spec-area.on .extra-info .leftColumn .question,
+.sc-info .spec-area.on .extra-info .rightColumn .question{
+    display: none;
+}
+
 .sc-info .spec-area.on .extra-info .detail-info{
     text-align: center;
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform:translateX(-50%);
 }
 .sc-info .spec-area.on .extra-info .info-box{
     display: flex;
     align-items: center;
     margin-bottom: 6px;
     gap: 10px;
+    justify-content: space-between;
 }
 .sc-info .spec-area.on .extra-info p{
 }
@@ -813,6 +827,8 @@
     width: 50%;
     height: 100%;
     line-height:23px;
+    position: relative;
+    cursor:pointer;
 }
 
 .sc-info .group-info .button-area button{
@@ -821,6 +837,21 @@
     border:none;
     color: #fff;
     cursor:pointer;
+}
+
+.sc-info .group-info .button-area .link-split.on .detail{
+    display: block;
+}
+
+.sc-info .group-info .button-area .detail{
+    left:initial;
+    right: 0;
+    top: calc(100% + 7px);
+    /* border-radius:0; */
+    width: 300px;
+    background: #2f2f2f;
+    z-index:3;
+    padding: 15px;
 }
 .sc-info .group-info .button-area .link-block{
     width: 50%;
@@ -842,7 +873,7 @@
     display: flex;
     flex-direction:column;
     justify-content: space-between;
-    gap: 22px;
+    gap: 11px;
     background:#fff;
 }
 
@@ -1296,7 +1327,8 @@
     height: 22px;
     margin: 1px;
     text-align: center;
-    line-height:18px;
+    line-height:22px;
+    padding-right: 1px;
     font-size: 14px;
     background: rgb(65, 65, 65);
     border-radius:4px;

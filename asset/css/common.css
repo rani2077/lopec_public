@@ -264,7 +264,7 @@ font {
 
 .question:hover .detail {
     display: block;
-    font-size: 16px;
+    font-size: 13px;
     z-index: 1;
 }
 

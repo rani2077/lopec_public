@@ -2088,9 +2088,10 @@ export let classGemFilter = [
             { name: "헬 블레이드", per: 0.14 },
             { name: "소드 스톰", per: 0.082 },
             { name: "템페스트", per: 0.055},
-            { name: "브레이브 슬래쉬", per: 0.056 },
-            { name: "레드 더스트", per: 0.037 },
-            
+            { name: "브레이브 슬래쉬", per: 0.055 },
+            { name: "레드 더스트", per: 0.055 },         
+            { name: "보정치", per: -0.055 },
+              
         ],
     },
     {
@@ -2137,11 +2138,11 @@ export let classGemFilter = [
     {
         class: "버캐 채용 전태",
         skill: [
-            { name: "가디언의 낙뢰", per: 0.214 },
-            { name: "리프 어택", per: 0.166 },
+            { name: "가디언의 낙뢰", per: 0.244 },
+            { name: "리프 어택", per: 0.186 },
             { name: "방패 돌진", per: 0.119 },
-            { name: "방패 밀치기", per: 0.109 },
-            { name: "방패 격동", per: 0.059 },
+            { name: "방패 밀치기", per: 0.114 },
+            { name: "방패 격동", per: 0.056 },
             { name: "버스트 캐넌", per: 0.06 },
             
         ],
@@ -2180,6 +2181,8 @@ export let classGemFilter = [
             { name: "페이탈 소드", per: 0.09 },
             { name: "퓨리어스 클로", per: 0.097 },
             { name: "파이널 블로", per: 0.07 },
+            { name: "퍼니싱 드로", per: 0.07 },
+            { name: "보정치", per: -0.07 },
             
         ],
     },
@@ -2215,7 +2218,7 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "6멸 기공장 세맥",
+        class: "세맥",
         skill: [
             { name: "벽력장", per: 0.169 },
             { name: "난화격", per: 0.186 },
@@ -2224,66 +2227,33 @@ export let classGemFilter = [
             { name: "환영격", per: 0.076 },
             { name: "기공장", per: 0.061 }, 
             { name: "풍뢰일광포", per: 0.061 },
-            
+            { name: "보정치", per: -0.061 },
         ],
-    },
+    }, 
     {
-        class: "6멸 풍뢰 세맥",
-        skill: [
-            { name: "벽력장", per: 0.169 },
-            { name: "난화격", per: 0.186 },
-            { name: "낙영장", per: 0.146 },
-            { name: "여래신장", per: 0.119 },
-            { name: "환영격", per: 0.076 },
-            { name: "풍뢰일광포", per: 0.061 },
-
-            
-        ],
-    },
-    {
-        class: "5멸 기공장 세맥",
+        class: "5멸 세맥",
         skill: [
             { name: "벽력장", per: 0.173 },
             { name: "난화격", per: 0.20 },
             { name: "낙영장", per: 0.174 },
             { name: "여래신장", per: 0.132 },
             { name: "기공장", per: 0.10 },
-            
-        ],
-    },
-    {
-        class: "5멸 풍뢰 세맥",
-        skill: [
-            { name: "벽력장", per: 0.173 },
-            { name: "난화격", per: 0.20 },
-            { name: "낙영장", per: 0.174 },
-            { name: "여래신장", per: 0.132 },
             { name: "풍뢰일광포", per: 0.10 },
+            { name: "보정치", per: -0.10 },
             
         ],
     },
     {
-        class: "기공장 역천",
+        class: "역천",
         skill: [
             { name: "난화격", per: 0.153 },
             { name: "여래신장", per: 0.128 },
             { name: "기공장", per: 0.109 },
-            { name: "벽력장", per: 0.081 },
-            { name: "풍뢰일광포", per: 0.09 },
-            { name: "환영격", per: 0.083 },
-            
-        ],
-    },
-        {
-        class: "섬열파 역천",
-        skill: [
-            { name: "난화격", per: 0.153 },
-            { name: "여래신장", per: 0.128 },
             { name: "섬열파", per: 0.109 },
             { name: "벽력장", per: 0.081 },
             { name: "풍뢰일광포", per: 0.09 },
             { name: "환영격", per: 0.083 },
-            
+            { name: "보정치", per: -0.109 },
         ],
     },
     {
@@ -2369,13 +2339,13 @@ export let classGemFilter = [
             { name: "수라결 기본 공격", per: 0.559 },
             { name: "파천섬광", per: 0.136 },
             { name: "진 파공권", per: 0.053 },
-            { name: "유성낙하", per: 0.049 },
+            { name: "유성 낙하", per: 0.049 },
             { name: "비상격", per: 0.045 },
             
         ],
     },
     {
-        class: "데페 채용 강무",
+        class: "강무",
         skill: [
             { name: "심판의 날", per: 0.193 },
             { name: "샷건 연사", per: 0.159 },
@@ -2384,37 +2354,26 @@ export let classGemFilter = [
             { name: "샷건의 지배자", per: 0.107 },
             { name: "조준 사격", per: 0.054 },
             { name: "데스페라도", per: 0.031 },
-            
-        ],
-    },
-    {
-        class: "원샷원킬 채용 강무",
-        skill: [
-            { name: "심판의 날", per: 0.193 },
-            { name: "샷건 연사", per: 0.159 },
-            { name: "종말의 전조", per: 0.101 },
-            { name: "최후의 만찬", per: 0.116 },
-            { name: "샷건의 지배자", per: 0.107 },
-            { name: "조준 사격", per: 0.054 },
             { name: "원샷원킬", per: 0.031 },
+            { name: "보정치", per: -0.031 },
             
         ],
     },
     {
         class: "7멸 핸건",
         skill: [
-            { name: "데스페라도", per: 0. },
-            { name: "이퀄리브리엄", per: 0. },
-            { name: "퀵 샷", per: 0. },
-            { name: "메테오 스트림", per: 0. },
-            { name: "잔혹한 추적자", per: 0. },
-            { name: "AT02 유탄", per: 0. },
-            { name: "데스파이어", per: 0. },
+            { name: "데스페라도", per: 0.17 },
+            { name: "이퀄리브리엄", per: 0.089 },
+            { name: "퀵 샷", per: 0.067 },
+            { name: "메테오 스트림", per: 0.083 },
+            { name: "잔혹한 추적자", per: 0.061 },
+            { name: "AT02 유탄", per: 0.049 },
+            { name: "데스파이어", per: 0.045 },
             
         ],
     },
     {
-        class: "6멸 핸건",
+        class: "핸건",
         skill: [
             { name: "데스페라도", per: 0.179 },
             { name: "이퀄리브리엄", per: 0.098 },
@@ -2426,7 +2385,7 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "노에필 포강",
+        class: "포강",
         skill: [
             { name: "포격 스킬", per: 0.512 },
             { name: "미사일 폭격", per: 0.063 },
@@ -2437,22 +2396,14 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "에필 공폭 포강",
+        class: "에필 포강",
         skill: [
             { name: "포격 스킬", per: 0.55 },
             { name: "미사일 폭격", per: 0.063 },
             { name: "중력 폭발", per: 0.034},
             { name: "공중 폭격", per: 0.53 },
-            
-        ],
-    },
-    {
-        class: "에필 고압 포강",
-        skill: [
-            { name: "포격 스킬", per: 0.55 },
-            { name: "미사일 폭격", per: 0.063 },
-            { name: "중력 폭발", per: 0.034},
             { name: "고압열탄", per: 0.53 },
+            { name: "보정치", per: -0.53 },
             
         ],
     },
@@ -2469,38 +2420,29 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "카펫 기술",
+        class: "두동",
         skill: [
-            { name: "에너지 버스터", per: 0.22 },
-            { name: "명령 : 베이비 드론", per: 0.141 },
-            { name: "명령 : 레이드 미사일", per: 0.109 },
-            { name: "아발란체", per: 0.42 },
-            { name: "어나힐레이션 모드", per: 0.8 },
-            { name: "명령 : 카펫", per: 0.84 },
+            { name: "실버호크 스킬", per: 0.234 },
+            { name: "스나이프", per: 0.207 },
+            { name: "호크 샷", per: 0.095 },
+            { name: "차징 샷", per: 0.09 },
+            { name: "샤프 슈터", per: 0.083 },
+            { name: "블레이드 스톰", per: 0.044 },
             
         ],
     },
     {
-        class: "플레어빔 기술",
+        class: "기술",
         skill: [
             { name: "에너지 버스터", per: 0.22 },
             { name: "명령 : 베이비 드론", per: 0.141 },
             { name: "명령 : 레이드 미사일", per: 0.109 },
             { name: "아발란체", per: 0.42 },
             { name: "어나힐레이션 모드", per: 0.8 },
-            { name: "명령 : 플레어빔", per: 0.84 },
-            
-        ],
-    },
-    {
-        class: "전술사격 기술",
-        skill: [
-            { name: "에너지 버스터", per: 0.22 },
-            { name: "명령 : 베이비 드론", per: 0.141 },
-            { name: "명령 : 레이드 미사일", per: 0.109 },
-            { name: "아발란체", per: 0.42 },
-            { name: "어나힐레이션 모드", per: 0.8 },
-            { name: "전술사격", per: 0.84 },
+            { name: "명령 : 카펫", per: 0.084 },
+            { name: "명령 : 플레어빔", per: 0.084 },
+            { name: "전술사격", per: 0.084 },
+            { name: "보정치", per: -0.168 },
             
         ],
     },
@@ -2514,7 +2456,7 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "샷연 피메",
+        class: "피메",
         skill: [
             { name: "마탄의 사수", per: 0.179 },
             { name: "절멸의 탄환", per: 0.131 },
@@ -2523,23 +2465,13 @@ export let classGemFilter = [
             { name: "대재앙", per: 0.073 },
             { name: "레인 오브 불릿", per: 0.057 },
             { name: "샷건 연사", per: 0.041 },
+            { name: "퍼펙트 샷", per: 0.041 },
+            { name: "보정치", per: -0.041 },
             
         ],
     },
     {
-        class: "퍼샷 피메",
-        skill: [
-            { name: "마탄의 사수", per: 0.179 },
-            { name: "절멸의 탄환", per: 0.131 },
-            { name: "포커스 샷", per: 0.167 },
-            { name: "타겟 다운", per: 0.107 },
-            { name: "대재앙", per: 0.073 },
-            { name: "레인 오브 불릿", per: 0.057 },
-            { name: "퍼펙트 샷", per: 0.041 },
-        ],
-    },
-    {
-        class: "6멸 메테오 사시",
+        class: "사시",
         skill: [
             { name: "포커스 샷", per: 0.172 },
             { name: "대재앙", per: 0.108 },
@@ -2547,17 +2479,8 @@ export let classGemFilter = [
             { name: "타겟 다운", per: 0.117 },
             { name: "레인 오브 불릿", per: 0.065 },
             { name: "메테오 스트림", per: 0.03 },
-        ],
-    },
-    {
-        class: "6멸 유탄 사시",
-        skill: [
-            { name: "포커스 샷", per: 0.172 },
-            { name: "대재앙", per: 0.108 },
-            { name: "퍼펙트 샷", per: 0.078 },
-            { name: "타겟 다운", per: 0.117 },
-            { name: "레인 오브 불릿", per: 0.065 },
             { name: "AT02 유탄", per: 0.03 },
+            { name: "보정치", per: -0.03 },
         ],
     },
     {
@@ -2605,29 +2528,20 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "해일 점화",
+        class: "점화",
         skill: [
             { name: "종말의 날", per: 0.292 },
             { name: "익스플로전", per: 0.177 },
             { name: "천벌", per: 0.161 },
             { name: "숭고한 해일", per: 0.073 },
-            { name: "인페르노", per: 0.05 },
-            
-        ],
-    },
-    {
-        class: "아애 점화",
-        skill: [
-            { name: "종말의 날", per: 0.292 },
-            { name: "익스플로전", per: 0.177 },
-            { name: "천벌", per: 0.161 },
             { name: "아이스 애로우", per: 0.073 },
-            { name: "인페르노", per: 0.050 },
+            { name: "인페르노", per: 0.05 },
+            { name: "보정치", per: -0.073 },
             
         ],
     },
     {
-        class: "천벌 7딜 환류",
+        class: "환류",
         skill: [
             { name: "리버스 그래비티", per: 0.16 },
             { name: "아이스 애로우", per: 0.135 },
@@ -2635,43 +2549,22 @@ export let classGemFilter = [
             { name: "인페르노", per: 0.11 },
             { name: "숭고한 해일", per: 0.094 },
             { name: "천벌", per: 0.072 },
-            { name: "블레이즈", per: 0.064 },
-            
-        ],
-    },
-    {
-        class: "혹부 7딜 환류",
-        skill: [
-            { name: "리버스 그래비티", per: 0.16 },
-            { name: "아이스 애로우", per: 0.135 },
-            { name: "엘리멘탈 리액트", per: 0.126 },
-            { name: "인페르노", per: 0.11 },
-            { name: "숭고한 해일", per: 0.094 },
             { name: "혹한의 부름", per: 0.072 },
             { name: "블레이즈", per: 0.064 },
-            
+            { name: "보정치", per: -0.072 },
         ],
     },
     {
-        class: "혹부 6딜 환류",
+        class: "6딜 환류",
         skill: [
             { name: "리버스 그래비티", per: 0.17 },
             { name: "아이스 애로우", per: 0.146 },
             { name: "엘리멘탈 리액트", per: 0.129 },
             { name: "숭고한 해일", per: 0.097 },
             { name: "천벌", per: 0.073 },
-            { name: "블레이즈", per: 0.064 },  
-        ],
-    },
-    {
-        class: "혹부 6딜 환류",
-        skill: [
-            { name: "리버스 그래비티", per: 0.17 },
-            { name: "아이스 애로우", per: 0.146 },
-            { name: "엘리멘탈 리액트", per: 0.129 },
-            { name: "숭고한 해일", per: 0.097 },
             { name: "혹한의 부름", per: 0.073 },
             { name: "블레이즈", per: 0.064 },  
+            { name: "보정치", per: -0.073 },
         ],
     },
     {
@@ -2726,7 +2619,7 @@ export let classGemFilter = [
     {
         class: "잔재",
         skill: [
-            { name: "버스트", per: 0.207 },
+            { name: "버스트 스킬", per: 0.207 },
             { name: "소울 앱소버", per: 0.139 },
             { name: "데스 센텐스", per: 0.119 },
             { name: "보이드 스트라이크", per: 0.106 },
@@ -2739,7 +2632,7 @@ export let classGemFilter = [
     {
         class: "버스트",
         skill: [
-            { name: "버스트", per: 0.572 },
+            { name: "버스트 스킬", per: 0.572 },
             { name: "블리츠 러쉬", per: 0.071 },
             { name: "블레이드 댄스", per: 0.062 },
             { name: "터닝 슬래쉬", per: 0.053 },
@@ -2767,6 +2660,18 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "2사신 그믐",
+        skill: [
+            { name: "길로틴 스윙", per: 0.195 },
+            { name: "베스티지", per: 0.138 },
+            { name: "리탈 스피닝", per: 0.136 },
+            { name: "루나틱 엣지", per: 0.057 },
+            { name: "러스트 네일", per: 0.057 },
+            { name: "하베스트", per: 0.063 },
+            
+        ],
+    },
+    {
         class: "이슬비",
         skill: [
             { name: "뙤약볕", per: 0.135 },
@@ -2779,41 +2684,33 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "6멸 싹쓸 질풍",
+        class: "질풍",
         skill: [
             { name: "바람송곳", per: 0.195 },
             { name: "칼바람", per: 0.201 },
             { name: "몰아치기", per: 0.092 },
             { name: "싹쓸바람", per: 0.058 },
-            { name: "회오리 걸음", per: 0.051 },
-            { name: "여우비", per: 0.042 },
-            
-        ],
-    },
-    {
-        class: "6멸 소용돌이 질풍",
-        skill: [
-            { name: "바람송곳", per: 0.195 },
-            { name: "칼바람", per: 0.201 },
-            { name: "몰아치기", per: 0.092 },
             { name: "소용돌이", per: 0.058 },
             { name: "회오리 걸음", per: 0.051 },
-            { name: "여우비", per: 0.042 },
+            { name: "여우비 스킬", per: 0.042 },
+            { name: "보정치", per: -0.058 },
             
         ],
     },
     {
-        class: "5멸 싹쓸 질풍",
+        class: "5멸 질풍",
         skill: [
             { name: "바람송곳", per: 0.205 },
             { name: "칼바람", per: 0.211 },
             { name: "몰아치기", per: 0.1 },
             { name: "싹쓸바람", per: 0.064 },
+            { name: "소용돌이", per: 0.064 },
             { name: "회오리 걸음", per: 0.059 },
+            { name: "보정치", per: -0.064 },
         ],
     },
     {
-        class: "기타세팅",
+        class: "데이터 없음",
         skill: [
             { name: "기타", per: 1 },
         ],

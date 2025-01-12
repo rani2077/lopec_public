@@ -4365,10 +4365,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // 캐릭터 검색
             getCharacterProfile(inputText,function(){
                 document.getElementById("sc-info").innerHTML = searchHtml;
-                splitSearchFnc(inputText); //비교검색
                 specBtn();                 //스펙포인트 상세정보보기
                 renewFnc();                //갱신하기 버튼
                 userBookmarkSave(inputText)//즐겨찾기 기능
+                gemSort()                  //보석순서정렬
+                levelAvgPoint()
             });
 
 
@@ -4392,23 +4393,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-function splitSearchFnc(userName){
-    document.getElementById("split-input").addEventListener("click",function(event){
-        event.preventDefault();
-        let hiddenInput = document.createElement("input");
-        hiddenInput.type = "hidden";
-        hiddenInput.name = "split-character-name";
-        hiddenInput.value = userName;
-
-        // hidden input을 form에 추가
-        document.querySelector(".link-split").appendChild(hiddenInput);
-
-        // form 전송
-        document.querySelector(".link-split").submit();
-
-    })
-
-}
 
 
 
@@ -4427,6 +4411,13 @@ function specBtn(){
 }
 
 
+// 레벨별 평균점수 보기
+
+function levelAvgPoint(){
+    document.querySelector(".link-split").addEventListener("click", function(){
+        this.classList.toggle("on");
+    });
+}
 
 
 
@@ -4481,5 +4472,37 @@ function userBookmarkSave(userName){
 
 
     }
+}
+
+
+
+
+// 보석 순서 정렬
+
+function gemSort(){
+    const parent = document.querySelector('.gem-area.shadow');
+    const children = Array.from(parent.children);
+
+    // 순서정렬
+    children.sort((a, b) => {
+        const iA = parseInt(a.querySelector('i').textContent);
+        const iB = parseInt(b.querySelector('i').textContent);
+        const levelA = parseInt(a.querySelector('.level').textContent);
+        const levelB = parseInt(b.querySelector('.level').textContent);
+        if (iA === iB) {
+            return levelB - levelA;
+        }
+        return iA - iB;
+    });
+
+
+    // 정렬되지 않은 html 제거
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+
+    // 정렬된 html 추가
+    children.forEach(child => parent.appendChild(child));
+    
 }
 

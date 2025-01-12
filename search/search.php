@@ -139,7 +139,7 @@
                         <span class="name"></span>
                     </li>
                     <li class="tag-item">
-                        <p class="tag radius">영지</p>
+                        <p class="tag radius">세팅</p>
                         <span class="name"></span>
                     </li>
                     <li class="tag-item">
@@ -161,18 +161,13 @@
             </div>
             <div class="group-info">
                 <div class="spec-area shadow minimum flag">
-                    <p class="title">스펙 포인트</p>
+                    <p class="title">환산 공격력</p>
                     <div class="tier-box">
                         <img src="../asset/image/bronze.png" alt="">
                         <?php //  <p class="tier-info">티어정보</p> ?>
                     </div>
                     <div class="spec-point">
                         N/A
-                        <div class="question">
-                            <span class="detail">
-                                스펙포인트 정보 로딩중
-                            </span>
-                        </div>
                     </div>
                     <div class="extra-info">
                         <p class="detail-info">세부정보</p>
@@ -224,7 +219,7 @@
                 <div class="button-area">
                     <a href="https://cool-kiss-ec2.notion.site/2024-10-16-121758f0e8da8029825ef61b65e22568" target="_blink" class="link-block">무효각인 목록</a>
                     <form class="link-split" action="../split/split.html" method="get" >
-                        <button type="button" id="split-input">캐릭터 비교하기</button>
+                        <button type="button" id="split-input">레벨별 평균점수</button>
                     </form>
                 </div>
                 <div class="engraving-area shadow">
