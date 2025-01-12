@@ -237,8 +237,8 @@ let grindingFilter = [
 // 2차전직
                                         
 let arkFilter = [
-    {name:"창술 수련",initial:"고기", finalDamagePer:6, criticalChancePer:15},
-    {name:"철옹성",initial:"전태", finalDamagePer:6},
+    {name:"창술 수련",initial:"고기", finalDamagePer:6.4, criticalChancePer:15},
+    {name:"철옹성",initial:"전태", finalDamagePer:6.4},
     {name:"강인한 육체",initial:"비기", moveSpeed:20, atkSpeed:20, finalDamagePer:6, criticalChancePer:63.2,},
     {name:"광기",initial:"광기", moveSpeed:15, atkSpeed:15, finalDamagePer:6, criticalChancePer:33.2},
     {name:"중력 갑옷",initial:"분망", finalDamagePer:6.4, criticalChancePer:18},
@@ -2081,39 +2081,741 @@ export let arkCalFilter = [
   
 export let classGemFilter = [
     {
-        class: "일격",
-        specialSkill: 1,
-        etcValue:100,
+        class: "광기",
         skill: [
-            { name: "오의 : 뇌호격", per: 0.45 },
+            { name: "오버드라이브", per: 0.18 },
+            { name: "피니쉬 스트라이크", per: 0.149 },
+            { name: "헬 블레이드", per: 0.14 },
+            { name: "소드 스톰", per: 0.082 },
+            { name: "템페스트", per: 0.055},
+            { name: "브레이브 슬래쉬", per: 0.056 },
+            { name: "레드 더스트", per: 0.037 },
+            
+        ],
+    },
+    {
+        class: "비기",
+        skill: [
+            { name: "블러디 러쉬", per: 0.279 },
+            { name: "오버드라이브", per: 0.187 },
+            { name: "피니쉬 스트라이크", per: 0.109 },
+            { name: "헬 블레이드", per: 0.091 },
+            { name: "레드 더스트", per: 0.045 },
+            
+        ],
+    },
+    {
+        class: "중수",
+        skill: [
+            { name: "중력 가중 스킬", per: 0.653 },
+            { name: "퍼펙트 스윙", per: 0.092 },
+            { name: "사이즈믹 해머", per: 0.072 },
+            { name: "어스 웨이브", per: 0.04 },
+            { name: "어스 이터", per: 0.011 },
+            
+        ],
+    },
+    {
+        class: "분망",
+        skill: [
+            { name: "퍼펙트 스윙", per: 0.295 },
+            { name: "풀 스윙", per: 0.112 },
+            { name: "어스 이터", per: 0.083 },
+            { name: "사이즈믹 해머", per: 0.108 },
+        ],
+    },
+    {
+        class: "전태",
+        skill: [
+            { name: "가디언의 낙뢰", per: 0.256 },
+            { name: "리프 어택", per: 0.198 },
+            { name: "방패 돌진", per: 0.131 },
+            { name: "방패 밀치기", per: 0.126 },
+            { name: "방패 격동", per: 0.068 },
+        ],
+    },
+    {
+        class: "버캐 채용 전태",
+        skill: [
+            { name: "가디언의 낙뢰", per: 0.214 },
+            { name: "리프 어택", per: 0.166 },
+            { name: "방패 돌진", per: 0.119 },
+            { name: "방패 밀치기", per: 0.109 },
+            { name: "방패 격동", per: 0.059 },
+            { name: "버스트 캐넌", per: 0.06 },
+            
+        ],
+    },
+    {
+        class: "고기",
+        skill: [
+            { name: "버스트 캐넌", per: 0.279 },
+            { name: "차지 스팅거", per: 0.288 },
+            { name: "스피어 샷", per: 0.113 },
+            { name: "대쉬 어퍼 파이어", per: 0.08 },
+            { name: "파이어 불릿", per: 0.034 },
+            
+        ],
+    },
+    {
+        class: "심판자",
+        skill: [
+            { name: "신성검", per: 0.16 },
+            { name: "집행자의 검", per: 0.134 },
+            { name: "정의 집행", per: 0.075 },
+            { name: "섬광 베기", per: 0.101 },
+            { name: "처단", per: 0.077 },
+            { name: "회전 베기", per: 0.096 },
+            { name: "질주 베기", per: 0.053 },
+
+            
+        ],
+    },
+    {
+        class: "포식",
+        skill: [
+            { name: "브루탈 임팩트", per: 0.179 },
+            { name: "볼케이노 이럽션", per: 0.148 },
+            { name: "길로틴", per: 0.144 },
+            { name: "페이탈 소드", per: 0.09 },
+            { name: "퓨리어스 클로", per: 0.097 },
+            { name: "파이널 블로", per: 0.07 },
+            
+        ],
+    },
+    {
+        class: "처단",
+        skill: [
+            { name: "블러드러스트", per: 0.313 },
+            { name: "브루탈 임팩트", per: 0.17 },
+            { name: "볼케이노 이럽션", per: 0.133 },
+            { name: "길로틴", per: 0.111 },
+            { name: "퓨리어스 클로", per: 0.051 },
+            
+        ],
+    },
+    {
+        class: "오의",
+        skill: [
+            { name: "오의 : 창룡패황권", per: 0.332 },
+            { name: "오의 : 폭쇄진", per: 0.192 },
+            { name: "오의 : 화룡천상", per: 0.157 },
+            { name: "내공연소", per: 0.048 },
+        ],
+    },
+    {
+        class: "초심",
+        skill: [
+            { name: "방천격", per: 0.242 },
+            { name: "내공연소", per: 0.197 },
+            { name: "선풍용류각", per: 0.145 },
+            { name: "뇌명각", per: 0.069 },
+            { name: "섬열란아", per: 0.1 },
+            
+        ],
+    },
+    {
+        class: "6멸 기공장 세맥",
+        skill: [
+            { name: "벽력장", per: 0.169 },
+            { name: "난화격", per: 0.186 },
+            { name: "낙영장", per: 0.146 },
+            { name: "여래신장", per: 0.119 },
+            { name: "환영격", per: 0.076 },
+            { name: "기공장", per: 0.061 }, 
+            { name: "풍뢰일광포", per: 0.061 },
+            
+        ],
+    },
+    {
+        class: "6멸 풍뢰 세맥",
+        skill: [
+            { name: "벽력장", per: 0.169 },
+            { name: "난화격", per: 0.186 },
+            { name: "낙영장", per: 0.146 },
+            { name: "여래신장", per: 0.119 },
+            { name: "환영격", per: 0.076 },
+            { name: "풍뢰일광포", per: 0.061 },
+
+            
+        ],
+    },
+    {
+        class: "5멸 기공장 세맥",
+        skill: [
+            { name: "벽력장", per: 0.173 },
+            { name: "난화격", per: 0.20 },
+            { name: "낙영장", per: 0.174 },
+            { name: "여래신장", per: 0.132 },
+            { name: "기공장", per: 0.10 },
+            
+        ],
+    },
+    {
+        class: "5멸 풍뢰 세맥",
+        skill: [
+            { name: "벽력장", per: 0.173 },
+            { name: "난화격", per: 0.20 },
+            { name: "낙영장", per: 0.174 },
+            { name: "여래신장", per: 0.132 },
+            { name: "풍뢰일광포", per: 0.10 },
+            
+        ],
+    },
+    {
+        class: "기공장 역천",
+        skill: [
+            { name: "난화격", per: 0.153 },
+            { name: "여래신장", per: 0.128 },
+            { name: "기공장", per: 0.109 },
+            { name: "벽력장", per: 0.081 },
+            { name: "풍뢰일광포", per: 0.09 },
+            { name: "환영격", per: 0.083 },
+            
+        ],
+    },
+        {
+        class: "섬열파 역천",
+        skill: [
+            { name: "난화격", per: 0.153 },
+            { name: "여래신장", per: 0.128 },
+            { name: "섬열파", per: 0.109 },
+            { name: "벽력장", per: 0.081 },
+            { name: "풍뢰일광포", per: 0.09 },
+            { name: "환영격", per: 0.083 },
+            
+        ],
+    },
+    {
+        class: "절정",
+        skill: [
+            { name: "적룡포", per: 0.252 },
+            { name: "굉열파", per: 0.134 },
+            { name: "반월섬", per: 0.086 },
+            { name: "유성강천", per: 0.125 },
+            { name: "사두룡격", per: 0.07 },
+            { name: "맹룡열파", per: 0.066 },
+            
+        ],
+    },
+    {
+        class: "절제",
+        skill: [
+            { name: "반월섬", per: 0.154 },
+            { name: "연환섬", per: 0.097 },
+            { name: "선풍참혼", per: 0.115 },
+            { name: "청룡출수", per: 0.094 },
+            { name: "열공참", per: 0.073 },
+            { name: "맹룡열파", per: 0.074 },
+            
+        ],
+    },
+    {
+        class: "충단",
+        skill: [
+            { name: "죽음의 선고", per: 0.184 },
+            { name: "파쇄격", per: 0.155 },
+            { name: "풍신권", per: 0.149 },
+            { name: "진 용출권", per: 0.11 },
+            { name: "초신성 폭발", per: 0.123 },
+            { name: "심판", per: 0.066 },
+            
+        ],
+    },
+    {
+        class: "체술",
+        skill: [
+            { name: "철포난격", per: 0.148 },
+            { name: "난타연권", per: 0.148 },
+            { name: "폭렬권", per: 0.124 },
+            { name: "용의강림", per: 0.067 },
+            { name: "일망타진", per: 0.045 },
+            { name: "죽음의 선고", per: 0.044 },
+            
+        ],
+    },
+    {
+        class: "일격",
+        skill: [
+            { name: "오의 : 뇌호격", per: 0.27 },
             { name: "방천격", per: 0.03 },
-            { name: "오의 : 호왕출현", per: 0.3 },
-            { name: "월섬각", per: 0.02 },
-            { name: "번개의 속삭임", per: "etc" },
-            { name: "격호각", per: "etc" },
+            { name: "오의 : 호왕출현", per: 0.206 },
+            { name: "월섬각", per: 0.013 },
+            
         ],
     },
     {
         class: "난무",
-        specialSkill: 1,
-        etcValue:1,
-        etcValue:1,
         skill: [
-            { name: "오의 : 뇌호격", per: 10 },
-            { name: "방천격", per: 10 },
-            { name: "스킬명3", per: 10 },
-            { name: "스킬명4", per: 10 },
+            { name: "오의 : 뇌호격", per: 0.243 },
+            { name: "오의 : 호왕출현", per: 0.226 },
+            { name: "오의 : 폭쇄진", per: 0.137 },
+            { name: "오의 : 풍신초래", per: 0.098 },
+            { name: "방천격", per: 0.071 },
         ],
     },
     {
-        class: "점화",
-        specialSkill: 1,
-        etcValue:1,
+        class: "권왕",
         skill: [
-            { name: "인페르노", per: 0.25 },
-            { name: "천벌", per: 0.20 },
-            { name: "종말의 날", per: 0.35 },
-            { name: "숭고한 해일", per: 0.20 },
+            { name: "파천섬광", per: 0.308 },
+            { name: "권왕십이식", per: 0.352 },
+            { name: "천기심권", per: 0.057 },
+            { name: "유성낙하", per: 0.038 },
+        ],
+    },
+    {
+        class: "수라",
+        skill: [
+            { name: "수라결 기본 공격", per: 0.559 },
+            { name: "파천섬광", per: 0.136 },
+            { name: "진 파공권", per: 0.053 },
+            { name: "유성낙하", per: 0.049 },
+            { name: "비상격", per: 0.045 },
+            
+        ],
+    },
+    {
+        class: "데페 채용 강무",
+        skill: [
+            { name: "심판의 날", per: 0.193 },
+            { name: "샷건 연사", per: 0.159 },
+            { name: "종말의 전조", per: 0.101 },
+            { name: "최후의 만찬", per: 0.116 },
+            { name: "샷건의 지배자", per: 0.107 },
+            { name: "조준 사격", per: 0.054 },
+            { name: "데스페라도", per: 0.031 },
+            
+        ],
+    },
+    {
+        class: "원샷원킬 채용 강무",
+        skill: [
+            { name: "심판의 날", per: 0.193 },
+            { name: "샷건 연사", per: 0.159 },
+            { name: "종말의 전조", per: 0.101 },
+            { name: "최후의 만찬", per: 0.116 },
+            { name: "샷건의 지배자", per: 0.107 },
+            { name: "조준 사격", per: 0.054 },
+            { name: "원샷원킬", per: 0.031 },
+            
+        ],
+    },
+    {
+        class: "7멸 핸건",
+        skill: [
+            { name: "데스페라도", per: 0. },
+            { name: "이퀄리브리엄", per: 0. },
+            { name: "퀵 샷", per: 0. },
+            { name: "메테오 스트림", per: 0. },
+            { name: "잔혹한 추적자", per: 0. },
+            { name: "AT02 유탄", per: 0. },
+            { name: "데스파이어", per: 0. },
+            
+        ],
+    },
+    {
+        class: "6멸 핸건",
+        skill: [
+            { name: "데스페라도", per: 0.179 },
+            { name: "이퀄리브리엄", per: 0.098 },
+            { name: "퀵 샷", per: 0.076 },
+            { name: "메테오 스트림", per: 0.094 },
+            { name: "잔혹한 추적자", per: 0.07 },
+            { name: "AT02 유탄", per: 0.055 },
+            
+        ],
+    },
+    {
+        class: "노에필 포강",
+        skill: [
+            { name: "포격 스킬", per: 0.512 },
+            { name: "미사일 폭격", per: 0.063 },
+            { name: "공중 폭격", per: 0.057 },
+            { name: "중력 폭발", per: 0.034 },
+            { name: "고압열탄", per: 0.033 },
+            
+        ],
+    },
+    {
+        class: "에필 공폭 포강",
+        skill: [
+            { name: "포격 스킬", per: 0.55 },
+            { name: "미사일 폭격", per: 0.063 },
+            { name: "중력 폭발", per: 0.034},
+            { name: "공중 폭격", per: 0.53 },
+            
+        ],
+    },
+    {
+        class: "에필 고압 포강",
+        skill: [
+            { name: "포격 스킬", per: 0.55 },
+            { name: "미사일 폭격", per: 0.063 },
+            { name: "중력 폭발", per: 0.034},
+            { name: "고압열탄", per: 0.53 },
+            
+        ],
+    },
+    {
+        class: "죽습",
+        skill: [
+            { name: "실버호크 스킬", per: 0.234 },
+            { name: "스나이프", per: 0.207 },
+            { name: "호크 샷", per: 0.095 },
+            { name: "차징 샷", per: 0.09 },
+            { name: "샤프 슈터", per: 0.083 },
+            { name: "블레이드 스톰", per: 0.044 },
+            
+        ],
+    },
+    {
+        class: "카펫 기술",
+        skill: [
+            { name: "에너지 버스터", per: 0.22 },
+            { name: "명령 : 베이비 드론", per: 0.141 },
+            { name: "명령 : 레이드 미사일", per: 0.109 },
+            { name: "아발란체", per: 0.42 },
+            { name: "어나힐레이션 모드", per: 0.8 },
+            { name: "명령 : 카펫", per: 0.84 },
+            
+        ],
+    },
+    {
+        class: "플레어빔 기술",
+        skill: [
+            { name: "에너지 버스터", per: 0.22 },
+            { name: "명령 : 베이비 드론", per: 0.141 },
+            { name: "명령 : 레이드 미사일", per: 0.109 },
+            { name: "아발란체", per: 0.42 },
+            { name: "어나힐레이션 모드", per: 0.8 },
+            { name: "명령 : 플레어빔", per: 0.84 },
+            
+        ],
+    },
+    {
+        class: "전술사격 기술",
+        skill: [
+            { name: "에너지 버스터", per: 0.22 },
+            { name: "명령 : 베이비 드론", per: 0.141 },
+            { name: "명령 : 레이드 미사일", per: 0.109 },
+            { name: "아발란체", per: 0.42 },
+            { name: "어나힐레이션 모드", per: 0.8 },
+            { name: "전술사격", per: 0.84 },
+            
+        ],
+    },
+    {
+        class: "유산",
+        skill: [
+            { name: "싱크 스킬", per: 0.709 },
+            { name: "명령 : 베이비 드론", per: 0.01 },
+            { name: "명령 : 레이드 미사일", per: 0.01 },
+            { name: "에너지 버스터", per: 0.01 },
+        ],
+    },
+    {
+        class: "샷연 피메",
+        skill: [
+            { name: "마탄의 사수", per: 0.179 },
+            { name: "절멸의 탄환", per: 0.131 },
+            { name: "포커스 샷", per: 0.167 },
+            { name: "타겟 다운", per: 0.107 },
+            { name: "대재앙", per: 0.073 },
+            { name: "레인 오브 불릿", per: 0.057 },
+            { name: "샷건 연사", per: 0.041 },
+            
+        ],
+    },
+    {
+        class: "퍼샷 피메",
+        skill: [
+            { name: "마탄의 사수", per: 0.179 },
+            { name: "절멸의 탄환", per: 0.131 },
+            { name: "포커스 샷", per: 0.167 },
+            { name: "타겟 다운", per: 0.107 },
+            { name: "대재앙", per: 0.073 },
+            { name: "레인 오브 불릿", per: 0.057 },
+            { name: "퍼펙트 샷", per: 0.041 },
+        ],
+    },
+    {
+        class: "6멸 메테오 사시",
+        skill: [
+            { name: "포커스 샷", per: 0.172 },
+            { name: "대재앙", per: 0.108 },
+            { name: "퍼펙트 샷", per: 0.078 },
+            { name: "타겟 다운", per: 0.117 },
+            { name: "레인 오브 불릿", per: 0.065 },
+            { name: "메테오 스트림", per: 0.03 },
+        ],
+    },
+    {
+        class: "6멸 유탄 사시",
+        skill: [
+            { name: "포커스 샷", per: 0.172 },
+            { name: "대재앙", per: 0.108 },
+            { name: "퍼펙트 샷", per: 0.078 },
+            { name: "타겟 다운", per: 0.117 },
+            { name: "레인 오브 불릿", per: 0.065 },
+            { name: "AT02 유탄", per: 0.03 },
+        ],
+    },
+    {
+        class: "황후",
+        skill: [
+            { name: "시크릿 가든", per: 0.188 },
+            { name: "셀레스티얼 레인", per: 0.195 },
+            { name: "세렌디피티", per: 0.071 },
+            { name: "포 카드", per: 0.096 },
+            
+        ],
+    },
+    {
+        class: "황제",
+        skill: [
+            { name: "다크 리저렉션", per: 0.176 },
+            { name: "이보크", per: 0.16 },
+            { name: "셀레스티얼 레인", per: 0.11 },
+            { name: "언리미티드 셔플", per: 0.105 },
+            { name: "황제", per: 0.16 },
+            
+        ],
+    },
+    {
+        class: "교감",
+        skill: [
+            { name: "고대의 창", per: 0.131 },
+            { name: "마리린", per: 0.156 },
+            { name: "대지 붕괴", per: 0.07 },
+            { name: "마력의 질주", per: 0.036 },
+            { name: "엘씨드", per: 0.121 },
+            { name: "파우루", per: 0.131 },
+            { name: "슈르디", per: 0.03 },
+        ],
+    },
+    {
+        class: "상소",
+        skill: [
+            { name: "고대의 정령 스킬", per: 0.547 },
+            { name: "대지 붕괴", per: 0.05 },
+            { name: "마력의 질주", per: 0.028 },
+            { name: "고대의 창", per: 0.098 },
+            { name: "마리린", per: 0.032 },
+            
+        ],
+    },
+    {
+        class: "해일 점화",
+        skill: [
+            { name: "종말의 날", per: 0.292 },
+            { name: "익스플로전", per: 0.177 },
+            { name: "천벌", per: 0.161 },
+            { name: "숭고한 해일", per: 0.073 },
+            { name: "인페르노", per: 0.05 },
+            
+        ],
+    },
+    {
+        class: "아애 점화",
+        skill: [
+            { name: "종말의 날", per: 0.292 },
+            { name: "익스플로전", per: 0.177 },
+            { name: "천벌", per: 0.161 },
+            { name: "아이스 애로우", per: 0.073 },
+            { name: "인페르노", per: 0.050 },
+            
+        ],
+    },
+    {
+        class: "천벌 7딜 환류",
+        skill: [
+            { name: "리버스 그래비티", per: 0.16 },
+            { name: "아이스 애로우", per: 0.135 },
+            { name: "엘리멘탈 리액트", per: 0.126 },
+            { name: "인페르노", per: 0.11 },
+            { name: "숭고한 해일", per: 0.094 },
+            { name: "천벌", per: 0.072 },
+            { name: "블레이즈", per: 0.064 },
+            
+        ],
+    },
+    {
+        class: "혹부 7딜 환류",
+        skill: [
+            { name: "리버스 그래비티", per: 0.16 },
+            { name: "아이스 애로우", per: 0.135 },
+            { name: "엘리멘탈 리액트", per: 0.126 },
+            { name: "인페르노", per: 0.11 },
+            { name: "숭고한 해일", per: 0.094 },
+            { name: "혹한의 부름", per: 0.072 },
+            { name: "블레이즈", per: 0.064 },
+            
+        ],
+    },
+    {
+        class: "혹부 6딜 환류",
+        skill: [
+            { name: "리버스 그래비티", per: 0.17 },
+            { name: "아이스 애로우", per: 0.146 },
+            { name: "엘리멘탈 리액트", per: 0.129 },
+            { name: "숭고한 해일", per: 0.097 },
+            { name: "천벌", per: 0.073 },
+            { name: "블레이즈", per: 0.064 },  
+        ],
+    },
+    {
+        class: "혹부 6딜 환류",
+        skill: [
+            { name: "리버스 그래비티", per: 0.17 },
+            { name: "아이스 애로우", per: 0.146 },
+            { name: "엘리멘탈 리액트", per: 0.129 },
+            { name: "숭고한 해일", per: 0.097 },
+            { name: "혹한의 부름", per: 0.073 },
+            { name: "블레이즈", per: 0.064 },  
+        ],
+    },
+    {
+        class: "충동",
+        skill: [
+            { name: "악마 스킬", per: 0.706 },
+            { name: "데몬 비전", per: 0.01 },
+            { name: "데몬 그랩", per: 0.01 },
+            { name: "하울링", per: 0.01 },   
+        ],
+    },
+    {
+        class: "타대 억모닉",
+        skill: [
+            { name: "크루얼 커터", per: 0.158 },
+            { name: "그라인드 체인", per: 0.147 },
+            { name: "스피닝 웨폰", per: 0.135 },
+            { name: "피어스 쏜", per: 0.068 },
+            { name: "데시메이트", per: 0.046 },
+        ],
+    },
+    {
+        class: "사멸 억모닉",
+        skill: [
+            { name: "", per: 0. },
+            { name: "", per: 0. },
+            { name: "", per: 0. },
+            { name: "", per: 0. },
+            { name: "", per: 0. },
+            
+        ],
+    },
+    {
+        class: "갈증",
+        skill: [
+            { name: "레이지 스피어", per: 0.187 },
+            { name: "라스트 그래피티", per: 0.157 },
+            { name: "댄싱 오브 퓨리", per: 0.134 },
+            { name: "사일런트 스매셔", per: 0.106 },
+            { name: "쉐도우 스톰", per: 0.082 },
+            
+        ],
+    },
+    {
+        class: "달소",
+        skill: [
+            { name: "레이지 스피어", per: 0.234 },
+            { name: "댄싱 오브 퓨리", per: 0.18 },
+            { name: "라스트 그래피티", per: 0.183 },
+        ],
+    },
+    {
+        class: "잔재",
+        skill: [
+            { name: "버스트", per: 0.207 },
+            { name: "소울 앱소버", per: 0.139 },
+            { name: "데스 센텐스", per: 0.119 },
+            { name: "보이드 스트라이크", per: 0.106 },
+            { name: "트윈 쉐도우", per: 0.09 },
+            { name: "어스 슬래쉬", per: 0.075 },
+            { name: "터닝 슬래쉬", per: 0.068 },
+            
+        ],
+    },
+    {
+        class: "버스트",
+        skill: [
+            { name: "버스트", per: 0.572 },
+            { name: "블리츠 러쉬", per: 0.071 },
+            { name: "블레이드 댄스", per: 0.062 },
+            { name: "터닝 슬래쉬", per: 0.053 },
+            { name: "어스 슬래쉬", per: 0.018 },
+            
+        ],
+    },
+    {
+        class: "만월",
+        skill: [
+            { name: "길로틴 스윙", per: 0.287 },
+            { name: "베스티지", per: 0.207 },
+            { name: "소울 시너스", per: 0.191 },
+        ],
+    },
+    {
+        class: "그믐",
+        skill: [
+            { name: "길로틴 스윙", per: 0.195 },
+            { name: "베스티지", per: 0.138 },
+            { name: "리탈 스피닝", per: 0.136 },
+            { name: "소울 시너스", per: 0.114 },
+            { name: "하베스트", per: 0.063 },
+            
+        ],
+    },
+    {
+        class: "이슬비",
+        skill: [
+            { name: "뙤약볕", per: 0.135 },
+            { name: "싹쓸바람", per: 0.128 },
+            { name: "소용돌이", per: 0.093 },
+            { name: "여우비 스킬", per: 0.08 },
+            { name: "소나기", per: 0.082 },
+            { name: "날아가기", per: 0.066 },
+            
+        ],
+    },
+    {
+        class: "6멸 싹쓸 질풍",
+        skill: [
+            { name: "바람송곳", per: 0.195 },
+            { name: "칼바람", per: 0.201 },
+            { name: "몰아치기", per: 0.092 },
+            { name: "싹쓸바람", per: 0.058 },
+            { name: "회오리 걸음", per: 0.051 },
+            { name: "여우비", per: 0.042 },
+            
+        ],
+    },
+    {
+        class: "6멸 소용돌이 질풍",
+        skill: [
+            { name: "바람송곳", per: 0.195 },
+            { name: "칼바람", per: 0.201 },
+            { name: "몰아치기", per: 0.092 },
+            { name: "소용돌이", per: 0.058 },
+            { name: "회오리 걸음", per: 0.051 },
+            { name: "여우비", per: 0.042 },
+            
+        ],
+    },
+    {
+        class: "5멸 싹쓸 질풍",
+        skill: [
+            { name: "바람송곳", per: 0.205 },
+            { name: "칼바람", per: 0.211 },
+            { name: "몰아치기", per: 0.1 },
+            { name: "싹쓸바람", per: 0.064 },
+            { name: "회오리 걸음", per: 0.059 },
+        ],
+    },
+    {
+        class: "기타세팅",
+        skill: [
+            { name: "기타", per: 1 },
         ],
     },
 ];

@@ -917,6 +917,7 @@
     width: 44px;
     height: 44px;
     position: relative;
+    overflow:visible;
     }
 .sc-info .gem-area .gem-box img{
     width: 100%;
@@ -936,8 +937,19 @@
     color: #fff;
     border-radius:3px;
 }
-
-
+.sc-info .gem-area .gem-box .detail{
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 5px);
+    transform:translateX(-50%);
+    white-space:nowrap;
+    text-align: center;
+    z-index:3;
+    font-size: 12px;
+}
+.sc-info .gem-area .gem-box:hover .detail{
+    display: block;
+}
 
 .sc-info .armor-wrap{
     display: flex;

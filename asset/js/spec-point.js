@@ -2612,39 +2612,94 @@ export function getCharacterProfile(inputName, callback){
         ]
         
 
+        
 
-
+        let gemSkillArry = [];
         let specialClass;
-        if( /(일격|난무|워로드)/.test( supportCheck() ) ){
 
-            let per = ["홍염", "작열"];
-            let dmg = ["겁화", "멸화"];
-            
-            data.ArmoryGem.Gems.some(function(gems){
+        data.ArmoryGem.Gems.forEach(function(gem){
+                
+            data.ArmoryProfile.CharacterClassName
 
-                
-                
-                
-                function classCheck(className, skillName, gemSort){
-                    return ( supportCheck() == className && gems.Tooltip.includes(skillName) && gemSort.some(item => gems.Tooltip.includes(item) ))
-                }
+            let regex = />([^<]*)</g;
+            let match;
+            let results = [];
+            while ((match = regex.exec(gem.Tooltip)) !== null) {
+                results.push(match[1]);
+            }
 
-    
-                if( classCheck("일격", "방천격", dmg) ){
-                    specialClass = "일격";
-                    return true;
-                }else if( classCheck("난무", "월섬각", per) ){
-                    specialClass = "난무어쩌구";
-                    return true;
-                }else{
-                    specialClass = supportCheck();
+            // console.log(results)
+
+            results.forEach(function(toolTip, idx){
+                if(toolTip.includes(data.ArmoryProfile.CharacterClassName)){
+
+
+                    let obj = { name: results[idx+1], gem: results[1].match(/홍염|작열|멸화|겁화/)[0] };
+                    gemSkillArry.push(obj)
+
                 }
 
             })
+    
+        })
+
+
+        if( /(일격|난무|워로드)/.test( supportCheck() ) && data.ArmoryGem.Gems != null){
+
+            let per = "홍염|작열";
+            let dmg = "겁화|멸화";
+
+
+
+            function skillCheck(arr, ...nameAndGem) {
+                for (let i = 0; i < nameAndGem.length; i += 2) {
+                    const name = nameAndGem[i];
+                    const gemPattern = nameAndGem[i + 1];
+                    const regex = new RegExp(gemPattern);
+                    const found = arr.some(item => item.name === name && regex.test(item.gem));
+                    if (!found) return false;
+                }
+                return true;
+            }
+            function classCheck(className){
+                return supportCheck() == className;
+            }
+
+
+
+            if( classCheck("일격") && skillCheck(gemSkillArry, "방천격", per, "월섬각", per) ){
+                specialClass = "일격";
+            }else if( classCheck("난무") && skillCheck(gemSkillArry, "방천격", per, "월섬각", per) ){
+                specialClass = "난무 직업";
+            }else{
+                specialClass = "기타세팅";
+            }
+
         }else{
             specialClass = supportCheck()
         }
         console.log("보석전용 직업 : ",specialClass)
+
+
+        gemSkillArry.forEach(function(gemSkill, idx){
+            
+            let realClass = classGemFilter.filter(item => item.class == specialClass);
+            
+            if(realClass.length == 0){
+                
+                gemSkillArry[idx].skillPer = "none"
+            }else{
+                
+                let realSkillPer = realClass[0].skill.filter(item => item.name == gemSkill.name );
+    
+                if(realSkillPer[0] != undefined){
+                    gemSkillArry[idx].skillPer = realSkillPer[0].per;
+                }else{
+                    gemSkillArry[idx].skillPer = "none"
+                }
+            }
+        })
+
 
         // 직업별 보석 지분율 필터
         let classGemEquip = classGemFilter.filter(function(filterArry){
@@ -2710,45 +2765,63 @@ export function getCharacterProfile(inputName, callback){
                 let averageValue = count > 0 ? coolGemTotal / count : 0;
     
                 // console.log("평균값 : "+averageValue)
+
+
+                
     
     
                 // 실제 유저가 장착한 보석의 딜 비율을 가져오는 함수
                 function getLevels(gemPerObj, skillArray) {
                     let result = [];
+
+    
                     skillArray.forEach(skill => {
-                        skill.gem.forEach(gem => {
-                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화"|| gem.name == "멸화"));
-                            if (!(gemObj == undefined)) {
-                                let level = gemObj[`level${gem.level}`];
-                                result.push({skill: skill.name, gem: gem.name, per: level, skillPer:skill.per});
-                            }
-                        });
+                        if( skill.per != "etc" ){
+                            skill.gem.forEach(gem => {
+                                let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화"|| gem.name == "멸화"));
+                                if (!(gemObj == undefined)) {
+                                    let level = gemObj[`level${gem.level}`];
+                                    result.push({skill: skill.name, gem: gem.name, per: level, skillPer:skill.per});
+                                }
+                            });
+                        }else if(skill.per == "etc"){
+                            skill.gem.forEach(gem => {
+                                let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화"|| gem.name == "멸화"));
+                                if (!(gemObj == undefined)) {
+                                    let level = gemObj[`level${gem.level}`];
+                                    result.push({skill: skill.name, gem: gem.name, per: level, skillPer:etcValue/etcLength});
+                                }
+                            });
+                        }
                     });
                     return result;
                 }
+                console.log(getLevels(gemPerObj, realGemValue))
                 let gemValue = getLevels(gemPerObj, realGemValue).reduce( (gemResultValue, finalGemValue) => {
                     return gemResultValue + finalGemValue.per*finalGemValue.skillPer
                 },0)
     
-                // console.log(gemValue)
-                // console.log(getLevels(gemPerObj, realGemValue));
 
+                // special skill Value 값 계산식
+                function specialSkillCalc(){
+                    let result = 0;
+                    classGemEquip[0].skill.forEach(function(skill){
+                        if(skill.per != "etc"){
+                            result += skill.per;
+                        }
+                    })
+                    return 1/result
+                }
 
-                // 짤딜 지분 분배
-                console.log( classGemEquip[0].skill.filter(item => item.per == "etc").length )
-                console.log( classGemEquip[0].etcValue )
-
-                let etcValue = classGemEquip[0].etcValue;
-                let etcLength = classGemEquip[0].skill.filter(item => item.per == "etc").length;
 
                 // 홍염,작열 평균레벨
                 return {
-                    gemValue:(gemValue*classGemEquip[0].specialSkill)/100+1,
+                    gemValue:(gemValue*specialSkillCalc())/100+1 ,
                     gemAvg : averageValue
                 }
             }
             gemCheckFnc() // <==보석 딜지분 최종값
-            // console.log( gemCheckFnc() )
+            console.log( gemCheckFnc() )
     
         }catch(error){}
         // // gemCheckFnc() // <==보석 딜지분 최종값
@@ -2886,7 +2959,7 @@ export function getCharacterProfile(inputName, callback){
 
         let bangleCriticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer * bangleObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
         let bangleAddDamageResult = ((defaultObj.addDamagePer + accObj.addDamagePer + elixirObj.addDamagePer)/100)+1 // 추가 피해
-        let bangleFinalDamageResult = (jobObj.finalDamagePer * engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer) // 적에게 주는 피해
+        let bangleFinalDamageResult = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer) // 적에게 주는 피해
         let bangleCriDamage = (1 * criticalChanceResult * bangleCriticalFinalResult * (criticalDamageResult/100) + 1 *(100-criticalChanceResult)) / (1 * (criticalChanceResult-bangleObj.criticalChancePer) * criticalFinalResult * (criticalDamageResult-bangleObj.criticalDamagePer)/100 + 1*(100-(criticalChanceResult-bangleObj.criticalChancePer))) // 팔찌 치피 상승 기대값
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1차 환산 공격력////   
@@ -2904,14 +2977,20 @@ export function getCharacterProfile(inputName, callback){
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////팔찌 딜증율////
         let bangleEff = ((((bangleFinalValue-finalValue)/finalValue)+1) * (bangleObj.finalDamagePerEff) * bangleStatValue * 1.03 ).toFixed(4)
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////팔찌 딜증율////
+        //console.log(bangleFinalValue)
+        //console.log(finalValue)
+        //console.log(bangleObj.finalDamagePerEff)
+        //console.log(bangleStatValue)
+        //console.log(bangleEff)
+        
 
 
         /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////   
-        let lastFinalValue = ((totalAtk1**1.095) * evolutionDamageResult * (bangleFinalDamageResult**1.01) * enlightResult * arkObj.leapDamage * (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
+        let lastFinalValue = ((totalAtk1) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
         /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //console.log("공격력"+attackPowResult)
+        //console.log("공격력"+totalAtk1)
         //console.log("진화" + evolutionDamageResult)
-        //console.log("팔찌"+  (bangleFinalDamageResult**1.01))
+        //console.log("팔찌"+  (bangleFinalDamageResult))
         //console.log("깨달음"+enlightResult)
         //console.log("초월"+arkObj.leapDamage )
         //console.log("특성 딜증" + (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
@@ -3759,9 +3838,20 @@ export function getCharacterProfile(inputName, callback){
             }
         }
 
-
         
         function gemBox(e){
+            function gemDetailInfo(){
+                let result;
+                
+                if( gemSkillArry[e].skillPer != "none" && /홍염|작열/.test(gemSkillArry[e].gem) ){
+                    result = `${gemSkillArry[e].name} <br> 딜 지분 : ${Math.round(gemSkillArry[e].skillPer*1000)/10}%`
+
+                }else{
+                    result = gemSkillArry[e].name
+
+                }
+                return result;
+            }
 
             return`
             <div class="gem-box radius ${
@@ -3795,6 +3885,7 @@ export function getCharacterProfile(inputName, callback){
                     }
                 })()
             }</span>
+            <span class="detail">${gemDetailInfo()}</span>
             </div>`
         }
         
