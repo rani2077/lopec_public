@@ -108,6 +108,7 @@
 }
 .sc-notice .group-title .title{
     font-size: 18px;
+    font-weight: 600;
 }
 
 
@@ -140,7 +141,7 @@
 }
 .sc-notice .group-notice .name-box .name{
     font-size: 15px;
-    font-weight: 600;
+    /* font-weight: 600; */
 }
 .sc-notice .group-notice .name-box .detail-btn{
     width: 20px;
@@ -245,6 +246,7 @@
 .sc-answer .group-answer .title-area .title{
     font-size: 18px;
     padding-bottom: 25px;
+    font-weight: 600;
 }
 
 

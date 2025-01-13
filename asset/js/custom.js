@@ -4369,7 +4369,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 renewFnc();                //갱신하기 버튼
                 userBookmarkSave(inputText)//즐겨찾기 기능
                 gemSort()                  //보석순서정렬
-                levelAvgPoint()
+                levelAvgPoint()            //레벨별 평균점수 보기
             });
 
 

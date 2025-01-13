@@ -2640,18 +2640,38 @@ export function getCharacterProfile(inputName, callback){
                 // console.log(results)
     
                 results.forEach(function(toolTip, idx){
+
+                    toolTip = toolTip.replace(/"/g, '');
+
                     if(toolTip.includes(data.ArmoryProfile.CharacterClassName)){
     
                         let etcGemValue = results[idx+2].substring(0, results[idx+2].indexOf('"'))
                         let gemName;
+                        let level = null;
                         if(results[1].match(/홍염|작열|멸화|겁화/) != null){
-                            gemName = results[1].match(/홍염|작열|멸화|겁화/)[0]
+                            gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                            level = Number(results[1].match(/(\d+)레벨/)[1])
                         }else{
                             gemName = "기타보석"
                         }
-                        let obj = { name: results[idx+1], gem: gemName};
+                        // let obj = { name: results[idx+1], gem: gemName, level : level};
+                        let obj = { skill: results[idx+1], name: gemName, level : level};
                         gemSkillArry.push(obj)
     
+                    }else if( !(toolTip.includes(data.ArmoryProfile.CharacterClassName)) &&  /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip) && toolTip.includes("Element")){  // 자신의 직업이 아닌 보석을 장착중인 경우
+
+                        console.log(toolTip)
+                        let gemName;
+                        let level = null;
+                        if(results[1].match(/홍염|작열|멸화|겁화/) != null){
+                            gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                            level = Number(results[1].match(/(\d+)레벨/)[1])
+                        }else{
+                            gemName = "기타보석"
+                        }
+                        let obj = { skill: "직업보석이 아닙니다", name: gemName, level : level};
+                        gemSkillArry.push(obj)
+
                     }
     
                 })
@@ -2660,7 +2680,8 @@ export function getCharacterProfile(inputName, callback){
     
         }
 
-        // console.log(gemSkillArry)
+
+        //console.log(gemSkillArry)
 
 
         if(true){
@@ -2709,7 +2730,7 @@ export function getCharacterProfile(inputName, callback){
             }
 
         }
-        console.log("보석전용 직업 : ",specialClass)
+        //console.log("보석전용 직업 : ",specialClass)
 
 
         gemSkillArry.forEach(function(gemSkill, idx){
@@ -2717,11 +2738,10 @@ export function getCharacterProfile(inputName, callback){
             let realClass = classGemFilter.filter(item => item.class == specialClass);
             
             if(realClass.length == 0){
-                
                 gemSkillArry[idx].skillPer = "none"
             }else{
                 
-                let realSkillPer = realClass[0].skill.filter(item => item.name == gemSkill.name );
+                let realSkillPer = realClass[0].skill.filter(item => item.name == gemSkill.skill );
     
                 if(realSkillPer[0] != undefined){
                     gemSkillArry[idx].skillPer = realSkillPer[0].per;
@@ -2736,28 +2756,11 @@ export function getCharacterProfile(inputName, callback){
         let classGemEquip = classGemFilter.filter(function(filterArry){
             return filterArry.class == specialClass;
         })
-        console.log(classGemEquip)
+        //console.log(classGemEquip)
 
         function gemCheckFnc(){
             try{
 
-                let gemList = [];
-                data.ArmoryGem.Gems.forEach(function( currentGems ){
-    
-                    let gemDesc = JSON.parse( currentGems.Tooltip );
-                    let name = gemDesc.Element_000.value.match(/멸화|겁화|홍염|작열/g)[0];
-                    let level = gemDesc.Element_004.value.replace(/\D/g, "");
-                    let skill = gemDesc.Element_006.value.Element_001.match(/>([^<]+)</)[1];
-    
-                    let obj = {};
-                    obj.name = name;
-                    obj.level = level;
-                    obj.skill = skill;
-    
-                    gemList.push(obj)
-                    
-                })
-                // console.log(gemList)
 
 
 
@@ -2765,7 +2768,7 @@ export function getCharacterProfile(inputName, callback){
                 // console.log(classGemEquip)
                 let realGemValue = classGemEquip[0].skill.map(skillObj =>{
     
-                    let matchValue = gemList.filter(item => item.skill == skillObj.name);
+                    let matchValue = gemSkillArry.filter(item => item.skill == skillObj.name);
                     if( !(matchValue.length == 0)  ){
                         // console.log(matchValue)
                         return{
@@ -2783,7 +2786,7 @@ export function getCharacterProfile(inputName, callback){
                 let coolGemTotal = 0;
                 let count = 0;
     
-                gemList.forEach(function(gemListArry){
+                gemSkillArry.forEach(function(gemListArry){
                     if( gemListArry.name == "홍염" || gemListArry.name == "작열" ){
                         let perValue = gemPerObj.filter(item => gemListArry.name == item.name);
                         // console.log(perValue[0][`level${gemListArry.level}`]);
@@ -2805,7 +2808,7 @@ export function getCharacterProfile(inputName, callback){
 
                 // console.log(gemList)
                 if(specialClass == "데이터 없음"){
-                    gemList.forEach(function(gemListArry){
+                    gemSkillArry.forEach(function(gemListArry){
                         if( gemListArry.name == "멸화" || gemListArry.name == "겁화" ){
                             let perValue = gemPerObj.filter(item => gemListArry.name == item.name);
                             // console.log(perValue[0][`level${gemListArry.level}`]);
@@ -2887,7 +2890,7 @@ export function getCharacterProfile(inputName, callback){
             }
         }
         // gemCheckFnc() // <==보석 딜지분 최종값
-        console.log(gemCheckFnc())
+        //console.log(gemCheckFnc())
             
         // 원정대 힘민지
         let expeditionStats =  Math.floor(( data.ArmoryProfile.ExpeditionLevel - 1 ) / 2) * 5 + 5
@@ -3031,7 +3034,7 @@ export function getCharacterProfile(inputName, callback){
         let bangleStatValue = ((bangleObj.str+bangleObj.dex+bangleObj.int)*0.00011375)/100+1
         
         let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int ) * avatarStats() // 최종 힘민지 계산값
-        let totalWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
+        let totalWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
         let totalAtk0 = (Math.sqrt((totalStat * totalWeaponAtk) / 6))
         let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
         let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
@@ -3044,17 +3047,17 @@ export function getCharacterProfile(inputName, callback){
         let bangleCriDamage = (1 * criticalChanceResult * bangleCriticalFinalResult * (criticalDamageResult/100) + 1 *(100-criticalChanceResult)) / (1 * (criticalChanceResult-bangleObj.criticalChancePer) * criticalFinalResult * (criticalDamageResult-bangleObj.criticalDamagePer)/100 + 1*(100-(criticalChanceResult-bangleObj.criticalChancePer))) // 팔찌 치피 상승 기대값
         
         let minusHyperStat = (armorStatus() + expeditionStats + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int ) * avatarStats()
-        let minusHyperWeaponAtk = ( (defaultObj.weaponAtk + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
+        let minusHyperWeaponAtk = ( (defaultObj.weaponAtk + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk)
         let minusHyperAtk = ((Math.sqrt((minusHyperStat * minusHyperWeaponAtk) / 6)) + (elixirObj.atkPlus)) * attackBonus
         let minusHyperFinal = (engObj.finalDamagePer * accObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer)
 
         let minusElixirStat = (armorStatus() + expeditionStats + hyperObj.str + bangleObj.str + bangleObj.dex + bangleObj.int ) * avatarStats()
-        let minusElixirWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
+        let minusElixirWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk)
         let minusElixirAtk = ((Math.sqrt((minusElixirStat * minusElixirWeaponAtk) / 6)) + (hyperObj.atkPlus)) * attackBonus
         let minusElixirFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer)
 
         let minusBangleStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int - bangleObj.str - bangleObj.dex - bangleObj.int) * avatarStats()
-        let minusBangleWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus - bangleObj.weaponAtkPlus) * arkObj.weaponAtk)
+        let minusBangleWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
         let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
         let minusBangleFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * elixirObj.finalDamagePer)
 
@@ -3091,7 +3094,7 @@ export function getCharacterProfile(inputName, callback){
         //console.log("엘릭서 효율" + elixirValue)
         
         let minusBangleValue = ((minusBangleAtk) * evolutionDamageResult * minusBangleFinal * enlightResult * arkObj.leapDamage *  gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit+defaultObj.haste+defaultObj.special-bangleObj.crit-bangleObj.haste-bangleObj.special)/100*2)/100+1+0.3))
-        let bangleValue = (((lastFinalValue-minusBangleValue)/lastFinalValue*100)*1.5).toFixed(2)
+        let bangleValue = (((lastFinalValue-minusBangleValue)/lastFinalValue*100)*1.1).toFixed(2)
         //console.log("팔찌 효율" + bangleValue)
         
         
@@ -3111,6 +3114,8 @@ export function getCharacterProfile(inputName, callback){
 
         // let baseAttackStats = ( (data.ArmoryProfile.CharacterLevel - 9) * 8.86 + 54 )
 
+        
+
 
 
 
@@ -3125,12 +3130,12 @@ export function getCharacterProfile(inputName, callback){
         let damageBuff = (accObj.damageBuff + bangleObj.damageBuff + gemObj.damageBuff)/100+1 // 아피강
         let statDamageBuff = ((defaultObj.special+defaultObj.haste)*0.015)/100+1 // 특화 신속
         let finalDamageBuff = (13 * damageBuff * statDamageBuff)/100+1 // 최종 피증
-
+        
         let evolutionBuff = (arkObj.evolutionBuff/100) // 진화형 피해 버프
 
-        let beforeBuff  = ((155000**1.095) * 1.7 * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) // 가상의 딜러
-        let afterBuff =  ((((155000+finalAtkBuff)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * (bangleObj.atkBuffPlus/100+1)
-        let afterFullBuff =  ((((155000+finalAtkBuff)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * (bangleObj.atkBuffPlus/100+1) * finalDamageBuff 
+        let beforeBuff  = ((150000**1.095) * 1.7 * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) // 가상의 딜러
+        let afterBuff =  ((((150000+finalAtkBuff)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * (bangleObj.atkBuffPlus/100+1)
+        let afterFullBuff =  ((((150000+finalAtkBuff)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * (bangleObj.atkBuffPlus/100+1) * finalDamageBuff 
         
         let allTimeBuffPower =  ((afterBuff-beforeBuff)/beforeBuff)*100
         let fullBuffPower = ((afterFullBuff-beforeBuff)/beforeBuff)*100
@@ -3155,26 +3160,25 @@ export function getCharacterProfile(inputName, callback){
 
         // 4티어 서폿 최종 스펙포인트1
         let supportSpecPoint = (fullBuffPower**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
-        
-
 
         let atkBuffMinusBangle = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+gemObj.atkBuff)/100)) // 팔찌 제외 아공강
-        let finalAtkBuffMinusBangle = (defaultObj.baseAttackPow * 0.15 * atkBuffMinusBangle) // 팔찌 제외 최종 공증
+        let finalAtkBuffMinusBangle = (totalAtk0 * 0.15 * atkBuffMinusBangle) // 팔찌 제외 최종 공증
 
         let damageBuffMinusBangle = (accObj.damageBuff+gemObj.damageBuff)/100+1 // 팔찌 제외 아피강
-        let statDamageBuffMinusBangle = ((defaultObj.special-bangleObj.special)*0.015)/100+1 // 팔찌 제외 스탯
+        let statDamageBuffMinusBangle = ((defaultObj.special+defaultObj.haste-bangleObj.special-bangleObj.haste)*0.015)/100+1 // 팔찌 제외 스탯
         let finalDamageBuffMinusBangle = (13 * damageBuffMinusBangle * statDamageBuffMinusBangle)/100+1 // 팔찌 제외 최종 피증
+        
 
-        let afterBuffMinusBangle = ((((155000+finalAtkBuffMinusBangle)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035
-        let afterFullBuffMinusBangle = ((((155000+finalAtkBuffMinusBangle)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * finalDamageBuffMinusBangle
+        let afterBuffMinusBangle = ((((150000+finalAtkBuffMinusBangle)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035
+        let afterFullBuffMinusBangle = ((((150000+finalAtkBuffMinusBangle)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * finalDamageBuffMinusBangle
 
         let allTimeBuffPowerMinusBangle = ((afterBuffMinusBangle-beforeBuff)/beforeBuff)*100
         let fullBuffPowerMinusBangle = ((afterFullBuffMinusBangle-beforeBuff)/beforeBuff)*100
 
-        let supportSpecPointMinusBangle = (fullBuffPowerMinusBangle**2.331)*120 * enlightResult * arkObj.leapDamage
+        let supportSpecPointMinusBangle = (fullBuffPowerMinusBangle**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
         let supportBangleEff = (((fullBuffPower-fullBuffPowerMinusBangle)/fullBuffPowerMinusBangle*100)/100 + 1 * (bangleObj.special*0.01/100+1) * (bangleObj.haste*0.01/100+1)) * 100 - 100
 
-        //console.log ( supportBangleEff )
+        //console.log ( supportSpecPointMinusBangle )
         //console.log("팔찌 효율" + ((fullBuffPower)))
         //console.log("특화 효율" + (bangleObj.special*0.045/100+1))
         //console.log("신속 효율" + (bangleObj.haste*0.045/100+1))
@@ -3866,8 +3870,8 @@ export function getCharacterProfile(inputName, callback){
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){ //4티어 딜러
 
                 leftColumn += infoBox("공격력", (totalAtk2).toFixed(0), '순수 공격력 수치입니다.')
-                leftColumn += infoBox("초월", hyperValue + "%", '로펙 환산 기준입니다.')
                 leftColumn += infoBox("엘릭서", elixirValue + "%", '로펙 환산 기준입니다.')
+                leftColumn += infoBox("초월", hyperValue + "%", '로펙 환산 기준입니다.')
                 leftColumn += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산 기준입니다.')
                 leftColumn += "</div>"
 
@@ -3959,19 +3963,18 @@ export function getCharacterProfile(inputName, callback){
             }
         }
 
-        
         function gemBox(e){
             function gemDetailInfo(){
                 let result;
 
-                if( gemSkillArry.length != 0  && gemSkillArry[e].skillPer != "none" && /멸화|겁화/.test(gemSkillArry[e].gem) ){
-                    result = `${gemSkillArry[e].name} <br> 딜 지분 : ${Math.round(gemSkillArry[e].skillPer*1000)/10}%`
+                if( gemSkillArry.length != 0  && gemSkillArry[e].skillPer != "none" && /멸화|겁화/.test(gemSkillArry[e].name) ){
+                    result = `${gemSkillArry[e].skill} <br> 딜 지분 : ${Math.round(gemSkillArry[e].skillPer*1000)/10}%`
 
-                }else if(gemSkillArry.length != 0 && gemSkillArry[e].skillPer == "none" && /멸화|겁화/.test(gemSkillArry[e].gem)){
-                    result = `${gemSkillArry[e].name} <br> 딜 지분 데이터 없음`
+                }else if(gemSkillArry.length != 0 && gemSkillArry[e].skillPer == "none" && /멸화|겁화/.test(gemSkillArry[e].name)){
+                    result = `${gemSkillArry[e].skill} <br> 딜 지분 데이터 없음`
 
                 }else if(gemSkillArry.length != 0){
-                    result = gemSkillArry[e].name
+                    result = gemSkillArry[e].skill
 
                 }
                 return result;

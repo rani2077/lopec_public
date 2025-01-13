@@ -732,6 +732,22 @@
     width: 50%;
     height: 100%;
     line-height:23px;
+    position: relative;
+}
+
+.sc-info .group-info .button-area .link-split.on .detail{
+    display: block;
+}
+
+.sc-info .group-info .button-area .detail{
+    left:initial;
+    right: 0;
+    top: calc(100% + 7px);
+    /* border-radius:0; */
+    max-width: 500px;
+    background: #2f2f2f;
+    z-index:3;
+    padding: 15px;
 }
 
 .sc-info .group-info .button-area button{

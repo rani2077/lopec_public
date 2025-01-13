@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // 캐릭터 검색
             getCharacterProfile(inputText, function () {
                 document.getElementById("sc-info").innerHTML = searchHtml;
-                splitSearchFnc(inputText); //비교검색
                 specBtn();                 //스펙포인트 상세정보보기
                 renewFnc();                //갱신하기 버튼
                 userBookmarkSave(inputText)//즐겨찾기 기능
                 detailPosSet()             //detail 좌우 위치조정
+                levelAvgPoint()            //레벨별 평균점수 보기
             });
 
 
@@ -76,22 +76,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-function splitSearchFnc(userName) {
-    document.getElementById("split-input").addEventListener("click", function (event) {
-        event.preventDefault();
-        let hiddenInput = document.createElement("input");
-        hiddenInput.type = "hidden";
-        hiddenInput.name = "split-character-name";
-        hiddenInput.value = userName;
+// 레벨별 평균점수 보기
 
-        // hidden input을 form에 추가
-        document.querySelector(".link-split").appendChild(hiddenInput);
-
-        // form 전송
-        document.querySelector(".link-split").submit();
-
-    })
-
+function levelAvgPoint(){
+    document.querySelector(".link-split").addEventListener("click", function(){
+        this.classList.toggle("on");
+    });
 }
 
 
