@@ -139,10 +139,6 @@
                         <span class="name"></span>
                     </li>
                     <li class="tag-item">
-                        <p class="tag radius">세팅</p>
-                        <span class="name"></span>
-                    </li>
-                    <li class="tag-item">
                         <p class="tag radius">카드</p>
                         <span class="name"></span>
                     </li>

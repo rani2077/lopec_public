@@ -2681,7 +2681,7 @@ export function getCharacterProfile(inputName, callback){
         }
 
 
-        //console.log(gemSkillArry)
+        console.log(gemSkillArry)
 
 
         if(true){
@@ -2696,7 +2696,7 @@ export function getCharacterProfile(inputName, callback){
                     const name = nameAndGem[i];
                     const gemPattern = nameAndGem[i + 1];
                     const regex = new RegExp(gemPattern);
-                    const found = arr.some(item => item.name === name && regex.test(item.gem));
+                    const found = arr.some(item => item.skill === name && regex.test(item.name));
                     if (!found) return false;
                 }
                 return true;
@@ -4986,7 +4986,6 @@ export function getCharacterProfile(inputName, callback){
                 ${tagItemFnc("레벨",itemLevel)}
                 ${tagItemFnc("길드",guildName())}
                 ${tagItemFnc("칭호",titleName())}
-                ${tagItemFnc("세팅",specialClass)}
                 ${cardArryFnc()}
             </ul>
                 <div class="alert-area">
