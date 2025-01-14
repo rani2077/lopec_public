@@ -899,20 +899,20 @@ let bangleFilter = [
     //{ name: "무기 공격력이", option: "8100", tier: "DuelPmiddle", initial: "무공 8100 증가 | 조건부 무공 2200 증가",finalDamagePerEff:3.77,finalDamagePer:0.81,atkBuffPlus:1.00},
     //{ name: "무기 공격력이", option: "9000", tier: "DuelPhigh", initial: "무공 9000 증가 | 조건부 무공 2400 증가",finalDamagePerEff:4.18,finalDamagePer:0.89,atkBuffPlus:1.09},
 
-    { name: "무기 공격력이", option: "6300", tier: "DuelPlow1", initial: "무공 6300 증가 | 조건부 무공 1800 증가",finalDamagePerEff:2.97,atkBuffPlus:0.70,weaponAtkPlus:8100},
-    { name: "무기 공격력이", option: "7200", tier: "DuelPlow2", initial: "무공 7200 증가 | 조건부 무공 2000 증가",finalDamagePerEff:3.37,atkBuffPlus:0.85,weaponAtkPlus:9200},
-    { name: "무기 공격력이", option: "8100", tier: "DuelPmiddle", initial: "무공 8100 증가 | 조건부 무공 2200 증가",finalDamagePerEff:3.77,atkBuffPlus:1.00,weaponAtkPlus:10300},
-    { name: "무기 공격력이", option: "9000", tier: "DuelPhigh", initial: "무공 9000 증가 | 조건부 무공 2400 증가",finalDamagePerEff:4.18,atkBuffPlus:1.09,weaponAtkPlus:11400},
+    { name: "무기 공격력이", option: "6300", tier: "DuelPlow1", initial: "무공 6300 증가 | 조건부 무공 1800 증가",finalDamagePerEff:2.97,weaponAtkPlus:8100},
+    { name: "무기 공격력이", option: "7200", tier: "DuelPlow2", initial: "무공 7200 증가 | 조건부 무공 2000 증가",finalDamagePerEff:3.37,weaponAtkPlus:9200},
+    { name: "무기 공격력이", option: "8100", tier: "DuelPmiddle", initial: "무공 8100 증가 | 조건부 무공 2200 증가",finalDamagePerEff:3.77,weaponAtkPlus:10300},
+    { name: "무기 공격력이", option: "9000", tier: "DuelPhigh", initial: "무공 9000 증가 | 조건부 무공 2400 증가",finalDamagePerEff:4.18,weaponAtkPlus:11400},
 
     //{ name: "무기 공격력이", option: "6000", tier: "Duellow1", initial: "무공 6000 증가 | 스택당 무공 120 증가",finalDamagePerEff:2.51,finalDamagePer:0.9,atkBuffPlus:0.65},
     //{ name: "무기 공격력이", option: "6900", tier: "Duellow2", initial: "무공 6900 증가 | 스택당 무공 130 증가",finalDamagePerEff:2.81,finalDamagePer:0.97,atkBuffPlus:0.80},
     //{ name: "무기 공격력이", option: "7800", tier: "Duelmiddle", initial: "무공 7800 증가 | 스택당 무공 140 증가",finalDamagePerEff:3.17,finalDamagePer:1.04,atkBuffPlus:0.95},
     //{ name: "무기 공격력이", option: "8700", tier: "Duelhigh", initial: "무공 8700 증가 | 스택당 무공 150 증가",finalDamagePerEff:3.52,finalDamagePer:1.11,atkBuffPlus:1.05},
 
-    { name: "무기 공격력이", option: "6000", tier: "Duellow1", initial: "무공 6000 증가 | 스택당 무공 120 증가",finalDamagePerEff:2.51,atkBuffPlus:0.65,weaponAtkPlus:7020},
-    { name: "무기 공격력이", option: "6900", tier: "Duellow2", initial: "무공 6900 증가 | 스택당 무공 130 증가",finalDamagePerEff:2.81,atkBuffPlus:0.80,weaponAtkPlus:8005},
-    { name: "무기 공격력이", option: "7800", tier: "Duelmiddle", initial: "무공 7800 증가 | 스택당 무공 140 증가",finalDamagePerEff:3.17,atkBuffPlus:0.95,weaponAtkPlus:8990},
-    { name: "무기 공격력이", option: "8700", tier: "Duelhigh", initial: "무공 8700 증가 | 스택당 무공 150 증가",finalDamagePerEff:3.52,atkBuffPlus:1.05,weaponAtkPlus:9975},
+    { name: "무기 공격력이", option: "6000", tier: "Duellow1", initial: "무공 6000 증가 | 스택당 무공 120 증가",finalDamagePerEff:2.51,weaponAtkPlus:7020},
+    { name: "무기 공격력이", option: "6900", tier: "Duellow2", initial: "무공 6900 증가 | 스택당 무공 130 증가",finalDamagePerEff:2.81,weaponAtkPlus:8005},
+    { name: "무기 공격력이", option: "7800", tier: "Duelmiddle", initial: "무공 7800 증가 | 스택당 무공 140 증가",finalDamagePerEff:3.17,weaponAtkPlus:8990},
+    { name: "무기 공격력이", option: "8700", tier: "Duelhigh", initial: "무공 8700 증가 | 스택당 무공 150 증가",finalDamagePerEff:3.52,weaponAtkPlus:9975},
 
     { name: "백어택 스킬이 적에게 주는 피해가", option: "2%", tier: "low1", initial: "백어택 스킬 피해 +2.0%",finalDamagePer:2},
     { name: "백어택 스킬이 적에게 주는 피해가", option: "2.5%", tier: "low2", initial: "백어택 스킬 피해 +2.5%",finalDamagePer:2.5},
@@ -1850,8 +1850,11 @@ export let elixirCalFilter = [
 
     { name:"> 무기 공격력 ",weaponAtkPlus:[236,488,740,1110,1480]},
 
-    { name:"> 치명타 피해 ",criticalDamagePer:[1.12,2.31,3.5,5.25,7],finalDamagePer:[0.38,0.79,1.2,1.8,2.4]},
-    { name:"> 추가 피해 ",addDamagePer:[0.49,1.02,1.55,2.32,3.1],finalDamagePer:[0.38,0.79,1.2,1.8,2.4]},
+    // { name:"> 치명타 피해 ",criticalDamagePer:[1.12,2.31,3.5,5.25,7],finalDamagePer:[0.38,0.79,1.2,1.8,2.4]},
+    // { name:"> 추가 피해 ",addDamagePer:[0.49,1.02,1.55,2.32,3.1],finalDamagePer:[0.38,0.79,1.2,1.8,2.4]},
+
+    { name:"> 치명타 피해 ",finalDamagePer:[0.38,0.79,1.2,1.8,2.4]},
+    { name:"> 추가 피해 ",finalDamagePer:[0.38,0.79,1.2,1.8,2.4]},
 
 
     { name:"> 강맹 (질서) ",atkPer:[0.23,0.47,0.72,1.08,1.44]},
@@ -1870,9 +1873,9 @@ export let elixirCalFilter = [
     { name:"> 행운 (혼돈) ",finalDamagePer:[0.23,0.47,0.72,1.08,1.44]},
     { name:"> 회심 (혼돈) ",finalDamagePer:[0.23,0.47,0.72,1.08,1.44]},
 
-    { name:"> 힘 ",str:[864,1782,740,1110,1480]},
-    { name:"> 민첩 ",dex:[864,1782,740,1110,1480]},
-    { name:"> 지능 ",int:[864,1782,740,1110,1480]},
+    { name:"> 힘 ",str:[864,1782,2700,4050,5400]},
+    { name:"> 민첩 ",dex:[864,1782,2700,4050,5400]},
+    { name:"> 지능 ",int:[864,1782,2700,4050,5400]},
 
 
     { name:"> 선각자 (질서) ",atkBuff:[0.64,1.32,2,3,4]},
@@ -2314,9 +2317,11 @@ export let classGemFilter = [
             { name: "철포난격", per: 0.148 },
             { name: "난타연권", per: 0.148 },
             { name: "폭렬권", per: 0.124 },
-            { name: "용의강림", per: 0.067 },
-            { name: "일망타진", per: 0.045 },
+            { name: "용의 강림", per: 0.067 },
+            { name: "일망 타진", per: 0.045 },
             { name: "죽음의 선고", per: 0.044 },
+            { name: "파쇄격", per: 0.044 },
+            { name: "보정치", per: -0.044 },
             
         ],
     },
@@ -2417,9 +2422,9 @@ export let classGemFilter = [
             { name: "포격 스킬", per: 0.55 },
             { name: "미사일 폭격", per: 0.063 },
             { name: "중력 폭발", per: 0.034},
-            { name: "공중 폭격", per: 0.53 },
-            { name: "고압열탄", per: 0.53 },
-            { name: "보정치", per: -0.53 },
+            { name: "공중 폭격", per: 0.053 },
+            { name: "고압열탄", per: 0.053 },
+            { name: "보정치", per: -0.053 },
             
         ],
     },
@@ -2593,7 +2598,7 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "타대 억모닉",
+        class: "억제",
         skill: [
             { name: "크루얼 커터", per: 0.158 },
             { name: "그라인드 체인", per: 0.147 },

@@ -1417,7 +1417,6 @@ export function getCharacterProfile(inputName, callback){
 
 
 
-
         // 직업별 기본점수
         let jobObj = {
             criticalChancePer:0,
@@ -1550,8 +1549,7 @@ export function getCharacterProfile(inputName, callback){
         accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.4989)/100+1)
         //console.log("치적,치피,무공퍼 적용" + accObj.finalDamagePer)
         accObj.finalDamagePer *= ((accObj.atkPer * 0.9246)/100+1)
-
-
+        //console.log(accObj)
 
 
         // 팔찌
@@ -2062,6 +2060,8 @@ export function getCharacterProfile(inputName, callback){
 
 
         elixirData.forEach(function(realElixir){
+            // console.log(realElixir.name)
+            
             elixirCalFilter.forEach(function(filterArry){
                 if(realElixir.name == filterArry.name && !(filterArry.atkPlus == undefined)){
 
@@ -2089,6 +2089,7 @@ export function getCharacterProfile(inputName, callback){
                     // console.log(realElixir.name+" : " + elixirAtkPer)
 
                 }else if(realElixir.name == filterArry.name && !(filterArry.finalDamagePer == undefined)){
+                    // console.log(realElixir.name)
 
                     elixirObj.finalDamagePer *= filterArry.finalDamagePer[realElixir.level - 1]/100 + 1
                     // console.log(realElixir.name+" : " + elixirFinalDamagePer)
@@ -2101,7 +2102,7 @@ export function getCharacterProfile(inputName, callback){
                 }else if(realElixir.name == filterArry.name && !(filterArry.dex == undefined)){
 
                     elixirObj.dex += filterArry.dex[realElixir.level - 1]
-                    // console.log(realElixir.name+" : " + filterArry.stats[realElixir.level - 1])
+                    // console.log(realElixir.name+" : " + filterArry.dex[realElixir.level - 1])
 
                 }else if(realElixir.name == filterArry.name && !(filterArry.int == undefined)){
 
@@ -2118,6 +2119,13 @@ export function getCharacterProfile(inputName, callback){
                 }
 
             })
+        })
+
+        elixirCalFilter.forEach(function(arr){
+            
+            // console.log("> 추가 피해 " == arr.name && !(arr.finalDamagePer == undefined))
+            // console.log(arr.name)
+            // console.log(arr.finalDamagePer)
         })
 
 
@@ -2643,7 +2651,7 @@ export function getCharacterProfile(inputName, callback){
 
                     toolTip = toolTip.replace(/"/g, '');
 
-                    if(toolTip.includes(data.ArmoryProfile.CharacterClassName)){
+                    if(toolTip.includes(data.ArmoryProfile.CharacterClassName) && /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip)){
     
                         let etcGemValue = results[idx+2].substring(0, results[idx+2].indexOf('"'))
                         let gemName;
@@ -2721,7 +2729,7 @@ export function getCharacterProfile(inputName, callback){
                 specialClass = "5멸 질풍";
             }else if( classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)  ){
                 specialClass = "2사신 그믐";
-            }else if( classCheck("억제") && !skillCheck(gemSkillArry, "샤펀 컷", dmg)  ){
+            }else if( classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)  ){
                 specialClass = "데이터 없음";
             }else if( classCheck("야성") || classCheck("두동")){
                 specialClass = "데이터 없음";
@@ -3035,6 +3043,7 @@ export function getCharacterProfile(inputName, callback){
         
         let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int ) * avatarStats() // 최종 힘민지 계산값
         let totalWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
+
         let totalAtk0 = (Math.sqrt((totalStat * totalWeaponAtk) / 6))
         let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
         let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
@@ -3044,6 +3053,7 @@ export function getCharacterProfile(inputName, callback){
         let bangleCriticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer * bangleObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
         let bangleAddDamageResult = ((defaultObj.addDamagePer + accObj.addDamagePer + elixirObj.addDamagePer)/100)+1 // 추가 피해
         let bangleFinalDamageResult = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer) // 적에게 주는 피해
+        
         let bangleCriDamage = (1 * criticalChanceResult * bangleCriticalFinalResult * (criticalDamageResult/100) + 1 *(100-criticalChanceResult)) / (1 * (criticalChanceResult-bangleObj.criticalChancePer) * criticalFinalResult * (criticalDamageResult-bangleObj.criticalDamagePer)/100 + 1*(100-(criticalChanceResult-bangleObj.criticalChancePer))) // 팔찌 치피 상승 기대값
         
         let minusHyperStat = (armorStatus() + expeditionStats + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int ) * avatarStats()
@@ -3078,7 +3088,6 @@ export function getCharacterProfile(inputName, callback){
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////팔찌 딜증율////
         let bangleEff = ((((bangleFinalValue-finalValue)/finalValue)+1) * (bangleObj.finalDamagePerEff) * bangleStatValue * 1.03 ).toFixed(4)
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////팔찌 딜증율////
-        
         
         
         /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////   
@@ -3124,7 +3133,7 @@ export function getCharacterProfile(inputName, callback){
         //////////////////////////////////////// 서폿 공증 계산식 ////////////////////////////////////////
         let finalStigmaPer = ((jobObj.stigmaPer * ((accObj.stigmaPer + arkObj.stigmaPer + hyperObj.stigmaPer)/100+1)).toFixed(1)) // 낙인력
 
-        let atkBuff = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+bangleObj.atkBuff+gemObj.atkBuff)/100)) // 아공강
+        let atkBuff = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+bangleObj.atkBuff+gemObj.atkBuff)/100)) // 아공강 
         let finalAtkBuff = (totalAtk0 * 0.15 * atkBuff) // 최종 공증
 
         let damageBuff = (accObj.damageBuff + bangleObj.damageBuff + gemObj.damageBuff)/100+1 // 아피강
