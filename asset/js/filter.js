@@ -310,7 +310,7 @@ let arkFilter = [
     {name:"절실한 구원",initial:"서폿",stigmaPer:10},
     {name:"버스트",initial:"버스트",criticalChancePer:10, moveSpeed:22.8, atkSpeed:32.8, finalDamagePer:6},
     {name:"잔재된 기운",initial:"잔재",criticalChancePer:10, moveSpeed:24.8, atkSpeed:24.8, finalDamagePer:6},
-    {name:"갈증",initial:"갈증",criticalChancePer:10, moveSpeed:10, atkSpeed:10, finalDamagePer:6.4, criticalChancePer:43},
+    {name:"깔쯩",initial:"갈증",criticalChancePer:10, moveSpeed:10, atkSpeed:10, finalDamagePer:6.4, criticalChancePer:43},
     {name:"만월의 집행자",initial:"만월", moveSpeed:39.2, atkSpeed:10, finalDamagePer:6, criticalChancePer:34},
     {name:"만개",initial:"서폿",stigmaPer:10},
 
@@ -995,10 +995,10 @@ let bangleFilter = [
     { name: "공격 적중 시", option: "80", tier: "zlow2", initial: "공격 적중 시 80초간 경피면"},
     { name: "공격 적중 시", option: "70", tier: "zmiddle", initial: "공격 적중 시 70초간 경피면"},
     { name: "공격 적중 시", option: "60", tier: "zhigh", initial: "공격 적중 시 60초간 경피면"},
-    { name: "무기 공격력 +6300", option: null, tier: "Duellow1", initial: "무기 공격력 +6300",finalDamagePerEff:2.34},
-    { name: "무기 공격력 +7200", option: null, tier: "Duellow2", initial: "무기 공격력 +7200",finalDamagePerEff:2.64},
-    { name: "무기 공격력 +8100", option: null, tier: "Duelmiddle", initial: "무기 공격력 +8100",finalDamagePerEff:2.97},
-    { name: "무기 공격력 +9000", option: null, tier: "Duelhigh", initial: "무기 공격력 +9000",finalDamagePerEff:3.3},
+    { name: "무기 공격력 +6300", option: null, tier: "Duellow1", initial: "무기 공격력 +6300",finalDamagePerEff:2.34,weaponAtkPlus:6300},
+    { name: "무기 공격력 +7200", option: null, tier: "Duellow2", initial: "무기 공격력 +7200",finalDamagePerEff:2.64,weaponAtkPlus:7200},
+    { name: "무기 공격력 +8100", option: null, tier: "Duelmiddle", initial: "무기 공격력 +8100",finalDamagePerEff:2.97,weaponAtkPlus:8100},
+    { name: "무기 공격력 +9000", option: null, tier: "Duelhigh", initial: "무기 공격력 +9000",finalDamagePerEff:3.3,weaponAtkPlus:9000},
     //아래로 3T 옵션
     { name: "최대 생명력 +5500", option: null, tier: "zlow1", initial : "최대 생명력 +5500"},
     { name: "최대 생명력 +7300", option: null, tier: "zlow2", initial : "최대 생명력 +7300"},
@@ -1741,6 +1741,46 @@ let bangleFilter = [
         {name:'공격력 감소',level:-2,engBonusPer:0, finalDamagePer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:-4, atkSpeed:0, moveSpeed:0, carePower:0},
         {name:'공격력 감소',level:-3,engBonusPer:0, finalDamagePer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:-6, atkSpeed:0, moveSpeed:0, carePower:0},
 
+
+
+        ////서폿
+
+
+
+        {name:'각성',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'각성',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'각성',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'각성',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        
+        {name:'전문의',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'전문의',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'전문의',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'전문의',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        
+        {name:'중갑 착용',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'중갑 착용',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'중갑 착용',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'중갑 착용',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+
+        {name:'급소 타격',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'급소 타격',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'급소 타격',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'급소 타격',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+
+        {name:'마나의 흐름',level:1,engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'마나의 흐름',level:2,engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'마나의 흐름',level:3,engBonusPer:1.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'마나의 흐름',level:4,engBonusPer:1.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+
+        {name:'최대 마나 증가',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'최대 마나 증가',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'최대 마나 증가',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'최대 마나 증가',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+
+        {name:'구슬동자',level:1,engBonusPer:0.9, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'구슬동자',level:2,engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'구슬동자',level:3,engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'구슬동자',level:4,engBonusPer:1.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
     ]
 
 

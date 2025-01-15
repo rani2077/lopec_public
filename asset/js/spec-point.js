@@ -157,17 +157,17 @@ export function getCharacterProfile(inputName, callback){
     fetch(url, options)
     .then((response) => response.json())
     .then((data) => {
-    
+
 
         apiData = data
-        
+
         // 호출api모음
         let characterImage = data.ArmoryProfile.CharacterImage //캐릭터 이미지
         let characterLevel = data.ArmoryProfile.CharacterLevel //캐릭터 레벨
         let characterNickName = data.ArmoryProfile.CharacterName //캐릭터 닉네임
         let characterClass = data.ArmoryProfile.CharacterClassName //캐릭터 직업
-        
-        
+
+
         let serverName = data.ArmoryProfile.ServerName //서버명
         let itemLevel = data.ArmoryProfile.ItemMaxLevel //아이템레벨
         let guildNullCheck = data.ArmoryProfile.GuildName //길드명
@@ -186,9 +186,9 @@ export function getCharacterProfile(inputName, callback){
                 return(titleNullCheck)
             }
         }
-        
+
         let townName = data.ArmoryProfile.TownName //영지명
-        
+
 
 
 
@@ -2019,6 +2019,7 @@ export function getCharacterProfile(inputName, callback){
 
 
                         engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) + filterArry.finalDamagePer / 100));
+                        engObj.engBonusPer = (engObj.engBonusPer * (notZero(minusVal) + filterArry.engBonusPer / 100));
                         engObj.criticalChancePer = (engObj.criticalChancePer + filterArry.criticalChancePer);
                         engObj.criticalDamagePer = (engObj.criticalDamagePer + filterArry.criticalDamagePer);
                         engObj.atkPer = (engObj.atkPer + filterArry.atkPer);
@@ -3131,12 +3132,18 @@ export function getCharacterProfile(inputName, callback){
 
 
         //////////////////////////////////////// 서폿 공증 계산식 ////////////////////////////////////////
+        let supportTotalWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer/100))) // 서폿 무공 계산값
+        let totalAtk4 = (Math.sqrt((totalStat * supportTotalWeaponAtk) / 6)) * attackBonus
+
         let finalStigmaPer = ((jobObj.stigmaPer * ((accObj.stigmaPer + arkObj.stigmaPer + hyperObj.stigmaPer)/100+1)).toFixed(1)) // 낙인력
 
         let atkBuff = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+bangleObj.atkBuff+gemObj.atkBuff)/100)) // 아공강 
-        let finalAtkBuff = (totalAtk0 * 0.15 * atkBuff) // 최종 공증
+        let finalAtkBuff = (totalAtk4 * 0.15 * atkBuff) // 최종 공증
 
         let damageBuff = (accObj.damageBuff + bangleObj.damageBuff + gemObj.damageBuff)/100+1 // 아피강
+        let hyperBuff = (10 * ((accObj.damageBuff + bangleObj.damageBuff)/100+1))/100+1 // 초각성
+
+
         let statDamageBuff = ((defaultObj.special+defaultObj.haste)*0.015)/100+1 // 특화 신속
         let finalDamageBuff = (13 * damageBuff * statDamageBuff)/100+1 // 최종 피증
         
@@ -3144,7 +3151,7 @@ export function getCharacterProfile(inputName, callback){
 
         let beforeBuff  = ((150000**1.095) * 1.7 * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) // 가상의 딜러
         let afterBuff =  ((((150000+finalAtkBuff)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * (bangleObj.atkBuffPlus/100+1)
-        let afterFullBuff =  ((((150000+finalAtkBuff)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * (bangleObj.atkBuffPlus/100+1) * finalDamageBuff 
+        let afterFullBuff =  ((((150000+finalAtkBuff)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * (bangleObj.atkBuffPlus/100+1) * finalDamageBuff * hyperBuff
         
         let allTimeBuffPower =  ((afterBuff-beforeBuff)/beforeBuff)*100
         let fullBuffPower = ((afterFullBuff-beforeBuff)/beforeBuff)*100
@@ -3168,24 +3175,30 @@ export function getCharacterProfile(inputName, callback){
         //console.log((bangleObj.haste*0.017/100+1))
 
         // 4티어 서폿 최종 스펙포인트1
-        let supportSpecPoint = (fullBuffPower**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
+        let supportSpecPoint = (fullBuffPower**2.546)*20 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
+
+        let supportTotalWeaponAtkMinusBangle = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer/100)))
+        let totalAtk5 = (Math.sqrt((totalStat * supportTotalWeaponAtkMinusBangle) / 6)) * attackBonus
 
         let atkBuffMinusBangle = (1 + ((accObj.atkBuff+elixirObj.atkBuff+hyperObj.atkBuff+gemObj.atkBuff)/100)) // 팔찌 제외 아공강
-        let finalAtkBuffMinusBangle = (totalAtk0 * 0.15 * atkBuffMinusBangle) // 팔찌 제외 최종 공증
+        let finalAtkBuffMinusBangle = (totalAtk5 * 0.15 * atkBuffMinusBangle) // 팔찌 제외 최종 공증
 
         let damageBuffMinusBangle = (accObj.damageBuff+gemObj.damageBuff)/100+1 // 팔찌 제외 아피강
+        let hyperBuffMinusBangle = (10 * ((accObj.damageBuff)/100+1))/100+1 // 팔찌 제외 초각성
+
         let statDamageBuffMinusBangle = ((defaultObj.special+defaultObj.haste-bangleObj.special-bangleObj.haste)*0.015)/100+1 // 팔찌 제외 스탯
         let finalDamageBuffMinusBangle = (13 * damageBuffMinusBangle * statDamageBuffMinusBangle)/100+1 // 팔찌 제외 최종 피증
         
 
         let afterBuffMinusBangle = ((((150000+finalAtkBuffMinusBangle)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035
-        let afterFullBuffMinusBangle = ((((150000+finalAtkBuffMinusBangle)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * finalDamageBuffMinusBangle
+        let afterFullBuffMinusBangle = ((((150000+finalAtkBuffMinusBangle)*1.06)**1.095) * (1.7+evolutionBuff) * (5.275243**1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer/100+1) * 1.035 * finalDamageBuffMinusBangle * hyperBuffMinusBangle
 
         let allTimeBuffPowerMinusBangle = ((afterBuffMinusBangle-beforeBuff)/beforeBuff)*100
         let fullBuffPowerMinusBangle = ((afterFullBuffMinusBangle-beforeBuff)/beforeBuff)*100
 
-        let supportSpecPointMinusBangle = (fullBuffPowerMinusBangle**2.65)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
-        let supportBangleEff = (((fullBuffPower-fullBuffPowerMinusBangle)/fullBuffPowerMinusBangle*100)/100 + 1 * (bangleObj.special*0.01/100+1) * (bangleObj.haste*0.01/100+1)) * 100 - 100
+        let supportSpecPointMinusBangle = (fullBuffPowerMinusBangle**2.526)*21 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1/(1-gemsCoolAvg/100)-1)+1)
+        let supportBangleEff = ((fullBuffPower-fullBuffPowerMinusBangle)/fullBuffPowerMinusBangle*100)
+        //+ 1 * (bangleObj.special*0.01/100+1) * (bangleObj.haste*0.01/100+1)) * 100 - 100
 
         //console.log ( supportSpecPointMinusBangle )
         //console.log("팔찌 효율" + ((fullBuffPower)))
@@ -3916,10 +3929,11 @@ export function getCharacterProfile(inputName, callback){
         
             }else if(supportCheck() == "서폿" && data.ArkPassive.IsArkPassive){ //4티어 서폿
 
+                bottomColumn += infoBox("공격력", (totalAtk4).toFixed(0), '공증에 적용되는 기본 공격력')
                 bottomColumn += infoBox("낙인력", finalStigmaPer + "%", '낙인 데미지 증가율')
                 bottomColumn += infoBox("특성합", (defaultObj.haste+defaultObj.special), '특신 합계')
-                bottomColumn += infoBox("상시버프", (allTimeBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
-                bottomColumn += infoBox("풀버프", (fullBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
+                bottomColumn += infoBox("상시 버프", (allTimeBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
+                bottomColumn += infoBox("풀 버프", (fullBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
                 bottomColumn += infoBox("각인 보너스", ((engObj.engBonusPer-1)*100).toFixed(2) + "%", '각인 보너스 점수')
                 bottomColumn += infoBox("평균 쿨감", gemsCoolAvg + "%", '보석으로 인한 쿨감 평균')
                 bottomColumn += infoBox("케어력", ((finalCarePower/280000)*100).toFixed(2) + "%", '최대 생명력 기반 케어력 <br> 스펙포인트에 포함되지 않습니다.')
