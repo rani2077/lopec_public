@@ -290,7 +290,7 @@ let arkFilter = [
     {name:"질풍노도",initial:"질풍",criticalChancePer:10, criticalDamagePer:102.08, finalDamagePer:6},
     {name:"이슬비",initial:"이슬비",criticalChancePer:10, finalDamagePer:6},
     {name:"야성",initial:"야성",},
-    {name:"환수 각성",initial:"환수",},
+    {name:"환수 각성",initial:"환각",},
 
     {name:"핸드거너",initial:"핸건",criticalChancePer:10, moveSpeed:8, atkSpeed:8, skillCool:5, finalDamagePer:6},
     {name:"강화 무기",initial:"강무",criticalChancePer:34, finalDamagePer:6},
@@ -874,10 +874,10 @@ let bangleFilter = [
     { name: "적에게 공격 적중 시 8초 동안 대상의 치명타 저항을", option: "2.1%", tier: "SpPmiddle", initial: "치명타 저항 -2.1% | 아군 공격력 강화 +2.5%",criticalChanceMinus:2.1,atkBuff:2.5,atkBuffPlus:1.77},
     { name: "적에게 공격 적중 시 8초 동안 대상의 치명타 저항을", option: "2.5%", tier: "SpPhigh", initial: "치명타 저항 -2.5% | 아군 공격력 강화 +3.0%",criticalChanceMinus:2.5,atkBuff:3,atkBuffPlus:2.12},
 
-    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "0.7%", tier: "SpMlow1", initial: "보호 대상의 피해량 +0.7% | 아공강 +1.5%",shieldBuff:0.7,atkBuff:1.5, atkBuffPlus:0.7},
-    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "0.9%", tier: "SpMlow2", initial: "보호 대상의 피해량 +0.9% | 아공강 +2.0%",shieldBuff:0.9,atkBuff:2, atkBuffPlus:0.9},
-    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "1.1%", tier: "SpMmiddle", initial: "보호 대상의 피해량 +1.1% | 아공강 +2.5%",shieldBuff:1.1,atkBuff:2.5, atkBuffPlus:1.1},
-    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "1.3%", tier: "SpMhigh", initial: "보호 대상의 피해량 +1.3% | 아공강 +3.0%",shieldBuff:1.3,atkBuff:3, atkBuffPlus:1.3},
+    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "0.7%", tier: "SpMlow1", initial: "보호 대상의 피해량 +0.7% | 아공강 +1.5%",shieldBuff:0.7,atkBuff:1.5, atkBuffPlus:0.7,finalDamagePer:0.7},
+    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "0.9%", tier: "SpMlow2", initial: "보호 대상의 피해량 +0.9% | 아공강 +2.0%",shieldBuff:0.9,atkBuff:2, atkBuffPlus:0.9,finalDamagePer:0.9},
+    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "1.1%", tier: "SpMmiddle", initial: "보호 대상의 피해량 +1.1% | 아공강 +2.5%",shieldBuff:1.1,atkBuff:2.5, atkBuffPlus:1.1,finalDamagePer:1.1},
+    { name: "파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가", option: "1.3%", tier: "SpMhigh", initial: "보호 대상의 피해량 +1.3% | 아공강 +3.0%",shieldBuff:1.3,atkBuff:3, atkBuffPlus:1.3,finalDamagePer:1.3},
 
     { name: "적에게 공격 적중 시 8초 동안 대상의 치명타 피해 저항을", option: "3%", tier: "SpMlow1", initial: "치명타 피해 저항 -3.0% | 아공강 +1.5%",criticalDamageMinus:3,atkBuff:1.5,atkBuffPlus:1.10},
     { name: "적에게 공격 적중 시 8초 동안 대상의 치명타 피해 저항을", option: "3.6%", tier: "SpMlow2", initial: "치명타 피해 저항 -3.6% | 아공강 +2.0%",criticalDamageMinus:3.6,atkBuff:2,atkBuffPlus:1.32},
@@ -1209,7 +1209,7 @@ let bangleFilter = [
         {job:"질풍",block:['결투의 대가','기습의 대가','속전속결','슈퍼 차지','달인의 저력','바리케이드','추진력']},
         {job:"이슬비",block:['결투의 대가','기습의 대가','속전속결','슈퍼 차지','달인의 저력','바리케이드','추진력']},
         {job:"야성",block:['']},
-        {job:"환수",block:['']}
+        {job:"환각",block:['']}
 
   ,'추진력'  ]
 
@@ -2145,11 +2145,24 @@ export let classGemFilter = [
             { name: "피니쉬 스트라이크", per: 0.149 },
             { name: "헬 블레이드", per: 0.14 },
             { name: "소드 스톰", per: 0.082 },
-            { name: "템페스트", per: 0.055},
+            { name: "템페스트 슬래쉬", per: 0.055},
             { name: "브레이브 슬래쉬", per: 0.055 },
             { name: "레드 더스트", per: 0.055 },         
-            { name: "보정치", per: -0.055 },
+            { name: "마운틴 크래쉬", per: 0.055 },         
+            { name: "보정치", per: -0.011 },
               
+        ],
+    },
+    {
+        class: "7겁 광기",
+        skill: [
+            { name: "오버드라이브", per: 0.175 },
+            { name: "피니쉬 스트라이크", per: 0.144 },
+            { name: "헬 블레이드", per: 0.135 },
+            { name: "템페스트 슬래쉬", per: 0.077},
+            { name: "브레이브 슬래쉬", per: 0.05 },
+            { name: "레드 더스트", per: 0.05 },         
+            { name: "마운틴 크래쉬", per: 0.03 },                       
         ],
     },
     {
@@ -2465,6 +2478,17 @@ export let classGemFilter = [
             { name: "공중 폭격", per: 0.053 },
             { name: "고압열탄", per: 0.053 },
             { name: "보정치", per: -0.053 },
+            
+        ],
+    },
+    {
+        class: "화강",
+        skill: [
+            { name: "고압열탄", per: 0.133 },
+            { name: "미사일 폭격", per: 0.164 },
+            { name: "공중 폭격", per: 0.146 },
+            { name: "포탑 소환", per: 0.119 },
+            { name: "다연장로켓포", per: 0.071 },
             
         ],
     },

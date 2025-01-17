@@ -2439,9 +2439,9 @@ export function getCharacterProfile(inputName, callback){
 
         
         // enlightenmentArry
-        if(arkPassiveValue(1) >= 101){ // arkPassiveValue(1) == 깨달음수치
+        if(arkPassiveValue(1) >= 100){ // arkPassiveValue(1) == 깨달음수치
 
-            arkObj.enlightenmentDamage += 1.42
+            arkObj.enlightenmentDamage += 1.415
             arkObj.enlightenmentBuff += 1.37
             arkObj.weaponAtk = 1.021
 
@@ -2646,13 +2646,12 @@ export function getCharacterProfile(inputName, callback){
                     results.push(match[1]);
                 }
     
-                // console.log(results)
     
                 results.forEach(function(toolTip, idx){
 
                     toolTip = toolTip.replace(/"/g, '');
 
-                    if(toolTip.includes(data.ArmoryProfile.CharacterClassName) && /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip)){
+                    if(toolTip.includes(data.ArmoryProfile.CharacterClassName) && /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip) && toolTip.includes("Element")){
     
                         let etcGemValue = results[idx+2].substring(0, results[idx+2].indexOf('"'))
                         let gemName;
@@ -2730,16 +2729,18 @@ export function getCharacterProfile(inputName, callback){
                 specialClass = "5멸 질풍";
             }else if( classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)  ){
                 specialClass = "2사신 그믐";
+            }else if( classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg)  ){
+                specialClass = "7겁 광기";
             }else if( classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)  ){
                 specialClass = "데이터 없음";
-            }else if( classCheck("야성") || classCheck("두동")){
+            }else if( classCheck("야성") || classCheck("두동")|| classCheck("환각")|| classCheck("서폿")){
                 specialClass = "데이터 없음";
             }else{
                 specialClass = supportCheck();
             }
 
         }
-        //console.log("보석전용 직업 : ",specialClass)
+        console.log("보석전용 직업 : ",specialClass)
 
 
         gemSkillArry.forEach(function(gemSkill, idx){
@@ -3044,10 +3045,12 @@ export function getCharacterProfile(inputName, callback){
         
         let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int ) * avatarStats() // 최종 힘민지 계산값
         let totalWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
+        let totalWeaponAtk2 = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer/100))) // 최종 무공 계산값
 
         let totalAtk0 = (Math.sqrt((totalStat * totalWeaponAtk) / 6))
         let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
         let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
+        let totalAtk3 = ((Math.sqrt((totalStat * totalWeaponAtk2) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
 
         let gemsCoolValue = (1/(1-(gemCheckFnc().gemAvg)/100)-1)+1
 
@@ -3067,10 +3070,14 @@ export function getCharacterProfile(inputName, callback){
         let minusElixirAtk = ((Math.sqrt((minusElixirStat * minusElixirWeaponAtk) / 6)) + (hyperObj.atkPlus)) * attackBonus
         let minusElixirFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer)
 
-        let minusBangleStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int - bangleObj.str - bangleObj.dex - bangleObj.int) * avatarStats()
+        let minusBangleStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int) * avatarStats()
         let minusBangleWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
+        let minusBangleWeaponAtk2 = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer/100)) )
+
         let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
+        let minusBangleAtk2 = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk2) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
         let minusBangleFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * elixirObj.finalDamagePer)
+        let bangleAtkValue = ((totalAtk3-minusBangleAtk2)/minusBangleAtk2)+1
 
     
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1차 환산 공격력////   
@@ -3100,11 +3107,11 @@ export function getCharacterProfile(inputName, callback){
         //console.log("초월 효율" + hyperValue)
         
         let minusElixirValue = ((minusElixirAtk) * evolutionDamageResult * minusElixirFinal * enlightResult * arkObj.leapDamage *  gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue *bangleStatValue* (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
-        let elixirValue = ((lastFinalValue-minusElixirValue)/lastFinalValue*1.12*100).toFixed(2)
+        let elixirValue = ((lastFinalValue-minusElixirValue)/lastFinalValue*1.1*100).toFixed(2)
         //console.log("엘릭서 효율" + elixirValue)
         
         let minusBangleValue = ((minusBangleAtk) * evolutionDamageResult * minusBangleFinal * enlightResult * arkObj.leapDamage *  gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit+defaultObj.haste+defaultObj.special-bangleObj.crit-bangleObj.haste-bangleObj.special)/100*2)/100+1+0.3))
-        let bangleValue = (((lastFinalValue-minusBangleValue)/lastFinalValue*100)*1.1).toFixed(2)
+        let bangleValue = (((1 * bangleAtkValue * bangleObj.finalDamagePer * (((bangleObj.crit+bangleObj.haste+bangleObj.special)/100*2.55)/100+1))-1)*100).toFixed(2)
         //console.log("팔찌 효율" + bangleValue)
         
         
@@ -3796,7 +3803,7 @@ export function getCharacterProfile(inputName, callback){
                 gradeObj.ico = gradeIco
                 gradeObj.info = gradeInfo
 
-                
+
                 return `
                 ${grade(gradeIco, gradeInfo)}
                 ${point( formatNumber(Math.round(supportSpecPoint)) )}`;
@@ -4004,10 +4011,9 @@ export function getCharacterProfile(inputName, callback){
             }
             function sortTag(){
                 let result;
-
-                if(gemSkillArry.length != 0 && /멸화|겁화/.test(gemSkillArry[e].gem)){
+                if(gemSkillArry.length != 0 && /멸화|겁화/.test(gemSkillArry[e].name)){
                     result = 1;
-                }else if(gemSkillArry.length != 0 && /홍염|작열/.test(gemSkillArry[e].gem)){
+                }else if(gemSkillArry.length != 0 && /홍염|작열/.test(gemSkillArry[e].name)){
                     result = 2;
                 }
                 return result;
@@ -4049,17 +4055,17 @@ export function getCharacterProfile(inputName, callback){
             <i style="display:none;">${sortTag()}</i>
             </div>`
         }
-        
+
         // 보석 아이콘의 개수만큼 자동 추가
         let gemArea = '<div class="gem-area shadow">';
         try{
             for (let i = 0; i < gemImage.length; i++) {
                 gemArea += gemBox(i);
-            }     
+            }
         }catch{
             for (let i = 0; i < 12; i++) {
                 gemArea += gemBox(i);
-            }     
+            }
         }
         // for (let i = 0; i < gemImage.length; i++) {
         //     gemArea += gemBox(i);
