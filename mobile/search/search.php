@@ -588,8 +588,13 @@
 
 
     <?php //  공용 헤더,푸터 ?>
-    <script src="../../asset/js/m-layout.js"></script>
-    <script type="module" src="../../asset/js/m-search.js?v=0010"></script>
+    <script>
+        document.write('<script type="module" src="/asset/js/m-layout.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+    <script>
+        document.write('<script type="module" src="/asset/js/m-search.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+
 
 
 </body>
