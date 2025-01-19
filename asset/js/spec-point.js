@@ -2442,54 +2442,54 @@ export function getCharacterProfile(inputName, callback){
         if(arkPassiveValue(1) >= 100){ // arkPassiveValue(1) == 깨달음수치
 
             arkObj.enlightenmentDamage += 1.415
-            arkObj.enlightenmentBuff += 1.37
+            arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.021
 
         }else if(arkPassiveValue(1) >= 98){
 
             arkObj.enlightenmentDamage += 1.40
-            arkObj.enlightenmentBuff += 1.37
+            arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.021
 
         }else if(arkPassiveValue(1) >= 97){
 
             arkObj.enlightenmentDamage += 1.37
-            arkObj.enlightenmentBuff += 1.35
+            arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.017
 
         }else if(arkPassiveValue(1) >= 96){
 
             arkObj.enlightenmentDamage += 1.37
-            arkObj.enlightenmentBuff += 1.35
+            arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.013
 
         }else if(arkPassiveValue(1) >= 95){
 
             arkObj.enlightenmentDamage += 1.36
-            arkObj.enlightenmentBuff += 1.35
+            arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.009
 
         }else if(arkPassiveValue(1) >= 94){
 
             arkObj.enlightenmentDamage += 1.36
-            arkObj.enlightenmentBuff += 1.35
+            arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.005
 
         }else if(arkPassiveValue(1) >= 93){
 
             arkObj.enlightenmentDamage += 1.35
-            arkObj.enlightenmentBuff += 1.35
+            arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.001
         
         }else if(arkPassiveValue(1) >= 92){
 
             arkObj.enlightenmentDamage += 1.35
-            arkObj.enlightenmentBuff += 1.35
+            arkObj.enlightenmentBuff += 1.33
 
         }else if(arkPassiveValue(1) >= 90){
 
             arkObj.enlightenmentDamage += 1.34
-            arkObj.enlightenmentBuff += 1.35    
+            arkObj.enlightenmentBuff += 1.33
 
         }else if(arkPassiveValue(1) >= 88){
 
@@ -2514,12 +2514,12 @@ export function getCharacterProfile(inputName, callback){
         }else if(arkPassiveValue(1) >= 80){
 
             arkObj.enlightenmentDamage += 1.25
-            arkObj.enlightenmentBuff += 1.31
+            arkObj.enlightenmentBuff += 1.33
 
         }else if(arkPassiveValue(1) >= 78){
 
             arkObj.enlightenmentDamage += 1.18
-            arkObj.enlightenmentBuff += 1.31
+            arkObj.enlightenmentBuff += 1.32
 
         }else if(arkPassiveValue(1) >= 76){
 
@@ -2529,42 +2529,42 @@ export function getCharacterProfile(inputName, callback){
         }else if(arkPassiveValue(1) >= 74){
 
             arkObj.enlightenmentDamage += 1.16
-            arkObj.enlightenmentBuff += 1.31
+            arkObj.enlightenmentBuff += 1.30
 
         }else if(arkPassiveValue(1) >= 72){
 
             arkObj.enlightenmentDamage += 1.15
-            arkObj.enlightenmentBuff += 1.30
+            arkObj.enlightenmentBuff += 1.29
 
         }else if(arkPassiveValue(1) >= 64){
 
             arkObj.enlightenmentDamage += 1.13
-            arkObj.enlightenmentBuff += 1.30
+            arkObj.enlightenmentBuff += 1.28
 
         }else if(arkPassiveValue(1) >= 56){
 
             arkObj.enlightenmentDamage += 1.125
-            arkObj.enlightenmentBuff += 1.30
+            arkObj.enlightenmentBuff += 1.27
 
         }else if(arkPassiveValue(1) >= 48){
 
             arkObj.enlightenmentDamage += 1.12
-            arkObj.enlightenmentBuff += 1.30
+            arkObj.enlightenmentBuff += 1.26
 
         }else if(arkPassiveValue(1) >= 40){
 
             arkObj.enlightenmentDamage += 1.115
-            arkObj.enlightenmentBuff += 1.30
+            arkObj.enlightenmentBuff += 1.25
 
         }else if(arkPassiveValue(1) >= 32){
 
             arkObj.enlightenmentDamage += 1.11
-            arkObj.enlightenmentBuff += 1.30
+            arkObj.enlightenmentBuff += 1.24
 
         }else if(arkPassiveValue(1) >= 24){
 
             arkObj.enlightenmentDamage += 1.10
-            arkObj.enlightenmentBuff += 1.30
+            arkObj.enlightenmentBuff += 1.23
 
         }else{
             arkObj.enlightenmentDamage += 1
@@ -3898,7 +3898,7 @@ export function getCharacterProfile(inputName, callback){
 
             if(!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive){ //4티어 딜러
 
-                leftColumn += infoBox("공격력", (totalAtk2).toFixed(0), '순수 공격력 수치입니다.')
+                leftColumn += infoBox("공격력", (totalAtk3).toFixed(0), '순수 공격력 수치입니다.')
                 leftColumn += infoBox("엘릭서", elixirValue + "%", '로펙 환산 기준입니다.')
                 leftColumn += infoBox("초월", hyperValue + "%", '로펙 환산 기준입니다.')
                 leftColumn += infoBox("각인", (engObj.finalDamagePer*100-100).toFixed(2) + "%", '로펙 환산 기준입니다.')
