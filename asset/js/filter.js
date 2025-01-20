@@ -2259,6 +2259,21 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "크블 포식",
+        skill: [
+            { name: "브루탈 임팩트", per: 0.179 },
+            { name: "볼케이노 이럽션", per: 0.148 },
+            { name: "길로틴", per: 0.144 },
+            { name: "크루얼 피어스", per: 0.09 },
+            { name: "마운틴 클리브", per: 0.09 },
+            { name: "퓨리어스 클로", per: 0.097 },
+            { name: "크로스 블레이드", per: 0.07 },
+            { name: "퍼니싱 드로", per: 0.07 },
+            { name: "보정치", per: -0.16 },
+            
+        ],
+    },
+    {
         class: "처단",
         skill: [
             { name: "블러드러스트", per: 0.313 },
