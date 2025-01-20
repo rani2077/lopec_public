@@ -2571,6 +2571,18 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "6M 피메",
+        skill: [
+            { name: "마탄의 사수", per: 0.191 },
+            { name: "절멸의 탄환", per: 0.143 },
+            { name: "포커스 샷", per: 0.179 },
+            { name: "타겟 다운", per: 0.12 },
+            { name: "레인 오브 불릿", per: 0.069 },
+            { name: "샷건 연사", per: 0.053 },
+            
+        ],
+    },
+    {
         class: "사시",
         skill: [
             { name: "포커스 샷", per: 0.172 },
