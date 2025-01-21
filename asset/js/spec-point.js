@@ -3629,33 +3629,33 @@ export function getCharacterProfile(inputName, callback){
 
 
             if( !(supportCheck() == "서폿" ) ){
-                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : 수집 중<br>기준 일자 : - <br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 350만점 이상 <br> 에스더 : 500만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : - <br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 350만점 이상 <br> 에스더 : 450만점 이상` 
                 if(itemLevel >= 1725 ){
-                    return range("1725이상 1740이하","1097만")
+                    return range("1725이상 1740이하","485만 2980")
                 }else if(itemLevel >= 1715 ){
-                    return range("1715이상 1725미만","953만")
+                    return range("1715이상 1725미만","405만 5915")
                 }else if(itemLevel >= 1710 ){
-                    return range("1710이상 1715미만","868만")
+                    return range("1710이상 1715미만","375만 1963")
                 }else if(itemLevel >= 1705 ){
-                    return range("1705이상 1710미만","804만")
+                    return range("1705이상 1710미만","356만 1817")
                 }else if(itemLevel >= 1700 ){
-                    return range("1700이상 1705미만","749만")
+                    return range("1700이상 1705미만","330만 5027")
                 }else if(itemLevel >= 1695 ){
-                    return range("1695이상 1700미만","705만")
+                    return range("1695이상 1700미만","307만 4153")
                 }else if(itemLevel >= 1690 ){
-                    return range("1690이상 1695미만","664만")
+                    return range("1690이상 1695미만","294만 5594")
                 }else if(itemLevel >= 1685 ){
-                    return range("1685이상 1690미만","625만")
+                    return range("1685이상 1690미만","280만 7719")
                 }else if(itemLevel >= 1680 ){
-                    return range("1680이상 1685미만","574만")
+                    return range("1680이상 1685미만","252만 4558")
                 }else if(itemLevel >= 1675 ){
-                    return range("1675이상 1680미만","455만")
+                    return range("1675이상 1680미만","187만 5054")
                 }else if(itemLevel >= 1670 ){
-                    return range("1670이상 1675미만","428만")
+                    return range("1670이상 1675미만","180만 6438")
                 }else if(itemLevel >= 1665 ){
-                    return range("1665이상 1670미만","400만")
+                    return range("1665이상 1670미만","164만 9575")
                 }else if(itemLevel >= 1660 ){
-                    return range("1660이상 1665미만","339만")
+                    return range("1660이상 1665미만","152만 7250")
                 } else {
                     return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 350만점 이상 <br> 에스더 : 500만점 이상'
                 }
@@ -3765,13 +3765,13 @@ export function getCharacterProfile(inputName, callback){
                 }else if(lastFinalValue >= 1500000 && lastFinalValue < 2500000){ //골드
                     gradeInfo = "골드 티어"
                     gradeIco="/asset/image/gold.png"
-                }else if(lastFinalValue >= 2500000 && lastFinalValue < 3500000){ //다이아
+                }else if(lastFinalValue >= 2500000 && lastFinalValue < 3300000){ //다이아
                     gradeInfo = "다이아몬드 티어"
                     gradeIco="/asset/image/diamond.png"
-                }else if(lastFinalValue >= 3500000 && lastFinalValue < 5000000){ //마스터
+                }else if(lastFinalValue >= 3300000 && lastFinalValue < 4500000){ //마스터
                     gradeInfo = "마스터 티어"
                     gradeIco="/asset/image/master.png"
-                }else if(lastFinalValue >= 5000000){ //에스더
+                }else if(lastFinalValue >= 4500000){ //에스더
                     gradeInfo = "에스더 티어"
                     gradeIco="/asset/image/esther.png"
                 }
