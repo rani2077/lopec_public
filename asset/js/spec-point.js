@@ -3055,7 +3055,6 @@ export function getCharacterProfile(inputName, callback){
         let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
         let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
         let totalAtk3 = ((Math.sqrt((totalStat * totalWeaponAtk2) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
-
         let gemsCoolValue = (1/(1-(gemCheckFnc().gemAvg)/100)-1)+1
 
         let bangleCriticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer * bangleObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
