@@ -3629,7 +3629,7 @@ export function getCharacterProfile(inputName, callback){
 
 
             if( !(supportCheck() == "서폿" ) ){
-                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : ${value}<br>기준 일자 : - <br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 350만점 이상 <br> 에스더 : 450만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>점수 중앙값: ${value}<br>기준 일자 : 2025.01.21 <br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 350만점 이상 <br> 에스더 : 450만점 이상` 
                 if(itemLevel >= 1725 ){
                     return range("1725이상 1740이하","485만 2980")
                 }else if(itemLevel >= 1715 ){
@@ -3657,11 +3657,11 @@ export function getCharacterProfile(inputName, callback){
                 }else if(itemLevel >= 1660 ){
                     return range("1660이상 1665미만","152만 7250")
                 } else {
-                    return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 350만점 이상 <br> 에스더 : 500만점 이상'
+                    return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 350만점 이상 <br> 에스더 : 450만점 이상'
                 }
 
             }else if(supportCheck() == "서폿"){
-                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>평균 점수 : 수집중 <br>기준 일자 : - <br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 750만점 이상 <br> 에스더 : 950만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>점수 중앙값 : 수집중 <br>기준 일자 : - <br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 750만점 이상 <br> 에스더 : 950만점 이상` 
                 if(itemLevel >= 1725 ){
                     return range("1725이상 1740이하","1112만")
                 }else if(itemLevel >= 1715 ){
