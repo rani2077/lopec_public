@@ -1995,7 +1995,7 @@ export function getCharacterProfile(inputName, callback){
             })
         }
 
-        
+
         // 어빌리티스톤(곱연산 제거 후 곱연산+어빌리티스톤 적용)
         function stoneCalc(name, minusVal){
             function notZero(num){
@@ -2441,7 +2441,7 @@ export function getCharacterProfile(inputName, callback){
         // enlightenmentArry
         if(arkPassiveValue(1) >= 100){ // arkPassiveValue(1) == 깨달음수치
 
-            arkObj.enlightenmentDamage += 1.415
+            arkObj.enlightenmentDamage += 1.42
             arkObj.enlightenmentBuff += 1.33
             arkObj.weaponAtk = 1.021
 
@@ -3121,14 +3121,12 @@ export function getCharacterProfile(inputName, callback){
         
         
         function formatNumber(num) {
-            if (num >= 100000000) {
-                return (num / 100000000).toFixed(2) + '억';
-            } else if (num >= 10000) {
-                return (num / 10000).toFixed(2) + '만';
+            if (num >= 10000) {
+                let formatted = (num / 10000).toFixed(1); 
+                return formatted.endsWith('.0') ? formatted.slice(0, -2) + '만' : formatted + '만';
             }
             return num.toString();
         }
-
 
 
         // armorStatus() 장비 힘민지
@@ -3325,7 +3323,7 @@ export function getCharacterProfile(inputName, callback){
 
 
 
-        // 유저 api 데이터 저장
+        // 유저 api 데이터 저장 
         // insertLopecApis( inputName, JSON.stringify(data) )
 
 
@@ -3343,8 +3341,22 @@ export function getCharacterProfile(inputName, callback){
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
             let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName
+            let version = 20250122
 
-            insertLopecCharacters( inputName,level,classFullName,image,server,itemLevel,guild,title,lastFinalValue,supportSpecPoint,allTimeBuffPower,fullBuffPower)
+            insertLopecCharacters(
+                inputName,                               // 닉네임
+                level,                                   // 캐릭터 레벨
+                classFullName,                           // 직업 풀네임
+                image,                                   // 프로필 이미지
+                server,                                  // 서버
+                itemLevel,                               // 아이템 레벨
+                guild,                                   // 길드
+                title,                                   // 칭호
+                highTierSpecPointObj.completeSpecPoint,  // 서폿/딜러 통합 스펙포인트
+                version,                                 // 현재 스펙포인트 버전
+                allTimeBuffPower,                        // 상시버프
+                fullBuffPower,                           // 풀버프
+            )
         }
 
 
@@ -3781,6 +3793,7 @@ export function getCharacterProfile(inputName, callback){
                 gradeObj.ico = gradeIco
                 gradeObj.info = gradeInfo
 
+                console.log(lastFinalValue)
                 return `
                 ${grade(gradeIco, gradeInfo)}
                 ${point( formatNumber(Math.round(lastFinalValue)))}`;
@@ -3966,20 +3979,6 @@ export function getCharacterProfile(inputName, callback){
 
 
 
-        // 억천만
-        function formatNumber(num) {
-            if (num >= 100000000) {
-                return Math.floor(num / 100000000) + '억 ' + formatNumber(num % 100000000);
-            } else if (num >= 10000) {
-                const remainder = num % 10000;
-                return Math.floor(num / 10000) + '만' + (remainder > 0 ? ' ' + formatNumber(remainder) : '');
-            } else {
-                return num.toString();
-            }
-        }
-
-            
-
 
 
         
@@ -4120,10 +4119,11 @@ export function getCharacterProfile(inputName, callback){
             
             if (typeof reforgeVal === 'string' && reforgeVal.includes("상급 재련")) {
                 // console.log("상급 재련이 포함되어 있습니다.");
-                let reforgeValArry = reforgeVal.match(/\d+/g); // 숫자를 찾는 정규 표현식
-                let reforgeValLastNum = reforgeValArry.length
-                // console.log(reforgeValArry[reforgeValLastNum-1]); 
-                return("X"+reforgeValArry[reforgeValLastNum-1])//상급재련 값
+                // console.log(reforgeVal)
+                let reforgeValArry = reforgeVal.match(/>([^<]+)</g);                                   // > <사이의 값을 가져옴
+                reforgeValArry = reforgeValArry.map(item => item.replace(/>/g,'').replace(/</g, ''))   // 배열에서 > <를 제거
+                let reforgeIndex = reforgeValArry.findIndex(item => item.includes("단계"));            // "단계"의 배열번호를 가져옴 
+                return("X"+reforgeValArry[reforgeIndex-1])//상급재련 값
                 
             } else {
                 // console.log("상급 재련이 포함되어 있지 않습니다.");
@@ -4293,7 +4293,6 @@ export function getCharacterProfile(inputName, callback){
 
 
         function armorItem(e){
-
 
 
             return`

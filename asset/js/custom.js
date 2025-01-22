@@ -4431,7 +4431,7 @@ function renewFnc(){
     })
 
     document.querySelector(".group-profile .refresh").addEventListener("click",function(){
-        window.location.reload();
+        location.reload(true);
     })
 
     document.querySelector(".group-profile .cancle").addEventListener("click",function(){
@@ -4505,4 +4505,3 @@ function gemSort(){
     children.forEach(child => parent.appendChild(child));
     
 }
-

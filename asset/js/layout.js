@@ -136,7 +136,7 @@ function recentBookmark() {
 
         recentNameBox += `
             <div class="name-box" data-sort="recent">
-                <a href="https://lopec.kr/search/search.php?mainCharacterName=${recentNameArry}" class="name">${recentNameArry}</a>
+                <a href="/search/search.php?mainCharacterName=${recentNameArry}" class="name">${recentNameArry}</a>
                 <em class="del remove"></em>
             </div>`;
     })
@@ -145,7 +145,7 @@ function recentBookmark() {
 
         bookmarkNameBox += `
         <div class="name-box" data-sort="bookmark">
-            <a href="https://lopec.kr/search/search.php?mainCharacterName=${bookmarkArry}" class="name">${bookmarkArry}</a>
+            <a href="/search/search.php?mainCharacterName=${bookmarkArry}" class="name">${bookmarkArry}</a>
             <em class="star remove">☆</em>
         </div>`;
     })
@@ -330,11 +330,13 @@ widthSetFnc()
 
 
 
+(function() {
+    const currentVersion = "1.0.006";
+    const savedVersion = localStorage.getItem('version');
 
-
-
-
-
-
-
-
+    if (savedVersion !== currentVersion) {
+        localStorage.setItem('version', currentVersion);
+        console.log("새로고침")
+        location.reload(true); // 강제 캐시 새로고침
+    }
+})();
