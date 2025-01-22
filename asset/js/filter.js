@@ -2149,7 +2149,7 @@ export let classGemFilter = [
             { name: "브레이브 슬래쉬", per: 0.055 },
             { name: "레드 더스트", per: 0.055 },         
             { name: "마운틴 크래쉬", per: 0.055 },         
-            { name: "보정치", per: -0.011 },
+            { name: "보정치", per: -0.11 },
               
         ],
     },
@@ -2163,6 +2163,17 @@ export let classGemFilter = [
             { name: "브레이브 슬래쉬", per: 0.05 },
             { name: "레드 더스트", per: 0.05 },         
             { name: "마운틴 크래쉬", per: 0.03 },                       
+        ],
+    },
+    {
+        class: "6겁 광기",
+        skill: [
+            { name: "오버드라이브", per: 0.180 },
+            { name: "피니쉬 스트라이크", per: 0.149 },
+            { name: "헬 블레이드", per: 0.140 },
+            { name: "템페스트 슬래쉬", per: 0.082},
+            { name: "브레이브 슬래쉬", per: 0.055 },
+            { name: "레드 더스트", per: 0.055 },                           
         ],
     },
     {

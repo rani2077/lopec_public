@@ -2729,6 +2729,8 @@ export function getCharacterProfile(inputName, callback){
                 specialClass = "5멸 질풍";
             }else if( classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)  ){
                 specialClass = "데이터 없음";
+            }else if( classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg) && !skillCheck(gemSkillArry, "마운틴 크래쉬", dmg)){
+                specialClass = "6겁 광기";
             }else if( classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg)  ){
                 specialClass = "7겁 광기";
             }else if( classCheck("포식") && !skillCheck(gemSkillArry, "페이탈 소드", dmg)  ){
