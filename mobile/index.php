@@ -266,6 +266,14 @@
     <script>
         document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
     </script>
+    <script>
+        document.write('<script type="module" src="/asset/js/filter.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+    <script>
+        document.write('<script type="module" src="/asset/js/spec-point.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+
+
 
     <script>
     if ('serviceWorker' in navigator) {

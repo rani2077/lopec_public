@@ -3060,9 +3060,7 @@ export function getCharacterProfile(inputName, callback){
             arkObj.weaponAtk = 1.001
         }else{
             arkObj.weaponAtk = 1
-        }
-        console.log(karmaPoint)
-        console.log(arkObj.weaponAtk)
+        } 
 
         // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
         // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
@@ -3372,7 +3370,7 @@ export function getCharacterProfile(inputName, callback){
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
             let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName
-            let version = 20250123
+            let version = 20250123.2
 
             insertLopecCharacters(
                 inputName,                               // 닉네임
@@ -3824,7 +3822,6 @@ export function getCharacterProfile(inputName, callback){
                 gradeObj.ico = gradeIco
                 gradeObj.info = gradeInfo
 
-                console.log(lastFinalValue)
                 return `
                 ${grade(gradeIco, gradeInfo)}
                 ${point( formatNumber(Math.round(lastFinalValue)))}`;

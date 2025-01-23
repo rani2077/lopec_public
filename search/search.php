@@ -663,14 +663,18 @@
     <?php //  스와이퍼 광고 ?>
 
 
-
-
     <?php //  공용 헤더,푸터 ?>
     <script>
         document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
     </script>
     <script>
         document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+    <script>
+        document.write('<script type="module" src="/asset/js/spec-point.js?' + (new Date).getTime() + '"><\/script>');
+    </script>
+    <script>
+        document.write('<script type="module" src="/asset/js/filter.js?' + (new Date).getTime() + '"><\/script>');
     </script>
 
     <script>

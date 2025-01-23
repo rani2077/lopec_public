@@ -353,12 +353,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        console.log((new Date).getTime())
         document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
     </script>
     <script>
         document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
     </script>
+
 
 
     <script>
