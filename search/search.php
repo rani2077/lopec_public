@@ -673,6 +673,23 @@
         document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
     </script>
 
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            // 버전을 쿼리 파라미터로 추가하여 서비스 워커 파일의 캐시 방지
+            const swVersion = '20250123-2';  // service-worker.js의 버전
+            navigator.serviceWorker.register('/service-worker.js?v=' + swVersion)
+                .then(registration => {
+                    registration.update();  // 서비스 워커 업데이트를 강제 체크
+                    console.log('서비스 워커가 등록되었습니다:', registration.scope);
+                })
+                .catch(error => {
+                    console.error('서비스 워커 등록 실패:', error);
+                });
+        });
+    }
+    </script>
+
 
 </body>
 
