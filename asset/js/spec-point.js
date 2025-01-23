@@ -2753,7 +2753,7 @@ export function getCharacterProfile(inputName, callback){
                 specialClass = "슈차 잔재";
             }else if( classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)  ){
                 specialClass = "데이터 없음";
-            }else if( classCheck("야성") || classCheck("두동")|| classCheck("환각")|| classCheck("서폿")){
+            }else if( classCheck("야성") || classCheck("두동")|| classCheck("환각")|| classCheck("서폿")|| classCheck("진실된 용맹")|| classCheck("심판자")|| classCheck("회귀")){
                 specialClass = "데이터 없음";
             }else{
                 specialClass = supportCheck();
@@ -3135,7 +3135,7 @@ export function getCharacterProfile(inputName, callback){
         /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////   
         let lastFinalValue = ((totalAtk1) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
         /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+        console.log(bangleFinalDamageResult)
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage *  gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue *(((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
         let hyperValue = ((lastFinalValue-minusHyperValue)/lastFinalValue*100).toFixed(2)
         //console.log("초월 효율" + hyperValue)
@@ -3143,7 +3143,7 @@ export function getCharacterProfile(inputName, callback){
         let minusElixirValue = ((minusElixirAtk) * evolutionDamageResult * minusElixirFinal * enlightResult * arkObj.leapDamage *  gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue *bangleStatValue* (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
         let elixirValue = ((lastFinalValue-minusElixirValue)/lastFinalValue*1.1*100).toFixed(2)
         //console.log("엘릭서 효율" + elixirValue)
-        
+
         let minusBangleValue = ((minusBangleAtk) * evolutionDamageResult * minusBangleFinal * enlightResult * arkObj.leapDamage *  gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit+defaultObj.haste+defaultObj.special-bangleObj.crit-bangleObj.haste-bangleObj.special)/100*2)/100+1+0.3))
         let bangleValue = (((1 * bangleAtkValue * bangleObj.finalDamagePer * (((bangleObj.crit+bangleObj.haste+bangleObj.special)/100*2.55)/100+1))-1)*100).toFixed(2)
         //console.log("팔찌 효율" + bangleValue)
