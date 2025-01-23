@@ -3688,7 +3688,7 @@ export function getCharacterProfile(inputName, callback){
                 }
 
             }else if(supportCheck() == "서폿"){
-                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>점수 중앙값 : 수집중 <br>기준 일자 : - <br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 750만점 이상 <br> 에스더 : 950만점 이상` 
+                range = (levelRange, value) =>  `레벨 구간 : ${levelRange}<br>점수 중앙값 : 수집중 <br>기준 일자 : - <br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상` 
                 if(itemLevel >= 1725 ){
                     return range("1725이상 1740이하","1112만")
                 }else if(itemLevel >= 1715 ){
@@ -3716,7 +3716,7 @@ export function getCharacterProfile(inputName, callback){
                 }else if(itemLevel >= 1660 ){
                     return range("1660이상 1665미만","507만")
                 } else {
-                   return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 750만점 이상 <br> 에스더 : 950만점 이상'
+                   return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상'
                 }
 
             }
@@ -3821,13 +3821,13 @@ export function getCharacterProfile(inputName, callback){
                 }else if(supportSpecPoint >= 5000000 && supportSpecPoint < 6000000){ //골드
                     gradeInfo = "골드 티어"
                     gradeIco="/asset/image/gold.png"
-                }else if(supportSpecPoint >= 6000000 && supportSpecPoint < 7500000){ //다이아
+                }else if(supportSpecPoint >= 6000000 && supportSpecPoint < 8000000){ //다이아
                     gradeInfo = "다이아몬드 티어"
                     gradeIco="/asset/image/diamond.png"
-                }else if(supportSpecPoint >= 7500000 && supportSpecPoint < 9500000){ //마스터
+                }else if(supportSpecPoint >= 8000000 && supportSpecPoint < 10000000){ //마스터
                     gradeInfo = "마스터 티어"
                     gradeIco="/asset/image/master.png"
-                }else if(supportSpecPoint >= 9500000){ //에스더
+                }else if(supportSpecPoint >= 10000000){ //에스더
                     gradeInfo = "에스더 티어"
                     gradeIco="/asset/image/esther.png"
                 }
@@ -3916,7 +3916,7 @@ export function getCharacterProfile(inputName, callback){
                 <div class="button-area">
                     <a href="https://cool-kiss-ec2.notion.site/2024-10-16-121758f0e8da8029825ef61b65e22568" target="_blink" class="link-block">무효각인 목록</a>
                     <div class="link-split">
-                        <span type="button" id="split-input" style="color:#fff;">레벨별 평균점수</span>
+                        <span type="button" id="split-input" style="color:#fff;">레벨별 점수 통계</span>
                         <i class="detail" style="">${averageLevelPoint()}</i>
 
                     </div>
