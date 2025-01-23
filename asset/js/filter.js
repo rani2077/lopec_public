@@ -1550,10 +1550,10 @@ let bangleFilter = [
         {name:'각성',grade:"전설",level:2,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
         {name:'각성',grade:"전설",level:3,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
         {name:'각성',grade:"유물",level:0,finalDamagePer:0, engBonusPer:1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
-        {name:'각성',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
-        {name:'각성',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.3,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
-        {name:'각성',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
-        {name:'각성',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'각성',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'각성',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.2,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'각성',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'각성',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
 
 
 
@@ -1562,10 +1562,10 @@ let bangleFilter = [
         {name:'전문의',grade:"전설",level:2,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:30, utilityPower:0},
         {name:'전문의',grade:"전설",level:3,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:31, utilityPower:0},
         {name:'전문의',grade:"유물",level:0,finalDamagePer:0, engBonusPer:1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:32, utilityPower:0},
-        {name:'전문의',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:33, utilityPower:0},
-        {name:'전문의',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.3,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:34, utilityPower:0},
-        {name:'전문의',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:35, utilityPower:0},
-        {name:'전문의',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:36, utilityPower:0},
+        {name:'전문의',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:33, utilityPower:0},
+        {name:'전문의',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.2,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:34, utilityPower:0},
+        {name:'전문의',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:35, utilityPower:0},
+        {name:'전문의',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:36, utilityPower:0},
 
 
 
@@ -1574,10 +1574,10 @@ let bangleFilter = [
         {name:'중갑 착용',grade:"전설",level:2,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
         {name:'중갑 착용',grade:"전설",level:3,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
         {name:'중갑 착용',grade:"유물",level:0,finalDamagePer:0, engBonusPer:1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'중갑 착용',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'중갑 착용',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.3,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'중갑 착용',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'중갑 착용',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'중갑 착용',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'중갑 착용',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.2,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'중갑 착용',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'중갑 착용',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
 
 
 
@@ -1586,10 +1586,20 @@ let bangleFilter = [
         {name:'급소 타격',grade:"전설",level:2,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
         {name:'급소 타격',grade:"전설",level:3,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
         {name:'급소 타격',grade:"유물",level:0,finalDamagePer:0, engBonusPer:1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'급소 타격',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'급소 타격',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.3,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'급소 타격',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'급소 타격',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'급소 타격',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'급소 타격',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.2,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'급소 타격',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'급소 타격',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+
+        {name:'폭발물 전문가',grade:"전설",level:0,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"전설",level:1,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"전설",level:2,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"전설",level:3,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"유물",level:0,finalDamagePer:0, engBonusPer:1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.2,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
+        {name:'폭발물 전문가',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0, carePower:0, utilityPower:0},
 
 
 
@@ -1610,10 +1620,10 @@ let bangleFilter = [
         {name:'최대 마나 증가',grade:"전설",level:2,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
         {name:'최대 마나 증가',grade:"전설",level:3,finalDamagePer:0, engBonusPer:0, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
         {name:'최대 마나 증가',grade:"유물",level:0,finalDamagePer:0, engBonusPer:1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'최대 마나 증가',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'최대 마나 증가',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.3,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'최대 마나 증가',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
-        {name:'최대 마나 증가',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'최대 마나 증가',grade:"유물",level:1,finalDamagePer:0, engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'최대 마나 증가',grade:"유물",level:2,finalDamagePer:0, engBonusPer:1.2,  riticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'최대 마나 증가',grade:"유물",level:3,finalDamagePer:0, engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
+        {name:'최대 마나 증가',grade:"유물",level:4,finalDamagePer:0, engBonusPer:1.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0,carePower:0, utilityPower:0},
 
 
 
@@ -1747,35 +1757,40 @@ let bangleFilter = [
 
 
 
-        {name:'각성',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'각성',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'각성',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'각성',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'각성',level:1,engBonusPer:0.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'각성',level:2,engBonusPer:0.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'각성',level:3,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'각성',level:4,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
         
-        {name:'전문의',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'전문의',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'전문의',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'전문의',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'전문의',level:1,engBonusPer:0.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'전문의',level:2,engBonusPer:0.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'전문의',level:3,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'전문의',level:4,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
         
-        {name:'중갑 착용',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'중갑 착용',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'중갑 착용',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'중갑 착용',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'중갑 착용',level:1,engBonusPer:0.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'중갑 착용',level:2,engBonusPer:0.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'중갑 착용',level:3,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'중갑 착용',level:4,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
 
-        {name:'급소 타격',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'급소 타격',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'급소 타격',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'급소 타격',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'급소 타격',level:1,engBonusPer:0.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'급소 타격',level:2,engBonusPer:0.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'급소 타격',level:3,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'급소 타격',level:4,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
 
         {name:'마나의 흐름',level:1,engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
         {name:'마나의 흐름',level:2,engBonusPer:1.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
         {name:'마나의 흐름',level:3,engBonusPer:1.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
         {name:'마나의 흐름',level:4,engBonusPer:1.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
 
-        {name:'최대 마나 증가',level:1,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'최대 마나 증가',level:2,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'최대 마나 증가',level:3,engBonusPer:0.6, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
-        {name:'최대 마나 증가',level:4,engBonusPer:0.7, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'최대 마나 증가',level:1,engBonusPer:0.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'최대 마나 증가',level:2,engBonusPer:0.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'최대 마나 증가',level:3,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'최대 마나 증가',level:4,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+
+        {name:'폭발물 전문가',level:1,engBonusPer:0.2, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'폭발물 전문가',level:2,engBonusPer:0.3, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'폭발물 전문가',level:3,engBonusPer:0.4, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
+        {name:'폭발물 전문가',level:4,engBonusPer:0.5, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
 
         {name:'구슬동자',level:1,engBonusPer:0.9, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
         {name:'구슬동자',level:2,engBonusPer:1.1, criticalChancePer:0, criticalDamagePer:0, atkPer:0, atkSpeed:0, moveSpeed:0},
@@ -2749,6 +2764,18 @@ export let classGemFilter = [
             { name: "트윈 쉐도우", per: 0.09 },
             { name: "어스 슬래쉬", per: 0.075 },
             { name: "터닝 슬래쉬", per: 0.068 },
+            
+        ],
+    },
+    {
+        class: "슈차 잔재",
+        skill: [
+            { name: "버스트 스킬", per: 0.165 },
+            { name: "소울 앱소버", per: 0.159 },
+            { name: "데스 센텐스", per: 0.107 },
+            { name: "보이드 스트라이크", per: 0.129 },
+            { name: "블리츠 러시", per: 0.237 },
+            { name: "어스 슬래쉬", per: 0.056 },
             
         ],
     },

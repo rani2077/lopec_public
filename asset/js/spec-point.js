@@ -2723,6 +2723,8 @@ export function getCharacterProfile(inputName, callback){
                 specialClass = "7멸 핸건";
             }else if( classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)  ){
                 specialClass = "에필 포강";
+            }else if( classCheck("환류") && skillCheck(gemSkillArry, "종말의 날", dmg)  ){
+                specialClass = "데이터 없음";
             }else if( classCheck("환류") && !skillCheck(gemSkillArry, "인페르노", dmg)  ){
                 specialClass = "6딜 환류";
             }else if( classCheck("질풍") && !skillCheck(gemSkillArry, "여우비 스킬", dmg)  ){
@@ -2737,6 +2739,8 @@ export function getCharacterProfile(inputName, callback){
                 specialClass = "크블 포식";
             }else if( classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)  ){
                 specialClass = "6M 피메";
+            }else if( classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)  ){
+                specialClass = "슈차 잔재";
             }else if( classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)  ){
                 specialClass = "데이터 없음";
             }else if( classCheck("야성") || classCheck("두동")|| classCheck("환각")|| classCheck("서폿")){
