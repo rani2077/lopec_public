@@ -2443,43 +2443,36 @@ export function getCharacterProfile(inputName, callback){
 
             arkObj.enlightenmentDamage += 1.42
             arkObj.enlightenmentBuff += 1.33
-            arkObj.weaponAtk = 1.021
 
         }else if(arkPassiveValue(1) >= 98){
 
             arkObj.enlightenmentDamage += 1.40
             arkObj.enlightenmentBuff += 1.33
-            arkObj.weaponAtk = 1.021
 
         }else if(arkPassiveValue(1) >= 97){
 
             arkObj.enlightenmentDamage += 1.37
             arkObj.enlightenmentBuff += 1.33
-            arkObj.weaponAtk = 1.017
 
         }else if(arkPassiveValue(1) >= 96){
 
             arkObj.enlightenmentDamage += 1.37
             arkObj.enlightenmentBuff += 1.33
-            arkObj.weaponAtk = 1.013
 
         }else if(arkPassiveValue(1) >= 95){
 
             arkObj.enlightenmentDamage += 1.36
             arkObj.enlightenmentBuff += 1.33
-            arkObj.weaponAtk = 1.009
 
         }else if(arkPassiveValue(1) >= 94){
 
             arkObj.enlightenmentDamage += 1.36
             arkObj.enlightenmentBuff += 1.33
-            arkObj.weaponAtk = 1.005
 
         }else if(arkPassiveValue(1) >= 93){
 
             arkObj.enlightenmentDamage += 1.35
             arkObj.enlightenmentBuff += 1.33
-            arkObj.weaponAtk = 1.001
         
         }else if(arkPassiveValue(1) >= 92){
 
@@ -3035,8 +3028,23 @@ export function getCharacterProfile(inputName, callback){
         }
         // console.log(avatarStats()) <= 전설/영웅 아바타 스텟
 
-
-
+        // let karmaPoint = (arkPassiveValue(1)-(data.ArmoryProfile.CharacterLevel-50)-"악세 깨달음 포인트 총합"-14)
+        //if (karmaPoint >= 6){
+        //    arkObj.weaponAtk = 1.021
+        //}else if(karmaPoint >=5){
+        //    arkObj.weaponAtk = 1.017
+        //}else if(karmaPoint >=4){
+        //    arkObj.weaponAtk = 1.013
+        //}else if(karmaPoint >=3){
+        //    arkObj.weaponAtk = 1.009
+        //}else if(karmaPoint >=2){
+        //    arkObj.weaponAtk = 1.005
+        //}else if(karmaPoint >=1){
+        //    arkObj.weaponAtk = 1.001
+        //}else{
+        //    arkObj.weaponAtk = 1
+        //}
+        
 
         // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
         // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
@@ -3052,7 +3060,7 @@ export function getCharacterProfile(inputName, callback){
         let enlightBuffResult = arkObj.enlightenmentBuff
         let weaponAtkResult = ((defaultObj.weaponAtk + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus) * accObj.weaponAtkPer)
         let bangleStatValue = ((bangleObj.str+bangleObj.dex+bangleObj.int)*0.00011375)/100+1
-        
+
         let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int ) * avatarStats() // 최종 힘민지 계산값
         let totalWeaponAtk = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
         let totalWeaponAtk2 = ( (defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer/100))) // 최종 무공 계산값
@@ -3061,6 +3069,7 @@ export function getCharacterProfile(inputName, callback){
         let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
         let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
         let totalAtk3 = ((Math.sqrt((totalStat * totalWeaponAtk2) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * ( ((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer))/100 + 1 ) * attackBonus
+
         let gemsCoolValue = (1/(1-(gemCheckFnc().gemAvg)/100)-1)+1
 
         let bangleCriticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer * bangleObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
