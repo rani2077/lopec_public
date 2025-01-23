@@ -665,9 +665,7 @@
 
     <?php //  공용 헤더,푸터 ?>
     <script>
-        document.write('<script type="module" src="/asset/js/index.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
         document.write('<script type="module" src="/asset/js/layout.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
-        document.write('<script type="module" src="/asset/js/filter.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
         document.write('<script type="module" src="/asset/js/custom.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
     </script>
 
