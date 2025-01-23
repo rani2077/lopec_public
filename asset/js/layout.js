@@ -325,18 +325,3 @@ function widthSetFnc(){
     document.querySelector("footer").style.width = document.querySelector("body").offsetWidth + "px"
 }
 widthSetFnc()
-
-
-
-
-
-(function() {
-    const currentVersion = "1.0.006";
-    const savedVersion = localStorage.getItem('version');
-
-    if (savedVersion !== currentVersion) {
-        localStorage.setItem('version', currentVersion);
-        console.log("새로고침")
-        location.reload(true); // 강제 캐시 새로고침
-    }
-})();
