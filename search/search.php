@@ -653,39 +653,22 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 ?>
     
-    
+    <script>
+    window.CACHE_TIMESTAMP = (new Date).getTime();
+    </script>
+
     
     <?php //  스와이퍼 광고 ?>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
-    </script>
     <?php //  스와이퍼 광고 ?>
 
 
     <?php //  공용 헤더,푸터 ?>
     <script>
-        document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
-    </script>
-    <script>
-        document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
-    </script>
-
-    <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            // 버전을 쿼리 파라미터로 추가하여 서비스 워커 파일의 캐시 방지
-            const swVersion = '20250123-2';  // service-worker.js의 버전
-            navigator.serviceWorker.register('/service-worker.js?v=' + swVersion)
-                .then(registration => {
-                    registration.update();  // 서비스 워커 업데이트를 강제 체크
-                    console.log('서비스 워커가 등록되었습니다:', registration.scope);
-                })
-                .catch(error => {
-                    console.error('서비스 워커 등록 실패:', error);
-                });
-        });
-    }
+        document.write('<script type="module" src="/asset/js/index.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/layout.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/filter.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/custom.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
     </script>
 
 
