@@ -39,7 +39,7 @@ export var insertLopecCharacters = function(lchaCharacterNickname, lchaCharacter
 			} 
 		}
 	 	, error	: function(request, status, error) {
-			console.log("LOPEC_API 저장 Error");
+			//console.log("LOPEC_API 저장 Error");
 			//console.log("request.status : " + request.status);
 			//console.log("request.responseText : " + request.responseText);
 			//console.log("request.error : " + request.error);
