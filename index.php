@@ -32,8 +32,6 @@
     <link rel="icon" type="image/png" href="./asset/image/lopec-ico.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-
-    
     <link rel="stylesheet" href="./asset/css/layout.css">
     <link rel="stylesheet" href="./asset/css/main.css">
     <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
@@ -367,7 +365,7 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             // 버전을 쿼리 파라미터로 추가하여 서비스 워커 파일의 캐시 방지
-            const swVersion = '20250123-2';  // service-worker.js의 버전
+            const swVersion = '20250123';  // service-worker.js의 버전
             navigator.serviceWorker.register('/service-worker.js?v=' + swVersion)
                 .then(registration => {
                     registration.update();  // 서비스 워커 업데이트를 강제 체크
