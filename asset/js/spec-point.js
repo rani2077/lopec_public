@@ -3045,23 +3045,24 @@ export function getCharacterProfile(inputName, callback){
         }
         // console.log(avatarStats()) <= 전설/영웅 아바타 스텟
 
-        // let karmaPoint = (arkPassiveValue(1)-(data.ArmoryProfile.CharacterLevel-50)-"악세 깨달음 포인트 총합"-14)
-        //if (karmaPoint >= 6){
-        //    arkObj.weaponAtk = 1.021
-        //}else if(karmaPoint >=5){
-        //    arkObj.weaponAtk = 1.017
-        //}else if(karmaPoint >=4){
-        //    arkObj.weaponAtk = 1.013
-        //}else if(karmaPoint >=3){
-        //    arkObj.weaponAtk = 1.009
-        //}else if(karmaPoint >=2){
-        //    arkObj.weaponAtk = 1.005
-        //}else if(karmaPoint >=1){
-        //    arkObj.weaponAtk = 1.001
-        //}else{
-        //    arkObj.weaponAtk = 1
-        //}
-        
+        let karmaPoint = (arkPassiveValue(1)-(data.ArmoryProfile.CharacterLevel-50)-accObj.enlightPoint-14)
+        if (karmaPoint >= 6){
+            arkObj.weaponAtk = 1.021
+        }else if(karmaPoint >=5){
+            arkObj.weaponAtk = 1.017
+        }else if(karmaPoint >=4){
+            arkObj.weaponAtk = 1.013
+        }else if(karmaPoint >=3){
+            arkObj.weaponAtk = 1.009
+        }else if(karmaPoint >=2){
+            arkObj.weaponAtk = 1.005
+        }else if(karmaPoint >=1){
+            arkObj.weaponAtk = 1.001
+        }else{
+            arkObj.weaponAtk = 1
+        }
+        console.log(karmaPoint)
+        console.log(arkObj.weaponAtk)
 
         // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
         // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
