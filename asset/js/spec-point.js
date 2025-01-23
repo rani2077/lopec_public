@@ -1492,6 +1492,8 @@ export function getCharacterProfile(inputName, callback){
             atkBuff:0,
             damageBuff:0,
 
+            enlightPoint:0,
+
             carePower:1,
         }
 
@@ -1550,6 +1552,21 @@ export function getCharacterProfile(inputName, callback){
         //console.log("치적,치피,무공퍼 적용" + accObj.finalDamagePer)
         accObj.finalDamagePer *= ((accObj.atkPer * 0.9246)/100+1)
         //console.log(accObj)
+
+
+        // 악세 깨달음 포인트
+        data.ArmoryEquipment.forEach(function(arry){
+            let regex = /"([^"]*)"/g;
+            let matches = [];
+            let match;
+            if(/목걸이|귀걸이|반지/.test(arry.Type)){
+                while ((match = regex.exec(arry.Tooltip)) !== null) {             // ""사이값 추출
+                    matches.push(match[1]);
+                }
+                let enlightStr = matches.filter(item => /깨달음/.test(item));     // 깨달음 포인트값 추출
+                accObj.enlightPoint += Number(enlightStr[0]?.match(/\d+/)[0]);
+            }
+        })
 
 
         // 팔찌
@@ -2682,7 +2699,7 @@ export function getCharacterProfile(inputName, callback){
         }
 
 
-        console.log(gemSkillArry)
+        // console.log(gemSkillArry)
 
 
         if(true){
@@ -2743,7 +2760,7 @@ export function getCharacterProfile(inputName, callback){
             }
 
         }
-        console.log("보석전용 직업 : ",specialClass)
+        // console.log("보석전용 직업 : ",specialClass)
 
 
         gemSkillArry.forEach(function(gemSkill, idx){
