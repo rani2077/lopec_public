@@ -3370,7 +3370,7 @@ export function getCharacterProfile(inputName, callback){
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
             let classFullName = supportCheck() +" "+ data.ArmoryProfile.CharacterClassName
-            let version = 20250123.2
+            let version = 20250123.3
 
             insertLopecCharacters(
                 inputName,                               // 닉네임
