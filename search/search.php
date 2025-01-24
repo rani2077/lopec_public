@@ -645,24 +645,23 @@
     </div>
 
     <?php //  공요푸터 ?>
-    <footer class="sc-footer"></footer>
+        <footer class="sc-footer"></footer>
     <?php //  공요푸터 ?>
 
     
     <?php //  db관련 ?>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 ?>
     
 
     
     <?php //  스와이퍼 광고 ?>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <?php //  스와이퍼 광고 ?>
 
     <script>
-    window.CACHE_TIMESTAMP = (new Date).getTime();
-    document.write('<script type="module" src="/asset/js/layout.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
-    document.write('<script type="module" src="/asset/js/custom.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
     </script>
 
 

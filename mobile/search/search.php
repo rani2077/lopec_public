@@ -590,8 +590,6 @@
     <?php //  공용 헤더,푸터 ?>
     <script>
         document.write('<script type="module" src="/asset/js/m-layout.js?' + (new Date).getTime() + '"><\/script>');
-    </script>
-    <script>
         document.write('<script type="module" src="/asset/js/m-search.js?' + (new Date).getTime() + '"><\/script>');
     </script>
 

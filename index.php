@@ -353,13 +353,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <script>
-    window.CACHE_TIMESTAMP = (new Date).getTime();
-    </script>
 
     <script>
-        document.write('<script type="module" src="/asset/js/layout.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
-        document.write('<script type="module" src="/asset/js/index.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
+        document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
     </script>
 
 </body>

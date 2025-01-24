@@ -2,6 +2,10 @@
 import {getCharacterProfile,searchHtml} from '/asset/js/spec-point.js'
 
 
+
+
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const urlParams = new URLSearchParams(window.location.search);
 
