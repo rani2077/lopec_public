@@ -653,20 +653,16 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 ?>
     
-    <script>
-    window.CACHE_TIMESTAMP = (new Date).getTime();
-    </script>
 
     
     <?php //  스와이퍼 광고 ?>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <?php //  스와이퍼 광고 ?>
 
-
-    <?php //  공용 헤더,푸터 ?>
     <script>
-        document.write('<script type="module" src="/asset/js/layout.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
-        document.write('<script type="module" src="/asset/js/custom.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
+    window.CACHE_TIMESTAMP = (new Date).getTime();
+    document.write('<script type="module" src="/asset/js/layout.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
+    document.write('<script type="module" src="/asset/js/custom.js?' + window.CACHE_TIMESTAMP + '"><\/script>');
     </script>
 
 
