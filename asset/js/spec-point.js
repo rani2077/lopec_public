@@ -3135,7 +3135,7 @@ export function getCharacterProfile(inputName, callback){
         /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////   
         let lastFinalValue = ((totalAtk1) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
         /////////////////////////////////////////////////////////////특성 포함 최종 환산 공격력////////////////////////////////////////////////////////////////////////////////////////////////////////
-        console.log(bangleFinalDamageResult)
+
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage *  gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue *(((defaultObj.crit+defaultObj.haste+defaultObj.special)/100*2)/100+1+0.3))
         let hyperValue = ((lastFinalValue-minusHyperValue)/lastFinalValue*100).toFixed(2)
         //console.log("초월 효율" + hyperValue)
