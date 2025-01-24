@@ -1902,6 +1902,7 @@ let bangleFilter = [
 export let elixirCalFilter = [
 
     { name:"> 공격력 ",atkPlus:[122,253,383,575,767]},
+    { name:"> 받는 피해 감소 ",atkPlus:[122,253,383,575,767]},
 
     { name:"> 무기 공격력 ",weaponAtkPlus:[236,488,740,1110,1480]},
 
