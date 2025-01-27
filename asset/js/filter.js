@@ -859,10 +859,10 @@ let bangleFilter = [
     { name: "증가하지만, 적에게 주는 피해가", option: "5%", tier: "Pmiddle", initial: "쿨 +2% | 적에게 주는 피해 +5.0%",skillCool:-2,finalDamagePer:3.6},
     { name: "증가하지만, 적에게 주는 피해가", option: "5.5%", tier: "Phigh", initial: "쿨 +2% | 적에게 주는 피해 +5.5%",skillCool:-2,finalDamagePer:4.1},
 
-    { name: "추가 피해가", option: "2%", tier: "Plow1", initial: "추피 +2.0% | 악마 및 대악마 피해량 +2.5%",finalDamagePer:4},
-    { name: "추가 피해가", option: "2.5%", tier: "Plow2", initial: "추피 +2.5% | 악마 및 대악마 피해량 +2.5%",finalDamagePer:4.3},
-    { name: "추가 피해가", option: "3%", tier: "Pmiddle", initial: "추피 +3.0% | 악마 및 대악마 피해량 +2.5%",finalDamagePer:4.67},
-    { name: "추가 피해가", option: "3.5%", tier: "Phigh", initial: "추피 +3.5% | 악마 및 대악마 피해량 +2.5%",finalDamagePer:5.04},
+    { name: "추가 피해가", option: "2%", tier: "Plow1", initial: "추피 +2.0% | 악마&대악마 피해량 +2.5%",finalDamagePer:4},
+    { name: "추가 피해가", option: "2.5%", tier: "Plow2", initial: "추피 +2.5% | 악마&대악마 피해량 +2.5%",finalDamagePer:4.3},
+    { name: "추가 피해가", option: "3%", tier: "Pmiddle", initial: "추피 +3.0% | 악마&대악마 피해량 +2.5%",finalDamagePer:4.67},
+    { name: "추가 피해가", option: "3.5%", tier: "Phigh", initial: "추피 +3.5% | 악마&대악마 피해량 +2.5%",finalDamagePer:5.04},
 
     { name: "몬스터에게 공격 적중 시 8초 동안 대상의 방어력을", option: "1.5%", tier: "SpMlow1", initial: "방깎 1.5% | 아공강 +1.5%",atkBuff:1.5, atkBuffPlus:0.92},
     { name: "몬스터에게 공격 적중 시 8초 동안 대상의 방어력을", option: "1.8%", tier: "SpMlow2", initial: "방깎 1.8% | 아공강 +2.0%",atkBuff:2, atkBuffPlus:1.14},
