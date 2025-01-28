@@ -20,6 +20,17 @@
     <link rel="stylesheet" href="../asset/css/layout.css">
     <link rel="stylesheet" href="../asset/css/main.css">
     <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister();
+            }
+        }).catch(function(error) {
+            console.log('Service Worker 등록 해제 실패:', error);
+        });
+    }
+    </script>
 </head>
 
 
