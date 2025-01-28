@@ -898,3 +898,13 @@ html파일에 캐시저장방지 meta태그를 추가함
 
 #### filter.js
 - 서폿 어빌리티스톤 밸류에 finalDamagePer 추가 (NAN 오류 해결)
+
+
+
+
+### 1.0.008 - 2025-01-28
+
+
+
+#### custom.js
+- spec-point.js 캐싱 문제 해결

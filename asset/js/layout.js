@@ -123,7 +123,7 @@ if (localStorage.getItem('darkMode') == 'enabled') {
 function recentBookmark() {
 
 
-    let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []           //로컬스토리지 최근 검색어
+    let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []            //로컬스토리지 최근 검색어
     let userBookmarkStorage = JSON.parse(localStorage.getItem("userBookmark")) || []    //로컬스토리지 즐겨찾기 목록
     nameListStorage = nameListStorage.reverse()                                         //최신순으로 정렬
     userBookmarkStorage = userBookmarkStorage.reverse()                                 //최신순으로 정렬
@@ -136,7 +136,7 @@ function recentBookmark() {
 
         recentNameBox += `
             <div class="name-box" data-sort="recent">
-                <a href="/search/search.php?mainCharacterName=${recentNameArry}" class="name">${recentNameArry}</a>
+                <a href="/search/search.php?headerCharacterName=${recentNameArry}" class="name">${recentNameArry}</a>
                 <em class="del remove"></em>
             </div>`;
     })
@@ -145,7 +145,7 @@ function recentBookmark() {
 
         bookmarkNameBox += `
         <div class="name-box" data-sort="bookmark">
-            <a href="/search/search.php?mainCharacterName=${bookmarkArry}" class="name">${bookmarkArry}</a>
+            <a href="/search/search.php?headerCharacterName=${bookmarkArry}" class="name">${bookmarkArry}</a>
             <em class="star remove">☆</em>
         </div>`;
     })

@@ -1,7 +1,20 @@
 // spec-point.js html코드
-import {getCharacterProfile,searchHtml} from '/asset/js/spec-point.js'
+// import { getCharacterPr ofile, searchHtml } from '/asset/js/spec-point.js'
 
 
+let modulePath = [
+    `/asset/js/spec-point.js?${(new Date).getTime()}`
+]
+
+Promise.all(modulePath.map(path => import(path)))
+    .then(function (modules) {
+
+        let [specPoint] = modules;
+
+
+
+    })
+    .catch(err => console.log(err))
 
 
 
@@ -9,61 +22,60 @@ import {getCharacterProfile,searchHtml} from '/asset/js/spec-point.js'
 document.addEventListener('DOMContentLoaded', (event) => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    // input name 변경 필요함
+    // const paramNames = 'headerCharacterName';
+    // let inputText = '';
+    // let inputFlag = 1;
 
-    const paramNames = ['mainCharacterName', 'headerCharacterName', 'mobileCharacterName'];
-    let inputText = '';
-    let inputFlag = 1;
+    let inputText = urlParams.get('headerCharacterName');
 
-    paramNames.forEach(function(param){
-        let value = urlParams.get(param);
-        if (value) {
-            inputText = value;
 
-            // 검색기록
+    Promise.all(modulePath.map(path => import(path)))
+        .then(function (modules) {
+
+            let [specPoint] = modules;
 
             let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
-            // localStorage.removeItem("userBookmark");    //로컬스토리지 비우기
-        
-            if(nameListStorage.includes(inputText)){
-            
+            // localStorage.removeItem("userBookmark");                                 //로컬스토리지 비우기
+
+            if (nameListStorage.includes(inputText)) {
+
                 nameListStorage = nameListStorage.filter(item => item !== inputText)
                 nameListStorage.push(inputText)
                 localStorage.setItem('nameList', JSON.stringify(nameListStorage));
-            
-            }else{
-            
-                if(nameListStorage.length >= 5){
+
+            } else {
+
+                if (nameListStorage.length >= 5) {
                     nameListStorage.shift();
                 }
                 nameListStorage.push(inputText);
                 localStorage.setItem('nameList', JSON.stringify(nameListStorage));
-            
-            }
-        
 
+            }
 
             // 캐릭터 검색
-            getCharacterProfile(inputText,function(){
-                document.getElementById("sc-info").innerHTML = searchHtml;
+            specPoint.getCharacterProfile(inputText, function () {
+                document.getElementById("sc-info").innerHTML = specPoint.searchHtml;
                 specBtn();                 //스펙포인트 상세정보보기
                 renewFnc();                //갱신하기 버튼
                 userBookmarkSave(inputText)//즐겨찾기 기능
                 gemSort()                  //보석순서정렬
                 levelAvgPoint()            //레벨별 평균점수 보기
             });
-        
-        
-        }
-    })
+
+
+        })
+        .catch(err => console.log(err))
+
+
 
 
     if (inputText) {
         let inputs = document.querySelectorAll('.character-name-search');
-        inputs.forEach(function(inputArry){
+        inputs.forEach(function (inputArry) {
             inputArry.value = inputText;
-            inputArry.addEventListener('input', function(inputEvent) {
-                if(inputFlag == 1){
+            inputArry.addEventListener('input', function (inputEvent) {
+                if (inputFlag == 1) {
                     inputEvent.target.value = '';
                     inputFlag = 0
                 }
@@ -79,23 +91,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 // 스펙포인트 더보기 버튼
 
-function specBtn(){
-    document.getElementById("extra-btn").addEventListener("click",function(){
+function specBtn() {
+    document.getElementById("extra-btn").addEventListener("click", function () {
         let specAreaClass = document.querySelector(".spec-area").classList
         // console.log(specAreaClass)
-        if(specAreaClass.contains("on")){
+        if (specAreaClass.contains("on")) {
             specAreaClass.remove('on')
-        }else{
+        } else {
             specAreaClass.add('on')
         }
-    })    
+    })
 }
 
 
 // 레벨별 평균점수 보기
 
-function levelAvgPoint(){
-    document.querySelector(".link-split").addEventListener("click", function(){
+function levelAvgPoint() {
+    document.querySelector(".link-split").addEventListener("click", function () {
         this.classList.toggle("on");
     });
 }
@@ -104,18 +116,18 @@ function levelAvgPoint(){
 
 // 갱신하기 버튼 스크립트
 
-function renewFnc(){
+function renewFnc() {
     let alertArea = document.querySelector(".alert-area")
 
-    document.querySelector(".group-profile .renew-button").addEventListener("click",function(){
+    document.querySelector(".group-profile .renew-button").addEventListener("click", function () {
         alertArea.style.display = "block";
     })
 
-    document.querySelector(".group-profile .refresh").addEventListener("click",function(){
+    document.querySelector(".group-profile .refresh").addEventListener("click", function () {
         location.reload(true);
     })
 
-    document.querySelector(".group-profile .cancle").addEventListener("click",function(){
+    document.querySelector(".group-profile .cancle").addEventListener("click", function () {
         alertArea.style.display = "none";
     })
 }
@@ -124,34 +136,34 @@ function renewFnc(){
 
 // 즐겨찾기 추가
 
-function userBookmarkSave(userName){
+function userBookmarkSave(userName) {
 
-    document.querySelector(".group-profile .star").addEventListener("click",bookmarkToggle)
+    document.querySelector(".group-profile .star").addEventListener("click", bookmarkToggle)
     // localStorage.removeItem("userBookmark");                                             //로컬스토리지 비우기
     // localStorage.clear();                                                                //로컬스토리지 전체 제거
-    function bookmarkToggle(el){
-    
-        let userBookmarkList = JSON.parse( localStorage.getItem("userBookmark") ) || []     //북마크 리스트
+    function bookmarkToggle(el) {
+
+        let userBookmarkList = JSON.parse(localStorage.getItem("userBookmark")) || []     //북마크 리스트
 
         el.target.classList.toggle("full");                                                 //북마크 아이콘 토글  
-        if( userBookmarkList.length < 5 && el.target.classList.contains("full")){
+        if (userBookmarkList.length < 5 && el.target.classList.contains("full")) {
 
             userBookmarkList.push(userName)                                                 //북마크 추가하기
             localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
 
-        }else if( !el.target.classList.contains("full") ){
+        } else if (!el.target.classList.contains("full")) {
 
             userBookmarkList = userBookmarkList.filter(item => item !== userName)
             localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
 
-        }else if( userBookmarkList.length >= 5 ){
+        } else if (userBookmarkList.length >= 5) {
             el.target.classList.remove("full");                                              //북마크 아이콘 토글  
             alert("즐겨찾기는 5개까지 저장됩니다.")
         }
-    
+
         console.log(userBookmarkList)
-    
-    
+
+
     }
 }
 
@@ -160,7 +172,7 @@ function userBookmarkSave(userName){
 
 // 보석 순서 정렬
 
-function gemSort(){
+function gemSort() {
     const parent = document.querySelector('.gem-area.shadow');
     const children = Array.from(parent.children);
 
