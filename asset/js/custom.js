@@ -6,15 +6,6 @@ let modulePath = [
     `/asset/js/spec-point.js?${(new Date).getTime()}`
 ]
 
-Promise.all(modulePath.map(path => import(path)))
-    .then(function (modules) {
-
-        let [specPoint] = modules;
-
-
-
-    })
-    .catch(err => console.log(err))
 
 
 
@@ -22,12 +13,9 @@ Promise.all(modulePath.map(path => import(path)))
 document.addEventListener('DOMContentLoaded', (event) => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    // const paramNames = 'headerCharacterName';
-    // let inputText = '';
-    // let inputFlag = 1;
-
     let inputText = urlParams.get('headerCharacterName');
-
+    let inputFlag = 1;
+    
 
     Promise.all(modulePath.map(path => import(path)))
         .then(function (modules) {
@@ -37,9 +25,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
             let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
             // localStorage.removeItem("userBookmark");                                 //로컬스토리지 비우기
 
-            if (nameListStorage.includes(inputText)) {
+            if (nameListStorage.includes(inputText) || nameListStorage.includes(null)) {                                  //로컬스토리지 저장
 
-                nameListStorage = nameListStorage.filter(item => item !== inputText)
+                console.log(nameListStorage)
+                nameListStorage = nameListStorage.filter(item => item !== inputText && item !== null)
                 nameListStorage.push(inputText)
                 localStorage.setItem('nameList', JSON.stringify(nameListStorage));
 
@@ -63,25 +52,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 levelAvgPoint()            //레벨별 평균점수 보기
             });
 
+        
 
         })
         .catch(err => console.log(err))
 
 
-
-
-    if (inputText) {
-        let inputs = document.querySelectorAll('.character-name-search');
-        inputs.forEach(function (inputArry) {
-            inputArry.value = inputText;
-            inputArry.addEventListener('input', function (inputEvent) {
-                if (inputFlag == 1) {
-                    inputEvent.target.value = '';
-                    inputFlag = 0
-                }
-            });
-        })
-    }
+        if (inputText) {
+            let inputs = document.querySelectorAll('.character-name-search');
+            inputs.forEach(function (inputArry) {
+                inputArry.value = inputText;
+                inputArry.addEventListener('input', function (inputEvent) {
+                    if (inputFlag == 1) {
+                        inputEvent.target.value = '';
+                        inputFlag = 0
+                    }
+                });
+            })
+        }
 
 });
 
