@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             if (nameListStorage.includes(inputText) || nameListStorage.includes(null)) {                                  //로컬스토리지 저장
 
-                console.log(nameListStorage)
                 nameListStorage = nameListStorage.filter(item => item !== inputText && item !== null)
                 nameListStorage.push(inputText)
                 localStorage.setItem('nameList', JSON.stringify(nameListStorage));
