@@ -128,7 +128,6 @@ export function getCharacterProfile(inputName, callback) {
         let apiKey = await callApiKey();
         apiKey = apiKey.apiKey
 
-
         let url = `https://developer-lostark.game.onstove.com/armories/characters/${inputName}`;
         let options = {
             method: 'GET',

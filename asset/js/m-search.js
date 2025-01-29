@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
             // localStorage.removeItem("userBookmark");    //로컬스토리지 비우기
 
-            if (nameListStorage.includes(inputText)) {
+            if (nameListStorage.includes(inputText) || nameListStorage.includes(null)) {
 
-                nameListStorage = nameListStorage.filter(item => item !== inputText)
+                nameListStorage = nameListStorage.filter(item => item !== inputText && item !== null)
                 nameListStorage.push(inputText)
                 localStorage.setItem('nameList', JSON.stringify(nameListStorage));
 
