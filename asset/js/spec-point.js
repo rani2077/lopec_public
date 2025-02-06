@@ -3651,69 +3651,69 @@ export function getCharacterProfile(inputName, callback) {
 
 
             if (!(supportCheck() == "서폿")) {
-                range = (levelRange, value) => `레벨 구간 : ${levelRange}<br>점수 중앙값: ${value}<br>기준 일자 : 2025.01.27 <br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 330만점 이상 <br> 에스더 : 450만점 이상`
+                range = (levelRange, value) => `레벨 구간 : ${levelRange}<br>점수 중앙값: ${value}<br>기준 일자 : 2025.02.06 <br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 330만점 이상 <br> 에스더 : 450만점 이상`
                 if (itemLevel >= 1730) {
-                    return range("1730이상", "575.4만")
+                    return range("1730이상", "568.7만")
                 } else if (itemLevel >= 1720) {
-                    return range("1720이상 1730미만", "461.8만")
+                    return range("1720이상 1730미만", "467.4만")
                 } else if (itemLevel >= 1715) {
-                    return range("1715이상 1725미만", "430.7만")
+                    return range("1715이상 1725미만", "432.9만")
                 } else if (itemLevel >= 1710) {
-                    return range("1710이상 1715미만", "402.1만")
+                    return range("1710이상 1715미만", "406.4만")
                 } else if (itemLevel >= 1705) {
-                    return range("1705이상 1710미만", "378.9만")
+                    return range("1705이상 1710미만", "380.0만")
                 } else if (itemLevel >= 1700) {
-                    return range("1700이상 1705미만", "347.4만")
+                    return range("1700이상 1705미만", "347.7만")
                 } else if (itemLevel >= 1695) {
-                    return range("1695이상 1700미만", "319.7만")
+                    return range("1695이상 1700미만", "320.5만")
                 } else if (itemLevel >= 1690) {
-                    return range("1690이상 1695미만", "308.9만")
+                    return range("1690이상 1695미만", "309.4만")
                 } else if (itemLevel >= 1685) {
-                    return range("1685이상 1690미만", "292.3만")
+                    return range("1685이상 1690미만", "293.0만")
                 } else if (itemLevel >= 1680) {
-                    return range("1680이상 1685미만", "262.9만")
+                    return range("1680이상 1685미만", "263.9만")
                 } else if (itemLevel >= 1675) {
-                    return range("1675이상 1680미만", "195.7만")
+                    return range("1675이상 1680미만", "198.8만")
                 } else if (itemLevel >= 1670) {
-                    return range("1670이상 1675미만", "189.2만")
+                    return range("1670이상 1675미만", "189.8만")
                 } else if (itemLevel >= 1665) {
-                    return range("1665이상 1670미만", "175.6만")
+                    return range("1665이상 1670미만", "178.0만")
                 } else if (itemLevel >= 1660) {
-                    return range("1660이상 1665미만", "160.6만")
+                    return range("1660이상 1665미만", "164.0만")
                 } else {
                     return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점 이상 <br> 마스터 : 330만점 이상 <br> 에스더 : 450만점 이상'
                 }
 
             } else if (supportCheck() == "서폿") {
-                range = (levelRange, value) => `레벨 구간 : ${levelRange}<br>점수 중앙값 : ${value}<br>기준 일자 : 2025.01.27 <br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상`
+                range = (levelRange, value) => `레벨 구간 : ${levelRange}<br>점수 중앙값 : ${value}<br>기준 일자 : 2025.02.06 <br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상`
                 if (itemLevel >= 1730) {
-                    return range("1730이상", "1264.1만")
+                    return range("1730이상", "1293.6만")
                 } else if (itemLevel >= 1720) {
-                    return range("1720이상 1730미만", "1158.4만")
+                    return range("1720이상 1730미만", "1172.2만")
                 } else if (itemLevel >= 1715) {
-                    return range("1715이상 1725미만", "1089.4만")
+                    return range("1715이상 1725미만", "1099.8만")
                 } else if (itemLevel >= 1710) {
-                    return range("1710이상 1715미만", "1025.3만")
+                    return range("1710이상 1715미만", "1036.2만")
                 } else if (itemLevel >= 1705) {
-                    return range("1705이상 1710미만", "951.2만")
+                    return range("1705이상 1710미만", "952.5만")
                 } else if (itemLevel >= 1700) {
-                    return range("1700이상 1705미만", "842.9만")
+                    return range("1700이상 1705미만", "842.3만")
                 } else if (itemLevel >= 1695) {
-                    return range("1695이상 1700미만", "782.1만")
+                    return range("1695이상 1700미만", "753.9만")
                 } else if (itemLevel >= 1690) {
-                    return range("1690이상 1695미만", "728.1만")
+                    return range("1690이상 1695미만", "737.0만")
                 } else if (itemLevel >= 1685) {
-                    return range("1685이상 1690미만", "710만")
+                    return range("1685이상 1690미만", "712.9만")
                 } else if (itemLevel >= 1680) {
-                    return range("1680이상 1685미만", "656만")
+                    return range("1680이상 1685미만", "668.4만")
                 } else if (itemLevel >= 1675) {
-                    return range("1675이상 1680미만", "579.2만")
+                    return range("1675이상 1680미만", "572.5만")
                 } else if (itemLevel >= 1670) {
-                    return range("1670이상 1675미만", "529.5만")
+                    return range("1670이상 1675미만", "545.2만")
                 } else if (itemLevel >= 1665) {
-                    return range("1665이상 1670미만", "478.5만")
+                    return range("1665이상 1670미만", "506.1만")
                 } else if (itemLevel >= 1660) {
-                    return range("1660이상 1665미만", "459.7만")
+                    return range("1660이상 1665미만", "486.2만")
                 } else {
                     return '구간별 평균 점수는 <br> 1660 이상 부터 제공됩니다.<br><br> ※서폿 티어 <br> 브론즈 : 400만점 미만 <br> 실버 : 400만점 이상 <br> 골드 : 500만점 이상 <br> 다이아 : 600만점 이상 <br> 마스터 : 800만점 이상 <br> 에스더 : 1000만점 이상'
                 }
