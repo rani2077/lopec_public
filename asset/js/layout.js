@@ -285,18 +285,21 @@ function inputBlur() {
 
 
 // 푸터
-document.querySelector('.sc-footer').innerHTML = `
-    <div class="group-link">
-        <a href="https://open.kakao.com/o/smvJ4DQg" class="link" target="_blink">1:1문의</a>
-        <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link">후원안내</a>
-        <a href="https://discord.gg/5B8SjX4ug4" class="link" target="_blink">디스코드</a>
-        <a href="https://cool-kiss-ec2.notion.site/v1-0-137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="link">로펙체커</a>
+document.querySelector('footer').innerHTML = `
+    <div class=".sc-footer">
+        <div class="group-link">
+            <a href="https://open.kakao.com/o/smvJ4DQg" class="link" target="_blink">1:1문의</a>
+            <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link">후원안내</a>
+            <a href="https://discord.gg/5B8SjX4ug4" class="link" target="_blink">디스코드</a>
+            <a href="https://cool-kiss-ec2.notion.site/v1-0-137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="link">로펙체커</a>
+        </div>
+        <span>Copyright 2024 lopec.kr All rights reserved.</span>
     </div>
-    <span>Copyright 2024 lopec.kr All rights reserved.</span>`;
+`;
 
 // 푸터 하단 고정 스크립트(앵커광고 삽입시 레이아웃 깨짐 대책)
 function footerPositionFnc() {
-    let footer = document.querySelector(".sc-footer")
+    let footer = document.querySelector("footer")
     footer.style.display = "block"
     footer.style.top = (document.body.offsetHeight - footer.offsetHeight) + "px";
     footer.style.width = window.offsetWidth + "px"
