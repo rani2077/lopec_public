@@ -934,9 +934,25 @@ html파일에 캐시저장방지 meta태그를 추가함
 
 
 
-#### custom.js
-- select => json 변환 스크립트 개발
+#### simulator
+- select => json 변환 스크립트 완성
 
 
 #### layout.js
 - 푸터 수정
+
+
+
+
+
+### 1.0.012 - 2025-02-18
+
+
+
+#### custom-module
+- api호출 스크립트 모듈화
+
+
+#### simulator
+- 유저JSON데이터와 계산용JSON데이터 병합 스크립트 완성
+- 툴팁기능을 도입하여 요소 넘침으로 인한 글자 잘림 현상을 해소

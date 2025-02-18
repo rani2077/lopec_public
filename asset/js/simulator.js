@@ -1,3 +1,34 @@
+async function customModuleImport() {
+    let Module = await Promise.all([
+        import("../custom-module/fetchApi.js")
+    ])
+
+    let [fetchApi] = Module
+
+    fetchApi.lostarkApiCall(function (userDataJSON) {
+
+
+        document.body.addEventListener("change", () => {
+            let mergeData = mergeJsonData(userDataJSON, JSON.parse(getSelectedOptionsAsJson()));
+            console.log(mergeData)
+
+        })
+
+
+
+    })
+
+
+}
+customModuleImport()
+
+
+
+
+
+// JSON변환 스크립트
+// JSON변환 스크립트
+// JSON변환 스크립트
 function parseValue(value) {
     if (value.startsWith("Number:")) {
         let num = value.replace("Number:", "").trim();
@@ -49,6 +80,7 @@ function setNestedValue(obj, keys, value, sortKey = null) {
     }
 }
 
+
 function getSelectedOptionsAsJson() {
     let data = {};
     let sortMap = {};
@@ -83,5 +115,83 @@ function getSelectedOptionsAsJson() {
 
     return JSON.stringify(data, null, 4); // JSON 문자열 반환 (들여쓰기 4칸)
 }
+// console.log(JSON.parse(getSelectedOptionsAsJson()));
+// JSON변환 스크립트
+// JSON변환 스크립트
+// JSON변환 스크립트
 
-console.log(JSON.parse(getSelectedOptionsAsJson()));
+
+
+// 데이터 병합
+function mergeJsonData(a, b) {
+    const merged = { ...a };
+
+    for (const key in b) {
+        if (b.hasOwnProperty(key)) {
+            if (typeof b[key] === 'object' && typeof merged[key] === 'object') {
+                // key가 객체 타입인 경우, 재귀 호출
+                merged[key] = mergeJsonData(merged[key] || {}, b[key]);
+            } else {
+                merged[key] = b[key];
+            }
+        }
+    }
+
+    return merged;
+}
+
+
+
+
+
+
+function dataJSON(largeJSON, smallJSON) {
+    let result
+    document.querySelectorAll("select").forEach(select => {
+        select.addEventListener("change", function () {
+            let mergeData = mergeJsonData(largeJSON, smallJSON);
+            // let mergeData = mergeJsonData(userDataJSON, JSON.parse(getSelectedOptionsAsJson()));
+            result = mergeData;
+            console.log(result)
+        })
+    })
+    return result
+}
+
+
+
+
+
+
+
+// 툴팁
+const selectElements = document.querySelectorAll('select');
+
+selectElements.forEach((selectElement) => {
+    selectElement.addEventListener('mouseover', (event) => {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        tooltip.textContent = selectedOption.text;
+
+        document.body.appendChild(tooltip);
+        tooltip.style.left = `${event.clientX + window.scrollX + 10}px`;
+        tooltip.style.top = `${event.clientY + window.scrollY + 10}px`;
+
+        selectElement.addEventListener('mousemove', (moveEvent) => {
+            tooltip.style.left = `${moveEvent.clientX + window.scrollX + 10}px`;
+            tooltip.style.top = `${moveEvent.clientY + window.scrollY + 10}px`;
+        });
+
+        selectElement.addEventListener('mouseout', () => {
+            tooltip.remove();
+        }, { once: true });
+    });
+
+    selectElement.addEventListener('change', () => {
+        const tooltip = document.querySelector('.tooltip');
+        if (tooltip) {
+            tooltip.textContent = selectElement.options[selectElement.selectedIndex].text;
+        }
+    });
+});
