@@ -28,6 +28,7 @@ import {
 // db저장 스크립트
 import { insertLopecApis } from '../js/api.js'              //제거예정
 import { insertLopecCharacters } from '../js/character.js'
+import { getLopecCharacterBest, getLopecCharacterRanking } from '../js/characterRead.js'
 import { insertLopecSearch } from '../js/search.js'
 
 
@@ -3369,6 +3370,23 @@ export function getCharacterProfile(inputName, callback) {
 
 
         insertCharacter()
+
+        getLopecCharacterBest(inputName).then(function(response) {
+            if(response.result === "S") {
+                // 조회 성공
+                const bestData = response.data;
+                
+                // 데이터 활용 예시
+                console.log("최고 점수:", bestData.LCHB_TOTALSUM);
+                console.log("달성 날짜:", bestData.LCHB_ACHIEVE_DATE);
+                
+            } else {
+                // 조회 실패
+                console.log("조회 실패:", response.error);
+            }
+        }).catch(function(error) {
+            console.error("오류 발생:", error);
+        });
 
 
         // ---------------------------DB저장---------------------------
