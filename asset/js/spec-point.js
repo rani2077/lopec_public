@@ -28,7 +28,7 @@ import {
 // db저장 스크립트
 import { insertLopecApis } from '../js/api.js'              //제거예정
 import { insertLopecCharacters } from '../js/character.js'
-import { getLopecCharacterBest, getLopecCharacterRanking } from '../js/characterRead.js'
+import { getLopecCharacterBest, getLopecCharacterRanking, getCharacterRankingInfo} from '../js/characterRead.js'
 import { insertLopecSearch } from '../js/search.js'
 
 
@@ -3312,7 +3312,6 @@ export function getCharacterProfile(inputName, callback) {
             highTierSpecPointObj.completeSpecPoint = supportSpecPoint
         }
 
-
         // ---------------------------NEW 계산식 Ver 2.0 끗---------------------------
         // ---------------------------NEW 계산식 Ver 2.0 끗---------------------------
         // ---------------------------NEW 계산식 Ver 2.0 끗---------------------------
@@ -3377,8 +3376,8 @@ export function getCharacterProfile(inputName, callback) {
                 const bestData = response.data;
                 
                 // 데이터 활용 예시
-                console.log("최고 점수:", bestData.LCHB_TOTALSUM);
-                console.log("달성 날짜:", bestData.LCHB_ACHIEVE_DATE);
+                //console.log("최고 점수:", bestData.LCHB_TOTALSUM);
+                //console.log("달성 날짜:", bestData.LCHB_ACHIEVE_DATE);
                 
             } else {
                 // 조회 실패
@@ -3386,6 +3385,30 @@ export function getCharacterProfile(inputName, callback) {
             }
         }).catch(function(error) {
             console.error("오류 발생:", error);
+        });
+
+        console.log("캐릭터:", inputName);
+        console.log("직업 유형:", supportCheck());
+        console.log("랭킹 타입:", (supportCheck() == "서폿") ? "SUP" : "DEAL");
+
+        getCharacterRankingInfo(
+            inputName, 
+            (supportCheck() == "서폿") ? "SUP" : "DEAL"
+        ).then(function(response) {
+
+            if(response.result === "S") {
+                const rankData = response.data;
+                if(rankData) {
+                    console.log("랭킹:", rankData.RANKING_NUM);
+                    console.log("점수:", rankData.LCHB_TOTALSUM);
+                } else {
+                    console.log("랭킹에 해당 캐릭터 정보가 없습니다.");
+                }
+            } else {
+                console.log("랭킹 조회 실패:", response.error);
+            }
+        }).catch(function(error) {
+            console.error("랭킹 조회 오류:", error);
         });
 
 

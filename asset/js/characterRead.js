@@ -12,7 +12,7 @@ export function getLopecCharacterBest(characterNickname) {
         url: "/applications/process/lopecCharacterBest/",
         data: requestData,
         success: function(response) {
-            console.log("LOPEC_CHARACTER_BEST 조회 성공");
+            console.log("조회 성공");
             return response;
         },
         error: function(request, status, error) {
@@ -45,6 +45,37 @@ export function getLopecCharacterRanking(type, page, limit) {
         error: function(request, status, error) {
             console.log("LOPEC_CHARACTER_BEST_RANKING 조회 실패");
             console.log("request.status : " + request.status);
+        }
+    });
+}
+
+
+// 특정 캐릭터의 랭킹 정보만 조회
+export function getCharacterRankingInfo(characterNickname, rankingType) {
+    var atMode = "selectCharacterRanking";
+    var requestData = {
+        atMode: atMode,
+        rankingType: rankingType, // "DEAL" 또는 "SUP"
+        lchaCharacterNickname: characterNickname
+    };
+    
+    console.log("랭킹 조회 요청:", requestData);
+
+    return $.ajax({ 
+        dataType: "json",
+        type: "POST",
+        url: "/applications/process/lopecCharacterBest/",
+        data: requestData,
+        success: function(response) {
+            console.log("캐릭터 랭킹 정보 조회 성공");
+            console.log("받은 응답:", response);
+            return response;
+        },
+        error: function(request, status, error) {
+            console.log("캐릭터 랭킹 정보 조회 실패");
+            console.log("request.status : " + request.status);
+            console.log("응답 텍스트:", request.responseText);
+            console.log("오류 상세:", error);
         }
     });
 }
