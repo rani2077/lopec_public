@@ -3387,9 +3387,9 @@ export function getCharacterProfile(inputName, callback) {
             console.error("오류 발생:", error);
         });
 
-        console.log("캐릭터:", inputName);
-        console.log("직업 유형:", supportCheck());
-        console.log("랭킹 타입:", (supportCheck() == "서폿") ? "SUP" : "DEAL");
+        //console.log("캐릭터:", inputName);
+        //console.log("직업 유형:", supportCheck());
+        //console.log("랭킹 타입:", (supportCheck() == "서폿") ? "SUP" : "DEAL");
 
         getCharacterRankingInfo(
             inputName, 
@@ -3409,6 +3409,34 @@ export function getCharacterProfile(inputName, callback) {
             }
         }).catch(function(error) {
             console.error("랭킹 조회 오류:", error);
+        });
+
+
+
+        // DEAL 타입 랭킹 조회 (상위 20명)
+        getLopecCharacterRanking("DEAL", 1, 20).then(function(response) {
+            if(response.result === "S") {
+                const dealRankings = response.data;
+                console.log("DEAL 랭킹 데이터:", dealRankings);
+                
+            } else {
+                console.log("DEAL 랭킹 조회 실패:", response.error);
+            }
+        }).catch(function(error) {
+            console.error("DEAL 랭킹 조회 오류:", error);
+        });
+        
+        // SUP 타입 랭킹 조회 (상위 20명)
+        getLopecCharacterRanking("SUP", 1, 20).then(function(response) {
+            if(response.result === "S") {
+                const supRankings = response.data;
+                console.log("SUP 랭킹 데이터:", supRankings);
+                
+            } else {
+                console.log("SUP 랭킹 조회 실패:", response.error);
+            }
+        }).catch(function(error) {
+            console.error("SUP 랭킹 조회 오류:", error);
         });
 
 
