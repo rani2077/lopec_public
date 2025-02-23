@@ -28,7 +28,7 @@ import {
 // db저장 스크립트
 import { insertLopecApis } from '../js/api.js'              //제거예정
 import { insertLopecCharacters } from '../js/character.js'
-import { getLopecCharacterBest, getLopecCharacterRanking, getCharacterRankingInfo} from '../js/characterRead.js'
+import { getLopecCharacterBest, getLopecCharacterRanking, getCharacterRankingInfo, getClassRanking, getOverallRankingPercentile} from '../js/characterRead.js'
 import { insertLopecSearch } from '../js/search.js'
 
 
@@ -148,6 +148,7 @@ export function getCharacterProfile(inputName, callback) {
         let characterLevel = data.ArmoryProfile.CharacterLevel //캐릭터 레벨
         let characterNickName = data.ArmoryProfile.CharacterName //캐릭터 닉네임
         let characterClass = data.ArmoryProfile.CharacterClassName //캐릭터 직업
+        console.log(characterClass)
 
 
         let serverName = data.ArmoryProfile.ServerName //서버명
@@ -3370,26 +3371,39 @@ export function getCharacterProfile(inputName, callback) {
 
         insertCharacter()
 
+
         getLopecCharacterBest(inputName).then(function(response) {
             if(response.result === "S") {
-                // 조회 성공
-                const bestData = response.data;
+                const characterData = response.data;
+                const characterClass = data.ArmoryProfile.CharacterClassName;
                 
-                // 데이터 활용 예시
-                //console.log("최고 점수:", bestData.LCHB_TOTALSUM);
-                //console.log("달성 날짜:", bestData.LCHB_ACHIEVE_DATE);
-                
-            } else {
-                // 조회 실패
-                console.log("조회 실패:", response.error);
+                // 직업별 랭킹 조회 
+                getClassRanking(supportCheck() == "서폿" ? "SUP" : "DEAL", characterClass).then(function(rankingResponse) {
+                    if(rankingResponse.result === "S") {
+                        const rankingData = rankingResponse.data;
+                        
+                        // 현재 검색된 캐릭터의 랭킹 정보 찾기
+                        const myRanking = rankingData.find(entry => 
+                            entry.LCHB_CHARACTER_NICKNAME === inputName
+                        );
+                        
+                        if(myRanking) {
+                            console.log("=== 직업 랭킹 정보 ===");
+                            console.log(`${characterClass} 직업 내 순위: ${myRanking.CLASS_RANK}위`);
+                            console.log(`전체 ${myRanking.TOTAL_IN_CLASS}명 중 상위 ${myRanking.CLASS_PERCENTILE}%`);
+                        } else {
+                            console.log(`${characterClass} 직업 랭킹에서 캐릭터를 찾을 수 없습니다.`);
+                        }
+                    } else {
+                        console.log("직업별 랭킹 조회 실패:", rankingResponse.error);
+                    }
+                }).catch(function(error) {
+                    console.error("직업 랭킹 조회 중 오류 발생:", error);
+                });
             }
-        }).catch(function(error) {
-            console.error("오류 발생:", error);
         });
 
-        //console.log("캐릭터:", inputName);
-        //console.log("직업 유형:", supportCheck());
-        //console.log("랭킹 타입:", (supportCheck() == "서폿") ? "SUP" : "DEAL");
+
 
         getCharacterRankingInfo(
             inputName, 
@@ -3438,6 +3452,35 @@ export function getCharacterProfile(inputName, callback) {
         }).catch(function(error) {
             console.error("SUP 랭킹 조회 오류:", error);
         });
+
+
+
+    getLopecCharacterBest(inputName).then(function(response) {
+        if(response.result === "S") {
+            const characterData = response.data;
+            const characterClass = data.ArmoryProfile.CharacterClassName;
+            
+            // 서폿/딜러 타입 확인
+            const rankingType = supportCheck() == "서폿" ? "SUP" : "DEAL";
+            
+            // 전체 백분율 조회
+            getOverallRankingPercentile(inputName, rankingType).then(function(percentileResponse) {
+                if(percentileResponse.result === "S") {
+                    const rankData = percentileResponse.data;
+                    console.log("=== 전체 랭킹 정보 ===");
+                    console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
+                    console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
+                    
+                    // 여기에 UI 업데이트 로직 추가 가능
+                    
+                } else {
+                    console.log("전체 랭킹 백분율 조회 실패:", percentileResponse.error);
+                }
+            }).catch(function(error) {
+                console.error("전체 랭킹 백분율 조회 중 오류 발생:", error);
+            });
+        }
+    });
 
 
         // ---------------------------DB저장---------------------------

@@ -77,3 +77,55 @@ export function getCharacterRankingInfo(characterNickname, rankingType) {
         }
     });
 }
+
+// 해당 캐릭터의 직업 내 순위
+export function getClassRanking(rankingType, baseClass = "") {
+    var atMode = "selectClassRanking";
+    var requestData = {
+        atMode: atMode,
+        rankingType: rankingType,
+        baseClass: baseClass
+    };
+    
+    return $.ajax({ 
+        dataType: "json",
+        type: "POST",
+        url: "/applications/process/lopecCharacterBest/",
+        data: requestData,
+        success: function(response) {
+            console.log("직업별 랭킹 조회 성공");
+            return response;
+        },
+        error: function(request, status, error) {
+            console.log("직업별 랭킹 조회 실패");
+            console.log("상태:", request.status);
+            console.log("오류:", error);
+        }
+    });
+}
+
+// 해당 캐릭터의 전체 랭킹 내 백분율
+export function getOverallRankingPercentile(characterNickname, rankingType = "DEAL") {
+    var atMode = "selectOverallPercentile";
+    var requestData = {
+        atMode: atMode,
+        lchaCharacterNickname: characterNickname,
+        rankingType: rankingType
+    };
+    
+    return $.ajax({ 
+        dataType: "json",
+        type: "POST",
+        url: "/applications/process/lopecCharacterBest/",
+        data: requestData,
+        success: function(response) {
+            console.log(`${rankingType} 전체 랭킹 백분율 조회 성공`);
+            return response;
+        },
+        error: function(request, status, error) {
+            console.log(`${rankingType} 전체 랭킹 백분율 조회 실패`);
+            console.log("상태:", request.status);
+            console.log("오류:", error);
+        }
+    });
+}
