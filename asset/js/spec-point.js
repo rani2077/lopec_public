@@ -3311,6 +3311,9 @@ export function getCharacterProfile(inputName, callback) {
         } else if (supportCheck() == "서폿") {
             highTierSpecPointObj.completeSpecPoint = supportSpecPoint
         }
+        highTierSpecPointObj.supportSpecPoint = isNaN(highTierSpecPointObj.supportSpecPoint) ? 0 : highTierSpecPointObj.supportSpecPoint;
+        console.log(highTierSpecPointObj.supportSpecPoint)
+
 
         // ---------------------------NEW 계산식 Ver 2.0 끗---------------------------
         // ---------------------------NEW 계산식 Ver 2.0 끗---------------------------
@@ -3377,8 +3380,14 @@ export function getCharacterProfile(inputName, callback) {
             if(response.result === "S") {
                 const characterData = response.data;
                 const characterClass = data.ArmoryProfile.CharacterClassName;
+                const isSupport = supportCheck() === "서폿";
+
                 console.log("=== 달성 최고 점수 정보 ===");
-                console.log("달성 최고 점수:", characterData.LCHB_TOTALSUM);
+                if(isSupport) {
+                    console.log("달성 최고 점수(서포트):", characterData.LCHB_TOTALSUMSUPPORT);
+                } else {
+                    console.log("달성 최고 점수(딜러):", characterData.LCHB_TOTALSUM);
+                }
                 console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
                         
                 // 직업별 랭킹 조회 
