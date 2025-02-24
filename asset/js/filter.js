@@ -1211,7 +1211,7 @@ let bangleFilter = [
         {job:"야성",block:['']},
         {job:"환각",block:['']}
 
-  ,'추진력'  ]
+   ]
 
 
     // 각인 등급 레벨별 강력함
