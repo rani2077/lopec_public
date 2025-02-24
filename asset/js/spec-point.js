@@ -148,7 +148,6 @@ export function getCharacterProfile(inputName, callback) {
         let characterLevel = data.ArmoryProfile.CharacterLevel //캐릭터 레벨
         let characterNickName = data.ArmoryProfile.CharacterName //캐릭터 닉네임
         let characterClass = data.ArmoryProfile.CharacterClassName //캐릭터 직업
-        console.log(characterClass)
 
 
         let serverName = data.ArmoryProfile.ServerName //서버명
@@ -2659,7 +2658,7 @@ export function getCharacterProfile(inputName, callback) {
 
                     } else if (!(toolTip.includes(data.ArmoryProfile.CharacterClassName)) && /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip) && toolTip.includes("Element")) {  // 자신의 직업이 아닌 보석을 장착중인 경우
 
-                        console.log(toolTip)
+                        //console.log(toolTip)
                         let gemName;
                         let level = null;
                         if (results[1].match(/홍염|작열|멸화|겁화/) != null) {
@@ -3350,23 +3349,25 @@ export function getCharacterProfile(inputName, callback) {
             let guild = data.ArmoryProfile.GuildName
             let title = data.ArmoryProfile.Title
             let classFullName = supportCheck() + " " + data.ArmoryProfile.CharacterClassName
-            let version = 20250123.3
+            let version = 20250224
 
             insertLopecCharacters(
-                inputName,                               // 닉네임
-                level,                                   // 캐릭터 레벨
-                classFullName,                           // 직업 풀네임
-                image,                                   // 프로필 이미지
-                server,                                  // 서버
-                itemLevel,                               // 아이템 레벨
-                guild,                                   // 길드
-                title,                                   // 칭호
-                highTierSpecPointObj.completeSpecPoint,  // 서폿/딜러 통합 스펙포인트
-                version,                                 // 현재 스펙포인트 버전
-                allTimeBuffPower,                        // 상시버프
-                fullBuffPower,                           // 풀버프
+                inputName,                                  // 닉네임
+                level,                                      // 캐릭터 레벨
+                classFullName,                              // 직업 풀네임
+                image,                                      // 프로필 이미지
+                server,                                     // 서버
+                itemLevel,                                  // 아이템 레벨
+                guild,                                      // 길드
+                title,                                      // 칭호
+                highTierSpecPointObj.dealerlastFinalValue,  // 딜러 통합 스펙포인트
+                highTierSpecPointObj.supportSpecPoint,       // 서폿 통합 스펙포인트
+                allTimeBuffPower,                           // 상시버프
+                fullBuffPower,                              // 풀버프
+                version,                                    // 현재 버전
             )
         }
+
 
 
         insertCharacter()
@@ -3376,7 +3377,10 @@ export function getCharacterProfile(inputName, callback) {
             if(response.result === "S") {
                 const characterData = response.data;
                 const characterClass = data.ArmoryProfile.CharacterClassName;
-                
+                console.log("=== 달성 최고 점수 정보 ===");
+                console.log("달성 최고 점수:", characterData.LCHB_TOTALSUM);
+                console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
+                        
                 // 직업별 랭킹 조회 
                 getClassRanking(supportCheck() == "서폿" ? "SUP" : "DEAL", characterClass).then(function(rankingResponse) {
                     if(rankingResponse.result === "S") {
@@ -3470,8 +3474,6 @@ export function getCharacterProfile(inputName, callback) {
                     console.log("=== 전체 랭킹 정보 ===");
                     console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
                     console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
-                    
-                    // 여기에 UI 업데이트 로직 추가 가능
                     
                 } else {
                     console.log("전체 랭킹 백분율 조회 실패:", percentileResponse.error);

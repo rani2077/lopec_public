@@ -12,7 +12,7 @@ export function getLopecCharacterBest(characterNickname) {
         url: "/applications/process/lopecCharacterBest/",
         data: requestData,
         success: function(response) {
-            console.log("달성 최고 점수 조회 성공");
+            //console.log("달성 최고 점수");
             return response;
         },
         error: function(request, status, error) {
@@ -37,7 +37,7 @@ export function getLopecCharacterRanking(type) {
         url: "/applications/process/lopecCharacterBest/",
         data: requestData,
         success: function(response) {
-            console.log("전체 랭킹 조회 성공");
+            //console.log("전체 랭킹 조회 성공");
             return response;
         },
         error: function(request, status, error) {
@@ -65,7 +65,7 @@ export function getCharacterRankingInfo(characterNickname, rankingType) {
         url: "/applications/process/lopecCharacterBest/",
         data: requestData,
         success: function(response) {
-            console.log("캐릭터 랭킹 정보 조회 성공");
+            //console.log("캐릭터 랭킹 정보 조회 성공");
             console.log("받은 응답:", response);
             return response;
         },
@@ -93,7 +93,7 @@ export function getClassRanking(rankingType, baseClass = "") {
         url: "/applications/process/lopecCharacterBest/",
         data: requestData,
         success: function(response) {
-            console.log("직업별 랭킹 조회 성공");
+            //console.log("직업별 랭킹 조회 성공");
             return response;
         },
         error: function(request, status, error) {

@@ -12,8 +12,8 @@ export var insertLopecSearch = function(lschCharactername) {
 		, url		: "/applications/process/lopecSearch/"
 		, data		: saveDatas
 		, success	: function(msg) {
-			console.log("msg : " + msg);
-			console.log("msg.result : " + msg.result);
+			//console.log("msg : " + msg);
+			//console.log("msg.result : " + msg.result);
 			if(msg.result == "S") {
 				console.log("log insert result : LOPEC_SEARCH 저장 성공");
 			} else if(msg.result == "F") {
