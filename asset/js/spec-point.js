@@ -21,7 +21,7 @@ import {
     arkCalFilter,
     engravingCheckFilterLowTier,
     classGemFilter,
-} from './filter.js';
+} from '../filter/filter.js';
 
 
 
@@ -1871,13 +1871,8 @@ export function getCharacterProfile(inputName, callback) {
 
         let engObj = {
             finalDamagePer: 1,
-            criticalChancePer: 0,
-            criticalDamagePer: 0,
             atkPer: 0,
-            atkSpeed: 0,
-            moveSpeed: 0,
             engBonusPer: 1,
-
             carePower: 1,
             utilityPower: 1,
         }
@@ -1894,19 +1889,8 @@ export function getCharacterProfile(inputName, callback) {
 
                         engObj.finalDamagePer = (engObj.finalDamagePer * (checkArry.finalDamagePer / 100 + 1));
                         engObj.engBonusPer = (engObj.engBonusPer * (checkArry.engBonusPer / 100 + 1));
-                        engObj.criticalChancePer = (engObj.criticalChancePer + checkArry.criticalChancePer);
-                        engObj.criticalDamagePer = (engObj.criticalDamagePer + checkArry.criticalDamagePer);
                         engObj.atkPer = (engObj.atkPer + checkArry.atkPer);
-                        engObj.atkSpeed = (engObj.atkSpeed + checkArry.atkSpeed);
-                        engObj.moveSpeed = (engObj.moveSpeed + checkArry.moveSpeed);
                         engObj.carePower = (engObj.carePower + checkArry.carePower);
-
-                        // console.log("------------------"+realEngArry.Name+"----------------")
-                        // console.log("engFinalDamagePer : "+engFinalDamagePer)
-                        // console.log("engCriticalChancePer : "+engCriticalChancePer)
-                        // console.log("engCriticalDamagePer : "+engCriticalDamagePer)
-                        // console.log("engAtkPer : "+engAtkPer)
-
                         stoneCalc(realEngArry.Name, checkArry.finalDamagePer)
                     }
                 })
@@ -1914,78 +1898,15 @@ export function getCharacterProfile(inputName, callback) {
 
 
         })
+
         // 무효옵션 값 제거4티어만 해당
         function engCalMinus(name, finalDamagePer, criticalChancePer, criticalDamagePer, atkPer) {
             engravingCalFilter.forEach(function (FilterArry) {
                 if (FilterArry.job == supportCheck()) {
                     FilterArry.block.forEach(function (blockArry) {
                         if (blockArry == name) {
-                            // console.log("무효옵션 : "+name)
                             engObj.finalDamagePer = (engObj.finalDamagePer / (finalDamagePer / 100 + 1));
-                            engObj.criticalChancePer = (engObj.criticalChancePer - criticalChancePer);
-                            engObj.criticalDamagePer = (engObj.criticalDamagePer - criticalDamagePer);
                             engObj.atkPer = (engObj.atkPer - atkPer);
-                        }
-                    })
-                }
-            })
-        }
-
-
-
-
-
-        // 3티어 각인
-        if (!data.ArkPassive.IsArkPassive) {
-
-            let plusArry = []
-            let perArry = []
-            objExtrudeFnc(engObj, plusArry, perArry)
-
-
-            data.ArmoryEngraving.Effects.forEach(function (lowEng) {
-                engravingCheckFilterLowTier.forEach(function (filter) {
-
-                    let [, name, level] = lowEng.Name.match(/(.*)\sLv\.\s(\d+)/); //이름 레벨 분리
-                    let result = {
-                        name: name.trim(),
-                        level: Number(level)
-                    };
-
-                    if (result.name == filter.name && result.level == filter.level) {
-                        engCalMinusLowTier(result, filter, plusArry, perArry)
-                        plusArry.forEach(function (validValue) {
-                            engObj[validValue] += filter[validValue]
-                        })
-                        perArry.forEach(function (validValue) {
-                            engObj[validValue] *= (filter[validValue] / 100) + 1
-                        })
-
-                    }
-                })
-            })
-        }
-
-        // 무효옵션 값 제거 3티어
-        function engCalMinusLowTier(realEng, filterEng, plusArry, perArry) {
-
-            engravingCalFilter.forEach(function (filter) {
-                if (filter.job == supportCheck()) {
-                    filter.block.forEach(function (blockName) {
-                        if (blockName == realEng.name && realEng.name == filterEng.name) {
-                            plusArry.forEach(function (plusName) {
-                                // console.log(filterEng.name)
-                                // console.log(plusName)
-                                // console.log(-filterEng[plusName])
-                                engObj[plusName] -= filterEng[plusName]
-                            })
-                            perArry.forEach(function (perName) {
-                                // console.log(filterEng.name)
-                                // console.log(perName)
-                                // console.log(-filterEng[perName])
-                                engObj[perName] /= (filterEng[perName] / 100) + 1
-
-                            })
                         }
                     })
                 }
@@ -2007,31 +1928,9 @@ export function getCharacterProfile(inputName, callback) {
 
                     if (stoneArry.AbilityStoneLevel == filterArry.level && stoneArry.Name == filterArry.name && stoneArry.Name == name) {
                         engObj.finalDamagePer = (engObj.finalDamagePer) / notZero(minusVal) //퐁트라이커기준 저주받은 인형(돌맹이) 제거값
-                        // console.log(stoneArry.Name+" 고유값 : "+notZero(minusVal))
-                        // console.log(stoneArry.Name+" 제거된 값 : "+engFinalDamagePer)
-                        // console.log("돌맹이 고유 값 : "+filterArry.finalDamagePer/100)
-
-                        // engObj.finalDamagePer = parseFloat(engObj.finalDamagePer).toFixed(4)
-
-
-
                         engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) + filterArry.finalDamagePer / 100));
                         engObj.engBonusPer = (engObj.engBonusPer * (notZero(minusVal) + filterArry.engBonusPer / 100));
-                        engObj.criticalChancePer = (engObj.criticalChancePer + filterArry.criticalChancePer);
-                        engObj.criticalDamagePer = (engObj.criticalDamagePer + filterArry.criticalDamagePer);
                         engObj.atkPer = (engObj.atkPer + filterArry.atkPer);
-
-                        engObj.atkSpeed = (engObj.atkSpeed + filterArry.atkSpeed);
-                        engObj.moveSpeed = (engObj.moveSpeed + filterArry.moveSpeed);
-
-                        // 유얼마하앍브레이커
-
-                        // console.log("-----------------------"+stoneArry.Name+" : 돌맹이"+"---------------------")
-                        // console.log("engFinalDamagePer : "+engFinalDamagePer)
-                        // console.log("engCriticalChancePer : "+engCriticalChancePer)
-                        // console.log("engCriticalDamagePer : "+engCriticalDamagePer)
-                        // console.log("engAtkPer : "+engAtkPer)
-
                     }
                 })
 

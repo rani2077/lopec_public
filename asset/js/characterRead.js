@@ -17,8 +17,8 @@ export function getLopecCharacterBest(characterNickname) {
         },
         error: function(request, status, error) {
             console.log("LOPEC_CHARACTER_BEST 조회 실패");
-            console.log("request.status : " + request.status);
-            console.log("request.responseText : " + request.responseText);
+            //console.log("request.status : " + request.status);
+            //console.log("request.responseText : " + request.responseText);
         }
     });
 }
@@ -71,9 +71,9 @@ export function getCharacterRankingInfo(characterNickname, rankingType) {
         },
         error: function(request, status, error) {
             console.log("캐릭터 랭킹 정보 조회 실패");
-            console.log("request.status : " + request.status);
-            console.log("응답 텍스트:", request.responseText);
-            console.log("오류 상세:", error);
+            //console.log("request.status : " + request.status);
+            //console.log("응답 텍스트:", request.responseText);
+            //console.log("오류 상세:", error);
         }
     });
 }
@@ -98,8 +98,8 @@ export function getClassRanking(rankingType, baseClass = "") {
         },
         error: function(request, status, error) {
             console.log("직업별 랭킹 조회 실패");
-            console.log("상태:", request.status);
-            console.log("오류:", error);
+            //console.log("상태:", request.status);
+            //console.log("오류:", error);
         }
     });
 }
@@ -124,8 +124,8 @@ export function getOverallRankingPercentile(characterNickname, rankingType = "DE
         },
         error: function(request, status, error) {
             console.log(`${rankingType} 전체 랭킹 백분율 조회 실패`);
-            console.log("상태:", request.status);
-            console.log("오류:", error);
+            //console.log("상태:", request.status);
+            //console.log("오류:", error);
         }
     });
 }

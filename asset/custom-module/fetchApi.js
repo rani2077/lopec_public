@@ -2,9 +2,9 @@ import {key} from "../../config.js"
 
 export async function lostarkApiCall(inputName,callback) {
     const options = {
-        method: 'GET', // 기본값은 GET
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json', // JSON 형식으로 데이터 전송
+            'Content-Type': 'application/json',
             'Authorization': `bearer ${key}`,
         },
     };
