@@ -29,7 +29,6 @@ import * as Filter from "../filter/filter.js"
 export async function getCharacterProfile(data) {
 
 
-    console.log(data);
 
 
     // 호출api모음
