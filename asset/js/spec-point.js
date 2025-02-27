@@ -921,6 +921,7 @@ export function getCharacterProfile(inputName, callback) {
 
             }
 
+            console.log(hyperObj)
 
 
             // 각인
@@ -2133,6 +2134,7 @@ export function getCharacterProfile(inputName, callback) {
             //console.log("각인 케어력 : " + engObj.carePower)
             //console.log("악세 케어력 : " + accObj.carePower)
             //console.log("엘릭서 케어력 : " + elixirObj.carePower)
+            // console.log("엘릭서 : " , elixirObj)
 
 
 

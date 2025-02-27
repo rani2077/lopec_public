@@ -27,6 +27,10 @@
         font-size: inherit;
     }
 
+    .armor-item .plus {
+        max-width: 40px;
+    }
+
     .sc-info .gem-area .gem-box {
         display: flex;
         flex-direction: column;
@@ -253,7 +257,7 @@
                     <div class="engraving-box">
                         <img src="https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_235.png"
                             class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade" >
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
                             <option value="유물">유물</option>
                             <option value="전설">전설</option>
                         </select>
@@ -269,7 +273,8 @@
                     <div class="engraving-box">
                         <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/achieve/achieve_08_62.png"
                             class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade" data-select="전설">
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade"
+                            data-select="전설">
                             <option value="유물">유물</option>
                             <option value="전설">전설</option>
                         </select>
@@ -521,13 +526,14 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_154.png"
                                         alt="착용장비프로필">
-                                    <span class="progress legendary-progressbar" name="ArmoryEquipment Tooltip">97</span>
+                                    <span class="progress legendary-progressbar"
+                                        name="ArmoryEquipment Tooltip">97</span>
                                 </div>
                                 <div class="text-box">
 
                                     <div class="name-wrap">
                                         <span class="tag"></span>
-                                        <select class="plus" name="ArmoryEquipment Grade" style="max-width:40px;">
+                                        <select class="plus" name="ArmoryEquipment Grade">
                                             <option value="1525">T3 고대</option>
                                             <option value="1590">T4 유물</option>
                                             <option value="1590">T4 고대</option>
@@ -535,28 +541,22 @@
                                         <select class="armor-name" data-max="25" data-string="+ " data-select="20">
                                         </select>
                                         <span class="upgrade">상급재련</span>
-                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
-                                        </select>
+                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius helmet" name="ArmoryEquipment Tooltip" ></select>
+                                        <select class="elixir radius helmet" name="ArmoryEquipment Tooltip"></select>
                                         <select class="elixir radius common" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
                                     <div class="hyper-wrap">
-                                        <span class="hyper"><img
-                                                src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
-                                                alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7" data-min="0"></select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="hyper" name="ArmoryEquipment Tooltip"></select>
+                                        <span class="hyper">
+                                            <img src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
+                                                alt="꽃모양 아이콘">
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -566,38 +566,29 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_152.png"
                                         alt="착용장비프로필">
-                                    <select class="tier" >
-                                        <option value="t1">t1</option>
-                                        <option value="t2">t2</option>
-                                        <option value="t3">t3</option>
-                                        <option value="t4">t4</option>
-                                    </select>
-                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
-                                        <option value="내구도1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
+                                    <span class="progress legendary-progressbar"
+                                        name="ArmoryEquipment Tooltip">100</span>
                                 </div>
                                 <div class="text-box">
 
                                     <div class="name-wrap">
                                         <span class="tag"></span>
                                         <select class="plus" name="ArmoryEquipment Grade">
-                                            <option value="고대">고대</option>
-                                            <option value="유물">유물</option>
+                                            <option value="1525">T3 고대</option>
+                                            <option value="1590">T4 유물</option>
+                                            <option value="1590">T4 고대</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
                                             <option value="+17-신념의-업화-머리장식-x11">+17</option>
                                         </select>
                                         <span class="upgrade">상급재련</span>
-                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius shoulder" name="ArmoryEquipment Tooltip" ></select>
+                                        <select class="elixir radius shoulder" name="ArmoryEquipment Tooltip"></select>
                                         <select class="elixir radius common" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
@@ -605,15 +596,12 @@
                                         <span class="hyper"><img
                                                 src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
                                                 alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip" >
+                                        <select class="hyper" name="ArmoryEquipment Tooltip">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                         </select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
                                     </div>
                                 </div>
                             </li>
@@ -623,18 +611,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_150.png"
                                         alt="착용장비프로필">
-                                    <select class="tier" >
+                                    <select class="tier">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
-                                        <option value="내구도1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
+                                    <span class="progress legendary-progressbar" name="ArmoryEquipment Tooltip">33</span>
                                 </div>
                                 <div class="text-box">
 
@@ -644,17 +627,17 @@
                                             <option value="고대">고대</option>
                                             <option value="유물">유물</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
                                             <option value="+17-신념의-업화-머리장식-x11">+17</option>
                                         </select>
                                         <span class="upgrade">상급재련</span>
-                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius armor" name="ArmoryEquipment Tooltip" ></select>
+                                        <select class="elixir radius armor" name="ArmoryEquipment Tooltip"></select>
                                         <select class="elixir radius common" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
@@ -662,15 +645,12 @@
                                         <span class="hyper"><img
                                                 src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
                                                 alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip" >
+                                        <select class="hyper" name="ArmoryEquipment Tooltip">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                         </select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
                                     </div>
                                 </div>
                             </li>
@@ -680,18 +660,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_151.png"
                                         alt="착용장비프로필">
-                                    <select class="tier" >
+                                    <select class="tier">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
-                                        <option value="내구도1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
+                                    <span class="progress legendary-progressbar" name="ArmoryEquipment Tooltip">22</span>
                                 </div>
                                 <div class="text-box">
 
@@ -701,17 +676,17 @@
                                             <option value="고대">고대</option>
                                             <option value="유물">유물</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
                                             <option value="+17-신념의-업화-머리장식-x11">+17</option>
                                         </select>
                                         <span class="upgrade">상급재련</span>
-                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius pants" name="ArmoryEquipment Tooltip" ></select>
+                                        <select class="elixir radius pants" name="ArmoryEquipment Tooltip"></select>
                                         <select class="elixir radius common" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
@@ -719,15 +694,12 @@
                                         <span class="hyper"><img
                                                 src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
                                                 alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip" >
+                                        <select class="hyper" name="ArmoryEquipment Tooltip">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                         </select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
                                     </div>
                                 </div>
                             </li>
@@ -737,18 +709,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_153.png"
                                         alt="착용장비프로필">
-                                    <select class="tier" >
+                                    <select class="tier">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
-                                        <option value="내구도1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
+                                    <span class="progress legendary-progressbar" name="ArmoryEquipment Tooltip">11</span>
                                 </div>
                                 <div class="text-box">
 
@@ -758,17 +725,17 @@
                                             <option value="고대">고대</option>
                                             <option value="유물">유물</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
                                             <option value="+17-신념의-업화-머리장식-x11">+17</option>
                                         </select>
                                         <span class="upgrade">상급재련</span>
-                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius glove" name="ArmoryEquipment Tooltip" ></select>
+                                        <select class="elixir radius glove" name="ArmoryEquipment Tooltip"></select>
                                         <select class="elixir radius common" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
@@ -776,15 +743,12 @@
                                         <span class="hyper"><img
                                                 src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
                                                 alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip" >
+                                        <select class="hyper" name="ArmoryEquipment Tooltip">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                         </select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
                                     </div>
                                 </div>
                             </li>
@@ -794,18 +758,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_156.png"
                                         alt="착용장비프로필">
-                                    <select class="tier" >
+                                    <select class="tier">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
-                                        <option value="내구도1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
+                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip" data-max="100"></select>
                                 </div>
                                 <div class="text-box">
 
@@ -815,11 +774,11 @@
                                             <option value="고대">고대</option>
                                             <option value="유물">유물</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
                                             <option value="+17-신념의-업화-머리장식-x11">+17</option>
                                         </select>
                                         <span class="upgrade">상급재련</span>
-                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip" >
+                                        <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
                                     </div>
@@ -832,15 +791,12 @@
                                         <span class="hyper"><img
                                                 src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
                                                 alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip" >
+                                        <select class="hyper" name="ArmoryEquipment Tooltip">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                         </select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
                                     </div>
                                 </div>
                             </li>
@@ -848,11 +804,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius ultra-background">
                                     <img src="/asset/image/elixir.png" alt="">
-                                    <select class="progress legendary-progressbar">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
+                                    <span class="progress legendary-progressbar">99</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -865,11 +817,7 @@
                                 </div>
                                 <div class="img-box radius ultra-background">
                                     <img src="/asset/image/hyper.png" alt="">
-                                    <select class="progress mythic-progressbar">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
+                                    <span class="progress mythic-progressbar">99</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -889,14 +837,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_215.png"
                                         alt="">
-                                    <select class="tier" name="ArmoryEquipment Tooltip" >
+                                    <select class="tier" name="ArmoryEquipment Tooltip">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
+                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -908,7 +855,7 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select id="search-option" class="option" name="ArmoryEquipment Tooltip" >
+                                            <select id="search-option" class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -917,7 +864,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -926,7 +873,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -942,14 +889,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_115.png"
                                         alt="">
-                                    <select class="tier" name="ArmoryEquipment Tooltip" >
+                                    <select class="tier" name="ArmoryEquipment Tooltip">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
+                                    <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -961,7 +907,7 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -970,7 +916,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -979,7 +925,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -995,14 +941,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_115.png"
                                         alt="">
-                                    <select class="tier" name="ArmoryEquipment Tooltip" >
+                                    <select class="tier" name="ArmoryEquipment Tooltip">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress epic-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
+                                    <select class="progress epic-progressbar" name="ArmoryEquipment Tooltip">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -1014,7 +959,7 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1023,7 +968,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality high">상</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1032,7 +977,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1048,14 +993,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_22.png"
                                         alt="">
-                                    <select class="tier" name="ArmoryEquipment Tooltip" >
+                                    <select class="tier" name="ArmoryEquipment Tooltip">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress epic-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
+                                    <select class="progress epic-progressbar" name="ArmoryEquipment Tooltip">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -1067,7 +1011,7 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality high">상</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1076,7 +1020,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1085,7 +1029,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1101,14 +1045,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_22.png"
                                         alt="">
-                                    <select class="tier" name="ArmoryEquipment Tooltip" >
+                                    <select class="tier" name="ArmoryEquipment Tooltip">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress epic-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
+                                    <select class="progress epic-progressbar" name="ArmoryEquipment Tooltip">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -1120,7 +1063,7 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1129,7 +1072,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1138,7 +1081,7 @@
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1154,14 +1097,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ability/ability_257.png"
                                         alt="">
-                                    <select class="tier" name="ArmoryEquipment Tooltip" >
+                                    <select class="tier" name="ArmoryEquipment Tooltip">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress mythic-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
+                                    <select class="progress mythic-progressbar" name="ArmoryEquipment Tooltip">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -1176,15 +1118,15 @@
                                     <span class="option">위대한 비상의 돌</span>
 
                                     <div class="buff-wrap">
-                                        <select class="buff" name="ArmoryEquipment Tooltip" >
+                                        <select class="buff" name="ArmoryEquipment Tooltip">
                                             <option value="아드레날린-lv.2">아드레날린 Lv.2</option>
                                             <option value="돌격대장-lv.2">돌격대장 Lv.2</option>
                                         </select>
-                                        <select class="buff" name="ArmoryEquipment Tooltip" >
+                                        <select class="buff" name="ArmoryEquipment Tooltip">
                                             <option value="아드레날린-lv.2">아드레날린 Lv.2</option>
                                             <option value="돌격대장-lv.2">돌격대장 Lv.2</option>
                                         </select>
-                                        <select class="buff minus" name="ArmoryEquipment Tooltip" >
+                                        <select class="buff minus" name="ArmoryEquipment Tooltip">
                                             <option value="아드레날린-lv.2">아드레날린 Lv.2</option>
                                             <option value="돌격대장-lv.2">돌격대장 Lv.2</option>
                                         </select>
@@ -1196,14 +1138,13 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_304.png"
                                         alt="">
-                                    <select class="tier" name="ArmoryEquipment Tooltip" >
+                                    <select class="tier" name="ArmoryEquipment Tooltip">
                                         <option value="t1">t1</option>
                                         <option value="t2">t2</option>
                                         <option value="t3">t3</option>
                                         <option value="t4">t4</option>
                                     </select>
-                                    <select class="progress mythic-progressbar" name="ArmoryEquipment Tooltip"
-                                        >
+                                    <select class="progress mythic-progressbar" name="ArmoryEquipment Tooltip">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -1212,10 +1153,10 @@
                                 <div class="option-box">
 
                                     <div class="option-wrap">
-                                        <select class="option" name="ArmoryEquipment Tooltip" >
+                                        <select class="option" name="ArmoryEquipment Tooltip">
                                             <option value="특화-+63">특화 +63</option>
                                             <option value="치명-+87">치명 +87</option>
-                                        </select><select class="option" name="ArmoryEquipment Tooltip" >
+                                        </select><select class="option" name="ArmoryEquipment Tooltip">
                                             <option value="특화-+63">특화 +63</option>
                                             <option value="치명-+87">치명 +87</option>
                                         </select>
@@ -1227,7 +1168,7 @@
                                             <span class="quality middle">
                                                 중
                                             </span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1238,7 +1179,7 @@
                                             <span class="quality middle">
                                                 중
                                             </span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1250,7 +1191,7 @@
                                             <span class="quality zmiddle">
                                                 중
                                             </span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" >
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                                 <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
                                                 <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
                                                 </option>
@@ -1480,7 +1421,7 @@
 
     <!-- <script type="module" src="../asset/js/custom.js"></script> -->
     <script src="/asset/js/layout.js"></script>
-    <script type="module" src="../asset/js/filter.js"></script>
+    <script type="module" src="../asset/filter/filter.js"></script>
     <script type="module" src="/asset/js/simulator.js"></script>
 
 
