@@ -3,61 +3,6 @@ import * as filter from "../filter/filter.js"
 
 
 
-/* **********************************************************************************************************************
- * function name		:	engObj
- * description			: 	각인
- *********************************************************************************************************************** */
-
-
-export async function engOutputCalc(inputValueObjArr) {
-    let result = [];
-
-    inputValueObjArr.forEach(function (inputValue) {
-        const matchingFilters = simulatorFilter.engFilter.filter(function (filter) {
-            return filter.name === inputValue.name && filter.grade === inputValue.grade && filter.level === inputValue.level;
-        });
-
-        matchingFilters.forEach(function (filter) {
-            result.push({
-                finalDamagePer: filter.finalDamagePer,
-                engBonus: filter.engBonus
-            });
-        });
-    });
-
-    return result;
-}
-
-// 필터에 없는값과 무효값들 어떻게 처리할 건지
-
-
-/* **********************************************************************************************************************
- * function name		:	engExtract()
- * description			: 	현재 각인 객체로 추출
- *********************************************************************************************************************** */
-
-export async function engExtract() {
-    let result = []
-
-
-    let name = document.querySelectorAll(".engraving-box .engraving-name")
-    let grade = document.querySelectorAll(".engraving-box .relic-ico")
-    let level = document.querySelectorAll(".engraving-box .grade")
-
-    for (let i = 0; i < name.length; i++) {
-        const obj = {
-            name: name[i].value,
-            grade: grade[i].value,
-            level: Number(level[i].value)
-        };
-        result.push(obj);
-    }
-
-    return result
-
-}
-
-
 
 /* **********************************************************************************************************************
  * function name		:	supportCheck()

@@ -27,7 +27,7 @@ import {
 
 // db저장 스크립트
 import { insertLopecCharacters } from '../js/character.js'
-import { getLopecCharacterBest, getLopecCharacterRanking, getCharacterRankingInfo, getClassRanking, getOverallRankingPercentile} from '../js/characterRead.js'
+import { getLopecCharacterRanking, getCombinedCharacterData} from '../js/characterRead2.js'
 import { insertLopecSearch } from '../js/search.js'
 
 
@@ -527,7 +527,7 @@ export function getCharacterProfile(inputName, callback) {
                     if (optionCheck && filterArry.attr == "AddDamagePer") { //추가 피해 %
                         accObj.addDamagePer += filterArry.value
                     } else if (optionCheck && filterArry.attr == "FinalDamagePer") { //에게 주는 피해가 %
-                        accObj.finalDamagePer += (filterArry.value / 100)
+                        accObj.finalDamagePer *= (filterArry.value / 100) + 1
                     } else if (optionCheck && filterArry.attr == "WeaponAtkPlus") { //무기 공격력 +
                         accObj.weaponAtkPlus += filterArry.value
                     } else if (optionCheck && filterArry.attr == "WeaponAtkPer") { //무기 공격력 %
@@ -560,7 +560,7 @@ export function getCharacterProfile(inputName, callback) {
             accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.4989) / 100 + 1)
             //console.log("치적,치피,무공퍼 적용" + accObj.finalDamagePer)
             accObj.finalDamagePer *= ((accObj.atkPer * 0.9246) / 100 + 1)
-            //console.log(accObj)
+            console.log(accObj)
 
 
             // 악세 깨달음 포인트
@@ -2243,122 +2243,98 @@ export function getCharacterProfile(inputName, callback) {
             insertCharacter()
 
 
-            getLopecCharacterBest(inputName).then(function(response) {
+            // 캐릭터 종합 데이터 조회 (단일 요청으로 필요한 모든 데이터 가져오기)
+            getCombinedCharacterData(
+                inputName, 
+                supportCheck() == "서폿" ? "SUP" : "DEAL"
+            ).then(function(response) {
                 if(response.result === "S") {
-                    const characterData = response.data;
+                    const combinedData = response.data;
                     const characterClass = data.ArmoryProfile.CharacterClassName;
                     const isSupport = supportCheck() === "서폿";
-
-                    console.log("=== 달성 최고 점수 정보 ===");
-                    if(isSupport) {
-                        console.log("달성 최고 점수(서포트):", characterData.LCHB_TOTALSUMSUPPORT);
-                    } else {
-                        console.log("달성 최고 점수(딜러):", characterData.LCHB_TOTALSUM);
-                    }
-                    console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
-                            
-                    // 직업별 랭킹 조회 
-                    getClassRanking(supportCheck() == "서폿" ? "SUP" : "DEAL", characterClass).then(function(rankingResponse) {
-                        if(rankingResponse.result === "S") {
-                            const rankingData = rankingResponse.data;
-                            
-                            // 현재 검색된 캐릭터의 랭킹 정보 찾기
-                            const myRanking = rankingData.find(entry => 
-                                entry.LCHB_CHARACTER_NICKNAME === inputName
-                            );
-                            
-                            if(myRanking) {
-                                console.log("=== 직업 랭킹 정보 ===");
-                                console.log(`${characterClass} 직업 내 순위: ${myRanking.CLASS_RANK}위`);
-                                console.log(`전체 ${myRanking.TOTAL_IN_CLASS}명 중 상위 ${myRanking.CLASS_PERCENTILE}%`);
-                            } else {
-                                console.log(`${characterClass} 직업 랭킹에서 캐릭터를 찾을 수 없습니다.`);
-                            }
+                    const rankingType = isSupport ? "SUP" : "DEAL";
+                    
+                    // 1. 캐릭터 최고 점수 정보 출력
+                    if(combinedData.characterBest) {
+                        const characterData = combinedData.characterBest;
+                        console.log("=== 달성 최고 점수 정보 ===");
+                        if(isSupport) {
+                            console.log("달성 최고 점수(서포트):", characterData.LCHB_TOTALSUMSUPPORT);
                         } else {
-                            console.log("직업별 랭킹 조회 실패:", rankingResponse.error);
+                            console.log("달성 최고 점수(딜러):", characterData.LCHB_TOTALSUM);
                         }
-                    }).catch(function(error) {
-                        console.error("직업 랭킹 조회 중 오류 발생:", error);
-                    });
-                }
-            });
-
-
-
-            getCharacterRankingInfo(
-                inputName, 
-                (supportCheck() == "서폿") ? "SUP" : "DEAL"
-            ).then(function(response) {
-
-                if(response.result === "S") {
-                    const rankData = response.data;
-                    if(rankData) {
+                        console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
+                    }
+                    
+                    // 2. 직업별 랭킹 정보 출력
+                    if(combinedData.classRanking) {
+                        const rankingData = combinedData.classRanking;
+                        
+                        // 현재 검색된 캐릭터의 랭킹 정보 찾기
+                        const myRanking = rankingData.find(entry => 
+                            entry.LCHB_CHARACTER_NICKNAME === inputName
+                        );
+                        
+                        if(myRanking) {
+                            console.log("=== 직업 랭킹 정보 ===");
+                            console.log(`${characterClass} 직업 내 순위: ${myRanking.CLASS_RANK}위`);
+                            console.log(`전체 ${myRanking.TOTAL_IN_CLASS}명 중 상위 ${myRanking.CLASS_PERCENTILE}%`);
+                        } else {
+                            console.log(`${characterClass} 직업 랭킹에서 캐릭터를 찾을 수 없습니다.`);
+                        }
+                    }
+                    
+                    // 3. 캐릭터 랭킹 정보 출력
+                    if(combinedData.characterRanking) {
+                        const rankData = combinedData.characterRanking;
                         console.log("랭킹:", rankData.RANKING_NUM);
                         console.log("점수:", rankData.LCHB_TOTALSUM);
                     } else {
                         console.log("랭킹에 해당 캐릭터 정보가 없습니다.");
                     }
+                    
+                    // 4. 전체 랭킹 백분율 정보 출력
+                    if(combinedData.percentile) {
+                        const rankData = combinedData.percentile;
+                        console.log("=== 전체 랭킹 정보 ===");
+                        console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
+                        console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
+                    }
                 } else {
-                    console.log("랭킹 조회 실패:", response.error);
+                    console.log("종합 데이터 조회 실패:", response.error);
                 }
             }).catch(function(error) {
-                console.error("랭킹 조회 오류:", error);
+                console.error("종합 데이터 조회 중 오류 발생:", error);
             });
 
 
 
             // DEAL 타입 랭킹 조회 (상위 20명)
-            getLopecCharacterRanking("DEAL", 1, 20).then(function(response) {
-                if(response.result === "S") {
-                    const dealRankings = response.data;
-                    console.log("DEAL 랭킹 데이터:", dealRankings);
-                    
-                } else {
-                    console.log("DEAL 랭킹 조회 실패:", response.error);
-                }
-            }).catch(function(error) {
-                console.error("DEAL 랭킹 조회 오류:", error);
-            });
-            
-            // SUP 타입 랭킹 조회 (상위 20명)
-            getLopecCharacterRanking("SUP", 1, 20).then(function(response) {
-                if(response.result === "S") {
-                    const supRankings = response.data;
-                    console.log("SUP 랭킹 데이터:", supRankings);
-                    
-                } else {
-                    console.log("SUP 랭킹 조회 실패:", response.error);
-                }
-            }).catch(function(error) {
-                console.error("SUP 랭킹 조회 오류:", error);
-            });
+            //getLopecCharacterRanking("DEAL", 1, 20).then(function(response) {
+            //    if(response.result === "S") {
+            //        const dealRankings = response.data;
+            //        console.log("DEAL 랭킹 데이터:", dealRankings);
+            //        
+            //    } else {
+            //        console.log("DEAL 랭킹 조회 실패:", response.error);
+            //    }
+            //}).catch(function(error) {
+            //    console.error("DEAL 랭킹 조회 오류:", error);
+            //});
+            //
+            //// SUP 타입 랭킹 조회 (상위 20명)
+            //getLopecCharacterRanking("SUP", 1, 20).then(function(response) {
+            //    if(response.result === "S") {
+            //        const supRankings = response.data;
+            //        console.log("SUP 랭킹 데이터:", supRankings);
+            //        
+            //    } else {
+            //        console.log("SUP 랭킹 조회 실패:", response.error);
+            //    }
+            //}).catch(function(error) {
+            //    console.error("SUP 랭킹 조회 오류:", error);
+            //});
 
-
-
-        getLopecCharacterBest(inputName).then(function(response) {
-            if(response.result === "S") {
-                const characterData = response.data;
-                const characterClass = data.ArmoryProfile.CharacterClassName;
-                
-                // 서폿/딜러 타입 확인
-                const rankingType = supportCheck() == "서폿" ? "SUP" : "DEAL";
-                
-                // 전체 백분율 조회
-                getOverallRankingPercentile(inputName, rankingType).then(function(percentileResponse) {
-                    if(percentileResponse.result === "S") {
-                        const rankData = percentileResponse.data;
-                        console.log("=== 전체 랭킹 정보 ===");
-                        console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
-                        console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
-                        
-                    } else {
-                        console.log("전체 랭킹 백분율 조회 실패:", percentileResponse.error);
-                    }
-                }).catch(function(error) {
-                    console.error("전체 랭킹 백분율 조회 중 오류 발생:", error);
-                });
-            }
-        });
 
 
             // ---------------------------DB저장---------------------------

@@ -6,12 +6,14 @@ async function simulatorInputCalc() {
         import("../custom-module/trans-value.js"),   // transValue
         import("../custom-module/calculator.js"),    // calcValue
         import("../custom-module/calc-module.js"),   // calcModule
-        import("../filter/simulator-data.js")        // simulatorData
+        import("../filter/simulator-data.js"),       // simulatorData
+        import("../filter/simulator-filter.js"),     // simulatorFilter
+
 
     ])
 
 
-    let [fetchApi, transValue, calcValue, calcModule, simulatorData] = module
+    let [fetchApi, transValue, calcValue, calcModule, simulatorData, simulatorFilter] = module
 
     if (!cachedData) {
         cachedData = await fetchApi.lostarkApiCall("청염각");
@@ -24,18 +26,59 @@ async function simulatorInputCalc() {
 
 
     /* **********************************************************************************************************************
-     * function name		:	engOutputCalc
-     * description			: 	각인 계산값
+     * function name		:	engExtract()
+     * description			: 	현재 각인 객체로 추출
      *********************************************************************************************************************** */
 
-    let engObjList = await calcModule.engExtract()
-    let simulatorEngObj = await calcModule.engOutputCalc(engObjList)
+    function engExtract() {
+        let result = []
 
 
+        let name = document.querySelectorAll(".engraving-box .engraving-name")
+        let grade = document.querySelectorAll(".engraving-box .relic-ico")
+        let level = document.querySelectorAll(".engraving-box .grade")
+
+        for (let i = 0; i < name.length; i++) {
+            const obj = {
+                name: name[i].value,
+                grade: grade[i].value,
+                level: Number(level[i].value)
+            };
+            result.push(obj);
+        }
+
+        return result
+
+    }
+
+    /* **********************************************************************************************************************
+     * function name		:	engOutputCalc(inputValueObjArr)
+     * description			: 	각인 수치 값
+     *********************************************************************************************************************** */
 
 
-    // console.log(engObjList)
-    // console.log(simulatorEngObj)
+    function engOutputCalc(inputValueObjArr) {
+        let result = [];
+
+        inputValueObjArr.forEach(function (inputValue) {
+            const matchingFilters = simulatorFilter.engFilter.filter(function (filter) {
+                return filter.name === inputValue.name && filter.grade === inputValue.grade && filter.level === inputValue.level;
+            });
+
+            matchingFilters.forEach(function (filter) {
+                result.push({
+                    finalDamagePer: filter.finalDamagePer,
+                    engBonus: filter.engBonus
+                });
+            });
+        });
+
+        return result;
+    }
+
+
+    // console.log(engExtract())
+    // console.log(engOutputCalc(engExtract()) )
 
     /* **********************************************************************************************************************
      * function name		:	armoryLevelCalc()
@@ -83,7 +126,7 @@ async function simulatorInputCalc() {
 
         return armorObj
     }
-    console.log(armoryLevelCalc())
+    // console.log(armoryLevelCalc())
     /* **********************************************************************************************************************
     * function name         :	armorElixirToObj()
     * description			: 	장비 엘릭서 스텟 수치를 추출함
@@ -332,7 +375,7 @@ async function simulatorInputCalc() {
             obj.stigmaPer += 2
         }
 
-        console.log(obj)
+        // console.log(obj)
         return result = obj;
     }
     extractHyperStageValue()
@@ -351,6 +394,62 @@ async function simulatorInputCalc() {
     }
     defaultObjAddDamgerPerEdit()
     // console.log(extractValue.defaultObj.addDamagePer)
+
+    /* **********************************************************************************************************************
+     * function name		:	accessoryValueToObj()
+     * description			: 	악세서리 수치를 obj로 저장
+     *********************************************************************************************************************** */
+
+    function accessoryValueToObj() {
+        let result ;
+        let arr = [];
+        let elements = document.querySelectorAll(".accessory-list .accessory-item.accessory .option");
+        elements.forEach(element => {
+            let key = element.value.split(":")[1];
+            let value = Number(element.value.split(":")[2]);
+            let obj = {};
+            obj[key] = value;
+            arr.push(obj);
+        })
+        console.log(arr)
+        console.log(objKeyValueSum(arr))
+        return result
+    }
+    accessoryValueToObj()
+
+
+    /* **********************************************************************************************************************
+    * function name		:	accessoryValueCalc(objArr)
+    * description		: 	악세서리 옵션의 key값이 동일한 경우 합연산 또는 곱연산
+    *********************************************************************************************************************** */
+    function objKeyValueSum(objArr) {
+        const grouped = {};
+
+        // 객체들을 키별로 그룹화
+        objArr.forEach(obj => {
+            for (const key in obj) {
+                if (!grouped[key]) {
+                    grouped[key] = [];
+                }
+                grouped[key].push(obj[key]);
+            }
+        });
+
+        // 그룹화된 데이터를 바탕으로 새로운 객체 생성
+        const combinedObj = {};
+        for (const key in grouped) {
+            if (key === "finalDamagePer") {
+                // finalDamagePer는 곱셈
+                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1).toFixed(2));
+            } else {
+                // 기타 스텟은 덧셈
+                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc + val, 0).toFixed(2));
+            }
+        }
+
+        return combinedObj;
+    }
+
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
@@ -602,7 +701,7 @@ async function selectCreate(data) {
     * description	    : 	
     *********************************************************************************************************************** */
 
-    let engObjList = await calcModule.engExtract()
+
 
     /* **********************************************************************************************************************
     * function name		:	armoryEnforceLimite()
@@ -693,6 +792,88 @@ async function selectCreate(data) {
     }
     hyperStageToStarCreate()
 
+    /* **********************************************************************************************************************
+    * function name		:	
+    * description	    : 	
+    *********************************************************************************************************************** */
+
+    // simulatorFilter
+    function accessoryTierToOptions() {
+        let elements = document.querySelectorAll(".accessory-item .tier.accessory");
+        elements.forEach(element => {
+            element.addEventListener("change", createOption);
+
+            function createOption() {
+                let siblingElements = element.parentElement.parentElement.querySelectorAll(".option-box .option");
+                siblingElements.forEach(siblingElement => {
+                    siblingElement.innerHTML = "";
+                    let tier = element.value.split(":")[0];
+                    let tag = element.value.split(":")[1];
+                    if (tier === "T3유물") {
+                        if (tag === "목걸이") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3RelicData.necklace, "특옵");
+                        } else if (tag === "귀걸이") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3RelicData.earing, "특옵");
+                        } else if (tag === "반지") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3RelicData.ring, "특옵");
+                        }
+                        optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3RelicData.common, "공용");
+                    } else if (tier === "T3고대") {
+                        if (tag === "목걸이") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3MythicData.necklace, "특옵");
+                        } else if (tag === "귀걸이") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3MythicData.earing, "특옵");
+                        } else if (tag === "반지") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3MythicData.ring, "특옵");
+                        }
+                        optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t3MythicData.common, "공용");
+                    } else if (tier === "T4유물" || tier === "T4고대") {
+                        if (tag === "목걸이") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t4Data.necklace, "특옵");
+                        } else if (tag === "귀걸이") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t4Data.earing, "특옵");
+                        } else if (tag === "반지") {
+                            optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t4Data.ring, "특옵");
+                        }
+                        optionCreate(siblingElement, simulatorFilter.accessoryOptionData.t4Data.common, "공용");
+                    }
+                });
+            }
+            createOption();
+        });
+        function optionCreate(element, data, tag) {
+            if (tag === "공용") {
+                let option = document.createElement("option");
+                option.value = "";
+                option.disabled = true;
+                option.textContent = "--------공용--------";
+                element.appendChild(option);
+            } else if (tag === "특옵") {
+                let option = document.createElement("option");
+                option.value = "";
+                option.disabled = true;
+                option.textContent = "--------특옵--------";
+                element.appendChild(option);
+            }
+            data.forEach((item, idx) => {
+                let option = document.createElement("option");
+                option.textContent = item.name;
+                let valueParts = [];
+                valueParts.push(`${item.grade}`);
+
+                for (const key in item) {
+                    if (key !== 'name' && key !== 'grade') {
+                        valueParts.push(`${key}:${item[key]}`);
+                    }
+                }
+
+                option.value = valueParts.join(":");
+                element.appendChild(option);
+            });
+        }
+
+    }
+    accessoryTierToOptions()
     /* **********************************************************************************************************************
     * function name		:	applyDataNameToOptions()
     * description	    : 	data-name을 이용하여 필터에 없는 각인을 장착시 표시해줌
