@@ -1,25 +1,19 @@
 import 'https://code.jquery.com/jquery-3.6.0.min.js';
 
-
-
 // 필터
 import {
     keywordList,
     grindingFilter,
     arkFilter,
-    bangleJobFilter,
     engravingImg,
     engravingCalFilter,
-    //dealerAccessoryFilter,
     calAccessoryFilter,
     elixirFilter,
-    //cardPointFilter,
     bangleFilter,
     engravingCheckFilter,
     stoneCheckFilter,
     elixirCalFilter,
     arkCalFilter,
-    //engravingCheckFilterLowTier,
     classGemFilter,
 } from '../filter/filter.js';
 
@@ -244,7 +238,6 @@ export function getCharacterProfile(inputName, callback) {
                     let bangleTier = JSON.parse(arry.Tooltip).Element_001.value.leftStr2.replace(/<[^>]*>/g, '').replace(/\D/g, '')
                     let bangleTool = JSON.parse(arry.Tooltip).Element_004.value.Element_001
                     bangleTierFnc(bangleTier, bangleTool)
-                    bangleArryFnc(bangleOptionArry)
                 }
             })
 
@@ -279,83 +272,6 @@ export function getCharacterProfile(inputName, callback) {
                 }
             }
             // console.log(bangleOptionArry)
-
-
-            function bangleArryFnc(bangleArry) {
-                bangleArry.forEach(function (arry, bangleIdx) {
-
-                    // 팔찌 옵션 상중하에 따른 점수
-                    bangleFilter.forEach(function (filterArry) {
-
-                        if (filterArry.name == arry) {
-                            if (bangleArry[bangleIdx + 1] == filterArry.option) {
-                                //filterTierCheck(filterArry.tier)
-                                // console.log(filterArry.tier)
-                            } else if (filterArry.option == null) {
-                                //filterTierCheck(filterArry.tier)
-                                // console.log(filterArry.tier)
-                            }
-
-                        }
-
-                    })
-
-
-                    // 치명 특화 신속 스텟 팔찌 점수 부여
-                    bangeleStatsUse.forEach(function (statsArry) {
-
-                        let regex = new RegExp(`${statsArry} \\+\\d+`);
-                        // console.log(statsArry+":"+regex.test(optionArry))
-
-                        if (regex.test(arry)) {
-                            // console.log(arry)
-                            let statsNumber = arry.replace(/\D/g, '');
-                            banglePoint += statsNumber * statsPercent
-
-                        }
-                    });
-
-
-
-
-                    bangleSpecialStats.forEach(function (statsArry) {
-                        let regex = new RegExp(`${statsArry} \\+\\d+`);
-                        if (regex.test(arry)) {
-                            let val = arry.replace(/\D/g, '')
-                            // console.log(val)
-                            // console.log(Math.round(bangleSpStats(val)))
-                            banglePoint += Math.round(bangleSpStats(val)) //4티어 힘민지 점수
-                        }
-                    });
-
-                    // 직업별 힘,민첩,지능 점수     
-                    function bangleSpStats(spStatsVal) {
-                        let result = 0
-                        bangleJobFilter.forEach(function (jobArry) {
-
-                            if (jobCheck() == jobArry.job && jobArry.tier == 4) {
-                                let pow = (jobArry.option == "pow")
-                                let dex = (jobArry.option == "dex")
-                                let int = (jobArry.option == "int")
-                                if (pow) {
-                                    result = spStatsVal * 1.5
-                                } else if (dex) {
-                                    result = spStatsVal * 1.5
-                                } else if (int) {
-                                    result = spStatsVal * 1.5
-                                } else {
-                                    result = 0
-                                }
-                            } else {
-                                result = 0
-                            }
-                        })
-                        return result
-
-                    }
-                })
-
-            }
 
 
             // console.log("팔찌점수:"+banglePoint)
@@ -560,7 +476,6 @@ export function getCharacterProfile(inputName, callback) {
             accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.4989) / 100 + 1)
             //console.log("치적,치피,무공퍼 적용" + accObj.finalDamagePer)
             accObj.finalDamagePer *= ((accObj.atkPer * 0.9246) / 100 + 1)
-            console.log(accObj)
 
 
             // 악세 깨달음 포인트
@@ -921,7 +836,7 @@ export function getCharacterProfile(inputName, callback) {
 
             }
 
-            console.log(hyperObj)
+
 
 
             // 각인
@@ -947,7 +862,11 @@ export function getCharacterProfile(inputName, callback) {
                             engObj.engBonusPer = (engObj.engBonusPer * (checkArry.engBonusPer / 100 + 1));
                             engObj.atkPer = (engObj.atkPer + checkArry.atkPer);
                             engObj.carePower = (engObj.carePower + checkArry.carePower);
-                            stoneCalc(realEngArry.Name, checkArry.finalDamagePer)
+                            if(supportCheck() !== "서폿"){
+                                stoneCalc(realEngArry.Name, checkArry.finalDamagePer)
+                            }else{
+                                stoneCalc(realEngArry.Name, checkArry.engBonusPer)
+                            }
                         }
                     })
                 }
@@ -980,11 +899,15 @@ export function getCharacterProfile(inputName, callback) {
                     }
                 }
                 data.ArmoryEngraving.ArkPassiveEffects.forEach(function (stoneArry) {
-                    stoneCheckFilter.forEach(function (filterArry) {
+                    stoneCheckFilter.forEach(function (filterArry,idx) {
+                        if(idx === 0 ){
 
+                        }
                         if (stoneArry.AbilityStoneLevel == filterArry.level && stoneArry.Name == filterArry.name && stoneArry.Name == name) {
+                            
                             engObj.finalDamagePer = (engObj.finalDamagePer) / notZero(minusVal) //퐁트라이커기준 저주받은 인형(돌맹이) 제거값
                             engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) + filterArry.finalDamagePer / 100));
+                            engObj.engBonusPer = (engObj.engBonusPer) / notZero(minusVal)
                             engObj.engBonusPer = (engObj.engBonusPer * (notZero(minusVal) + filterArry.engBonusPer / 100));
                             engObj.atkPer = (engObj.atkPer + filterArry.atkPer);
                         }
@@ -992,7 +915,6 @@ export function getCharacterProfile(inputName, callback) {
 
                 })
             }
-
             // 엘릭서
 
             let elixirObj = {
@@ -1501,8 +1423,6 @@ export function getCharacterProfile(inputName, callback) {
                 damageBuff: 0,
             }
 
-
-
             // 보석4종 레벨별 비율
             let gemPerObj = [
                 { name: "겁화", level1: 8, level2: 12, level3: 16, level4: 20, level5: 24, level6: 28, level7: 32, level8: 36, level9: 40, level10: 44 },
@@ -1510,9 +1430,6 @@ export function getCharacterProfile(inputName, callback) {
                 { name: "홍염", level1: 2, level2: 4, level3: 6, level4: 8, level5: 10, level6: 12, level7: 14, level8: 16, level9: 18, level10: 20 },
                 { name: "작열", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
             ]
-
-
-
 
             let gemSkillArry = [];
             let specialClass;
@@ -1522,7 +1439,7 @@ export function getCharacterProfile(inputName, callback) {
             if (data.ArmoryGem.Gems != null) {
                 data.ArmoryGem.Gems.forEach(function (gem) {
 
-                    data.ArmoryProfile.CharacterClassName
+                    // data.ArmoryProfile.CharacterClassName
 
                     let regex = />([^<]*)</g;
                     let match;
@@ -1581,8 +1498,6 @@ export function getCharacterProfile(inputName, callback) {
 
                 let per = "홍염|작열";
                 let dmg = "겁화|멸화";
-
-
 
                 function skillCheck(arr, ...nameAndGem) {
                     for (let i = 0; i < nameAndGem.length; i += 2) {
@@ -1756,11 +1671,11 @@ export function getCharacterProfile(inputName, callback) {
                         });
                         return result;
                     }
-                    // console.log(getLevels(gemPerObj, realGemValue))
+                    //console.log(getLevels(gemPerObj, realGemValue))
                     let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
                         return gemResultValue + finalGemValue.per * finalGemValue.skillPer
                     }, 0)
-
+                    
 
                     // special skill Value 값 계산식
                     function specialSkillCalc() {
@@ -1936,6 +1851,12 @@ export function getCharacterProfile(inputName, callback) {
             } else {
                 arkObj.weaponAtk = 1
             }
+
+
+
+            
+
+
 
             // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
             // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0

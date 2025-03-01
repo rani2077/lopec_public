@@ -15,15 +15,51 @@ async function simulatorInputCalc() {
 
     let [fetchApi, transValue, calcValue, calcModule, simulatorData, simulatorFilter] = module
 
+    /* **********************************************************************************************************************
+     * function name		:	
+     * description			: 	유저 JSON데이터 캐싱처리
+     *********************************************************************************************************************** */
     if (!cachedData) {
         cachedData = await fetchApi.lostarkApiCall("청염각");
         console.log(cachedData)
         await selectCreate(cachedData)
-
     }
+
+    /* **********************************************************************************************************************
+     * function name		:	supportCheck
+    * description			: 	2차 직업명 출력
+     * function name		:	extractValue
+     * description			: 	???
+     *********************************************************************************************************************** */
+
+    let supportCheck = await secondClassCheck(cachedData)
     let extractValue = await transValue.getCharacterProfile(cachedData)
 
+    /* **********************************************************************************************************************
+     * function name		:	stoneOutputCalc()
+     * description			: 	돌맹이 수치 값
+     *********************************************************************************************************************** */
 
+    function stoneOutputCalc() {
+        let obj = [];
+        let elements = document.querySelectorAll(".buff-wrap .buff");
+        // simulatorFilter.engFilter
+        elements.forEach((element, idx) => {
+            if (idx === 0) {
+                obj = []
+            }
+            let name = element.value.split(":")[0]
+            let level = Number(element.value.split(":")[1])
+
+            let stoneObj = simulatorFilter.stoneFilter.find((filter) => filter.name === name && filter.level === level);
+            if (!stoneObj) {
+                stoneObj = { name: "없음", finalDamagePer: 1, engBonus: 1 };
+            }
+            obj.push(stoneObj)
+        })
+        return obj;
+    }
+    // console.log("돌맹이 착용 각인", stoneOutputCalc())
 
     /* **********************************************************************************************************************
      * function name		:	engExtract()
@@ -51,6 +87,7 @@ async function simulatorInputCalc() {
 
     }
 
+
     /* **********************************************************************************************************************
      * function name		:	engOutputCalc(inputValueObjArr)
      * description			: 	각인 수치 값
@@ -58,27 +95,136 @@ async function simulatorInputCalc() {
 
 
     function engOutputCalc(inputValueObjArr) {
-        let result = [];
-
+        let arr = [];
+        let result = {
+            engBonus: 1,
+            finalDamagePer: 1
+        };
+        let matchingFilters
         inputValueObjArr.forEach(function (inputValue) {
-            const matchingFilters = simulatorFilter.engFilter.filter(function (filter) {
-                return filter.name === inputValue.name && filter.grade === inputValue.grade && filter.level === inputValue.level;
-            });
+            if (calcModule.supportCheck !== "서폿") {
+                matchingFilters = simulatorFilter.engFilter.dealer.filter(function (filter) {
+                    return filter.name === inputValue.name && filter.grade === inputValue.grade && filter.level === inputValue.level;
+                });
+            } else {
+                matchingFilters = simulatorFilter.engFilter.support.filter(function (filter) {
+                    return filter.name === inputValue.name && filter.grade === inputValue.grade && filter.level === inputValue.level;
+                });
+
+            }
 
             matchingFilters.forEach(function (filter) {
-                result.push({
+                arr.push({
+                    name: filter.name,
                     finalDamagePer: filter.finalDamagePer,
                     engBonus: filter.engBonus
                 });
             });
         });
+        // console.log("착용된 각인", arr);
+
+
+        let mergedEngs = [];
+        arr.forEach(eng => {
+            let foundStoneEng = stoneOutputCalc().find(stoneEng => stoneEng.name === eng.name);
+            if (foundStoneEng && foundStoneEng.name !== "없음") {
+                // 이름이 같은 경우, 합연산으로 병합
+                mergedEngs.push({
+                    name: eng.name,
+                    finalDamagePer: eng.finalDamagePer + foundStoneEng.finalDamagePer / 100,
+                    engBonus: eng.engBonus + foundStoneEng.engBonus / 100
+                });
+            } else {
+                // 이름이 다른 경우, arr의 객체를 그대로 추가
+                mergedEngs.push(eng);
+            }
+
+        });
+
+        stoneOutputCalc().forEach(stoneEng => {
+            if (stoneEng.name !== "없음" && !mergedEngs.find(eng => eng.name === stoneEng.name)) {
+                mergedEngs.push(stoneEng)
+            }
+        })
+        // console.log("각인 + 돌 병합:", mergedEngs);
+
+
+        // 최종 결과 객체 생성
+        mergedEngs.forEach(eng => {
+            result.finalDamagePer *= eng.finalDamagePer;
+            result.engBonus *= eng.engBonus;
+        });
+
+        // console.log("최종결과:", result);
+
+
+        // result.finalDamagePer *= stoneOutputCalc().finalDamagePer;
+        // result.engBonus *= stoneOutputCalc().engBonus;
+
 
         return result;
     }
 
 
     // console.log(engExtract())
-    // console.log(engOutputCalc(engExtract()) )
+    // console.log(engOutputCalc(engExtract()))
+    engOutputCalc(engExtract())
+
+    /* **********************************************************************************************************************
+     * function name		:	bangleStatsNumberCalc()
+     * description			: 	팔찌 스텟의 힘/민/지 || 치/특/신 값을 가져옴 (사용자의 직업에 사용하지 않는 스텟의 경우 key값을 none으로 처리)
+     *********************************************************************************************************************** */
+
+    function bangleStatsNumberCalc() {
+        let elements = document.querySelectorAll(".accessory-item.bangle input.option");
+        let arr = []
+
+        elements.forEach(element => {
+            let statsTag = element.parentElement.querySelector(".stats");
+            let value = Number(element.value);
+            let obj = {}
+            if (statsTag.value !== "none") {
+                obj[statsTag.value] = value;
+                arr.push(obj)
+            }
+        })
+        // console.log(arr)
+        return arr;
+    }
+    bangleStatsNumberCalc()
+
+    /* **********************************************************************************************************************
+     * function name		:	bangleOptionCalc()
+     * description			: 	팔찌 옵션의 수치를 가져옴
+     *********************************************************************************************************************** */
+
+    function bangleOptionCalc() {
+        let elements = document.querySelectorAll(".accessory-item.bangle select.option");
+        let arr = []
+
+        elements.forEach(element => {
+            let obj = {}
+            if (element.value.includes("|")) {
+                let splitValue = element.value.split("|");
+                splitValue.forEach(split => {
+                    let name = split.split(":")[0];
+                    let value = Number(split.split(":")[1]);
+                    // console.log(name)
+                    // console.log(value)
+                    obj[name] = value;
+                    arr.push(obj);
+                    obj = {}
+                })
+            } else {
+                let name = element.value.split(":")[0];
+                let value = Number(element.value.split(":")[1]);
+                obj[name] = value;
+                arr.push(obj)
+            }
+        })
+        // console.log(arr)
+    }
+    bangleOptionCalc()
 
     /* **********************************************************************************************************************
      * function name		:	armoryLevelCalc()
@@ -401,7 +547,7 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     function accessoryValueToObj() {
-        let result ;
+        let result;
         let arr = [];
         let elements = document.querySelectorAll(".accessory-list .accessory-item.accessory .option");
         elements.forEach(element => {
@@ -411,15 +557,15 @@ async function simulatorInputCalc() {
             obj[key] = value;
             arr.push(obj);
         })
-        console.log(arr)
-        console.log(objKeyValueSum(arr))
+        // console.log(arr)
+        // console.log(objKeyValueSum(arr))
         return result
     }
     accessoryValueToObj()
 
 
     /* **********************************************************************************************************************
-    * function name		:	accessoryValueCalc(objArr)
+    * function name		:	objKeyValueSum(objArr)
     * description		: 	악세서리 옵션의 key값이 동일한 경우 합연산 또는 곱연산
     *********************************************************************************************************************** */
     function objKeyValueSum(objArr) {
@@ -463,38 +609,11 @@ simulatorInputCalc()
 document.body.addEventListener('change', () => { simulatorInputCalc() })
 
 
-/**
- * 아이템 레벨에 따른 스탯 값을 계산하는 함수
- * @param {number} itemLevel - 아이템 레벨
- * @returns {number} - 계산된 스탯 값 (정수)
- */
-function calculateStat(itemLevel) {
-    // 입력값 유효성 검사
-    if (typeof itemLevel !== 'number') {
-        throw new Error('아이템 레벨은 숫자여야 합니다.');
-    }
 
-    if (itemLevel < 0) {
-        throw new Error('아이템 레벨은 0 이상이어야 합니다.');
-    }
-
-    // 데이터 분석을 통해 얻은 지수 함수 공식 적용
-    // 스탯 = 0.54 × e^(0.006839 × 아이템레벨)
-    let exponent = 0.006839 * itemLevel;
-    let statValue = 0.54 * Math.exp(exponent);
-
-    // 소수점 이하 반올림하여 정수 반환
-    return Math.round(statValue);
-}
-
-// 사용 예시
-// let level = 1650;
-// let stat = calculateStat(level);
-// console.log(`아이템 레벨 ${level}의 스탯: ${stat}`);
+/* **********************************************************************************************************************
 
 
-
-
+ *********************************************************************************************************************** */
 
 
 
@@ -508,6 +627,13 @@ async function selectCreate(data) {
 
     let [simulatorFilter, simulatorData, originFilter, calcModule] = module
 
+
+    /* **********************************************************************************************************************
+    * variable name		:	supportCheck
+    * description	    : 	2차 직업명 출력 변수
+    *********************************************************************************************************************** */
+
+    let supportCheck = await secondClassCheck(data)
 
     /* **********************************************************************************************************************
     * function name		:	applyDataMinMaxToOptions()
@@ -552,22 +678,30 @@ async function selectCreate(data) {
 
     /* **********************************************************************************************************************
     * function name		:	engFilterToOptions()
-    * description	    : 	.engraving-box .engraving-name option 생성하기
+    * description	    : 	각인 옵션을 생성하고 사용자의 직업에 따라 무효각인의 경우 무효를 표시해줌
     *********************************************************************************************************************** */
 
 
     function engFilterToOptions() {
-
-        let engNameObj = simulatorFilter.engFilter.filter((obj, index, self) =>
-            index === self.findIndex((o) => (
-                o.name === obj.name
-            ))
-        );
+        let engNameObj
+        if (calcModule.supportCheck !== "서폿") {
+            engNameObj = simulatorFilter.engFilter.dealer.filter((obj, index, self) =>
+                index === self.findIndex((o) => (
+                    o.name === obj.name
+                ))
+            );
+        } else {
+            engNameObj = simulatorFilter.engFilter.support.filter((obj, index, self) =>
+                index === self.findIndex((o) => (
+                    o.name === obj.name
+                ))
+            );
+        }
 
 
         // calcModule.supportCheck(data) 값과 일치하는 job의 block 값 제거
         originFilter.engravingCalFilter.forEach(filter => {
-            if (filter.job === calcModule.supportCheck(data)) {
+            if (filter.job === calcModule.supportCheck) {
                 filter.block = [...new Set(filter.block)]; // 중복 제거
                 engNameObj = engNameObj.map(engName => {
                     if (filter.block.includes(engName.name)) {
@@ -587,6 +721,7 @@ async function selectCreate(data) {
 
     }
     engFilterToOptions()
+
 
     /* **********************************************************************************************************************
     * function name		:	elixirFilterToOption()
@@ -696,12 +831,6 @@ async function selectCreate(data) {
     }
     applyDataSelectToOptions()
 
-    /* **********************************************************************************************************************
-    * function name		:	
-    * description	    : 	
-    *********************************************************************************************************************** */
-
-
 
     /* **********************************************************************************************************************
     * function name		:	armoryEnforceLimite()
@@ -729,11 +858,9 @@ async function selectCreate(data) {
                 createOptions(upgradeElement, -1);
             } else if (tierValue + normalUpgradeValue * 5 < 1680) {
                 createOptions(upgradeElement, 1, 20);
-            } else if (tierValue + normalUpgradeValue * 5 < 1700) {
-                createOptions(upgradeElement, 21, 30);
-            } else {
-                createOptions(upgradeElement, 31, 40);
-            }
+            } else if (tierValue + normalUpgradeValue * 5 >= 1680) {
+                createOptions(upgradeElement, 1, 40);
+            } 
             applyDataStringToOptions();
         }
 
@@ -748,7 +875,7 @@ async function selectCreate(data) {
             if (start === -1) {
                 const option = document.createElement('option');
                 option.value = 0;
-                option.textContent = '없음';
+                option.textContent = '불가';
                 selectElement.setAttribute('data-string', "")
                 selectElement.appendChild(option);
             } else {
@@ -767,7 +894,7 @@ async function selectCreate(data) {
 
     /* **********************************************************************************************************************
     * function name		:	hyperStageToStarCreate
-    * description			: 	초월 N단계를 바탕으로 3N성을 생성
+    * description		: 	초월 N단계를 바탕으로 3N성을 생성
     *********************************************************************************************************************** */
 
     function hyperStageToStarCreate() {
@@ -793,8 +920,8 @@ async function selectCreate(data) {
     hyperStageToStarCreate()
 
     /* **********************************************************************************************************************
-    * function name		:	
-    * description	    : 	
+    * function name		:	accessoryTierToOptions()
+    * description	    : 	악세서리 티어 등급 에 따라 옵션명을 생성
     *********************************************************************************************************************** */
 
     // simulatorFilter
@@ -874,6 +1001,393 @@ async function selectCreate(data) {
 
     }
     accessoryTierToOptions()
+
+    /* **********************************************************************************************************************
+    * function name		:	bangleTierToOption()
+    * description	    : 	팔찌의 티어 등급에 따라 옵션, value를 동적으로 생성
+    *********************************************************************************************************************** */
+
+    function bangleTierToOption() {
+        // simulatorFilter.bangleOptionData
+        let elements = document.querySelectorAll(".accessory-item.bangle select.option");
+        let tier = document.querySelector(".accessory-item.bangle .tier");
+        tier.addEventListener("change", () => { changeTierToOption() });
+
+        // console.log(simulatorFilter.bangleOptionData.t3RelicData)
+        function changeTierToOption() {
+            elements.forEach(element => {
+                if (tier.value === "T3고대") {
+                    createOption(element, simulatorFilter.bangleOptionData.t3RelicData)
+                } else if (tier.value === "T3유물") {
+                    createOption(element, simulatorFilter.bangleOptionData.t3MythicData)
+                } else if (tier.value === "T4고대") {
+                    createOption(element, simulatorFilter.bangleOptionData.t4RelicData)
+                } else if (tier.value === "T4유물") {
+                    createOption(element, simulatorFilter.bangleOptionData.t4MythicData)
+                }
+            })
+            function createOption(element, filterArr) {
+                filterArr.forEach((filter, idx) => {
+                    if (idx === 0) {
+                        element.innerHTML = "";
+                    }
+                    let option = document.createElement("option");
+                    option.textContent = filter.name;
+                    let valueParts = []; // key:value 쌍을 저장할 배열
+                    for (const key in filter) {
+                        if (key !== 'name' && key !== 'grade') {
+                            valueParts.push(`${key}:${filter[key]}`); // key:value 형태로 배열에 추가
+                        }
+                    }
+
+                    option.value = valueParts.join("|"); // 배열의 요소들을 |로 연결하여 value 설정
+                    element.appendChild(option);
+                })
+            }
+        }
+        changeTierToOption()
+
+    }
+    bangleTierToOption()
+
+    /* **********************************************************************************************************************
+    * function name		:	userEngToStoneOption()
+    * description	    : 	사용자가 장착중인 각인명을 가져와 어빌리티스톤의 옵션을 생성함
+    *********************************************************************************************************************** */
+
+    function userEngToStoneOption() {
+        let stoneElements = document.querySelectorAll(".buff-wrap .buff");
+        let engElements = document.querySelectorAll(".engraving-box .engraving-name");
+
+        // engElements의 change 이벤트 리스너 설정 (각인 -> 어빌리티 스톤)
+        engElements.forEach((engElement, idx) => {
+            document.querySelector(".engraving-area").addEventListener("change", () => { engElementChange(engElement, idx) });
+            engElementChange(engElement, idx);
+        });
+
+        function engElementChange(element, idx) {
+            const value = element.value; // 현재 변경된 값
+
+            // idx가 0일 때만 engArry를 초기화하고 모든 stoneElement의 옵션을 초기화
+            if (idx === 0) {
+                stoneElements.forEach(stoneElement => {
+                    stoneElement.innerHTML = "";
+                });
+            }
+            // 모든 stoneElement에 현재 선택된 각인을 option으로 추가합니다.
+            stoneElements.forEach(stoneElement => {
+                if (value === "없음") {
+                    return
+                } else if (value.includes("- 무효")) {
+                    let valueText = value.split("- 무효")[0];
+                    for (let i = 0; i <= 4; i++) {
+                        let option = document.createElement("option");
+                        option.textContent = `${valueText} Lv${i} - 무효`;
+                        option.value = `${valueText}- 무효:${i}`;
+                        stoneElement.appendChild(option);
+                    }
+                } else {
+                    for (let i = 0; i <= 4; i++) {
+                        let option = document.createElement("option");
+                        option.textContent = `${value} Lv${i}`;
+                        option.value = `${value}:${i}`;
+                        stoneElement.appendChild(option);
+                    }
+
+                }
+            });
+        }
+    }
+    userEngToStoneOption()
+
+
+
+    /* **********************************************************************************************************************
+    * function name		:	bangleStatsOptionLimit()
+    * description	    : 	캐릭터의 1차 직업을 기준으로 힘민지의 무효 표시를 생성함
+    *********************************************************************************************************************** */
+
+    function bangleStatsOptionLimit() {
+        let elements = document.querySelectorAll(".accessory-item.bangle .stats");
+        let validStats = originFilter.bangleJobFilter.find(jobFilter => jobFilter.job === data.ArmoryProfile.CharacterClassName);
+
+        elements.forEach(element => {
+            const options = Array.from(element.options);
+            const validStatsValues = validStats.stats || [];
+
+            options.forEach(option => {
+                const optionValue = option.value;
+                const optionText = option.textContent;
+
+                // option의 value가 "stats"이거나 validStats.stats에 포함되는 경우, 변경하지 않음
+                if (optionValue === "stats" || validStatsValues.includes(optionValue)) {
+                    return;
+                }
+
+                // 이미 "- 무효"가 포함되어 있으면 추가하지 않음
+                if (!optionText.includes("- 무효")) {
+                    option.textContent = optionText + " - 무효";
+                    option.value = "none";
+                }
+            });
+        });
+
+        // console.log((validStats.stats))
+    }
+    bangleStatsOptionLimit()
+
+    /* **********************************************************************************************************************
+    * function name		:	calculateGemData
+    * description	    : 	
+    *********************************************************************************************************************** */
+
+    function calculateGemData(data) {
+        let gemObj = {
+            atkBuff: 0,
+            damageBuff: 0,
+        };
+
+        // 보석4종 레벨별 비율
+        let gemPerObj = [
+            { name: "겁화", level1: 8, level2: 12, level3: 16, level4: 20, level5: 24, level6: 28, level7: 32, level8: 36, level9: 40, level10: 44 },
+            { name: "멸화", level1: 3, level2: 6, level3: 9, level4: 12, level5: 15, level6: 18, level7: 21, level8: 24, level9: 30, level10: 40 },
+            { name: "홍염", level1: 2, level2: 4, level3: 6, level4: 8, level5: 10, level6: 12, level7: 14, level8: 16, level9: 18, level10: 20 },
+            { name: "작열", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
+        ];
+
+        let gemSkillArry = [];
+        let specialClass;
+
+        // 유저가 착용중인 보석,스킬 배열로 만들기
+        data.ArmoryGem.Gems.forEach(function (gem) {
+            let regex = />([^<]*)</g;
+            let match;
+            let results = [];
+            while ((match = regex.exec(gem.Tooltip)) !== null) {
+                results.push(match[1]);
+            }
+
+            results.forEach(function (toolTip, idx) {
+                toolTip = toolTip.replace(/"/g, '');
+
+                if (toolTip.includes(data.ArmoryProfile.CharacterClassName) && /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip) && toolTip.includes("Element")) {
+                    let etcGemValue = results[idx + 2].substring(0, results[idx + 2].indexOf('"'));
+                    let gemName;
+                    let level = null;
+                    if (results[1].match(/홍염|작열|멸화|겁화/) != null) {
+                        gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                        level = Number(results[1].match(/(\d+)레벨/)[1]);
+                    } else {
+                        gemName = "기타보석";
+                    }
+                    let obj = { skill: results[idx + 1], name: gemName, level: level };
+                    gemSkillArry.push(obj);
+                } else if (!(toolTip.includes(data.ArmoryProfile.CharacterClassName)) && /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip) && toolTip.includes("Element")) {  // 자신의 직업이 아닌 보석을 장착중인 경우
+                    let gemName;
+                    let level = null;
+                    if (results[1].match(/홍염|작열|멸화|겁화/) != null) {
+                        gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                        level = Number(results[1].match(/(\d+)레벨/)[1]);
+                    } else {
+                        gemName = "기타보석";
+                    }
+                    let obj = { skill: "직업보석이 아닙니다", name: gemName, level: level };
+                    gemSkillArry.push(obj);
+                }
+            });
+        });
+
+        console.log(gemSkillArry)
+
+        let per = "홍염|작열";
+        let dmg = "겁화|멸화";
+
+        function skillCheck(arr, ...nameAndGem) {
+            for (let i = 0; i < nameAndGem.length; i += 2) {
+                const name = nameAndGem[i];
+                const gemPattern = nameAndGem[i + 1];
+                const regex = new RegExp(gemPattern);
+                const found = arr.some(item => item.skill === name && regex.test(item.name));
+                if (!found) return false;
+            }
+            return true;
+        }
+
+        function classCheck(className) {
+            return supportCheck == className;
+        }
+
+        if (classCheck("전태") && skillCheck(gemSkillArry, "버스트 캐넌", dmg)) {
+            specialClass = "버캐 채용 전태";
+        } else if (classCheck("세맥") && !skillCheck(gemSkillArry, "환영격", dmg)) {
+            specialClass = "5멸 세맥";
+        } else if (classCheck("핸건") && skillCheck(gemSkillArry, "데스파이어", dmg)) {
+            specialClass = "7멸 핸건";
+        } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)) {
+            specialClass = "에필 포강";
+        } else if (classCheck("환류") && skillCheck(gemSkillArry, "종말의 날", dmg)) {
+            specialClass = "데이터 없음";
+        } else if (classCheck("환류") && !skillCheck(gemSkillArry, "인페르노", dmg)) {
+            specialClass = "6딜 환류";
+        } else if (classCheck("질풍") && !skillCheck(gemSkillArry, "여우비 스킬", dmg)) {
+            specialClass = "5멸 질풍";
+        } else if (classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)) {
+            specialClass = "데이터 없음";
+        } else if (classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg) && !skillCheck(gemSkillArry, "마운틴 크래쉬", dmg)) {
+            specialClass = "6겁 광기";
+        } else if (classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg)) {
+            specialClass = "7겁 광기";
+        } else if (classCheck("포식") && !skillCheck(gemSkillArry, "페이탈 소드", dmg)) {
+            specialClass = "크블 포식";
+        } else if (classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)) {
+            specialClass = "6M 피메";
+        } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
+            specialClass = "슈차 잔재";
+        } else if (classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)) {
+            specialClass = "데이터 없음";
+        } else if (classCheck("야성") || classCheck("두동") || classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("심판자") || classCheck("회귀")) {
+            specialClass = "데이터 없음";
+        } else {
+            specialClass = supportCheck;
+        }
+
+        console.log("보석전용 직업 : ", specialClass)
+
+        gemSkillArry.forEach(function (gemSkill, idx) {
+            let realClass = originFilter.classGemFilter.filter(item => item.class == specialClass);
+            if (realClass.length == 0) {
+                gemSkillArry[idx].skillPer = "none";
+            } else {
+                let realSkillPer = realClass[0].skill.filter(item => item.name == gemSkill.skill);
+                if (realSkillPer[0] != undefined) {
+                    gemSkillArry[idx].skillPer = realSkillPer[0].per;
+                } else {
+                    gemSkillArry[idx].skillPer = "none";
+                }
+            }
+        });
+
+        // 직업별 보석 지분율 필터
+        let classGemEquip = originFilter.classGemFilter.filter(function (filterArry) {
+            return filterArry.class == specialClass;
+        });
+
+        console.log(classGemEquip)
+
+        function gemCheckFnc() {
+            try {
+                // console.log(classGemEquip)
+                let realGemValue = classGemEquip[0].skill.map(skillObj => {
+                    let matchValue = gemSkillArry.filter(item => item.skill == skillObj.name);
+                    if (!(matchValue.length == 0)) {
+                        // console.log(matchValue)
+                        return {
+                            name: skillObj.name,
+                            per: skillObj.per,
+                            gem: matchValue,
+                        };
+                    }
+                }).filter(Boolean);
+
+                // console.log(realGemValue)
+
+                let coolGemTotal = 0;
+                let count = 0;
+
+                gemSkillArry.forEach(function (gemListArry) {
+                    if (gemListArry.name == "홍염" || gemListArry.name == "작열") {
+                        let perValue = gemPerObj.filter(item => gemListArry.name == item.name);
+                        // console.log(perValue[0][`level${gemListArry.level}`]);
+                        coolGemTotal += perValue[0][`level${gemListArry.level}`];
+                        count++;
+                    }
+                });
+
+                let averageValue = count > 0 ? coolGemTotal / count : 0;
+
+                console.log("평균값 : " + averageValue)
+
+                let etcAverageValue;
+                let dmgGemTotal = 0;
+                let dmgCount = 0;
+
+                if (specialClass == "데이터 없음") {
+                    gemSkillArry.forEach(function (gemListArry) {
+                        if (gemListArry.name == "멸화" || gemListArry.name == "겁화") {
+                            let perValue = gemPerObj.filter(item => gemListArry.name == item.name);
+                            // console.log(perValue[0][`level${gemListArry.level}`]);
+                            dmgGemTotal += perValue[0][`level${gemListArry.level}`];
+                            dmgCount++;
+                        }
+                    });
+                    etcAverageValue = dmgCount > 0 ? dmgGemTotal / dmgCount : 0;
+                } else {
+                    etcAverageValue = 1;
+                }
+
+                // 실제 유저가 장착한 보석의 딜 비율을 가져오는 함수
+                function getLevels(gemPerObj, skillArray) {
+                    let result = [];
+                    skillArray.forEach(skill => {
+                        if (skill.per != "etc") {
+                            skill.gem.forEach(gem => {
+                                let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화"));
+                                if (!(gemObj == undefined)) {
+                                    let level = gemObj[`level${gem.level}`];
+                                    result.push({ skill: skill.name, gem: gem.name, per: level, skillPer: skill.per });
+                                }
+                            });
+                        } else if (skill.per == "etc") {
+                            skill.gem.forEach(gem => {
+                                let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화"));
+                                if (!(gemObj == undefined)) {
+                                    let level = gemObj[`level${gem.level}`];
+                                    result.push({ skill: skill.name, gem: gem.name, per: level, skillPer: etcValue / etcLength });
+                                }
+                            });
+                        }
+                    });
+                    return result;
+                }
+                //console.log(getLevels(gemPerObj, realGemValue))
+                let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
+                    return gemResultValue + finalGemValue.per * finalGemValue.skillPer;
+                }, 0);
+
+                // special skill Value 값 계산식
+                function specialSkillCalc() {
+                    let result = 0;
+                    classGemEquip[0].skill.forEach(function (skill) {
+                        if (skill.per != "etc") {
+                            result += skill.per;
+                        }
+                    });
+                    return 1 / result;
+                }
+
+                return {
+                    specialSkill: specialSkillCalc(),
+                    originGemValue: gemValue,
+                    gemValue: (gemValue * specialSkillCalc()) / 100 + 1,
+                    gemAvg: averageValue,
+                    etcAverageValue: etcAverageValue / 100 + 1,
+                };
+            } catch (error) {
+                console.error("Error in gemCheckFnc:", error);
+                return {
+                    specialSkill: 1,
+                    originGemValue: 1,
+                    gemValue: 1,
+                    gemAvg: 0,
+                    etcAverageValue: 1,
+                };
+            }
+        }
+        console.log(gemCheckFnc())
+    }
+
+
+    calculateGemData(data)
     /* **********************************************************************************************************************
     * function name		:	applyDataNameToOptions()
     * description	    : 	data-name을 이용하여 필터에 없는 각인을 장착시 표시해줌
@@ -884,7 +1398,7 @@ async function selectCreate(data) {
             // selectElement.innerHTML = "";
             const name = selectElement.getAttribute("data-name");
             const option = document.createElement('option');
-            option.value = name;
+            option.value = name + "- 무효";
             option.textContent = name + "- 무효";
             option.selected = true;
             selectElement.appendChild(option);
@@ -932,3 +1446,57 @@ selectElements.forEach((selectElement) => {
         }
     });
 });
+
+
+
+
+
+/* **********************************************************************************************************************
+ * function name		:	secondClassCheck()
+ * description			: 	2차 직업명
+ *********************************************************************************************************************** */
+
+async function secondClassCheck(data) {
+    let filter = await import("../filter/filter.js");
+    let result;
+    let arkResult = ""
+    let enlightenmentArry = [];
+    let enlightenmentCheck = [];
+    data.ArkPassive.Effects.forEach(function (arkArry) {
+        if (arkArry.Name == '깨달음') {
+            enlightenmentCheck.push(arkArry)
+        }
+    })
+    // console.log(enlightenmentArry)
+
+
+    function supportArkLeft(arkName) {
+        let result = []
+        arkName.map(function (arkNameArry) {
+            // 아크이름 남기기
+            let arkName = arkNameArry.Description.replace(/<[^>]*>/g, '').replace(/.*티어 /, '')
+            enlightenmentArry.push(arkName)
+        });
+    }
+    supportArkLeft(enlightenmentCheck)
+
+    try {
+        filter.arkFilter.forEach(function (arry) {
+            let arkInput = arry.name;
+            let arkOutput = arry.initial;
+
+            // console.log(arkInput)
+
+            enlightenmentArry.forEach(function (supportCheckArry) {
+                if (supportCheckArry.includes(arkInput) && data.ArkPassive.IsArkPassive) {
+                    arkResult = arkOutput
+                    return arkResult
+                }
+            })
+        })
+    } catch (err) {
+        console.log(err)
+    }
+    result = arkResult;
+    return result
+}

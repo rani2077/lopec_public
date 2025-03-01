@@ -71,13 +71,22 @@
         justify-content: space-between;
         height: 100%;
     }
-    .group-equip .number-box .option-wrap .option-item{
+
+    .group-equip .number-box .option-wrap .option-item {
         display: flex;
         justify-content: flex-start;
     }
-    .group-equip .number-box .option-wrap .quality{
+
+    .group-equip .number-box .option-wrap .quality {
         padding: 2px;
         color: #fff;
+    }
+
+    input[type=number] {
+        width: 100%;
+        background: url("/asset/image/keyboard.png") center right / contain no-repeat;
+        background-color: #ddd;
+
     }
 
     .group-equip .number-box .progress {
@@ -89,12 +98,6 @@
         cursor: pointer;
     }
 
-    .group-equip .number-box .progress input {
-        width: 100%;
-        background: url("/asset/image/keyboard.png") center right / contain no-repeat;
-        background-color: #ddd;
-        /* input의 가로세로 크기 지정을 위해 추가 */
-    }
 
 
 
@@ -103,6 +106,17 @@
     }
 
     .sc-info .text-box .elixir-wrap .elixir {
+        width: 100%;
+    }
+
+    .sc-info .accessory-area .accessory-item:last-child{
+        flex-wrap:wrap;
+        height:initial;
+    }
+    .sc-info .accessory-area .accessory-item:last-child .number-box{
+        width: calc(100% - 42px - 8px);
+    }
+    .sc-info .accessory-area .option-box{
         width: 100%;
     }
 </style>
@@ -904,9 +918,7 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_215.png"
                                         alt="">
-                                    <span class="progress legendary-progressbar">
-                                        깨포:76
-                                    </span>
+                                    <span class="progress legendary-progressbar">깨포:76</span>
                                 </div>
                                 <div class="number-box">
 
@@ -1123,7 +1135,7 @@
                                     </select> -->
 
                                     <div class="buff-wrap">
-                                        <select class="buff" name="ArmoryEquipment Tooltip">
+                                        <select class="buff" name="ArmoryEquipment Tooltip" data-name="무효돌">
                                             <option value="아드레날린-lv.2">아드레날린 Lv.2</option>
                                             <option value="돌격대장-lv.2">돌격대장 Lv.2</option>
                                         </select>
@@ -1144,25 +1156,35 @@
                                 <div class="number-box">
 
                                     <div class="option-wrap">
-                                        <select class="tier bangle" name="ArmoryEquipment Tooltip">
+                                        <select class="tier bangle" name="ArmoryEquipment Tooltip" data-select="T4고대">
                                             <option value="T3고대">T3고대</option>
                                             <option value="T3유물">T3유물</option>
-                                            <option value="T3고대">T3고대</option>
+                                            <option value="T4고대">T4고대</option>
                                             <option value="T4유물">T4유물</option>
                                         </select>
                                         <div class="option-item">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip">
-                                                <option value="특화-+63">특화 +63</option>
-                                                <option value="치명-+87">치명 +87</option>
+                                            <select class="stats">
+                                                <option value="stats">치명</option>
+                                                <option value="stats">특화</option>
+                                                <option value="stats">신속</option>
+                                                <option value="str">힘</option>
+                                                <option value="dex">민첩</option>
+                                                <option value="int">지능</option>
                                             </select>
+                                            <input type="number" class="option" min="10" max="50000" value="50000">
                                         </div>
                                         <div class="option-item">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip">
-                                                <option value="특화-+63">특화 +63</option>
-                                                <option value="치명-+87">치명 +87</option>
+                                            <select class="stats">
+                                                <option value="stats">치명</option>
+                                                <option value="stats">특화</option>
+                                                <option value="stats">신속</option>
+                                                <option value="str">힘</option>
+                                                <option value="dex">민첩</option>
+                                                <option value="int">지능</option>
                                             </select>
+                                            <input type="number" class="option" min="10" max="50000" value="50000">
                                         </div>
                                     </div>
 
@@ -1173,30 +1195,18 @@
 
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip">
-                                                <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
-                                                <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
-                                                </option>
-                                                <option value="추가-피해-+1.60%">추가 피해 +1.60%</option>
+                                            <select class="option" name="ArmoryEquipment Tooltip" data-select="무공 8100 증가 | 조건부 무공 2200 증가">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
                                             <select class="option" name="ArmoryEquipment Tooltip">
-                                                <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
-                                                <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
-                                                </option>
-                                                <option value="추가-피해-+1.60%">추가 피해 +1.60%</option>
                                             </select>
                                         </div>
 
                                         <div class="grinding-wrap">
                                             <span class="quality zmiddle">중</span>
                                             <select class="option" name="ArmoryEquipment Tooltip">
-                                                <option value="전투-중-생명력-회복량-+10">전투 중 생명력 회복량 +10</option>
-                                                <option value="세레나데,-신앙,-조화-게이지-획득량-+1.60%">세레나데, 신앙, 조화 게이지 획득량 +1.60%
-                                                </option>
-                                                <option value="추가-피해-+1.60%">추가 피해 +1.60%</option>
                                             </select>
                                         </div>
 
