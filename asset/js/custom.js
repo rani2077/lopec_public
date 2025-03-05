@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 inputArry.value = inputText;
                 inputArry.addEventListener('input', function (inputEvent) {
                     if (inputFlag == 1) {
-                        inputEvent.target.value = '';
+                        // inputEvent.target.value = '';
                         inputFlag = 0
                     }
                 });
@@ -105,15 +105,12 @@ function levelAvgPoint() {
 
 function renewFnc() {
     let alertArea = document.querySelector(".alert-area")
-
     document.querySelector(".group-profile .renew-button").addEventListener("click", function () {
         alertArea.style.display = "block";
     })
-
     document.querySelector(".group-profile .refresh").addEventListener("click", function () {
         location.reload(true);
     })
-
     document.querySelector(".group-profile .cancle").addEventListener("click", function () {
         alertArea.style.display = "none";
     })

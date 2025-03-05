@@ -8,6 +8,11 @@ export let engFilter = {
     dealer: [
         { name: '없음', grade: "", level: 0, finalDamagePer: 0, engBonus: 0 },
 
+        
+        { name: '결투의 대가', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '결투의 대가', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '결투의 대가', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '결투의 대가', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '결투의 대가', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '결투의 대가', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '결투의 대가', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -18,6 +23,10 @@ export let engFilter = {
         { name: '결투의 대가', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '결투의 대가', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '기습의 대가', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '기습의 대가', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '기습의 대가', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '기습의 대가', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '기습의 대가', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '기습의 대가', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '기습의 대가', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -28,6 +37,11 @@ export let engFilter = {
         { name: '기습의 대가', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '기습의 대가', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+
+        { name: '달인의 저력', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '달인의 저력', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '달인의 저력', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '달인의 저력', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '달인의 저력', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '달인의 저력', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '달인의 저력', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -38,6 +52,10 @@ export let engFilter = {
         { name: '달인의 저력', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '달인의 저력', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '돌격대장', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '돌격대장', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '돌격대장', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '돌격대장', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '돌격대장', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '돌격대장', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '돌격대장', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -48,6 +66,10 @@ export let engFilter = {
         { name: '돌격대장', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '돌격대장', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '마나 효율 증가', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '마나 효율 증가', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '마나 효율 증가', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '마나 효율 증가', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '마나 효율 증가', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '마나 효율 증가', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '마나 효율 증가', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -58,6 +80,10 @@ export let engFilter = {
         { name: '마나 효율 증가', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '마나 효율 증가', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '바리케이드', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '바리케이드', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '바리케이드', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '바리케이드', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '바리케이드', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '바리케이드', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '바리케이드', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -68,6 +94,10 @@ export let engFilter = {
         { name: '바리케이드', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '바리케이드', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '속전속결', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '속전속결', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '속전속결', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '속전속결', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '속전속결', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '속전속결', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '속전속결', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -78,6 +108,10 @@ export let engFilter = {
         { name: '속전속결', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '속전속결', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '슈퍼 차지', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '슈퍼 차지', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '슈퍼 차지', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '슈퍼 차지', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '슈퍼 차지', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '슈퍼 차지', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '슈퍼 차지', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -88,6 +122,10 @@ export let engFilter = {
         { name: '슈퍼 차지', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '슈퍼 차지', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '아드레날린', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '아드레날린', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '아드레날린', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '아드레날린', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '아드레날린', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '아드레날린', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '아드레날린', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -98,6 +136,10 @@ export let engFilter = {
         { name: '아드레날린', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '아드레날린', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
 
+        { name: '안정된 상태', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '안정된 상태', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '안정된 상태', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '안정된 상태', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '안정된 상태', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '안정된 상태', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '안정된 상태', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -107,7 +149,11 @@ export let engFilter = {
         { name: '안정된 상태', grade: "유물", level: 2, finalDamagePer: 1.175, engBonus: 1 },
         { name: '안정된 상태', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '안정된 상태', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
-
+        
+        { name: '에테르 포식자', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '에테르 포식자', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '에테르 포식자', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '에테르 포식자', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '에테르 포식자', grade: "전설", level: 0, finalDamagePer: 1.1131, engBonus: 1 },
         { name: '에테르 포식자', grade: "전설", level: 1, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '에테르 포식자', grade: "전설", level: 2, finalDamagePer: 1.1323, engBonus: 1 },
@@ -117,7 +163,12 @@ export let engFilter = {
         { name: '에테르 포식자', grade: "유물", level: 2, finalDamagePer: 1.1682, engBonus: 1 },
         { name: '에테르 포식자', grade: "유물", level: 3, finalDamagePer: 1.1755, engBonus: 1 },
         { name: '에테르 포식자', grade: "유물", level: 4, finalDamagePer: 1.1827, engBonus: 1 },
-
+        
+        
+        { name: '예리한 둔기', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '예리한 둔기', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '예리한 둔기', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '예리한 둔기', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '예리한 둔기', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '예리한 둔기', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '예리한 둔기', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -127,7 +178,12 @@ export let engFilter = {
         { name: '예리한 둔기', grade: "유물", level: 2, finalDamagePer: 1.175, engBonus: 1 },
         { name: '예리한 둔기', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '예리한 둔기', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
+        
 
+        { name: '원한', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '원한', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '원한', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '원한', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '원한', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '원한', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '원한', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -137,7 +193,12 @@ export let engFilter = {
         { name: '원한', grade: "유물", level: 2, finalDamagePer: 1.175, engBonus: 1 },
         { name: '원한', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '원한', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
+        
 
+        { name: '저주받은 인형', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '저주받은 인형', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '저주받은 인형', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '저주받은 인형', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '저주받은 인형', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '저주받은 인형', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '저주받은 인형', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -147,7 +208,12 @@ export let engFilter = {
         { name: '저주받은 인형', grade: "유물", level: 2, finalDamagePer: 1.175, engBonus: 1 },
         { name: '저주받은 인형', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '저주받은 인형', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
+        
 
+        { name: '정밀 단도', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '정밀 단도', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '정밀 단도', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '정밀 단도', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '정밀 단도', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '정밀 단도', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '정밀 단도', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -157,7 +223,12 @@ export let engFilter = {
         { name: '정밀 단도', grade: "유물", level: 2, finalDamagePer: 1.175, engBonus: 1 },
         { name: '정밀 단도', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '정밀 단도', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
+        
 
+        { name: '질량 증가', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '질량 증가', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '질량 증가', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '질량 증가', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '질량 증가', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '질량 증가', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '질량 증가', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -167,7 +238,12 @@ export let engFilter = {
         { name: '질량 증가', grade: "유물", level: 2, finalDamagePer: 1.175, engBonus: 1 },
         { name: '질량 증가', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '질량 증가', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
+        
 
+        { name: '추진력', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '추진력', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '추진력', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '추진력', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '추진력', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '추진력', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '추진력', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -177,7 +253,12 @@ export let engFilter = {
         { name: '추진력', grade: "유물", level: 2, finalDamagePer: 1.175, engBonus: 1 },
         { name: '추진력', grade: "유물", level: 3, finalDamagePer: 1.1825, engBonus: 1 },
         { name: '추진력', grade: "유물", level: 4, finalDamagePer: 1.19, engBonus: 1 },
-
+        
+        
+        { name: '타격의 대가', grade: "영웅", level: 0, finalDamagePer: 1.10, engBonus: 1 },
+        { name: '타격의 대가', grade: "영웅", level: 1, finalDamagePer: 1.1075, engBonus: 1 },
+        { name: '타격의 대가', grade: "영웅", level: 2, finalDamagePer: 1.1150, engBonus: 1 },
+        { name: '타격의 대가', grade: "영웅", level: 3, finalDamagePer: 1.1225, engBonus: 1 },
         { name: '타격의 대가', grade: "전설", level: 0, finalDamagePer: 1.13, engBonus: 1 },
         { name: '타격의 대가', grade: "전설", level: 1, finalDamagePer: 1.1375, engBonus: 1 },
         { name: '타격의 대가', grade: "전설", level: 2, finalDamagePer: 1.145, engBonus: 1 },
@@ -681,9 +762,11 @@ export const elixirOptionData = {
 export let accessoryOptionData = {
     t3RelicData: {
         necklace: [
+            { name: "없음", grade: "하", value:0 },
             { name: "추가 피해 +0.39%", grade: "하", addDamagePer: 0.39 },
             { name: "추가 피해 +0.90%", grade: "중", addDamagePer: 0.9 },
             { name: "추가 피해 +1.50%", grade: "상", addDamagePer: 1.5 },
+
             { name: "적에게 주는 피해 +0.30%", grade: "하", finalDamagePer: 0.3 },
             { name: "적에게 주는 피해 +0.69%", grade: "중", finalDamagePer: 0.69 },
             { name: "적에게 주는 피해 +1.15%", grade: "상", finalDamagePer: 1.15 },
@@ -695,6 +778,7 @@ export let accessoryOptionData = {
             { name: "세레나데, 신앙, 조화 게이지 획득량 +3.45%", grade: "상", value: 0 },
         ],
         earing: [
+            { name: "없음", grade: "하", value:0 },
             { name: "무기 공격력 +0.46%", grade: "하", weaponAtkPer: 0.46 },
             { name: "무기 공격력 +1.04%", grade: "중", weaponAtkPer: 1.04 },
             { name: "무기 공격력 +1.72%", grade: "상", weaponAtkPer: 1.72 },
@@ -709,6 +793,7 @@ export let accessoryOptionData = {
             { name: "파티원 보호막 효과 +2.01%", grade: "상", value: 0 },
         ],
         ring: [
+            { name: "없음", grade: "하", value:0 },
             { name: "치명타 적중률 +0.24%", grade: "하", criticalChancePer: 0.24 },
             { name: "치명타 적중률 +0.54%", grade: "중", criticalChancePer: 0.54 },
             { name: "치명타 적중률 +0.89%", grade: "상", criticalChancePer: 0.89 },
@@ -740,6 +825,10 @@ export let accessoryOptionData = {
 
     t3MythicData: {
         necklace: [
+            { name: "없음", grade: "하", value:0 },
+            { name: "전투 중 생명력 회복량 +8", grade: "하", value:0 },
+            { name: "전투 중 생명력 회복량 +17", grade: "중", value:0 },
+            { name: "전투 중 생명력 회복량 +28", grade: "상", value:0 },
             { name: "추가 피해 +0.48%", grade: "하", addDamagePer: 0.48 },
             { name: "추가 피해 +1.09%", grade: "중", addDamagePer: 1.09 },
             { name: "추가 피해 +1.82%", grade: "상", addDamagePer: 1.82 },
@@ -755,6 +844,7 @@ export let accessoryOptionData = {
 
         ],
         earing: [
+            { name: "없음", grade: "하", value:0 },
             { name: "무기 공격력 +0.56%", grade: "하", weaponAtkPer: 0.56 },
             { name: "무기 공격력 +1.26%", grade: "중", weaponAtkPer: 1.26 },
             { name: "무기 공격력 +2.10%", grade: "상", weaponAtkPer: 2.1 },
@@ -770,6 +860,7 @@ export let accessoryOptionData = {
 
         ],
         ring: [
+            { name: "없음", grade: "하", value:0 },
             { name: "치명타 적중률 +0.29%", grade: "하", criticalChancePer: 0.29 },
             { name: "치명타 적중률 +0.66%", grade: "중", criticalChancePer: 0.66 },
             { name: "치명타 적중률 +1.09%", grade: "상", criticalChancePer: 1.09 },
@@ -801,6 +892,10 @@ export let accessoryOptionData = {
 
     t4Data: {
         necklace: [
+            { name: "없음", grade: "하", value:0 },
+            { name: "전투 중 생명력 회복량 +10", grade: "하", value:0 },
+            { name: "전투 중 생명력 회복량 +25", grade: "중", value:0 },
+            { name: "전투 중 생명력 회복량 +50", grade: "상", value:0 },
             { name: "추가 피해 +0.70%", grade: "하", addDamagePer: 0.7 },
             { name: "추가 피해 +1.60%", grade: "중", addDamagePer: 1.6 },
             { name: "추가 피해 +2.60%", grade: "상", addDamagePer: 2.6 },
@@ -815,9 +910,10 @@ export let accessoryOptionData = {
             { name: "세레나데, 신앙, 조화 게이지 획득량 +6.00%", grade: "상", value: 0 },
         ],
         earing: [
-            { name: "무기 공격력 +0.70%", grade: "하", weaponAtkPer: 0.7 },
-            { name: "무기 공격력 +1.60%", grade: "중", weaponAtkPer: 1.6 },
-            { name: "무기 공격력 +2.60%", grade: "상", weaponAtkPer: 2.6 },
+            { name: "없음", grade: "하", value:0 },
+            { name: "무기 공격력 +0.80%", grade: "하", weaponAtkPer: 0.8 },
+            { name: "무기 공격력 +1.80%", grade: "중", weaponAtkPer: 1.8 },
+            { name: "무기 공격력 +3.00%", grade: "상", weaponAtkPer: 3.0 },
             { name: "공격력 +0.40%", grade: "하", atkPer: 0.4 },
             { name: "공격력 +0.95%", grade: "중", atkPer: 0.95 },
             { name: "공격력 +1.55%", grade: "상", atkPer: 1.55 },
@@ -829,6 +925,7 @@ export let accessoryOptionData = {
             { name: "파티원 보호막 효과 +3.50%", grade: "상", value: 0 },
         ],
         ring: [
+            { name: "없음", grade: "하", value:0 },
             { name: "치명타 적중률 +0.40%", grade: "하", criticalChancePer: 0.4 },
             { name: "치명타 적중률 +0.95%", grade: "중", criticalChancePer: 0.95 },
             { name: "치명타 적중률 +1.55%", grade: "상", criticalChancePer: 1.55 },
@@ -987,7 +1084,7 @@ export let bangleOptionData = {
     ],
 
     t3MythicData: [
-        { name: "쐐기-하", grade: "하", addDamagePer: 1.014},
+        { name: "쐐기-하", grade: "하", addDamagePer: 1.014 , fullName : "풀네임"},
         { name: "쐐기-중", grade: "중", addDamagePer: 1.018},
         { name: "쐐기-상", grade: "상", addDamagePer: 1.02},
         { name: "망치-하", grade: "하", finalDamagePer: 1.029},
@@ -1222,13 +1319,13 @@ export let bangleOptionData = {
         { name: "공이속 +4%", grade: "하", finalDamagePer:1.007},
         { name: "공이속 +5%", grade: "중", finalDamagePer:1.009},
         { name: "공이속 +6%", grade: "상", finalDamagePer:1.011},
-        { name: "치적 +3.4% | 치명타 주는 피해 +1.5%", grade: "하", finalDamagePer:1.0378},
+        { name: "치적 +3.4% | 치명타 주는 피해 +1.5%", fullName:"치명타 적중률이 3.4% 증가한다.공격이 치명타로 적중 시 적에게 주는 피해가 1.5% 증가한다.", grade: "하", finalDamagePer:1.0378},
         { name: "치적 +4.2% | 치명타 주는 피해 +1.5%", grade: "중", finalDamagePer:1.0435},
         { name: "치적 +5.0% | 치명타 주는 피해 +1.5%", grade: "상", finalDamagePer:1.0491},
         { name: "치피 +6.8% | 치명타 주는 피해 +1.5%", grade: "하", finalDamagePer:1.0378},
         { name: "치피 +8.4% | 치명타 주는 피해 +1.5%", grade: "중", finalDamagePer:1.0436},
         { name: "치피 +10.0% | 치명타 주는 피해 +1.5%", grade: "상", finalDamagePer:1.0493},
-        { name: "적에게 주는 피해 +2%", grade: "하", finalDamagePer:1.02},
+        { name: "적에게 주는 피해 +2%", fullName:"적에게 주는 피해가 2% 증가한다.", grade: "하", finalDamagePer:1.02},
         { name: "적에게 주는 피해 +2.5%", grade: "중", finalDamagePer:1.025},
         { name: "적에게 주는 피해 +3%", grade: "상", finalDamagePer:1.03},
         { name: "적주피 +2% | 무력화 적 피해량 +4%", grade: "하", finalDamagePer:1.02},
@@ -1284,7 +1381,7 @@ export let bangleOptionData = {
         { name: "치명타 저항 -1.8% | 아공강 +2.0%", grade: "하", atkBuff:2, atkBuffPlus:1.5},
         { name: "치명타 저항 -2.1% | 아공강 +2.5%", grade: "중", atkBuff:2.5, atkBuffPlus:1.77},
         { name: "치명타 저항 -2.5% | 아공강 +3.0%", grade: "상", atkBuff:3, atkBuffPlus:2.12},
-        { name: "보호 대상 피해량 +0.9% | 아공강 +2.0%", grade: "하", atkBuff:2, atkBuffPlus:0.9, finalDamagePer:1.009},
+        { name: "보호 대상 피해량 +0.9% | 아공강 +2.0%", fullName:"파티 효과로 보호 효과(보호막, 생명력 회복, 받는 피해 감소)가 적용된 대상이 5초 동안 적에게 주는 피해가 0.9% 증가한다", grade: "하", atkBuff:2, atkBuffPlus:0.9, finalDamagePer:1.009},
         { name: "보호 대상 피해량 +1.1% | 아공강 +2.5%", grade: "중", atkBuff:2.5, atkBuffPlus:1.1, finalDamagePer:1.011},
         { name: "보호 대상 피해량 +1.3% | 아공강 +3.0%", grade: "상", atkBuff:3, atkBuffPlus:1.3, finalDamagePer:1.013},
         { name: "치명타 피해 저항 -3.6% | 아공강 +2.0%", grade: "하", atkBuff:2, atkBuffPlus:1.32},

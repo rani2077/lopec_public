@@ -46,18 +46,7 @@
         height: calc(44px / 3);
     }
 
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        margin: 0;
-    }
 
-    input[type=number] {
-        appearance: textfield;
-        -moz-appearance: textfield;
-    }
 
     .group-equip .number-box {
         display: flex;
@@ -82,12 +71,40 @@
         color: #fff;
     }
 
+
     input[type=number] {
         width: 100%;
-        background: url("/asset/image/keyboard.png") center right / contain no-repeat;
         background-color: #ddd;
-
+        /* Add these lines to show the arrows always */
+        -moz-appearance: textfield;
+        /* Firefox */
     }
+
+    /* Chrome, Safari, Edge, Opera */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        appearance: textfield;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: auto !important;
+        opacity: 1;
+    }
+
+    input[type=number]::-ms-expand {
+        /* IE, Edge*/
+        opacity: 1;
+    }
+
+
+
+
 
     .group-equip .number-box .progress {
         position: relative;
@@ -109,15 +126,119 @@
         width: 100%;
     }
 
-    .sc-info .accessory-area .accessory-item:last-child{
-        flex-wrap:wrap;
-        height:initial;
+    .sc-info .accessory-area .accessory-item:last-child {
+        flex-wrap: wrap;
+        height: initial;
     }
-    .sc-info .accessory-area .accessory-item:last-child .number-box{
+
+    .sc-info .accessory-area .accessory-item:last-child .number-box {
         width: calc(100% - 42px - 8px);
     }
-    .sc-info .accessory-area .option-box{
+
+    .sc-info .accessory-area .option-box {
         width: 100%;
+    }
+
+    .sc-info .group-equip .gem-area {
+        width: calc(100% - 20px);
+    }
+
+    .sc-info .group-equip .simple-option-area {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 20px;
+        height: 75px;
+        background: #f00;
+    }
+
+    .group-equip .simple-option-area .extend-button {
+        cursor: pointer;
+        writing-mode: vertical-lr;
+        padding: 15px 3px 5px;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+
+    .group-equip .simple-option-area .extend-button:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 5px;
+        width: 10px;
+        height: 10px;
+        background: #000;
+        transition: clip-path 300ms;
+        clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
+    }
+
+    .group-equip .simple-option-area .extend-button.on:after {
+        clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 50%);
+    }
+
+    .group-equip .simple-option-area .extend-list {
+        background: #0f0;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        cursor: pointer;
+        overflow: hidden;
+        padding: 4px 0;
+        width: 0;
+        white-space: nowrap;
+        transition: width 300ms, padding 300ms;
+    }
+
+    .group-equip .simple-option-area .extend-list.on {
+        width: 70px;
+        padding: 4px;
+    }
+
+    .group-equip .simple-option-area .extend-item {
+        padding: 5px 8px;
+        background: rgba(0, 0, 0, 0);
+        transition: background 300ms;
+    }
+
+    .group-equip .simple-option-area .extend-item:hover {
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .group-equip .ark-list:not(:first-child) .ark-item:last-child {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .group-equip .ark-list .ark-item .value {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .group-equip .ark-list .ark-item .value i {
+        width: 13px;
+        text-align: center;
+    }
+
+    .group-equip .ark-list .ark-item .radio {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+    .sc-info .engraving-area .engraving-ico{
+        background: initial;
+        width: 50px;
     }
 </style>
 
@@ -336,10 +457,11 @@
                         <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
                             <option value="유물">유물</option>
                             <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
                         </select>
                         <select class="grade orange" data-max="4" data-min="0" data-string="X ">
                         </select>
-                        <select class="engraving-name" data-select="123" data-name="번개의 분노">
+                        <select class="engraving-name">
                         </select>
                         <div class="ability-ico engraving-ico unknown"></div>
                         <span class="ability-level"></span>
@@ -349,14 +471,14 @@
                     <div class="engraving-box">
                         <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/achieve/achieve_08_62.png"
                             class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade"
-                            data-select="전설">
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
                             <option value="유물">유물</option>
                             <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
                         </select>
-                        <select class="grade orange" data-max="4" data-min="0" data-string="X " data-select="3">
+                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
                         </select>
-                        <select class="engraving-name" data-select="돌격대장">
+                        <select class="engraving-name">
                         </select>
                         <div class="ability-ico engraving-ico unknown"></div>
                         <span class="ability-level"></span>
@@ -369,10 +491,11 @@
                         <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
                             <option value="유물">유물</option>
                             <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
                         </select>
                         <select class="grade orange" data-max="4" data-min="0" data-string="X ">
                         </select>
-                        <select class="engraving-name" data-select="추진력">
+                        <select class="engraving-name">
                         </select>
                         <div class="ability-ico engraving-ico unknown"></div>
                         <span class="ability-level"></span>
@@ -385,10 +508,11 @@
                         <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
                             <option value="유물">유물</option>
                             <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
                         </select>
                         <select class="grade orange" data-max="4" data-min="0" data-string="X ">
                         </select>
-                        <select class="engraving-name" data-select="아드레날린">
+                        <select class="engraving-name">
                         </select>
                         <div class="ability-ico engraving-ico unknown"></div>
                         <span class="ability-level"></span>
@@ -401,10 +525,11 @@
                         <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
                             <option value="유물">유물</option>
                             <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
                         </select>
                         <select class="grade orange" data-max="4" data-min="0" data-string="X ">
                         </select>
-                        <select class="engraving-name" data-select="아드레날린">
+                        <select class="engraving-name">
                         </select>
                         <div class="ability-ico engraving-ico unknown"></div>
                         <span class="ability-level"></span>
@@ -415,184 +540,20 @@
             </div>
             <div class="group-equip">
                 <div class="gem-area shadow">
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="뇌호격">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="방천격">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="붕천퇴">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-                    <div class="gem-box radius common-background">
-                        <select class="level" name="ArmoryGem Gems Level" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                        <select data-name="화조강림">
-                        </select>
-                        <select name="ArmoryGem Gems Name">
-                            <option value="홍염">홍염</option>
-                            <option value="작열">작열</option>
-                            <option value="멸화">멸화</option>
-                            <option value="겁화">겁화</option>
-                        </select>
-
-                    </div>
-
+                    <span>보석정보 로딩중</span>
                 </div>
+                <div class="simple-option-area">
+                    <span class="extend-button">일괄변경</span>
+                    <ul class="extend-list">
+                        <li class="extend-item" data-once="10">10겁작</li>
+                        <li class="extend-item" data-once="9">9겁작</li>
+                        <li class="extend-item" data-once="8">8겁작</li>
+                        <li class="extend-item" data-once="7">7겁작</li>
+                        <li class="extend-item" data-once="6">6겁작</li>
+                        <li class="extend-item" data-once="5">5겁작</li>
+                    </ul>
+                </div>
+
                 <div class="armor-wrap">
                     <div class="armor-area shadow">
                         <ul class="armor-list">
@@ -614,14 +575,16 @@
                                             <option value="1590">T4 유물</option>
                                             <option value="1590">T4 고대</option>
                                         </select>
-                                        <select class="armor-name" data-max="25" data-string="+ " data-select="20">
+                                        <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
                                         <span class="upgrade">상급재련</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius helmet" name="ArmoryEquipment Tooltip"></select>
+                                        <select class="elixir radius helmet" name="ArmoryEquipment Tooltip">
+                                            <option value="value:0">없음</option>
+                                        </select>
                                         <select class="elixir radius common" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
@@ -655,8 +618,7 @@
                                             <option value="1590">T4 유물</option>
                                             <option value="1590">T4 고대</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
-                                            <option value="+17-신념의-업화-머리장식-x11">+17</option>
+                                        <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
                                         <span class="upgrade">상급재련</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
@@ -670,15 +632,14 @@
                                     </div>
 
                                     <div class="hyper-wrap">
-                                        <span class="hyper"><img
-                                                src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
-                                                alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"
+                                            data-min="0"></select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
+                                        <select class="hyper" name="ArmoryEquipment Tooltip"></select>
+                                        <span class="hyper">
+                                            <img src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
+                                                alt="꽃모양 아이콘">
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -688,12 +649,6 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_150.png"
                                         alt="착용장비프로필">
-                                    <select class="tier">
-                                        <option value="t1">t1</option>
-                                        <option value="t2">t2</option>
-                                        <option value="t3">t3</option>
-                                        <option value="t4">t4</option>
-                                    </select>
                                     <span class="progress legendary-progressbar"
                                         name="ArmoryEquipment Tooltip">33</span>
                                 </div>
@@ -702,11 +657,11 @@
                                     <div class="name-wrap">
                                         <span class="tag"></span>
                                         <select class="plus" name="ArmoryEquipment Grade">
-                                            <option value="고대">고대</option>
-                                            <option value="유물">유물</option>
+                                            <option value="1525">T3 고대</option>
+                                            <option value="1590">T4 유물</option>
+                                            <option value="1590">T4 고대</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
-                                            <option value="+17-신념의-업화-머리장식-x11">+17</option>
+                                        <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
                                         <span class="upgrade">상급재련</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
@@ -720,15 +675,14 @@
                                     </div>
 
                                     <div class="hyper-wrap">
-                                        <span class="hyper"><img
-                                                src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
-                                                alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"
+                                            data-min="0"></select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
+                                        <select class="hyper" name="ArmoryEquipment Tooltip"></select>
+                                        <span class="hyper">
+                                            <img src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
+                                                alt="꽃모양 아이콘">
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -738,12 +692,6 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_151.png"
                                         alt="착용장비프로필">
-                                    <select class="tier">
-                                        <option value="t1">t1</option>
-                                        <option value="t2">t2</option>
-                                        <option value="t3">t3</option>
-                                        <option value="t4">t4</option>
-                                    </select>
                                     <span class="progress legendary-progressbar"
                                         name="ArmoryEquipment Tooltip">22</span>
                                 </div>
@@ -752,11 +700,11 @@
                                     <div class="name-wrap">
                                         <span class="tag"></span>
                                         <select class="plus" name="ArmoryEquipment Grade">
-                                            <option value="고대">고대</option>
-                                            <option value="유물">유물</option>
+                                            <option value="1525">T3 고대</option>
+                                            <option value="1590">T4 유물</option>
+                                            <option value="1590">T4 고대</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
-                                            <option value="+17-신념의-업화-머리장식-x11">+17</option>
+                                        <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
                                         <span class="upgrade">상급재련</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
@@ -770,15 +718,14 @@
                                     </div>
 
                                     <div class="hyper-wrap">
-                                        <span class="hyper"><img
-                                                src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
-                                                alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"
+                                            data-min="0"></select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
+                                        <select class="hyper" name="ArmoryEquipment Tooltip"></select>
+                                        <span class="hyper">
+                                            <img src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
+                                                alt="꽃모양 아이콘">
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -788,12 +735,6 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_153.png"
                                         alt="착용장비프로필">
-                                    <select class="tier">
-                                        <option value="t1">t1</option>
-                                        <option value="t2">t2</option>
-                                        <option value="t3">t3</option>
-                                        <option value="t4">t4</option>
-                                    </select>
                                     <span class="progress legendary-progressbar"
                                         name="ArmoryEquipment Tooltip">11</span>
                                 </div>
@@ -802,11 +743,11 @@
                                     <div class="name-wrap">
                                         <span class="tag"></span>
                                         <select class="plus" name="ArmoryEquipment Grade">
-                                            <option value="고대">고대</option>
-                                            <option value="유물">유물</option>
+                                            <option value="1525">T3 고대</option>
+                                            <option value="1590">T4 유물</option>
+                                            <option value="1590">T4 고대</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
-                                            <option value="+17-신념의-업화-머리장식-x11">+17</option>
+                                        <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
                                         <span class="upgrade">상급재련</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
@@ -820,15 +761,14 @@
                                     </div>
 
                                     <div class="hyper-wrap">
-                                        <span class="hyper"><img
-                                                src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
-                                                alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"
+                                            data-min="0"></select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
+                                        <select class="hyper" name="ArmoryEquipment Tooltip"></select>
+                                        <span class="hyper">
+                                            <img src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
+                                                alt="꽃모양 아이콘">
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -838,12 +778,6 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_156.png"
                                         alt="착용장비프로필">
-                                    <select class="tier">
-                                        <option value="t1">t1</option>
-                                        <option value="t2">t2</option>
-                                        <option value="t3">t3</option>
-                                        <option value="t4">t4</option>
-                                    </select>
                                     <select class="progress legendary-progressbar" name="ArmoryEquipment Tooltip"
                                         data-max="100"></select>
                                 </div>
@@ -852,11 +786,12 @@
                                     <div class="name-wrap">
                                         <span class="tag"></span>
                                         <select class="plus" name="ArmoryEquipment Grade">
-                                            <option value="고대">고대</option>
-                                            <option value="유물">유물</option>
+                                            <option value="1525">T3 고대</option>
+                                            <option value="1590">T4 유물</option>
+                                            <option value="1590">T4 고대</option>
+                                            <option value="1590">에스더</option>
                                         </select>
-                                        <select class="armor-name" name="ArmoryEquipment Tooltip">
-                                            <option value="+17-신념의-업화-머리장식-x11">+17</option>
+                                        <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
                                         <span class="upgrade">상급재련</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
@@ -869,15 +804,14 @@
                                     </div>
 
                                     <div class="hyper-wrap">
-                                        <span class="hyper"><img
-                                                src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
-                                                alt="꽃모양 아이콘"></span>
-                                        <select class="hyper" name="ArmoryEquipment Tooltip">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"
+                                            data-min="0"></select>
                                         <span class="level">단계</span>
-                                        <select class="level" name="ArmoryEquipment Tooltip" data-max="7"></select>
+                                        <select class="hyper" name="ArmoryEquipment Tooltip"></select>
+                                        <span class="hyper">
+                                            <img src="https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
+                                                alt="꽃모양 아이콘">
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -1045,7 +979,6 @@
                                 </div>
 
                                 <div class="number-box">
-
                                     <select class="tier accessory" name="ArmoryEquipment Tooltip" style="width:100%;">
                                         <option value="T3유물:반지">T3유물</option>
                                         <option value="T3고대:반지">T3고대</option>
@@ -1087,8 +1020,7 @@
 
                                 <div class="number-box">
 
-                                    <select class="tier accessory" name="ArmoryEquipment Tooltip" style="width:100%;"
-                                        data-select="T4고대">
+                                    <select class="tier accessory" name="ArmoryEquipment Tooltip" style="width:100%;">
                                         <option value="T3유물:반지">T3유물</option>
                                         <option value="T3고대:반지">T3고대</option>
                                         <option value="T4유물:반지">T4유물</option>
@@ -1135,13 +1067,9 @@
                                     </select> -->
 
                                     <div class="buff-wrap">
-                                        <select class="buff" name="ArmoryEquipment Tooltip" data-name="무효돌">
-                                            <option value="아드레날린-lv.2">아드레날린 Lv.2</option>
-                                            <option value="돌격대장-lv.2">돌격대장 Lv.2</option>
+                                        <select class="buff" name="ArmoryEquipment Tooltip">
                                         </select>
                                         <select class="buff" name="ArmoryEquipment Tooltip">
-                                            <option value="아드레날린-lv.2">아드레날린 Lv.2</option>
-                                            <option value="돌격대장-lv.2">돌격대장 Lv.2</option>
                                         </select>
                                     </div>
 
@@ -1156,11 +1084,11 @@
                                 <div class="number-box">
 
                                     <div class="option-wrap">
-                                        <select class="tier bangle" name="ArmoryEquipment Tooltip" data-select="T4고대">
-                                            <option value="T3고대">T3고대</option>
+                                        <select class="tier bangle" name="ArmoryEquipment Tooltip">
                                             <option value="T3유물">T3유물</option>
-                                            <option value="T4고대">T4고대</option>
+                                            <option value="T3고대">T3고대</option>
                                             <option value="T4유물">T4유물</option>
+                                            <option value="T4고대">T4고대</option>
                                         </select>
                                         <div class="option-item">
                                             <span class="quality middle">중</span>
@@ -1195,7 +1123,7 @@
 
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option" name="ArmoryEquipment Tooltip" data-select="무공 8100 증가 | 조건부 무공 2200 증가">
+                                            <select class="option" name="ArmoryEquipment Tooltip">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
@@ -1220,18 +1148,10 @@
                 <div class="ark-area shadow">
                     <div class="ark-list-wrap">
                         <ul class="ark-list evolution">
-                            <div class="title-box evolution">
+                            <li class="title-box evolution">
                                 <span class="tag">진화</span>
-                                <select name="ArkPassive Points Name" id="" class="blind">
-                                    <option value="진화"></option>
-                                </select>
-                                <select class="title" name="ArkPassive Points Value">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
+                                <span class="title" name="ArkPassive Points Value">N/A</span>
+                            </li>
 
 
                             <li class="ark-item">
@@ -1291,132 +1211,80 @@
 
                         </ul>
                         <ul class="ark-list enlightenment">
-                            <div class="title-box enlightenment">
+                            <li class="title-box enlightenment">
                                 <span class="tag">깨달음</span>
-                                <select name="ArkPassive Points Name" id="" class="blind">
-                                    <option value="깨달음"></option>
-                                </select>
-                                <select class="title" name="ArkPassive Points Value">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-
-
+                                <span class="title" name="ArkPassive Points Value">N/A</span>
+                            </li>
                             <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">1</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_bmm/ark_passive_bmm_1.png"
-                                        alt="">
+                                <input type="checkbox" name="" id="" value="3">
+                                <span class="collect">깨달음 물약1</span>
+                            </li>
+                            <li class="ark-item">
+                                <input type="checkbox" name="" id="" value="3">
+                                <span class="collect">깨달음 물약2</span>
+                            </li>
+                            <li class="ark-item">
+                                <input type="checkbox" name="" id="" value="3">
+                                <span class="collect">깨달음 물약3</span>
+                            </li>
+                            <li class="ark-item">
+                                <input type="checkbox" name="" id="" value="5">
+                                <span class="collect">상급 깨달음 물약</span>
+                            </li>
+                            <li class="ark-item">
+                                <span class="collect">카르마랭크</span>
+                            </li>
+                            <li class="ark-item">
+                                <div class="value">
+                                    <i>0</i>
+                                    <i>1</i>
+                                    <i>2</i>
+                                    <i>3</i>
+                                    <i>4</i>
+                                    <i>5</i>
+                                    <i>6</i>
                                 </div>
-                                <div class="text-box">
-                                    <span class="name">오의난무 Lv.1</span>
+                                <div class="radio">
+                                    <input type="radio" name="enlight-karma" id="" value="0">-
+                                    <input type="radio" name="enlight-karma" id="" value="1.001">-
+                                    <input type="radio" name="enlight-karma" id="" value="1.005">-
+                                    <input type="radio" name="enlight-karma" id="" value="1.009">-
+                                    <input type="radio" name="enlight-karma" id="" value="1.013">-
+                                    <input type="radio" name="enlight-karma" id="" value="1.017">-
+                                    <input type="radio" name="enlight-karma" id="" value="1.021">
                                 </div>
                             </li>
 
-                            <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">2</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_bmm/ark_passive_bmm_3.png"
-                                        alt="">
-                                </div>
-                                <div class="text-box">
-                                    <span class="name">답보 Lv.3</span>
-                                </div>
-                            </li>
-
-                            <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">3</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_01/ark_passive_01_16.png"
-                                        alt="">
-                                </div>
-                                <div class="text-box">
-                                    <span class="name">후방 기습 Lv.1</span>
-                                </div>
-                            </li>
-
-                            <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">3</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_01/ark_passive_01_15.png"
-                                        alt="">
-                                </div>
-                                <div class="text-box">
-                                    <span class="name">오의 집중 Lv.3</span>
-                                </div>
-                            </li>
-
-                            <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">4</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_bmm/ark_passive_bmm_6.png"
-                                        alt="">
-                                </div>
-                                <div class="text-box">
-                                    <span class="name">체술 강화 Lv.1</span>
-                                </div>
-                            </li>
-
-                            <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">4</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_bmm/ark_passive_bmm_7.png"
-                                        alt="">
-                                </div>
-                                <div class="text-box">
-                                    <span class="name">난무 강화 Lv.3</span>
-                                </div>
-                            </li>
 
                         </ul>
                         <ul class="ark-list leap">
-                            <div class="title-box leap">
+                            <li class="title-box leap">
                                 <span class="tag">도약</span>
-                                <select name="ArkPassive Points Name" id="" class="blind">
-                                    <option value="도약"></option>
-                                </select>
-                                <select class="title" name="ArkPassive Points Value">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-
-
-                            <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">1</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_02/ark_passive_02_2.png"
-                                        alt="">
-                                </div>
-                                <div class="text-box">
-                                    <span class="name">풀려난 힘 Lv.4</span>
-                                </div>
+                                <span class="title" name="ArkPassive Points Value">N/A</span>
                             </li>
 
-                            <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">1</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_01/ark_passive_01_10.png"
-                                        alt="">
-                                </div>
-                                <div class="text-box">
-                                    <span class="name">잠재력 해방 Lv.5</span>
-                                </div>
-                            </li>
 
                             <li class="ark-item">
-                                <div class="img-box">
-                                    <span class="tier">1</span>
-                                    <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_02/ark_passive_02_5.png"
-                                        alt="">
+                                <span class="collect">카르마랭크</span>
+                            </li>
+                            <li class="ark-item">
+                                <div class="value">
+                                    <i>0</i>
+                                    <i>1</i>
+                                    <i>2</i>
+                                    <i>3</i>
+                                    <i>4</i>
+                                    <i>5</i>
+                                    <i>6</i>
                                 </div>
-                                <div class="text-box">
-                                    <span class="name">즉각적인 주문 Lv.3</span>
+                                <div class="radio">
+                                    <input type="radio" name="leaf-karma" id="" value="0">-
+                                    <input type="radio" name="leaf-karma" id="" value="1.001">-
+                                    <input type="radio" name="leaf-karma" id="" value="1.005">-
+                                    <input type="radio" name="leaf-karma" id="" value="1.009">-
+                                    <input type="radio" name="leaf-karma" id="" value="1.013">-
+                                    <input type="radio" name="leaf-karma" id="" value="1.017">-
+                                    <input type="radio" name="leaf-karma" id="" value="1.021">
                                 </div>
                             </li>
 
