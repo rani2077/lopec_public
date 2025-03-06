@@ -2,7 +2,7 @@
 // api 결과 받은 시점에 파싱 후 각 개별값을 넘겨주면 디비에 저장
 export var insertLopecCharacters = function(lchaCharacterNickname, lchaCharacterLevel, lchaCharacterClass, lchaCharacterImage
 											, lchaServer, lchaLevel, lchaGuild, lchaTitle, lchaTotalsum, lchaTotalsumSupport
-											, lchaAlltimebuff, lchaFullbuff, lchaVersion, lchaSearchHit) {
+											, lchaAlltimebuff, lchaFullbuff, lchaEvoKarma, lchaVersion, lchaSearchHit) {
 	var atMode		= "insertCharacter";
 	var lchaSearchHit = 0;
 	var saveDatas = {
@@ -19,6 +19,7 @@ export var insertLopecCharacters = function(lchaCharacterNickname, lchaCharacter
 		, lchaTotalsumSupport : lchaTotalsumSupport
 		, lchaAlltimebuff : lchaAlltimebuff
 		, lchaFullbuff : lchaFullbuff
+		, lchaEvoKarma : lchaEvoKarma
 		, lchaVersion : lchaVersion
 		, lchaSearchHit : lchaSearchHit
 	}

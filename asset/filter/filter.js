@@ -671,6 +671,15 @@ let calAccessoryFilter = [
     {name:"</img>파티원 회복 효과 +2.10%",attr:"CarePower",value:1.021},
     {name:"</img>파티원 회복 효과 +3.50%",attr:"CarePower",value:1.035},
 
+    {name:"</img>최대 생명력 +719",attr:"StatHp",value:719},
+    {name:"</img>최대 생명력 +1654",attr:"StatHp",value:1654},
+    {name:"</img>최대 생명력 +2756",attr:"StatHp",value:2756},
+    {name:"</img>최대 생명력 +992",attr:"StatHp",value:992},
+    {name:"</img>최대 생명력 +2253",attr:"StatHp",value:2253},
+    {name:"</img>최대 생명력 +3755",attr:"StatHp",value:3755},
+    {name:"</img>최대 생명력 +1300",attr:"StatHp",value:1300},
+    {name:"</img>최대 생명력 +3250",attr:"StatHp",value:3250},
+    {name:"</img>최대 생명력 +6500",attr:"StatHp",value:6500},
 
     
 ]
@@ -1712,6 +1721,7 @@ export let elixirCalFilter = [
 
 
     { name:"> 선각자 (질서) ",atkBuff:[0.64,1.32,2,3,4]},
+    { name:"> 선각자 (질서) ",statHp:[800,1650,2500,3750,5000]},
     { name:"> 진군 (질서) ",atkBuff:[0.64,1.32,2,3,4]},
     { name:"> 신념 (질서) ",atkBuff:[0.64,1.32,2,3,4]},
 
@@ -1719,6 +1729,8 @@ export let elixirCalFilter = [
 
     { name:"> 회복 강화 ",carePower:[0.67,1.38,2.1,3.15,4.2]},
     { name:"> 보호막 강화 ",carePower:[0.67,1.38,2.1,3.15,4.2]},
+
+    { name:"> 최대 생명력 ",statHp:[2720,5610,8500,12750,17000]}
 
 
 ]

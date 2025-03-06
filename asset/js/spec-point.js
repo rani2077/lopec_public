@@ -268,7 +268,9 @@ export function getCharacterProfile(inputName, callback) {
             haste: 0,
             crit: 0,
             weaponAtk: 0,
-            hp: 0,
+            maxHp: 0,
+            statHp: 0,
+            hpActive: 0,
         }
 
         data.ArmoryProfile.Stats.forEach(function (statsArry) {
@@ -288,7 +290,8 @@ export function getCharacterProfile(inputName, callback) {
             } else if (statsArry.Type == "특화") {
                 defaultObj.special = Number(statsArry.Value)
             } else if (statsArry.Type == "최대 생명력") {
-                defaultObj.hp = Number(statsArry.Value)
+                defaultObj.maxHp = Number(statsArry.Value)
+                defaultObj.statHp = Number(statsArry.Tooltip[1].match(/>(\d+(\.\d+)?)<\/font>/)[1])
             }
         })
 
@@ -296,8 +299,25 @@ export function getCharacterProfile(inputName, callback) {
             if (equip.Type == "무기") {
                 let quality = JSON.parse(equip.Tooltip).Element_001.value.qualityValue
                 defaultObj.addDamagePer += 10 + 0.002 * (quality) ** 2
+            } else if (equip.Type == "투구") {
+                let quality = JSON.parse(equip.Tooltip).Element_001.value.qualityValue
+                defaultObj.hpActive += Math.ceil((0.14 * ((quality) ** 2)))
+            } else if (equip.Type == "상의") {
+                let quality = JSON.parse(equip.Tooltip).Element_001.value.qualityValue
+                defaultObj.hpActive += Math.ceil((0.14 * ((quality) ** 2)))
+            } else if (equip.Type == "하의") {
+                let quality = JSON.parse(equip.Tooltip).Element_001.value.qualityValue
+                defaultObj.hpActive += Math.ceil((0.14 * ((quality) ** 2)))
+            } else if (equip.Type == "장갑") {
+                let quality = JSON.parse(equip.Tooltip).Element_001.value.qualityValue
+                defaultObj.hpActive += Math.ceil((0.14 * ((quality) ** 2)))
+            } else if (equip.Type == "어깨") {
+                let quality = JSON.parse(equip.Tooltip).Element_001.value.qualityValue
+                defaultObj.hpActive += Math.ceil((0.14 * ((quality) ** 2)))
             }
         })
+        //defaultObj.hpActive = (defaultObj.hpActive * 0.000071427) + 1
+        defaultObj.hpActive = (defaultObj.hpActive/140)/100+1
 
         // 무기 공격력
         data.ArmoryEquipment.forEach(function (weapon) {
@@ -387,6 +407,7 @@ export function getCharacterProfile(inputName, callback) {
             weaponAtkPer: 0,
             atkPlus: 0,
             atkPer: 0,
+            statHp: 0,
             criticalChancePer: 0,
             criticalDamagePer: 0,
             stigmaPer: 0,
@@ -438,6 +459,8 @@ export function getCharacterProfile(inputName, callback) {
                     accObj.damageBuff += filterArry.value
                 } else if (optionCheck && filterArry.attr == "CarePower") { // 아군 보호막, 회복 강화 %
                     accObj.carePower += filterArry.value
+                } else if (optionCheck && filterArry.attr == "StatHp"){ // 최대 생명력
+                    accObj.statHp += filterArry.value
                 }
             })
         }
@@ -462,7 +485,7 @@ export function getCharacterProfile(inputName, callback) {
                 accObj.enlightPoint += Number(enlightStr[0]?.match(/\d+/)[0]);
             }
         })
-        console.log(accObj)
+
 
         /* **********************************************************************************************************************
          * name		              :	  bangleObj{}
@@ -493,6 +516,7 @@ export function getCharacterProfile(inputName, callback) {
             str: 0,
             dex: 0,
             int: 0,
+            statHp: 0,
 
             weaponAtkPer: 1,
             finalDamagePer: 1,
@@ -504,7 +528,7 @@ export function getCharacterProfile(inputName, callback) {
 
             let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff', 'atkBuffPlus']
             let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff']
-            let statsArry = ["치명:crit", "특화:special", "신속:haste", "힘:str", "민첩:dex", "지능:int"];
+            let statsArry = ["치명:crit", "특화:special", "신속:haste", "힘:str", "민첩:dex", "지능:int", "최대 생명력:statHp"];
 
             statsArry.forEach(function (stats) {
                 let regex = new RegExp(`${stats.split(":")[0]}\\s*\\+\\s*(\\d+)`);
@@ -597,10 +621,10 @@ export function getCharacterProfile(inputName, callback) {
             atkBuff: 0,
             stigmaPer: 0,
 
-
             str: 0,
             dex: 0,
             int: 0,
+            statHp: 0,
 
             finalDamagePer: 1,
 
@@ -684,7 +708,7 @@ export function getCharacterProfile(inputName, callback) {
         function headStarCal(value, parts) {
             let check = (parts == "투구")
             if (value >= 20 && check) {
-
+                hyperObj.statHp += hyperSum * 80
                 hyperObj.atkBuff += hyperSum * 0.04
                 hyperObj.atkPlus += hyperSum * 6
                 hyperObj.weaponAtkPlus += hyperSum * 14
@@ -692,18 +716,21 @@ export function getCharacterProfile(inputName, callback) {
                 hyperObj.dex += hyperSum * 55
                 hyperObj.int += hyperSum * 55
             } else if (value >= 15 && check) {
+                hyperObj.statHp += hyperSum * 80
                 hyperObj.atkBuff += hyperSum * 0.03
                 hyperObj.weaponAtkPlus += hyperSum * 14
                 hyperObj.str += hyperSum * 55
                 hyperObj.dex += hyperSum * 55
                 hyperObj.int += hyperSum * 55
             } else if (value >= 10 && check) {
+                hyperObj.statHp += hyperSum * 80
                 hyperObj.atkBuff += hyperSum * 0.02
                 hyperObj.str += hyperSum * 55
                 hyperObj.dex += hyperSum * 55
                 hyperObj.int += hyperSum * 55
             } else if (value >= 5 && check) {
-                atkBuff += hyperSum * 0.01
+                hyperObj.atkBuff += hyperSum * 0.01
+                hyperObj.statHp += hyperSum * 80
             }
         }
 
@@ -932,6 +959,7 @@ export function getCharacterProfile(inputName, callback) {
             atkPer: 0,
             finalDamagePer: 1,
             carePower: 0,
+            statHp: 0,
             str: 0,
             dex: 0,
             int: 0,
@@ -1027,6 +1055,10 @@ export function getCharacterProfile(inputName, callback) {
                 } else if (realElixir.name == filterArry.name && !(filterArry.carePower == undefined)) {
 
                     elixirObj.carePower += filterArry.carePower[realElixir.level - 1]
+
+                } else if (realElixir.name == filterArry.name && !(filterArry.statHp == undefined)) {
+
+                    elixirObj.statHp += filterArry.statHp[realElixir.level - 1]
                 }
 
             })
@@ -1836,23 +1868,131 @@ export function getCharacterProfile(inputName, callback) {
         /* **********************************************************************************************************************
          * name		              :	  karmaPoint{}
          * version                :   2.0
-         * description            :   깨달음 카르마
+         * description            :   깨달음 및 진화 카르마
          * USE_TN                 :   사용
          *********************************************************************************************************************** */
 
 
-        let karmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14)
-        if (karmaPoint >= 6) {
+        let maxHealth = defaultObj.maxHp;
+        let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
+        let vitalityRate = defaultObj.hpActive;
+        console.log("최대 체력",maxHealth)
+        console.log("기본 체력",baseHealth)
+        console.log("생명 활성력",vitalityRate)
+        function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
+            const cases = [
+                // 1. 펫효과 ON(1.05), 만찬 OFF
+                {
+                    formula: "펫효과 ON, 만찬 OFF",
+                    karma: ((maxHealth / (vitalityRate * 1.05)) - baseHealth) / 400
+                },
+                
+                // 2. 펫효과 OFF(1.00), 만찬 OFF
+                {
+                    formula: "펫효과 OFF, 만찬 OFF",
+                    karma: ((maxHealth / vitalityRate) - baseHealth) / 400
+                },
+                
+                // 3. 펫효과 ON(1.05), 만찬 ON(+10000, x1.1)
+                {
+                    formula: "펫효과 ON, 만찬 ON",
+                    karma: ((maxHealth / (vitalityRate * 1.15)) - baseHealth - 10000) / 400
+                },
+                
+                // 4. 펫효과 OFF(1.00), 만찬 ON(+10000, x1.1)
+                {
+                    formula: "펫효과 OFF, 만찬 ON",
+                    karma: ((maxHealth / (vitalityRate * 1.1)) - baseHealth - 10000) / 400
+                }
+            ];
+
+                    // 각 결과값이 정수에 얼마나 가까운지 계산
+                    const results = cases.map(item => {
+                        const roundedValue = Math.round(item.karma);
+                        return {
+                            formula: item.formula,
+                            karmaExact: item.karma,
+                            karmaRounded: roundedValue,
+                            proximity: Math.abs(item.karma - roundedValue),
+                            isPossible: (item.karma >= -1 && !isNaN(item.karma)) // 음수나 NaN 결과는 불가능
+                        };
+                    });
+                    
+                    // 가능한 결과 중 정수에 가장 가까운 값 선택
+                    const possibleResults = results.filter(result => result.isPossible);
+                    
+                    if (possibleResults.length === 0) {
+                        return {
+                            error: "유효한 결과가 없습니다. 데이터를 확인해주세요."
+                        };
+                    }
+                    
+                    // 30 이하의 결과와 30 초과의 결과 분리
+                    const resultsUnder30 = possibleResults.filter(result => result.karmaExact <= 30);
+                    const resultsOver30 = possibleResults.filter(result => result.karmaExact > 30);
+        
+                    let bestResult;
+        
+                    // 30 이하의 결과가 있으면 그 중에서 정수에 가장 가까운 값 선택
+                    if (resultsUnder30.length > 0) {
+                        resultsUnder30.sort((a, b) => a.proximity - b.proximity);
+                        bestResult = resultsUnder30[0];
+                    } 
+                    // 30 이하의 결과가 없으면 30 초과 결과 중 정수에 가장 가까운 값을 선택 (30으로 제한)
+                    else {
+                        resultsOver30.sort((a, b) => a.proximity - b.proximity);
+                        bestResult = resultsOver30[0];
+                        bestResult.karmaRounded = 30;
+                        bestResult.formula += " (최대 30 레벨로 제한됨)";
+                    }
+        
+                    if (bestResult.karmaExact < 0) {
+                        bestResult.karmaRounded = 0;
+                        bestResult.formula += " (오차 보정: 0으로 처리됨)";
+                    }
+                    // 모든 가능한 결과 포함해서 반환
+                    return {
+                        bestResult: {
+                            formula: bestResult.formula,
+                            karmaLevel: bestResult.karmaRounded,
+                            exactValue: bestResult.karmaExact.toFixed(4),
+                            proximity: bestResult.proximity.toFixed(4)
+                        },
+                        allResults: possibleResults
+                    };
+                }
+                const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
+
+        let evolutionkarmaPoint = result.bestResult.karmaLevel
+        let evolutionkarmaRank = 0
+        if (evolutionkarmaPoint >= 21) {
+            evolutionkarmaRank = 6
+        } else if (evolutionkarmaPoint >= 17){
+            evolutionkarmaRank = 5
+        } else if (evolutionkarmaPoint >= 13){
+            evolutionkarmaRank = 4
+        } else if (evolutionkarmaPoint >= 9){
+            evolutionkarmaRank = 3
+        } else if (evolutionkarmaPoint >= 5){
+            evolutionkarmaRank = 2
+        } else if (evolutionkarmaPoint >= 1){
+            evolutionkarmaRank = 1
+        }
+        console.log(evolutionkarmaRank,"랭크",evolutionkarmaPoint,"레벨")
+
+
+        let enlightkarmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14)
+        if (enlightkarmaPoint >= 6) {
             arkObj.weaponAtk = 1.021
-        } else if (karmaPoint >= 5) {
+        } else if (enlightkarmaPoint >= 5) {
             arkObj.weaponAtk = 1.017
-        } else if (karmaPoint >= 4) {
+        } else if (enlightkarmaPoint >= 4) {
             arkObj.weaponAtk = 1.013
-        } else if (karmaPoint >= 3) {
+        } else if (enlightkarmaPoint >= 3) {
             arkObj.weaponAtk = 1.009
-        } else if (karmaPoint >= 2) {
+        } else if (enlightkarmaPoint >= 2) {
             arkObj.weaponAtk = 1.005
-        } else if (karmaPoint >= 1) {
+        } else if (enlightkarmaPoint >= 1) {
             arkObj.weaponAtk = 1.001
         } else {
             arkObj.weaponAtk = 1
@@ -1994,7 +2134,7 @@ export function getCharacterProfile(inputName, callback) {
         let supportBangleEff = ((fullBuffPower - fullBuffPowerMinusBangle) / fullBuffPowerMinusBangle * 100)
 
         let carePower = (engObj.carePower / 100 + 1) * (accObj.carePower / 100 + 1) * (elixirObj.carePower / 100 + 1)
-        let finalCarePower = (defaultObj.hp * 0.3) * (engObj.carePower / 100 + 1) * (accObj.carePower / 100 + 1) * (elixirObj.carePower / 100 + 1)
+        let finalCarePower = (defaultObj.maxHp * 0.3) * (engObj.carePower / 100 + 1) * (accObj.carePower / 100 + 1) * (elixirObj.carePower / 100 + 1)
 
         /* **********************************************************************************************************************
          * name		              :	  스펙포인트 값 저장
@@ -2062,6 +2202,7 @@ export function getCharacterProfile(inputName, callback) {
                 highTierSpecPointObj.supportSpecPoint,       // 서폿 통합 스펙포인트
                 allTimeBuffPower,                           // 상시버프
                 fullBuffPower,                              // 풀버프
+                evolutionkarmaRank,                         // 진화 카르마 랭크                 
                 version,                                    // 현재 버전
             )
         }
