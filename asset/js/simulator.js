@@ -55,9 +55,9 @@ async function simulatorInputCalc() {
      * description			: 	기존 spec-point.js 로직을 이용해 추출한 값
      *********************************************************************************************************************** */
 
-    let supportCheck = await secondClassCheck(cachedData)
+    let supportCheck = await secondClassCheck(cachedData);
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-    // console.log(extractValue)
+    console.log("오리진OBJ", extractValue)
 
 
     /* **********************************************************************************************************************
@@ -190,9 +190,9 @@ async function simulatorInputCalc() {
     }
 
 
+    // engOutputCalc(engExtract())
     // console.log(engExtract())
-    // console.log(engOutputCalc(engExtract()))
-    engOutputCalc(engExtract())
+    console.log("각인", engOutputCalc(engExtract()))
 
     /* **********************************************************************************************************************
      * function name		:	stoneLevelBuffStat
@@ -208,7 +208,7 @@ async function simulatorInputCalc() {
             stoneLevel += level;
         })
         if (stoneLevel >= 5) {
-            result = stoneLevel;
+            result = 1.5;
         }
         return result;
     }
@@ -266,7 +266,7 @@ async function simulatorInputCalc() {
                 arr.push(obj)
             }
         })
-        // console.log(arr)
+        console.log(arr)
     }
     bangleOptionCalc()
 
@@ -534,11 +534,13 @@ async function simulatorInputCalc() {
         // 하의
         if (pantsHyper >= 20) {
             obj.atkBuff += 6
-            obj.finalDamagePer *= (1.5 / 100) + 1
+            obj.finalDamagePer *= 1.015 * 1.01
         } else if (pantsHyper >= 15) {
             obj.atkBuff += 3
+            obj.finalDamagePer *= 1.01
         } else if (pantsHyper >= 10) {
             obj.atkBuff += 1.5
+            obj.finalDamagePer *= 1.005
         }
 
         // 장갑
@@ -799,16 +801,152 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     function karmaRankToValue() {
-        let result = 1;
-        let karmaElements = document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]");
-        karmaElements.forEach((karma, idx) => {
+        let result = 1
+        let enlightKarmaElements = document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]");
+        enlightKarmaElements.forEach((karma, idx) => {
             if (karma.checked) {
                 result = Number(karma.value);
             }
         })
         return result;
     }
-    // console.log(karmaRankToValue())
+    console.log(karmaRankToValue())
+
+    /* **********************************************************************************************************************
+     * function name		:	gemAttackBonusValueCalc
+     * description			: 	진,깨,도 수치를 반환
+     *********************************************************************************************************************** */
+
+    function arkPassiveValue() {
+        let result = {
+            enlightenmentDamage: 0,
+            enlightenmentBuff: 0,
+            evolutionDamage: 0,
+            leapDamage: 0
+        }
+        let enlightElement = Number(document.querySelector(".ark-area .title-box.enlightenment .title").textContent);
+        let evolutionElement = Number(document.querySelector(".ark-area .title-box.evolution .title").textContent);
+        let leapElement = Number(document.querySelector(".ark-area .title-box.leap .title").textContent)
+
+        if (evolutionElement >= 120) { //  == 진화수치
+            result.evolutionDamage += 1.45
+        } else if (evolutionElement >= 105) {
+            result.evolutionDamage += 1.35
+        } else if (evolutionElement >= 90) {
+            result.evolutionDamage += 1.30
+        } else if (evolutionElement >= 80) {
+            result.evolutionDamage += 1.25
+        } else if (evolutionElement >= 70) {
+            result.evolutionDamage += 1.20
+        } else if (evolutionElement >= 60) {
+            result.evolutionDamage += 1.15
+        } else if (evolutionElement >= 50) {
+            result.evolutionDamage += 1.10
+        } else if (evolutionElement >= 40) {
+            result.evolutionDamage += 1
+        }
+
+
+
+        if (enlightElement >= 100) { // enlightElement == 깨달음수치
+            result.enlightenmentDamage += 1.42
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 98) {
+            result.enlightenmentDamage += 1.40
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 97) {
+            result.enlightenmentDamage += 1.37
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 96) {
+            result.enlightenmentDamage += 1.37
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 95) {
+            result.enlightenmentDamage += 1.36
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 94) {
+            result.enlightenmentDamage += 1.36
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 93) {
+            result.enlightenmentDamage += 1.35
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 92) {
+            result.enlightenmentDamage += 1.35
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 90) {
+            result.enlightenmentDamage += 1.34
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 88) {
+            result.enlightenmentDamage += 1.33
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 86) {
+            result.enlightenmentDamage += 1.28
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 84) {
+            result.enlightenmentDamage += 1.27
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 82) {
+            result.enlightenmentDamage += 1.26
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 80) {
+            result.enlightenmentDamage += 1.25
+            result.enlightenmentBuff += 1.33
+        } else if (enlightElement >= 78) {
+            result.enlightenmentDamage += 1.18
+            result.enlightenmentBuff += 1.32
+        } else if (enlightElement >= 76) {
+            result.enlightenmentDamage += 1.17
+            result.enlightenmentBuff += 1.31
+        } else if (enlightElement >= 74) {
+            result.enlightenmentDamage += 1.16
+            result.enlightenmentBuff += 1.30
+        } else if (enlightElement >= 72) {
+            result.enlightenmentDamage += 1.15
+            result.enlightenmentBuff += 1.29
+        } else if (enlightElement >= 64) {
+            result.enlightenmentDamage += 1.13
+            result.enlightenmentBuff += 1.28
+        } else if (enlightElement >= 56) {
+            result.enlightenmentDamage += 1.125
+            result.enlightenmentBuff += 1.27
+        } else if (enlightElement >= 48) {
+            result.enlightenmentDamage += 1.12
+            result.enlightenmentBuff += 1.26
+        } else if (enlightElement >= 40) {
+            result.enlightenmentDamage += 1.115
+            result.enlightenmentBuff += 1.25
+        } else if (enlightElement >= 32) {
+            result.enlightenmentDamage += 1.11
+            result.enlightenmentBuff += 1.24
+        } else if (enlightElement >= 24) {
+            result.enlightenmentDamage += 1.10
+            result.enlightenmentBuff += 1.23
+        } else {
+            result.enlightenmentDamage += 1
+        }
+
+
+        if (leapElement >= 70) { // leapElement == 도약 수치
+            result.leapDamage += 1.15
+        } else if (leapElement >= 68) {
+            result.leapDamage += 1.14
+        } else if (leapElement >= 66) {
+            result.leapDamage += 1.13
+        } else if (leapElement >= 64) {
+            result.leapDamage += 1.12
+        } else if (leapElement >= 62) {
+            result.leapDamage += 1.11
+        } else if (leapElement >= 60) {
+            result.leapDamage += 1.10
+        } else if (leapElement >= 50) {
+            result.leapDamage += 1.05
+        } else if (leapElement >= 40) {
+            result.leapDamage += 1.03
+        } else {
+            result.leapDamage += 1
+        }
+
+        return result
+    }
 
     /* **********************************************************************************************************************
      * function name		:	gemAttackBonusValueCalc
@@ -844,8 +982,17 @@ async function simulatorInputCalc() {
         extractValue.abilityAttackBonus = stoneLevelBuffStat();
 
         extractValue.accObj = accessoryValueToObj();
-        extractValue.arkObj = "아크패시브 OBJ";
-        extractValue.bangleObj = "팔찌 OBJ";
+        extractValue.arkObj = arkPassiveValue();
+        // extractValue.bangleObj = "팔찌 OBJ";
+        // extractValue.armorStatus = "장비 + 악세 힘/민/지 합산값 넣으면 됨"
+        // extractValue.defaultObj = "addDamaePer = 무기 품질 계산식 추가해서 결과값 여기에 넣고, weaponAtk = 무기 공격력 받아와서 넣으면 됨 그리고 crit,hase,special 받아와야 함"
+        // extractValue.elixirObj = "엘릭서에서 받아온 값 다 넣으면 됨"
+        // extractValue.engObj = "각인 finalDamagePer, engBonusPer 받아오면 됨"
+        // extractValue.expeditionStats = 725 + "하드코딩, 원정대 레벨 계산식 추가해서 박으면 됨"
+        // extractValue.finalGemDamageRate = "있는거 다 받아오면 됨"
+        // extractValue.gemObj = "위에껀 딜러용이고, 이건 서폿용. 다 받아오면됨"
+        // extractValue.hyperObj = "안에 있는 거 다 받아오면됨"
+        // extractValue.jobObj = "없애도 됨 필요 없음"
     }
     simulatorDataToExtractValue()
 
@@ -1582,7 +1729,7 @@ async function selectCreate(data) {
         let evolutionElement = document.querySelectorAll(".ark-list .title")[0];
         evolutionElement.textContent = levelEvolution;
     }
-    userLevelAndArmorToEvolution()
+    
 
 
     /* **********************************************************************************************************************
@@ -1929,10 +2076,9 @@ async function selectCreate(data) {
                     // console.log(advancedValue)
                     // console.log(hyperLevel)
                     // console.log(hyperStar)
+
+
                 }
-
-
-
             }
 
         });
@@ -2048,6 +2194,8 @@ async function selectCreate(data) {
 
                     let accessoryItem = document.querySelectorAll(".accessory-list .accessory-item.accessory");
 
+                    let accessoryStatsName = /(힘|민첩|지능)\s*\+(\d+)/g.exec(tooltipData)[1]
+                    let accessoryStatsValue = Number(/(힘|민첩|지능)\s*\+(\d+)/g.exec(tooltipData)[2])
 
                     let matchTooltipArr = [];
                     tooltipData.forEach(tooltip => {
@@ -2058,12 +2206,14 @@ async function selectCreate(data) {
                     })
                     if (partsName === "목걸이") {
                         let necklace = document.querySelectorAll('.accessory-list .accessory-item.accessory .tier')[0];
+                        let necklaceStatsElement = document.querySelectorAll('.accessory-list .accessory-item.accessory input.progress')[0];
                         let necklaceOptions = accessoryItem[0].querySelectorAll(".option");
                         optionElementAutoCheck(necklace, `T${accessoryTierNumber}${accessoryTierName}`, 'textContent');
                         necklace.dispatchEvent(new Event("change"));
                         matchTooltipArr.forEach((matchTooltip, idx) => {
                             optionElementAutoCheck(necklaceOptions[idx], matchTooltip, 'textContent');
                         })
+                        necklaceStatsElement.value = accessoryStatsValue;
                     } else if (partsName === "귀걸이" || partsName === "반지") {
                         //귀걸이와 반지일경우
                         if (partsName === "귀걸이") {
@@ -2072,6 +2222,7 @@ async function selectCreate(data) {
                             selectorIndex = 3 + accessoryCount; // 반지 3,4번
                         }
 
+                        let accessoryStatsElement = document.querySelectorAll('.accessory-list .accessory-item.accessory input.progress')[selectorIndex];
                         let accessoryElement = document.querySelectorAll('.accessory-list .accessory-item.accessory .tier')[selectorIndex];
                         optionElementAutoCheck(accessoryElement, `T${accessoryTierNumber}${accessoryTierName}`, 'textContent');
                         accessoryElement.dispatchEvent(new Event("change"));
@@ -2079,7 +2230,7 @@ async function selectCreate(data) {
                         matchTooltipArr.forEach((matchTooltip, idx) => {
                             optionElementAutoCheck(accessoryDuplicationElement[idx], matchTooltip, 'textContent');
                         })
-
+                        accessoryStatsElement.value = accessoryStatsValue;
                         accessoryCount++;
                         //두번째반복문이 필요없어진이유 : partsName이 귀걸이 또는 반지일때만 selectorIndex를 정하고, 값을 입력하기 때문
                         if (accessoryCount >= 2) {
@@ -2127,14 +2278,20 @@ async function selectCreate(data) {
         let bangleMergeFilter = mergeFilter(Modules.simulatorFilter.bangleOptionData);
         let optionElements = parentElement.querySelectorAll("select.option");
         let count = 0;
+        // console.log(bangleTooltip)
 
         let userEquipOption = bangleMergeFilter.filter(filter => bangleTooltip.includes(filter.fullName));
         userEquipOption.forEach((option, idx) => {
             optionElementAutoCheck(optionElements[idx], option.name, 'textContent');
         })
 
+        let bangleStats = parentElement.querySelectorAll(".stats");
+        let bangleNumbers = parentElement.querySelectorAll("input.option");
         let bangleStatsArry = extractValues(bangleTooltip);
-        console.log(bangleStatsArry)
+        bangleStatsArry.forEach((stat, idx) => {
+            optionElementAutoCheck(bangleStats[idx], stat.name, 'textContent');
+            bangleNumbers[idx].value = stat.value;
+        })
 
         function extractValues(str) {
             let regex = /(치명|특화|신속|힘|민첩|지능)\s*\+(\d+)/g;
@@ -2173,6 +2330,24 @@ async function selectCreate(data) {
 
     /* **********************************************************************************************************************
     * function name		:	
+    * description	    : 	
+    *********************************************************************************************************************** */
+
+    function bangleStatsDisable() {
+        let optionElements = document.querySelectorAll(".accessory-area .accessory-item.bangle select.option");
+        let bangleStatsName = document.querySelectorAll(".accessory-area .accessory-item.bangle .stats")[2];
+        let bangleStatsValue = document.querySelectorAll(".accessory-area .accessory-item.bangle input.option")[2];
+        optionElements.forEach(select => {
+            if (select.options[select.selectedIndex].textContent === "없음") {
+                bangleStatsName.disabled = false;
+                bangleStatsValue.disabled = false;
+            }
+        })
+    }
+    bangleStatsDisable()
+
+    /* **********************************************************************************************************************
+    * function name		:	
     * description	    : 	data-name함수 이후 실행되어야 하는 스크립트
     *********************************************************************************************************************** */
 
@@ -2181,6 +2356,7 @@ async function selectCreate(data) {
     enlightValueChange()
     leafPointToKarmaSelect()
     showLeafInfo()
+    userLevelAndArmorToEvolution()
 
     /* **********************************************************************************************************************
     * function name		:	applyDataStringToOptions()
@@ -2212,6 +2388,7 @@ async function selectCreate(data) {
         userLevelAccessoryToEnlight();
         showLeafInfo();
         enlightValueChange();
+        bangleStatsDisable();
     })
 }
 

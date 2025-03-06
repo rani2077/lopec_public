@@ -959,6 +959,7 @@ export let accessoryOptionData = {
 
 export let bangleOptionData = {
     t3RelicData: [
+        { name: "없음", grade: "하", value:0},
         { name: "쐐기-하", grade: "하", addDamagePer: 1.012},
         { name: "쐐기-중", grade: "중", addDamagePer: 1.014},
         { name: "쐐기-상", grade: "상", addDamagePer: 1.018},
@@ -1084,7 +1085,8 @@ export let bangleOptionData = {
     ],
 
     t3MythicData: [
-        { name: "쐐기-하", grade: "하", addDamagePer: 1.014 , fullName : "풀네임"},
+        { name: "없음", grade: "하", value:0},
+        { name: "쐐기-하", grade: "하", addDamagePer: 1.014},
         { name: "쐐기-중", grade: "중", addDamagePer: 1.018},
         { name: "쐐기-상", grade: "상", addDamagePer: 1.02},
         { name: "망치-하", grade: "하", finalDamagePer: 1.029},
@@ -1207,6 +1209,7 @@ export let bangleOptionData = {
 
 
     t4RelicData: [
+        { name: "없음", grade: "하", value:0},
         { name: "공이속 +3%", grade: "하", finalDamagePer:1.005},
         { name: "공이속 +4%", grade: "중", finalDamagePer:1.007},
         { name: "공이속 +5%", grade: "상", finalDamagePer:1.009},
@@ -1316,6 +1319,7 @@ export let bangleOptionData = {
 
 
     t4MythicData: [
+        { name: "없음", grade: "하", value:0},
         { name: "공이속 +4%", grade: "하", finalDamagePer:1.007},
         { name: "공이속 +5%", grade: "중", finalDamagePer:1.009},
         { name: "공이속 +6%", grade: "상", finalDamagePer:1.011},

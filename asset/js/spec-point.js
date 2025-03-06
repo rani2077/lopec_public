@@ -467,8 +467,8 @@ export function getCharacterProfile(inputName, callback) {
 
         accObj.finalDamagePer *= ((accObj.criticalChancePer * 0.684) / 100 + 1)
         accObj.finalDamagePer *= ((accObj.criticalDamagePer * 0.3625) / 100 + 1)
-        accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.4989) / 100 + 1)
-        accObj.finalDamagePer *= ((accObj.atkPer * 0.9246) / 100 + 1)
+        //accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.4989) / 100 + 1)
+        //accObj.finalDamagePer *= ((accObj.atkPer * 0.9246) / 100 + 1)
 
 
 
@@ -770,11 +770,13 @@ export function getCharacterProfile(inputName, callback) {
             let check = (parts == "하의")
             if (value >= 20 && check) {
                 hyperObj.atkBuff += 6
-                hyperObj.finalDamagePer *= (1.5 / 100) + 1
+                hyperObj.finalDamagePer *= 1.015 * 1.01
             } else if (value >= 15 && check) {
                 hyperObj.atkBuff += 3
+                hyperObj.finalDamagePer *= 1.01
             } else if (value >= 10 && check) {
                 hyperObj.atkBuff += 1.5
+                hyperObj.finalDamagePer *= 1.005
 
             }
         }
@@ -2018,13 +2020,13 @@ export function getCharacterProfile(inputName, callback) {
         let bangleStatValue = ((bangleObj.str + bangleObj.dex + bangleObj.int) * 0.00011375) / 100 + 1
 
         let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats() // 최종 힘민지 계산값
-        let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
-        let totalWeaponAtk2 = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100))) // 최종 무공 계산값
+        //let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
+        let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100))) // 최종 무공 계산값
 
-        let totalAtk0 = (Math.sqrt((totalStat * totalWeaponAtk) / 6))
-        let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
-        let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
-        let totalAtk3 = ((Math.sqrt((totalStat * totalWeaponAtk2) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
+        //let totalAtk0 = (Math.sqrt((totalStat * totalWeaponAtk) / 6))
+        //let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
+        //let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
+        let totalAtk = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
 
         let gemsCoolValue = (1 / (1 - (gemCheckFnc().gemAvg) / 100) - 1) + 1
 
@@ -2033,23 +2035,23 @@ export function getCharacterProfile(inputName, callback) {
         let bangleFinalDamageResult = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer) // 적에게 주는 피해
 
         let minusHyperStat = (armorStatus() + expeditionStats + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats()
-        let minusHyperWeaponAtk = ((defaultObj.weaponAtk + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk)
-        let minusHyperAtk = ((Math.sqrt((minusHyperStat * minusHyperWeaponAtk) / 6)) + (elixirObj.atkPlus)) * attackBonus
+        let minusHyperWeaponAtk = ((defaultObj.weaponAtk + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
+        let minusHyperAtk = ((Math.sqrt((minusHyperStat * minusHyperWeaponAtk) / 6)) + (elixirObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
         let minusHyperFinal = (engObj.finalDamagePer * accObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer)
 
         let minusElixirStat = (armorStatus() + expeditionStats + hyperObj.str + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats()
-        let minusElixirWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk)
-        let minusElixirAtk = ((Math.sqrt((minusElixirStat * minusElixirWeaponAtk) / 6)) + (hyperObj.atkPlus)) * attackBonus
+        let minusElixirWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
+        let minusElixirAtk = ((Math.sqrt((minusElixirStat * minusElixirWeaponAtk) / 6)) + (hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
         let minusElixirFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer)
 
         let minusBangleStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int) * avatarStats()
-        let minusBangleWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
-        let minusBangleWeaponAtk2 = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
+        //let minusBangleWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
+        let minusBangleWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
+        let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
+        //let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
+        //let minusBangleFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * elixirObj.finalDamagePer)
+        let bangleAtkValue = ((totalAtk - minusBangleAtk) / minusBangleAtk) + 1
 
-        let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
-        let minusBangleAtk2 = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk2) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
-        let minusBangleFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * elixirObj.finalDamagePer)
-        let bangleAtkValue = ((totalAtk3 - minusBangleAtk2) / minusBangleAtk2) + 1
         /* **********************************************************************************************************************
          * name		              :	  최종 계산식 for deal
          * version                :   2.0
@@ -2057,19 +2059,20 @@ export function getCharacterProfile(inputName, callback) {
          * USE_TN                 :   사용
          *********************************************************************************************************************** */
         //1차 환산
-        let finalValue = (totalAtk1 * criticalFinalResult * finalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special - bangleObj.crit - bangleObj.haste - bangleObj.special) / 100 * 1) / 100 + 1))
+        let finalValue = (totalAtk * criticalFinalResult * finalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special - bangleObj.crit - bangleObj.haste - bangleObj.special) / 100 * 1) / 100 + 1))
         //팔찌 포함 환산
-        let bangleFinalValue = (totalAtk1 * criticalFinalResult * bangleFinalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 1) / 100 + 1))
+        let bangleFinalValue = (totalAtk * criticalFinalResult * bangleFinalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 1) / 100 + 1))
         //팔찌 딜증율
         let bangleEff = ((((bangleFinalValue - finalValue) / finalValue) + 1) * (bangleObj.finalDamagePerEff) * bangleStatValue * 1.03).toFixed(4)
         //최종 환산
-        let lastFinalValue = ((totalAtk1) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
+        let lastFinalValue = ((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
+        console.log(lastFinalValue)
         //초월 효율
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let hyperValue = ((lastFinalValue - minusHyperValue) / lastFinalValue * 100).toFixed(2)
         //엘릭서 효율
         let minusElixirValue = ((minusElixirAtk) * evolutionDamageResult * minusElixirFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * bangleStatValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
-        let elixirValue = ((lastFinalValue - minusElixirValue) / lastFinalValue * 1.1 * 100).toFixed(2)
+        let elixirValue = ((lastFinalValue - minusElixirValue) / lastFinalValue * 100).toFixed(2)
         //팔찌 효율
         let bangleValue = (((1 * bangleAtkValue * bangleObj.finalDamagePer * (((bangleObj.crit + bangleObj.haste + bangleObj.special) / 100 * 2.55) / 100 + 1)) - 1) * 100).toFixed(2)
         // 점수 변환
@@ -2143,7 +2146,7 @@ export function getCharacterProfile(inputName, callback) {
          * USE_TN                 :   사용
          *********************************************************************************************************************** */
         // 딜러
-        highTierSpecPointObj.dealerAttackPowResult = totalAtk1
+        highTierSpecPointObj.dealerAttackPowResult = totalAtk
         highTierSpecPointObj.dealerTotalStatus = (defaultObj.crit + defaultObj.haste + defaultObj.special)
         highTierSpecPointObj.dealerEngResult = (engObj.finalDamagePer * 100 - 100)
         highTierSpecPointObj.dealerEvloutionResult = ((evolutionDamageResult - 1) * 100)
@@ -2761,7 +2764,7 @@ export function getCharacterProfile(inputName, callback) {
 
             if (!(supportCheck() == "서폿") && data.ArkPassive.IsArkPassive) { //4티어 딜러
 
-                leftColumn += infoBox("공격력", (totalAtk3).toFixed(0), '순수 공격력 수치입니다.')
+                leftColumn += infoBox("공격력", (totalAtk).toFixed(0), '순수 공격력 수치입니다.')
                 leftColumn += infoBox("엘릭서", elixirValue + "%", '로펙 환산 기준입니다.')
                 leftColumn += infoBox("초월", hyperValue + "%", '로펙 환산 기준입니다.')
                 leftColumn += infoBox("각인", (engObj.finalDamagePer * 100 - 100).toFixed(2) + "%", '로펙 환산 기준입니다.')

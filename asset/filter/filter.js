@@ -329,7 +329,7 @@ export let bangleJobFilter = [
     {job:"배틀마스터",stats:"pow"},
     {job:"기공사",stats:"pow"},
     {job:"창술사",stats:"pow"},
-    {job:"스트라이커",stats:"pow"},
+    {job:"스트라이커",stats:"str"},
     {job:"브레이커",stats:"pow"},
     {job:"데빌헌터",stats:"dex"},
     {job:"호크아이",stats:"dex"},

@@ -54,9 +54,17 @@ export async function specPointCalc(valueObj) {
 
 
 
-    // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
-    // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
-    // 최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0최종 계산식 ver 2.0
+    // 1. 공격력
+    // - 총합 스탯 
+    // (방어구(악세 포함), 원정대, 초월, 엘릭서, 팔찌)
+    // - 무기 공격력
+    // (무기,악세, 초월, 엘릭서, 파)
+
+    
+
+
+
+
     let attackBonus = ((valueObj.gemAttackBonus + valueObj.abilityAttackBonus) / 100) + 1 // 기본 공격력 증가(보석, 어빌리티 스톤)
     let attackPowResult = (valueObj.defaultObj.attackPow).toFixed(0) // 최종 공격력 (아드 등 각인 포함된)
     let criticalDamageResult = (valueObj.defaultObj.criticalDamagePer + valueObj.engObj.criticalDamagePer + valueObj.accObj.criticalDamagePer + valueObj.bangleObj.criticalDamagePer + valueObj.arkObj.criticalDamagePer + valueObj.elixirObj.criticalDamagePer + valueObj.jobObj.criticalDamagePer) //치명타 피해량
