@@ -236,9 +236,24 @@
     }
 
 
-    .sc-info .engraving-area .engraving-ico{
+    .sc-info .engraving-area .engraving-ico {
         background: initial;
         width: 50px;
+    }
+
+
+    .sc-info .armor-area .armor-item:last-child .name-wrap {
+        text-align: center;
+    }
+
+    .sc-info .armor-area .armor-item:last-child .name-wrap>div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .sc-info .armor-area .armor-item:last-child .name-wrap i,
+    .sc-info .armor-area .armor-item:last-child .name-wrap input {
+        width: 30px;
     }
 </style>
 
@@ -789,7 +804,9 @@
                                             <option value="1525">T3 고대</option>
                                             <option value="1590">T4 유물</option>
                                             <option value="1590">T4 고대</option>
-                                            <option value="1590">에스더</option>
+                                            <option value="0">에스더-엘라0</option>
+                                            <option value="1">에스더-엘라1</option>
+                                            <option value="2">에스더-엘라2</option>
                                         </select>
                                         <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
@@ -800,7 +817,6 @@
                                     </div>
 
                                     <div class="elixir-wrap">
-
                                     </div>
 
                                     <div class="hyper-wrap">
@@ -817,20 +833,47 @@
                             </li>
 
                             <li class="armor-item">
-                                <div class="img-box radius ultra-background">
+                                <!-- <div class="img-box radius ultra-background">
                                     <img src="/asset/image/elixir.png" alt="">
                                     <span class="progress legendary-progressbar">99</span>
-                                </div>
+                                </div> -->
                                 <div class="text-box">
                                     <div class="name-wrap">
-                                        엘릭서
+                                        아바타
                                     </div>
 
                                     <div class="name-wrap">
-                                        회심 2단계
+                                        <div class="name">
+                                            <i></i>
+                                            <i>무기</i>
+                                            <i>투구</i>
+                                            <i>상의</i>
+                                            <i>하의</i>
+                                        </div>
+                                        <div class="none">
+                                            <i>없음</i>
+                                            <input type="radio" name="weapon" id="">
+                                            <input type="radio" name="helmet" id="">
+                                            <input type="radio" name="armor" id="">
+                                            <input type="radio" name="pants" id="">
+                                        </div>
+                                        <div class="hero">
+                                            <i>영웅</i>
+                                            <input type="radio" name="weapon" id="">
+                                            <input type="radio" name="helmet" id="">
+                                            <input type="radio" name="armor" id="">
+                                            <input type="radio" name="pants" id="">
+                                        </div>
+                                        <div class="legendary">
+                                            <i>전설</i>
+                                            <input type="radio" name="weapon" id="">
+                                            <input type="radio" name="helmet" id="">
+                                            <input type="radio" name="armor" id="">
+                                            <input type="radio" name="pants" id="">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="img-box radius ultra-background">
+                                <!-- <div class="img-box radius ultra-background">
                                     <img src="/asset/image/hyper.png" alt="">
                                     <span class="progress mythic-progressbar">99</span>
                                 </div>
@@ -841,7 +884,7 @@
                                     <div class="name-wrap">
                                         평균 21.0성
                                     </div>
-                                </div>
+                                </div> -->
                             </li>
                         </ul>
                     </div>

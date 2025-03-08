@@ -158,7 +158,7 @@ export const helmetlevels = [
 ];
 
 
-const shoulderlevels = [
+export const shoulderlevels = [
     { level: 1525, stat: 23194 },
     { level: 1530, stat: 23711 },
     { level: 1535, stat: 24240 },
@@ -318,7 +318,7 @@ const shoulderlevels = [
 
 
 
-  const toplevels = [
+export const toplevels = [
     { level: 1525, stat: 17434 },
     { level: 1530, stat: 17823 },
     { level: 1535, stat: 18221 },
@@ -477,7 +477,7 @@ const shoulderlevels = [
   ];
 
 
-  const bottomlevels = [
+export const bottomlevels = [
     { level: 1525, stat: 18835 },
     { level: 1530, stat: 19255 },
     { level: 1535, stat: 19685 },
@@ -636,7 +636,7 @@ const shoulderlevels = [
   ];
 
 
-  const gloveslevels = [
+export const gloveslevels = [
     { level: 1525, stat: 26151 },
     { level: 1530, stat: 26735 },
     { level: 1535, stat: 27331 },
@@ -796,7 +796,7 @@ const shoulderlevels = [
 
 
 
-  const weaponlevels = [
+export const weaponlevels = [
     { level: 1525, stat: 37831 },
     { level: 1530, stat: 38673 },
     { level: 1535, stat: 39534 },
@@ -955,7 +955,8 @@ const shoulderlevels = [
   ];
 
 
-  const estherEllaLevels = [
+export const estherEllaLevels = [
+    { level: 0, stat: 0 },
     { level: 1100, stat: 22621 },
     { level: 1200, stat: 28789 },
     { level: 1300, stat: 34959 },
@@ -1017,7 +1018,7 @@ const shoulderlevels = [
   ]
 
 
-  const estherElla2Levels = [
+export const estherElla2Levels = [
     { level: 1100, stat: 27284 },
     { level: 1200, stat: 34273 },
     { level: 1300, stat: 42165 },

@@ -57,7 +57,7 @@ async function simulatorInputCalc() {
 
     let supportCheck = await secondClassCheck(cachedData);
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-    console.log("오리진OBJ", extractValue)
+    // console.log("오리진OBJ", extractValue)
 
 
     /* **********************************************************************************************************************
@@ -192,7 +192,7 @@ async function simulatorInputCalc() {
 
     // engOutputCalc(engExtract())
     // console.log(engExtract())
-    console.log("각인", engOutputCalc(engExtract()))
+    // console.log("각인", engOutputCalc(engExtract()))
 
     /* **********************************************************************************************************************
      * function name		:	stoneLevelBuffStat
@@ -215,7 +215,7 @@ async function simulatorInputCalc() {
     stoneLevelBuffStat()
 
     /* **********************************************************************************************************************
-     * function name		:	bangleStatsNumberCalc()
+     * function name		:	bangleStatsNumberCalc() <안쓰는 코드인듯?
      * description			: 	팔찌 스텟의 힘/민/지 || 치/특/신 값을 가져옴 (사용자의 직업에 사용하지 않는 스텟의 경우 key값을 none으로 처리)
      *********************************************************************************************************************** */
 
@@ -245,19 +245,33 @@ async function simulatorInputCalc() {
     function bangleOptionCalc() {
         let elements = document.querySelectorAll(".accessory-item.bangle select.option");
         let arr = []
-
+        let result = {};
         elements.forEach(element => {
-            let obj = {}
+            let obj = {
+                addDamagePer: 0,
+                atkBuff: 0,
+                atkBuffPlus: 0,
+                damageBuff: 0,
+                weaponAtkPlus: 0,
+                finalDamagePer: 1,
+                special: 0,
+                crit: 0,
+                haste: 0,
+                str: 0,
+                dex: 0,
+                int: 0
+            }
             if (element.value.includes("|")) {
                 let splitValue = element.value.split("|");
                 splitValue.forEach(split => {
                     let name = split.split(":")[0];
                     let value = Number(split.split(":")[1]);
-                    // console.log(name)
                     // console.log(value)
-                    obj[name] = value;
-                    arr.push(obj);
-                    obj = {}
+                    if (name !== "fullName") {
+                        obj[name] = value;
+                        arr.push(obj);
+                        obj = {}
+                    }
                 })
             } else {
                 let name = element.value.split(":")[0];
@@ -266,9 +280,48 @@ async function simulatorInputCalc() {
                 arr.push(obj)
             }
         })
-        console.log(arr)
+        arr = objKeyValueCombine(arr)
+
+        let bangleElement = document.querySelector(".accessory-area .accessory-item.bangle");
+        let statsElements = bangleElement.querySelectorAll(".stats");
+        let numberElements = bangleElement.querySelectorAll("input.option");
+
+        statsElements.forEach((statOption, idx) => {
+            if (!statOption.disabled && statOption.value === "stats") {
+                arr.special += Number(numberElements[idx].value)
+            } else if (!statOption.disabled && /str|dex|int/.test(statOption.value)) {
+                arr.str += Number(numberElements[idx].value)
+            }
+        })
+        function objKeyValueCombine(objArr) {
+            const grouped = {};
+            const combinedObj = {};
+
+            // 객체들을 키별로 그룹화
+            objArr.forEach(obj => {
+                for (const key in obj) {
+                    if (!grouped[key]) {
+                        grouped[key] = [];
+                    }
+                    grouped[key].push(obj[key]);
+                }
+            });
+
+            // 그룹화된 데이터를 바탕으로 새로운 객체 생성
+            for (const key in grouped) {
+                if (key === "finalDamagePer") {
+                    // finalDamagePer는 곱셈
+                    combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1);
+                } else {
+                    // 기타 스텟은 덧셈
+                    combinedObj[key] = grouped[key].reduce((acc, val) => acc + val, 0);
+                }
+            }
+            return combinedObj;
+        }
+        return arr;
     }
-    bangleOptionCalc()
+    // console.log(bangleOptionCalc())
 
     /* **********************************************************************************************************************
      * function name		:	armoryLevelCalc()
@@ -302,29 +355,71 @@ async function simulatorInputCalc() {
             }
             result.push(obj)
         }
-
         // console.log(result)
 
         let armorObj = []
+        armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level, result[0].special, "투구")           // 투구
+        armorPartObjCreate(Modules.simulatorData.shoulderlevels, result[1].level, result[1].special, "어깨")           // 어깨
+        armorPartObjCreate(Modules.simulatorData.toplevels, result[2].level, result[2].special, "상의")           // 상의
+        armorPartObjCreate(Modules.simulatorData.bottomlevels, result[3].level, result[3].special, "하의")           // 하의
+        armorPartObjCreate(Modules.simulatorData.gloveslevels, result[4].level, result[4].special, "장갑")           // 장갑
 
-        armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level)           // 투구
-        // armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level)           // 어깨
-        // armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level)           // 상의
-        // armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level)           // 하의
-        // armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level)           // 장갑
-        // armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level)           // 무기
-
-        function armorPartObjCreate(armorData, resultObj) {
-            let obj = armorData.find(part => part.level == resultObj);
-            obj.special = result[0].special;
-            obj.name = result[0].name;
-            armorObj.push(obj)
-
+        if (result[5].level < 100) {
+            let tierElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector(".plus").value;
+            // console.log(Number(normaleUpgradeLevelElements[5].value))
+            let ellaLevelArry1 = [1100, 1200, 1300, 1400, 1500, 1600, 1650, 1665, 1680];
+            let ellaLevelArry2 = [1100, 1200, 1300, 1400, 1500, 1600, 1675, 1695, 1715, 1745];
+            let advancedLevel = Number(advancedUpgradeLevelElements[5].value);
+            if (tierElement === "1") {
+                let normalLevel = ellaLevelArry1[Number(normaleUpgradeLevelElements[5].value)];
+                armorPartObjCreate(Modules.simulatorData.estherEllaLevels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라1
+            } else if (tierElement === "2") {
+                let normalLevel = ellaLevelArry2[Number(normaleUpgradeLevelElements[5].value)]
+                armorPartObjCreate(Modules.simulatorData.estherElla2Levels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라2
+            } else if (tierElement === "0") {
+                armorPartObjCreate(Modules.simulatorData.estherEllaLevels, 0, 0, "무기")           // 엘라0
+            }
+        } else {
+            armorPartObjCreate(Modules.simulatorData.weaponlevels, result[5].level, result[5].stat, "무기")
         }
-        // console.log(armorObj)
 
-        return armorObj
+        function armorPartObjCreate(armorData, resultObj, advancedLevel, tag) {
+            let obj = armorData.find(part => part.level == resultObj);
+            obj.name = tag;
+            if (advancedLevel === 40) {
+                obj.stat = obj.stat * 1.05;
+            } else if (advancedLevel >= 30) {
+                obj.stat = obj.stat * 1.02;
+            }
+            armorObj.push(obj)
+        }
+        let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
+        let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
+
+        function sumStats(stats) {
+            if (!Array.isArray(stats)) {
+                console.error("Error: Input is not an array.");
+                return 0; // or handle the error in a way that suits your application
+            }
+            let totalStat = 0;
+            for (const armor of stats) {
+                if (typeof armor.stat !== 'number') {
+                    console.error(`Error: 'stat' property is not a number in object:`, armor);
+                    continue; // Skip to the next object
+                }
+                totalStat += armor.stat;
+            }
+            return totalStat;
+        }
+
+        let returnObj = {
+            armorStats: sumStats(armorStats),
+            weaponStats: weaponStats.stat,
+        }
+
+        return returnObj;
     }
+    armoryLevelCalc()
     // console.log(armoryLevelCalc())
     /* **********************************************************************************************************************
     * function name         :	armorElixirToObj()
@@ -649,6 +744,21 @@ async function simulatorInputCalc() {
     // console.log(accessoryValueToObj())
 
     /* **********************************************************************************************************************
+    * function name		:	accessoryInputStatsValue
+    * description		: 	악세서리의 힘/민첩/지능값을 가져옴
+    *********************************************************************************************************************** */
+
+    function accessoryInputStatsValue() {
+        let elements = document.querySelectorAll(".accessory-area .accessory-item.accessory input.progress");
+        let stats = 0;
+        elements.forEach(element => {
+            let value = Number(element.value);
+            stats += value;
+        })
+        return stats;
+    }
+
+    /* **********************************************************************************************************************
     * function name		:	objKeyValueSum(objArr)
     * description		: 	악세서리 옵션의 key값이 동일한 경우 합연산 또는 곱연산
     *********************************************************************************************************************** */
@@ -717,6 +827,7 @@ async function simulatorInputCalc() {
             const regex = /<FONT COLOR='#F99200'>(\d+)레벨\s(.*?)(?:\s\(귀속\))?<\/FONT>/;
             const match = gemString.match(regex);
 
+            console.log(gemString)
             if (match) {
                 // 추출된 정보를 사용하여 새로운 문자열을 생성합니다.
                 const originalLevel = match[1];
@@ -810,7 +921,7 @@ async function simulatorInputCalc() {
         })
         return result;
     }
-    console.log(karmaRankToValue())
+    // console.log(karmaRankToValue())
 
     /* **********************************************************************************************************************
      * function name		:	gemAttackBonusValueCalc
@@ -974,6 +1085,25 @@ async function simulatorInputCalc() {
     // console.log(gemAttackBonusValueCalc())
 
     /* **********************************************************************************************************************
+     * function name		:	
+     * description			: 	영웅,전설,없음 아바타에 대한 점수를 계산
+     *********************************************************************************************************************** */
+
+    function avatarPointCalc() {
+
+        let parentElement = document.querySelectorAll(".armor-area .armor-item")[6];
+        let heroElement = parentElement.querySelector(".hero").querySelectorAll("input[type=radio]");
+        let legendaryElement = parentElement.querySelector(".legendary").querySelectorAll("input[type=radio]");
+        let legendValue = Array.from(legendaryElement).filter(radio => radio.checked).length;
+        let heroValue = Array.from(heroElement).filter(radio => radio.checked).length;
+
+        let avatorStat = (legendValue * 2) + heroValue;
+
+        return avatorStat
+    }
+    avatarPointCalc()
+
+    /* **********************************************************************************************************************
      * function name		:	simulatorDataToextractValue
      * description			: 	최종 시뮬레이터 결과를 extractValue에 반영
      *********************************************************************************************************************** */
@@ -983,8 +1113,8 @@ async function simulatorInputCalc() {
 
         extractValue.accObj = accessoryValueToObj();
         extractValue.arkObj = arkPassiveValue();
-        // extractValue.bangleObj = "팔찌 OBJ";
-        // extractValue.armorStatus = "장비 + 악세 힘/민/지 합산값 넣으면 됨"
+        extractValue.bangleObj = bangleOptionCalc();
+        // extractValue.armorStatus = armoryLevelCalc().armorStats + accessoryInputStatsValue();
         // extractValue.defaultObj = "addDamaePer = 무기 품질 계산식 추가해서 결과값 여기에 넣고, weaponAtk = 무기 공격력 받아와서 넣으면 됨 그리고 crit,hase,special 받아와야 함"
         // extractValue.elixirObj = "엘릭서에서 받아온 값 다 넣으면 됨"
         // extractValue.engObj = "각인 finalDamagePer, engBonusPer 받아오면 됨"
@@ -995,6 +1125,7 @@ async function simulatorInputCalc() {
         // extractValue.jobObj = "없애도 됨 필요 없음"
     }
     simulatorDataToExtractValue()
+    console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
@@ -1184,18 +1315,24 @@ async function selectCreate(data) {
                 applyUpgradeOptions(armorElement);
             });
         });
+        let ellaOptions = document.querySelectorAll(".armor-area .armor-item")[5].querySelectorAll(".ella");
 
         function applyUpgradeOptions(armorElement) {
             let upgradeElement = armorElement.parentElement.querySelector(".armor-upgrade");
             let normalUpgradeValue = Number(armorElement.value)
             let tierValue = Number(armorElement.parentElement.querySelector(".plus").value)
-            if (tierValue + normalUpgradeValue * 5 < 1620) {
-                createOptions(upgradeElement, -1);
-            } else if (tierValue + normalUpgradeValue * 5 < 1680) {
+            if (tierValue === 1) {
                 createOptions(upgradeElement, 1, 20);
-            } else if (tierValue + normalUpgradeValue * 5 >= 1680) {
+            } else if (tierValue === 2) {
+                createOptions(upgradeElement, 1, 40);
+            } else if (tierValue + normalUpgradeValue * 5 < 1620) {
+                createOptions(upgradeElement, -1);
+            } else if (tierValue + normalUpgradeValue * 5 < 1660) {
+                createOptions(upgradeElement, 1, 20);
+            } else if (tierValue + normalUpgradeValue * 5 >= 1660) {
                 createOptions(upgradeElement, 1, 40);
             }
+
             applyDataStringToOptions();
         }
 
@@ -1226,6 +1363,68 @@ async function selectCreate(data) {
         }
     }
     armoryEnforceLimite()
+
+    /* **********************************************************************************************************************
+    * function name		:	ellaOptionSetting
+    * description		: 	에스더무기 엘라 옵션에 대한 처리
+    *********************************************************************************************************************** */
+
+    function ellaOptionSetting() {
+        let armorItem = document.querySelectorAll(".armor-area .armor-item")[5];
+        let ellaOptions = armorItem.querySelectorAll(".ella");
+        let tierElement = armorItem.querySelector(".plus");
+        let normalUpgradeElement = armorItem.querySelector(".armor-name");
+
+        // tierElement.addEventListener("change",() => {ellaCheck()})
+        ellaCheck()
+        function ellaCheck() {
+
+            if (getSelectedOptionText(tierElement) === "에스더-엘라1") {
+                normalUpgradeElement.options[7].selected = true;
+                for (let i = 0; i < normalUpgradeElement.options.length; i++) {
+                    if (i <= 4) {
+                        normalUpgradeElement.options[i].disabled = true;
+                    } else if (i >= 8) {
+                        normalUpgradeElement.options[i].disabled = true;
+                    } else {
+                        normalUpgradeElement.options[i].disabled = false;
+                    }
+                }
+            } else if (getSelectedOptionText(tierElement) === "에스더-엘라2") {
+                normalUpgradeElement.options[8].selected = true;
+                for (let i = 0; i < normalUpgradeElement.options.length; i++) {
+                    if (i <= 4) {
+                        normalUpgradeElement.options[i].disabled = true;
+                    } else if (i >= 9) {
+                        normalUpgradeElement.options[i].disabled = true;
+                    } else {
+                        normalUpgradeElement.options[i].disabled = false;
+                    }
+                }
+            } else if (getSelectedOptionText(tierElement) === "에스더-엘라0") {
+                normalUpgradeElement.options[0].selected = true;
+                for (let i = 0; i < normalUpgradeElement.options.length; i++) {
+                    normalUpgradeElement.options[i].disabled = true;
+                }
+            } else {
+                for (let i = 0; i < normalUpgradeElement.options.length; i++) {
+                    normalUpgradeElement.options[i].disabled = false;
+                }
+
+            }
+        }
+        function getSelectedOptionText(selectElement) {
+            if (!selectElement || selectElement.tagName !== 'SELECT') {
+                console.error("Error: Input is not a valid select element.");
+                return null;
+            }
+
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            return selectedOption ? selectedOption.textContent : null;
+        }
+
+    }
+    // ellaOptionSetting()
 
     /* **********************************************************************************************************************
     * function name		:	hyperStageToStarCreate
@@ -1729,7 +1928,7 @@ async function selectCreate(data) {
         let evolutionElement = document.querySelectorAll(".ark-list .title")[0];
         evolutionElement.textContent = levelEvolution;
     }
-    
+
 
 
     /* **********************************************************************************************************************
@@ -2011,9 +2210,19 @@ async function selectCreate(data) {
                     normalUpgradeValue = numberExtract(betweenText.find(text => text.includes("+")));                           // +강화 수치값
                     armoryTierValue = tierValueExtract(betweenText.find(text => /\(\D*\d+\D*\)/.test(text)));                   // 티어 숫자값
                     armoryTierName = betweenText.find(text => /고대|유물|에스더/.test(text));                                   // 고대 유물 티어 풀 문자열
-                    armoryTierName = armoryTierName.match(/(고대|유물|에스더)/g)[0];                                            // 고대,유물 만 추출
+                    armoryTierName = armoryTierName.match(/(고대|유물|에스더)/g)[0];
                     if (armoryTierName !== "에스더") {
                         armoryTierName = `T${armoryTierValue} ${armoryTierName}`;                                               // 등급 풀네임 조합 예) T4 고대
+                    } else if (armoryTierName === "에스더") {
+                        let ellaLevel = Number(betweenText[betweenText.indexOf("엘라 부여") + 1].match(/\d+/g)[0])
+                        if (ellaLevel === 1) {
+                            armoryTierName = "에스더-엘라1"
+                        } else if (ellaLevel === 2) {
+                            armoryTierName = "에스더-엘라2"
+                        } else {
+                            armoryTierName = "에스더-엘라0"
+                        }
+
                     }
                     advancedValue = advancedUpgradeValue(betweenText);                                                          // 상급강화 수치
                     hyperLevel = hyperValueExtract(betweenText).level;                                                          // 초월 N단계
@@ -2168,6 +2377,93 @@ async function selectCreate(data) {
     armoryTierAutoSelect()
 
     /* **********************************************************************************************************************
+    * function name		:	weaponQualitySelect
+    * description	    : 	무기의 품질을 자동으로 선택함
+    *********************************************************************************************************************** */
+
+    function weaponQualitySelect() {
+        let weaponData = data.ArmoryEquipment.find(armory => armory.Type === "무기");
+        let betweenText = betweenTextExtract(weaponData.Tooltip)
+        let qualityString = betweenText.find(between => between.includes("\"qualityValue\": ") && /\d/.test(between))
+        let qualityValue = Number(qualityString.match(/"qualityValue":\s*(\d+)/)[1]);
+        let weaponElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector("select.progress");
+        optionElementAutoCheck(weaponElement, qualityValue, "value")
+    }
+    weaponQualitySelect()
+
+    /* **********************************************************************************************************************
+    * function name		:	avatarAutoSelect
+    * description	    : 	유저의 아바타를 자동으로 선택해줌
+    *********************************************************************************************************************** */
+
+    function avatarAutoSelect() {
+        const partGradeCounts = {
+            "weapon": { "legendary": 0, "hero": 0 },
+            "helmet": { "legendary": 0, "hero": 0 },
+            "armor": { "legendary": 0, "hero": 0 },
+            "pants": { "legendary": 0, "hero": 0 },
+            "combo": { "legendary": 0, "hero": 0 },
+        };
+
+        data.ArmoryAvatars.forEach(avatar => {
+            let betweenText = betweenTextExtract(avatar.Tooltip)
+            if (/무기|머리|상의|하의/.test(avatar.Type)) {
+                let part = avatar.Type.split(" ")[0]; // "무기 아바타" -> "무기"
+                if (part === "무기") {
+                    part = "weapon";
+                } else if (part === "머리") {
+                    part = "helmet";
+                } else if (part === "상의") {
+                    part = "armor";
+                    if (betweenText.find(between => between.includes("상의&하의"))) {
+                        part = "combo";
+                    }
+                } else if (part === "하의") {
+                    part = "pants";
+                }
+                let grade = avatar.Grade;
+                if (grade === "전설") {
+                    grade = "legendary";
+                } else if (grade === "영웅") {
+                    grade = "hero";
+                }
+                if (partGradeCounts[part] && (grade === "legendary" || grade === "hero")) {
+                    partGradeCounts[part][grade]++;
+                }
+            }
+        });
+        // console.log("아바타 부위 등급:", partGradeCounts);
+        let parentElement = document.querySelectorAll(".armor-area .armor-item")[6];
+        let noneElement = parentElement.querySelector(".none").querySelectorAll("input[type=radio]");
+        let heroElement = parentElement.querySelector(".hero").querySelectorAll("input[type=radio]");
+        let legendaryElement = parentElement.querySelector(".legendary").querySelectorAll("input[type=radio]");
+        let weaponIndex = 0;
+        let helmetIndex = 1;
+        let armorIndex = 2;
+        let pantsIndex = 3;
+
+        avatorSelect(partGradeCounts.weapon, weaponIndex)
+        avatorSelect(partGradeCounts.helmet, helmetIndex)
+        avatorSelect(partGradeCounts.armor, armorIndex)
+        avatorSelect(partGradeCounts.pants, pantsIndex)
+        if (partGradeCounts.combo.hero === 1) {
+            avatorSelect(partGradeCounts.combo, armorIndex)
+            avatorSelect(partGradeCounts.combo, pantsIndex)
+        }
+        function avatorSelect(data, partsIndex) {
+            if (data.legendary >= 1) {
+                legendaryElement[partsIndex].checked = true;
+            } else if (data.hero >= 1) {
+                heroElement[partsIndex].checked = true;
+            } else {
+                noneElement[partsIndex].checked = true;
+            }
+        }
+
+    }
+    avatarAutoSelect()
+
+    /* **********************************************************************************************************************
     * function name		:	accessoryAutoSelect()
     * description	    : 	악세서리를 자동으로 선택하는 함수
     *********************************************************************************************************************** */
@@ -2275,15 +2571,29 @@ async function selectCreate(data) {
         tierElement.dispatchEvent(new Event("change"));
 
         let bangleTooltip = data.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
-        let bangleMergeFilter = mergeFilter(Modules.simulatorFilter.bangleOptionData);
+        // console.log(bangleTooltip)
+        // let bangleMergeFilter = mergeFilter(Modules.simulatorFilter.bangleOptionData);
         let optionElements = parentElement.querySelectorAll("select.option");
         let count = 0;
-        // console.log(bangleTooltip)
-
-        let userEquipOption = bangleMergeFilter.filter(filter => bangleTooltip.includes(filter.fullName));
-        userEquipOption.forEach((option, idx) => {
-            optionElementAutoCheck(optionElements[idx], option.name, 'textContent');
-        })
+        let tier3Relic = Modules.simulatorFilter.bangleOptionData.t3RelicData;
+        let tier3Mythic = Modules.simulatorFilter.bangleOptionData.t3MythicData;
+        let tier4Relic = Modules.simulatorFilter.bangleOptionData.t4RelicData;
+        let tier4Mythic = Modules.simulatorFilter.bangleOptionData.t4MythicData;
+        if (tierNumber <= 3 && tierName === "유물") {
+            tierOptionSelect(tier3Relic)
+        } else if (tierNumber <= 3 && tierName === "고대") {
+            tierOptionSelect(tier3Mythic)
+        } else if (tierNumber === 4 && tierName === "유물") {
+            tierOptionSelect(tier4Relic)
+        } else if (tierNumber === 4 && tierName === "고대") {
+            tierOptionSelect(tier4Mythic)
+        }
+        function tierOptionSelect(tierFilter) {
+            let userEquipOption = tierFilter.filter(filter => bangleTooltip.includes(filter.fullName));
+            userEquipOption.forEach((option, idx) => {
+                optionElementAutoCheck(optionElements[idx], option.name, 'textContent');
+            })
+        }
 
         let bangleStats = parentElement.querySelectorAll(".stats");
         let bangleNumbers = parentElement.querySelectorAll("input.option");
@@ -2354,6 +2664,7 @@ async function selectCreate(data) {
     userLevelAccessoryToEnlight()
     collectToKarma()
     enlightValueChange()
+    ellaOptionSetting(); // 엘라옵션 선택 조절
     leafPointToKarmaSelect()
     showLeafInfo()
     userLevelAndArmorToEvolution()
@@ -2386,6 +2697,7 @@ async function selectCreate(data) {
     document.body.addEventListener('change', () => {
         userLevelAndArmorToEvolution();
         userLevelAccessoryToEnlight();
+        ellaOptionSetting(); // 엘라옵션 선택 조절
         showLeafInfo();
         enlightValueChange();
         bangleStatsDisable();
