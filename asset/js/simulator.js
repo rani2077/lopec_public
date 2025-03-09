@@ -94,7 +94,6 @@ async function simulatorInputCalc() {
     function engExtract() {
         let result = []
 
-
         let name = document.querySelectorAll(".engraving-box .engraving-name")
         let grade = document.querySelectorAll(".engraving-box .relic-ico")
         let level = document.querySelectorAll(".engraving-box .grade")
@@ -107,7 +106,6 @@ async function simulatorInputCalc() {
             };
             result.push(obj);
         }
-
         return result
 
     }
@@ -215,27 +213,59 @@ async function simulatorInputCalc() {
     stoneLevelBuffStat()
 
     /* **********************************************************************************************************************
-     * function name		:	bangleStatsNumberCalc() <안쓰는 코드인듯?
-     * description			: 	팔찌 스텟의 힘/민/지 || 치/특/신 값을 가져옴 (사용자의 직업에 사용하지 않는 스텟의 경우 key값을 none으로 처리)
+     * function name		:	bangleStatsNumberCalc()
+     * description			: 	팔찌 스텟의 치/특/신 값을 가져와 api데이터 상의 총 치/특/신값에 반영한 값을 계산
      *********************************************************************************************************************** */
 
     function bangleStatsNumberCalc() {
+        let bangleTooltip = cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
+        let bangleStatsArry = extractValues(bangleTooltip);
+
+        function extractValues(str) {
+            let regex = /(치명|특화|신속)\s*\+(\d+)/g;
+            let matches, results = [];
+
+            while ((matches = regex.exec(str)) !== null) {
+                results.push({
+                    name: matches[1], // "치명", "특화", "신속"
+                    value: parseInt(matches[2], 10) // 추출된 숫자 값을 정수로 변환
+                });
+            }
+            return results;
+        }
+        let bangleDataStats = bangleStatsArry.reduce((sum, stat) => sum + stat.value, 0);
+
+        let originStats = 0;
+        cachedData.ArmoryProfile.Stats.forEach(stat => {
+            if (/치명|특화|신속/.test(stat.Type)) {
+                originStats += Number(stat.Value);
+            }
+        })
+        originStats = originStats - bangleDataStats;
+        // console.log(originStats)
+
         let elements = document.querySelectorAll(".accessory-item.bangle input.option");
+        let statsTagElements = document.querySelectorAll(".accessory-item.bangle select.stats");
         let arr = []
 
-        elements.forEach(element => {
+        elements.forEach((element, idx) => {
             let statsTag = element.parentElement.querySelector(".stats");
+            let dataType = statsTagElements[idx].value;
             let value = Number(element.value);
             let obj = {}
-            if (statsTag.value !== "none") {
+            if (statsTag.value !== "none" && dataType === "stats") {
                 obj[statsTag.value] = value;
+                obj.Type = dataType;
                 arr.push(obj)
             }
         })
-        // console.log(arr)
-        return arr;
+        let customStats = arr.reduce((sum, stat) => sum + stat.stats, 0);
+
+
+        return originStats + customStats;
     }
-    bangleStatsNumberCalc()
+
+    // console.log(bangleStatsNumberCalc())
 
     /* **********************************************************************************************************************
      * function name		:	bangleOptionCalc()
@@ -328,9 +358,29 @@ async function simulatorInputCalc() {
      * description			: 	사용자가 선택한 장비 level stat special 객체 반환
      *********************************************************************************************************************** */
 
-    function leafPointExtract() {
+    function defaultObjChangeValue() {
+        let result = {
+            addDamagePer: defaultObjAddDamgerPerEdit(),
+            weaponAtk: armoryLevelCalc().weaponStats,
+            special: bangleStatsNumberCalc(),
+            haste: 0,
+            crit: 0,
+            // 안사용되는 값들
+            attackPow: 0,
+            baseAttackPow: 0,
+            criticalChancePer: 0,
+            criticalDamagePer: 0,
+            moveSpeed: 0,
+            atkSpeed: 0,
+            skillCool: 0,
+            maxHp: 0,
+            statHp: 0,
+            hpActive: 0,
 
+        }
+        return result
     }
+    // console.log(defaultObjChangeValue())
 
     /* **********************************************************************************************************************
      * function name		:	armoryLevelCalc()
@@ -419,8 +469,8 @@ async function simulatorInputCalc() {
 
         return returnObj;
     }
-    armoryLevelCalc()
-    // console.log(armoryLevelCalc())
+    // armoryLevelCalc()
+    // console.log("장비스텟", armoryLevelCalc())
     /* **********************************************************************************************************************
     * function name         :	armorElixirToObj()
     * description			: 	장비 엘릭서 스텟 수치를 추출함
@@ -457,7 +507,17 @@ async function simulatorInputCalc() {
         });
 
         // 그룹화된 데이터를 바탕으로 새로운 객체 생성
-        const combinedObj = {};
+        const combinedObj = {
+            atkPlus: 0,
+            weaponAtkPlus: 0,
+            atkPer: 0,
+            atkBuff: 0,
+            str: 0,
+            int: 0,
+            dex: 0,
+            stats: 0,
+            finalDamagePer: 1,
+        };
         for (const key in grouped) {
             if (key === "finalDamagePer") {
                 // finalDamagePer는 곱셈
@@ -532,11 +592,15 @@ async function simulatorInputCalc() {
         // 결과 확인
         // console.log("그룹화된 데이터:", grouped);
         // console.log("병합된 객체:", combinedObj);
+        delete combinedObj.name;
+        delete combinedObj.level;
+        delete combinedObj.value;
+        combinedObj.str = combinedObj.stats;
         result = combinedObj
         return result
     }
-    armorElixirToObj()
-    // console.log(armorElixirToObj())
+    // armorElixirToObj()
+    // console.log("엘릭서OBJ", armorElixirToObj())
 
 
     /* **********************************************************************************************************************
@@ -570,12 +634,15 @@ async function simulatorInputCalc() {
             atkBuff: 0,
             stigmaPer: 0,
             stats: 0,
+            str: 0,
+            dex: 0,
+            int: 0,
             finalDamagePer: 1,
         }
 
         elementLevels.forEach((level, idx) => {
             if (idx !== 5) {
-                obj.stats += 560 * Number(level.value) + 40 * (Number(level.value) ** 2)
+                obj.stats += 560 * Number(level.value) + 40 * (Number(level.value) ** 2);
             } else {
                 obj.weaponAtkPlus += 280 * Number(level.value) + 20 * (Number(level.value) ** 2)
             }
@@ -670,26 +737,30 @@ async function simulatorInputCalc() {
             obj.atkPlus += 800
             obj.stigmaPer += 2
         }
+        obj.str = obj.stats
+        obj.dex = obj.stats
+        obj.int = obj.stats
+
 
         // console.log(obj)
         return result = obj;
     }
-    extractHyperStageValue()
+    // console.log("초월OBJ",extractHyperStageValue())
 
     /* **********************************************************************************************************************
      * function name		:	defaultObjAddDamgerPerEdit
-     * description			: 	defaultObj.addDamagePer의 값을 수정하는 함수
+     * description			: 	무기 품질의 값을 이용해 defaultObj.addDamagePer의 값을 수정하는 함수
      *********************************************************************************************************************** */
-    // defaultObj.addDamagePer = 10 + 0.002 * (quality) ** 2
-    // console.log(extractValue.defaultObj.addDamagePer)
 
     function defaultObjAddDamgerPerEdit() {
+        let result = 0;
         let element = document.querySelector(".armor-item select.progress");
         let quality = Number(element.value)
-        extractValue.defaultObj.addDamagePer = 10 + 0.002 * (quality) ** 2
+        // extractValue.defaultObj.addDamagePer = 10 + 0.002 * (quality) ** 2
+        result = 10 + 0.002 * (quality) ** 2;
+        return result;
     }
     defaultObjAddDamgerPerEdit()
-    // console.log(extractValue.defaultObj.addDamagePer)
 
     /* **********************************************************************************************************************
      * function name		:	accessoryValueToObj()
@@ -811,53 +882,25 @@ async function simulatorInputCalc() {
             let gem = element.querySelector(".gems").value;
             let gemDataJSON = cachedData.ArmoryGem.Gems[index];
             gemDataJSON.Level = level;
-            gemDataJSON.Name = modifyGemString(gemDataJSON.Name, level, gem);
-            gemDataJSON.Tooltip = modifyGemStringInJsonString(gemDataJSON.Tooltip, level, gem);
+            gemDataJSON.Name = `<P ALIGN='CENTER'><FONT COLOR='#E3C7A1'>${level}레벨 ${gem}의보석</FONT></P>`;
+            gemDataJSON.Tooltip = modifyGemStringInJsonString(gemDataJSON.Tooltip, level, gem)
+
+            // console.log(modifyGemStringInJsonString(gemDataJSON.Tooltip, level, gem))
             cachedData.ArmoryGem.Gems[index] = gemDataJSON;
-            // console.log(gemDataJSON)
+
         })
 
-
         /* **********************************************************************************************************************
-         * function name		:	modifyGemString
-         * description			: 	보석 문자열 데이터를 변경함. 레벨과 보석이름을 변경할 수 있으며, (귀속) 문자열 유무를 판별하여 분기처리함.
-         *********************************************************************************************************************** */
-        function modifyGemString(gemString, newLevel, newGemName) {
-            // 정규 표현식을 사용하여 레벨, 보석 이름, (귀속) 유무를 추출합니다.
-            const regex = /<FONT COLOR='#F99200'>(\d+)레벨\s(.*?)(?:\s\(귀속\))?<\/FONT>/;
-            const match = gemString.match(regex);
+        * function name		:	modifyGemStringInJsonString
+        * description			: 	주어진 JSON 문자열 내에서 특정 보석의 레벨과 이름을 변경합니다.
+        *                          JSON으로 파싱하지 않고 문자열 조작으로 처리합니다.
+        *                          기존 레벨, 기존 이름 매개변수를 제거하고 정규표현식으로 찾아서 변경하도록 수정
+        * parameter :
+        * jsonString           :   수정할 JSON 형태의 문자열
+        * newLevel             :   변경할 새로운 보석 레벨 (숫자)
+        * newGemName           :   변경할 새로운 보석 이름 (문자열)
+        *********************************************************************************************************************** */
 
-            console.log(gemString)
-            if (match) {
-                // 추출된 정보를 사용하여 새로운 문자열을 생성합니다.
-                const originalLevel = match[1];
-                const originalGemName = match[2];
-                const isBound = match[3] !== undefined; // (귀속)이 존재하면 true, 없으면 false
-
-                let modifiedString;
-                if (isBound) {
-                    modifiedString = gemString.replace(regex, `<FONT COLOR='#F99200'>${newLevel}레벨 ${newGemName} (귀속)</FONT>`);
-                } else {
-                    modifiedString = gemString.replace(regex, `<FONT COLOR='#F99200'>${newLevel}레벨 ${newGemName}</FONT>`);
-                }
-                return modifiedString;
-            } else {
-                // 매칭되는 부분이 없을 경우, 원본 문자열을 그대로 반환합니다.
-                console.error("보석 문자열 패턴이 일치하지 않습니다.");
-                return gemString;
-            }
-        }
-
-        /* **********************************************************************************************************************
-         * function name		:	modifyGemStringInJsonString
-         * description			: 	주어진 JSON 문자열 내에서 특정 보석의 레벨과 이름을 변경합니다.
-         *                          JSON으로 파싱하지 않고 문자열 조작으로 처리합니다.
-         *                          기존 레벨, 기존 이름 매개변수를 제거하고 정규표현식으로 찾아서 변경하도록 수정
-         * parameter :
-         * jsonString           :   수정할 JSON 형태의 문자열
-         * newLevel             :   변경할 새로운 보석 레벨 (숫자)
-         * newGemName           :   변경할 새로운 보석 이름 (문자열)
-         *********************************************************************************************************************** */
         function modifyGemStringInJsonString(jsonString, newLevel, newGemName) {
             // 유효성 검사
             if (typeof jsonString !== 'string' || typeof newLevel !== 'number' || typeof newGemName !== 'string') {
@@ -866,34 +909,24 @@ async function simulatorInputCalc() {
             }
 
             // 1. NameTagBox value의 패턴을 찾습니다.
-            //    - <P ALIGN='CENTER'><FONT COLOR='#F99200'>: 시작 태그
+            //    - <P ALIGN='CENTER'><FONT COLOR='#E3C7A1'>: 시작 태그
             //    - (\d+)레벨 : 숫자를 캡쳐
             //    - (.*?): 레벨 뒤에 오는 임의의 문자열을 캡처합니다. (이것이 보석 이름입니다)
-            //    - (?: \\(귀속\\))?: "(귀속)" 이라는 텍스트가 있을 수도 있고 없을 수도 있습니다.
             //    - <\/FONT><\/P>: 끝 태그
-            const nameTagRegex = /<P ALIGN='CENTER'><FONT COLOR='#F99200'>(\d+)레벨 (.*?)(?: \(귀속\))?<\/FONT><\/P>/;
+            const nameTagRegex = /(\d+)레벨 (.*?의 보석)/g;  // 변경
 
             // 2. SingleTextBox value의 패턴을 찾습니다.
             //   - 보석 레벨 (\d+): 숫자를 캡쳐
-            const gemLevelRegex = /보석 레벨 (\d+)/;
+            const gemLevelRegex = /보석 레벨 (\d+)/g;
 
             let modifiedJsonString = jsonString;
 
             // 1. NameTagBox의 value 수정
-            modifiedJsonString = modifiedJsonString.replace(nameTagRegex, (match, oldLevel, oldGemName, isBound) => {
+            modifiedJsonString = modifiedJsonString.replace(nameTagRegex, (match, oldLevel, oldGemName) => { // 변경
                 // match: 전체 일치 문자열
                 // oldLevel: (\d+) 에 해당하는 기존 레벨
                 // oldGemName: (.*?) 에 해당하는 보석 이름
-                // isBound : 귀속 여부
-                //console.log("nameTagRegex nameTagRegex nameTagRegex match:" , match)
-                //console.log("nameTagRegex nameTagRegex nameTagRegex oldLevel:" , oldLevel)
-                //console.log("nameTagRegex nameTagRegex nameTagRegex oldGemName:" , oldGemName)
-                //console.log("nameTagRegex nameTagRegex nameTagRegex isBound:" , isBound)
-                if (match.includes('(귀속)')) {
-                    return `<P ALIGN='CENTER'><FONT COLOR='#F99200'>${newLevel}레벨 ${newGemName} (귀속)</FONT></P>`;
-                } else {
-                    return `<P ALIGN='CENTER'><FONT COLOR='#F99200'>${newLevel}레벨 ${newGemName}</FONT></P>`;
-                }
+                return `${newLevel}레벨 ${newGemName}의 보석`; //변경
             });
 
             // 2. SingleTextBox의 value 수정
@@ -901,10 +934,57 @@ async function simulatorInputCalc() {
 
             return modifiedJsonString;
         }
+
     }
 
 
     gemInfoChangeToJson()
+
+    console.log("변경된JSON",cachedData)
+
+    /* **********************************************************************************************************************
+     * function name		:	supportGemValueCalc
+     * description			: 	서폿용 보석 스킬명, 스킬수치 구하기
+     *********************************************************************************************************************** */
+
+    function supportGemValueCalc() {
+        let result = {
+            atkBuff: 0,
+            damageBuff: 0
+        }
+        if (!(cachedData.ArmoryGem.Gems == null) && supportCheck == "서폿") {
+
+            cachedData.ArmoryGem.Gems.forEach(function (gem) {
+                let atkBuff = ['천상의 축복', '천상의 연주', '묵법 : 해그리기']
+                let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
+                let gemInfo = JSON.parse(gem.Tooltip)
+                let type = gemInfo.Element_000.value
+                let level
+                if (!(gemInfo.Element_004.value == null)) {
+                    level = gemInfo.Element_004.value.replace(/\D/g, "")
+                }
+                let skill
+                if (!(gemInfo.Element_006.value.Element_001 == undefined)) {
+                    skill = gemInfo.Element_006.value.Element_001.match(/>([^<]+)</)[1]
+                }
+
+                atkBuff.forEach(function (buffSkill) {
+                    if (skill == buffSkill && type.includes("겁화")) {
+                        result.atkBuff += Number(level)
+                    }
+                })
+
+                damageBuff.forEach(function (buffSkill) {
+                    if (skill == buffSkill && type.includes("겁화")) {
+                        result.damageBuff += Number(level)
+                    }
+                })
+
+            })
+        }
+        return result
+    }
+    // console.log(supportGemValueCalc())
 
     /* **********************************************************************************************************************
      * function name		:	karmaRankToValue()
@@ -1065,7 +1145,6 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     let gemCalcResultAllInfo = await calculateGemData(cachedData);
-    // console.log(gemCalcResultAllInfo)
     function gemAttackBonusValueCalc() {
         let result = 0;
         if (gemCalcResultAllInfo && gemCalcResultAllInfo.gemSkillArry) {
@@ -1085,7 +1164,7 @@ async function simulatorInputCalc() {
     // console.log(gemAttackBonusValueCalc())
 
     /* **********************************************************************************************************************
-     * function name		:	
+     * function name		:	avatarPointCalc
      * description			: 	영웅,전설,없음 아바타에 대한 점수를 계산
      *********************************************************************************************************************** */
 
@@ -1099,30 +1178,48 @@ async function simulatorInputCalc() {
 
         let avatorStat = (legendValue * 2) + heroValue;
 
-        return avatorStat
+        return (avatorStat / 100) + 1
     }
-    avatarPointCalc()
+
+    /* **********************************************************************************************************************
+     * function name		:	etcObjChangeValue
+     * description			: 	
+     *********************************************************************************************************************** */
+
+    function etcObjChangeValue() {
+        let result = {
+            expeditionStats: Math.floor((cachedData.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5,
+            gemAttackBonus: gemAttackBonusValueCalc(),
+            abilityAttackBonus: stoneLevelBuffStat(),
+            armorStatus: armoryLevelCalc().armorStats + accessoryInputStatsValue(),
+            avatarStats: avatarPointCalc(),
+            gemsCoolAvg: extractValue.etcObj.gemsCoolAvg,
+            gemCheckFnc: {
+                specialSkill: extractValue.etcObj.gemCheckFnc.specialSkill,
+                originGemValue: extractValue.etcObj.gemCheckFnc.originGemValue,
+                gemValue: extractValue.etcObj.gemCheckFnc.gemValue,
+                gemAvg: extractValue.etcObj.gemCheckFnc.gemAvg,
+                etcAverageValue: extractValue.etcObj.gemCheckFnc.etcAverageValue,
+            }
+        }
+        return result;
+    }
+    // console.log("기타OBJ", etcObjChangeValue())
 
     /* **********************************************************************************************************************
      * function name		:	simulatorDataToextractValue
      * description			: 	최종 시뮬레이터 결과를 extractValue에 반영
      *********************************************************************************************************************** */
     function simulatorDataToExtractValue() {
-        extractValue.gemAttackBonus = gemAttackBonusValueCalc();
-        extractValue.abilityAttackBonus = stoneLevelBuffStat();
-
         extractValue.accObj = accessoryValueToObj();
         extractValue.arkObj = arkPassiveValue();
         extractValue.bangleObj = bangleOptionCalc();
-        // extractValue.armorStatus = armoryLevelCalc().armorStats + accessoryInputStatsValue();
-        // extractValue.defaultObj = "addDamaePer = 무기 품질 계산식 추가해서 결과값 여기에 넣고, weaponAtk = 무기 공격력 받아와서 넣으면 됨 그리고 crit,hase,special 받아와야 함"
-        // extractValue.elixirObj = "엘릭서에서 받아온 값 다 넣으면 됨"
-        // extractValue.engObj = "각인 finalDamagePer, engBonusPer 받아오면 됨"
-        // extractValue.expeditionStats = 725 + "하드코딩, 원정대 레벨 계산식 추가해서 박으면 됨"
-        // extractValue.finalGemDamageRate = "있는거 다 받아오면 됨"
-        // extractValue.gemObj = "위에껀 딜러용이고, 이건 서폿용. 다 받아오면됨"
-        // extractValue.hyperObj = "안에 있는 거 다 받아오면됨"
-        // extractValue.jobObj = "없애도 됨 필요 없음"
+        extractValue.defaultObj = defaultObjChangeValue();
+        extractValue.elixirObj = armorElixirToObj();
+        extractValue.engObj = engOutputCalc(engExtract());
+        extractValue.etcObj = etcObjChangeValue();
+        extractValue.gemObj = supportGemValueCalc();
+        extractValue.hyperObj = extractHyperStageValue();
     }
     simulatorDataToExtractValue()
     console.log("오리진OBJ", extractValue)
@@ -1132,7 +1229,7 @@ async function simulatorInputCalc() {
      * description			: 	최종 스펙포인트 계산식
      *********************************************************************************************************************** */
 
-    let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue)
+    let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue, supportCheck)
 
 }
 simulatorInputCalc()
@@ -1841,7 +1938,7 @@ async function selectCreate(data) {
             let customHtml = "";
             element.innerHTML = "";
             gemCalcResultAllInfo.gemSkillArry.forEach((gemElementObj, idx) => {
-                // console.log(gemElementObj.level)
+                // console.log(gemElementObj)
                 let gemTag = ``;
                 if (/멸화|겁화/.test(gemElementObj.name)) {
                     gemTag = `
@@ -2722,20 +2819,16 @@ async function secondClassCheck(data) {
     *********************************************************************************************************************** */
     let Modules = await importModuleManager()
 
-    let result;
-    let arkResult = ""
-    let enlightenmentArry = [];
-    let enlightenmentCheck = [];
+    let enlightenmentCheck = []
+    let enlightenmentArry = []
     data.ArkPassive.Effects.forEach(function (arkArry) {
         if (arkArry.Name == '깨달음') {
             enlightenmentCheck.push(arkArry)
         }
     })
-    // console.log(enlightenmentArry)
 
 
     function supportArkLeft(arkName) {
-        let result = []
         arkName.map(function (arkNameArry) {
             // 아크이름 남기기
             let arkName = arkNameArry.Description.replace(/<[^>]*>/g, '').replace(/.*티어 /, '')
@@ -2744,13 +2837,12 @@ async function secondClassCheck(data) {
     }
     supportArkLeft(enlightenmentCheck)
 
+    // 직업명 단축이름 출력
+    let arkResult = ""
     try {
         Modules.originFilter.arkFilter.forEach(function (arry) {
             let arkInput = arry.name;
             let arkOutput = arry.initial;
-
-            // console.log(arkInput)
-
             enlightenmentArry.forEach(function (supportCheckArry) {
                 if (supportCheckArry.includes(arkInput) && data.ArkPassive.IsArkPassive) {
                     arkResult = arkOutput
@@ -2761,8 +2853,7 @@ async function secondClassCheck(data) {
     } catch (err) {
         console.log(err)
     }
-    result = arkResult;
-    return result
+    return arkResult
 }
 
 

@@ -1232,9 +1232,6 @@ export let bangleOptionData = {
         { name: "적에게 주는 피해 +1.5%", fullName:"적에게 주는 피해가 1.5% 증가한다.", grade: "하", finalDamagePer:1.015},
         { name: "적에게 주는 피해 +2.0%", fullName:"적에게 주는 피해가 2% 증가한다.", grade: "중", finalDamagePer:1.02},
         { name: "적에게 주는 피해 +2.5%", fullName:"적에게 주는 피해가 2.5% 증가한다.", grade: "상", finalDamagePer:1.025},
-        { name: "공이속 +3%", fullName:"공격 및 이동 속도가 3%", grade: "하", finalDamagePer:1.005},
-        { name: "공이속 +4%", fullName:"공격 및 이동 속도가 4%", grade: "중", finalDamagePer:1.007},
-        { name: "공이속 +5%", fullName:"공격 및 이동 속도가 5%", grade: "상", finalDamagePer:1.009},
         { name: "공격 적중 시 무공 1000, 공이속 1% 증가", fullName:"1000, 공격 및 이동 속도가", grade: "하", finalDamagePer:1.0033, weaponAtkPlus:6000},
         { name: "공격 적중 시 무공 1160, 공이속 1% 증가", fullName:"1160, 공격 및 이동 속도가", grade: "중", finalDamagePer:1.0037, weaponAtkPlus:6960},
         { name: "공격 적중 시 무공 1320, 공이속 1% 증가", fullName:"1320, 공격 및 이동 속도가", grade: "상", finalDamagePer:1.00405, weaponAtkPlus:7920},    
@@ -1259,6 +1256,9 @@ export let bangleOptionData = {
         { name: "무기 공격력 +6300", fullName:"무기 공격력 +6300", grade: "하", finalDamagePer:1.0234, weaponAtkPlus:6300},
         { name: "무기 공격력 +7200", fullName:"무기 공격력 +7200", grade: "중", finalDamagePer:1.0264, weaponAtkPlus:7200},
         { name: "무기 공격력 +8100", fullName:"무기 공격력 +8100", grade: "상", finalDamagePer:1.0297, weaponAtkPlus:8100},
+        { name: "공이속 +3%", fullName:"공격 및 이동 속도가 3%", grade: "하", finalDamagePer:1.005},
+        { name: "공이속 +4%", fullName:"공격 및 이동 속도가 4%", grade: "중", finalDamagePer:1.007},
+        { name: "공이속 +5%", fullName:"공격 및 이동 속도가 5%", grade: "상", finalDamagePer:1.009},
         /////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////
         { name: "아군 공격력 강화 +3.0%", fullName:"아군 공격력 강화 효과 +3.00", grade: "하", atkBuff:3},

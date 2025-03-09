@@ -317,7 +317,7 @@ export function getCharacterProfile(inputName, callback) {
             }
         })
         //defaultObj.hpActive = (defaultObj.hpActive * 0.000071427) + 1
-        defaultObj.hpActive = (defaultObj.hpActive/140)/100+1
+        defaultObj.hpActive = (defaultObj.hpActive / 140) / 100 + 1
 
         // 무기 공격력
         data.ArmoryEquipment.forEach(function (weapon) {
@@ -459,7 +459,7 @@ export function getCharacterProfile(inputName, callback) {
                     accObj.damageBuff += filterArry.value
                 } else if (optionCheck && filterArry.attr == "CarePower") { // 아군 보호막, 회복 강화 %
                     accObj.carePower += filterArry.value
-                } else if (optionCheck && filterArry.attr == "StatHp"){ // 최대 생명력
+                } else if (optionCheck && filterArry.attr == "StatHp") { // 최대 생명력
                     accObj.statHp += filterArry.value
                 }
             })
@@ -842,14 +842,12 @@ export function getCharacterProfile(inputName, callback) {
 
                 if (/^(투구|상의|하의|장갑|어깨|목걸이|귀걸이|반지|)$/.test(armor.Type)) {
 
-
                     let firstExtract = armor.Tooltip.match(/>([^<]+)</g).map(match => match.replace(/[><]/g, ''))
                     let secondExtract = firstExtract.filter(item => item.match(/^(힘|민첩|지능) \+\d+$/));
                     let thirdExtract = secondExtract[0].match(/\d+/)[0]
                     result += Number(thirdExtract)
 
                 }
-
 
             })
             return result
@@ -1179,9 +1177,9 @@ export function getCharacterProfile(inputName, callback) {
             gemsCool = 1
             gemsCoolCount = 1
         }
-        let gemsCoolAvg = ((gemsCool / gemsCoolCount)).toFixed(1)
+        let gemsCoolAvg = Number(((gemsCool / gemsCoolCount)).toFixed(1))
 
-
+        
         /* **********************************************************************************************************************
          * name		              :	  arkObj{}
          * version                :   2.0
@@ -1878,9 +1876,9 @@ export function getCharacterProfile(inputName, callback) {
         let maxHealth = defaultObj.maxHp;
         let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
         let vitalityRate = defaultObj.hpActive;
-        console.log("최대 체력",maxHealth)
-        console.log("기본 체력",baseHealth)
-        console.log("생명 활성력",vitalityRate)
+        console.log("최대 체력", maxHealth)
+        console.log("기본 체력", baseHealth)
+        console.log("생명 활성력", vitalityRate)
         function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
             const cases = [
                 // 1. 펫효과 ON(1.05), 만찬 OFF
@@ -1888,19 +1886,19 @@ export function getCharacterProfile(inputName, callback) {
                     formula: "펫효과 ON, 만찬 OFF",
                     karma: ((maxHealth / (vitalityRate * 1.05)) - baseHealth) / 400
                 },
-                
+
                 // 2. 펫효과 OFF(1.00), 만찬 OFF
                 {
                     formula: "펫효과 OFF, 만찬 OFF",
                     karma: ((maxHealth / vitalityRate) - baseHealth) / 400
                 },
-                
+
                 // 3. 펫효과 ON(1.05), 만찬 ON(+10000, x1.1)
                 {
                     formula: "펫효과 ON, 만찬 ON",
                     karma: ((maxHealth / (vitalityRate * 1.15)) - baseHealth - 10000) / 400
                 },
-                
+
                 // 4. 펫효과 OFF(1.00), 만찬 ON(+10000, x1.1)
                 {
                     formula: "펫효과 OFF, 만찬 ON",
@@ -1908,79 +1906,79 @@ export function getCharacterProfile(inputName, callback) {
                 }
             ];
 
-                    // 각 결과값이 정수에 얼마나 가까운지 계산
-                    const results = cases.map(item => {
-                        const roundedValue = Math.round(item.karma);
-                        return {
-                            formula: item.formula,
-                            karmaExact: item.karma,
-                            karmaRounded: roundedValue,
-                            proximity: Math.abs(item.karma - roundedValue),
-                            isPossible: (item.karma >= -1 && !isNaN(item.karma)) // 음수나 NaN 결과는 불가능
-                        };
-                    });
-                    
-                    // 가능한 결과 중 정수에 가장 가까운 값 선택
-                    const possibleResults = results.filter(result => result.isPossible);
-                    
-                    if (possibleResults.length === 0) {
-                        return {
-                            error: "유효한 결과가 없습니다. 데이터를 확인해주세요."
-                        };
-                    }
-                    
-                    // 30 이하의 결과와 30 초과의 결과 분리
-                    const resultsUnder30 = possibleResults.filter(result => result.karmaExact <= 30);
-                    const resultsOver30 = possibleResults.filter(result => result.karmaExact > 30);
-        
-                    let bestResult;
-        
-                    // 30 이하의 결과가 있으면 그 중에서 정수에 가장 가까운 값 선택
-                    if (resultsUnder30.length > 0) {
-                        resultsUnder30.sort((a, b) => a.proximity - b.proximity);
-                        bestResult = resultsUnder30[0];
-                    } 
-                    // 30 이하의 결과가 없으면 30 초과 결과 중 정수에 가장 가까운 값을 선택 (30으로 제한)
-                    else {
-                        resultsOver30.sort((a, b) => a.proximity - b.proximity);
-                        bestResult = resultsOver30[0];
-                        bestResult.karmaRounded = 30;
-                        bestResult.formula += " (최대 30 레벨로 제한됨)";
-                    }
-        
-                    if (bestResult.karmaExact < 0) {
-                        bestResult.karmaRounded = 0;
-                        bestResult.formula += " (오차 보정: 0으로 처리됨)";
-                    }
-                    // 모든 가능한 결과 포함해서 반환
-                    return {
-                        bestResult: {
-                            formula: bestResult.formula,
-                            karmaLevel: bestResult.karmaRounded,
-                            exactValue: bestResult.karmaExact.toFixed(4),
-                            proximity: bestResult.proximity.toFixed(4)
-                        },
-                        allResults: possibleResults
-                    };
-                }
-                const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
+            // 각 결과값이 정수에 얼마나 가까운지 계산
+            const results = cases.map(item => {
+                const roundedValue = Math.round(item.karma);
+                return {
+                    formula: item.formula,
+                    karmaExact: item.karma,
+                    karmaRounded: roundedValue,
+                    proximity: Math.abs(item.karma - roundedValue),
+                    isPossible: (item.karma >= -1 && !isNaN(item.karma)) // 음수나 NaN 결과는 불가능
+                };
+            });
+
+            // 가능한 결과 중 정수에 가장 가까운 값 선택
+            const possibleResults = results.filter(result => result.isPossible);
+
+            if (possibleResults.length === 0) {
+                return {
+                    error: "유효한 결과가 없습니다. 데이터를 확인해주세요."
+                };
+            }
+
+            // 30 이하의 결과와 30 초과의 결과 분리
+            const resultsUnder30 = possibleResults.filter(result => result.karmaExact <= 30);
+            const resultsOver30 = possibleResults.filter(result => result.karmaExact > 30);
+
+            let bestResult;
+
+            // 30 이하의 결과가 있으면 그 중에서 정수에 가장 가까운 값 선택
+            if (resultsUnder30.length > 0) {
+                resultsUnder30.sort((a, b) => a.proximity - b.proximity);
+                bestResult = resultsUnder30[0];
+            }
+            // 30 이하의 결과가 없으면 30 초과 결과 중 정수에 가장 가까운 값을 선택 (30으로 제한)
+            else {
+                resultsOver30.sort((a, b) => a.proximity - b.proximity);
+                bestResult = resultsOver30[0];
+                bestResult.karmaRounded = 30;
+                bestResult.formula += " (최대 30 레벨로 제한됨)";
+            }
+
+            if (bestResult.karmaExact < 0) {
+                bestResult.karmaRounded = 0;
+                bestResult.formula += " (오차 보정: 0으로 처리됨)";
+            }
+            // 모든 가능한 결과 포함해서 반환
+            return {
+                bestResult: {
+                    formula: bestResult.formula,
+                    karmaLevel: bestResult.karmaRounded,
+                    exactValue: bestResult.karmaExact.toFixed(4),
+                    proximity: bestResult.proximity.toFixed(4)
+                },
+                allResults: possibleResults
+            };
+        }
+        const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
 
         let evolutionkarmaPoint = result.bestResult.karmaLevel
         let evolutionkarmaRank = 0
         if (evolutionkarmaPoint >= 21) {
             evolutionkarmaRank = 6
-        } else if (evolutionkarmaPoint >= 17){
+        } else if (evolutionkarmaPoint >= 17) {
             evolutionkarmaRank = 5
-        } else if (evolutionkarmaPoint >= 13){
+        } else if (evolutionkarmaPoint >= 13) {
             evolutionkarmaRank = 4
-        } else if (evolutionkarmaPoint >= 9){
+        } else if (evolutionkarmaPoint >= 9) {
             evolutionkarmaRank = 3
-        } else if (evolutionkarmaPoint >= 5){
+        } else if (evolutionkarmaPoint >= 5) {
             evolutionkarmaRank = 2
-        } else if (evolutionkarmaPoint >= 1){
+        } else if (evolutionkarmaPoint >= 1) {
             evolutionkarmaRank = 1
         }
-        console.log(evolutionkarmaRank,"랭크",evolutionkarmaPoint,"레벨")
+        console.log(evolutionkarmaRank, "랭크", evolutionkarmaPoint, "레벨")
 
 
         let enlightkarmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14)
@@ -2007,30 +2005,41 @@ export function getCharacterProfile(inputName, callback) {
          * description            :   스펙 포인트 계산을 위한 변수 모음
          * USE_TN                 :   사용
          *********************************************************************************************************************** */
-        let attackBonus = ((gemAttackBonus() + abilityAttackBonus()) / 100) + 1 // 기본 공격력 증가(보석, 어빌리티 스톤)
-        let attackPowResult = (defaultObj.attackPow).toFixed(0) // 최종 공격력 (아드 등 각인 포함된)
-        let criticalDamageResult = (defaultObj.criticalDamagePer + engObj.criticalDamagePer + accObj.criticalDamagePer + bangleObj.criticalDamagePer + arkObj.criticalDamagePer + elixirObj.criticalDamagePer + jobObj.criticalDamagePer) //치명타 피해량
-        let criticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
-        let evolutionDamageResult = (arkObj.evolutionDamage) //진화형 피해
-        let addDamageResult = ((defaultObj.addDamagePer + accObj.addDamagePer + elixirObj.addDamagePer) / 100) + 1 // 추가 피해
-        let finalDamageResult = ((jobObj.finalDamagePer * engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * addDamageResult * elixirObj.finalDamagePer)).toFixed(2) // 적에게 주는 피해
-        let enlightResult = arkObj.enlightenmentDamage // 깨달음 딜증
-        let enlightBuffResult = arkObj.enlightenmentBuff
-        let weaponAtkResult = ((defaultObj.weaponAtk + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus) * accObj.weaponAtkPer)
-        let bangleStatValue = ((bangleObj.str + bangleObj.dex + bangleObj.int) * 0.00011375) / 100 + 1
-
-        let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats() // 최종 힘민지 계산값
+        //let attackPowResult = (defaultObj.attackPow).toFixed(0) // 최종 공격력 (아드 등 각인 포함된)
+        //let criticalDamageResult = (defaultObj.criticalDamagePer + engObj.criticalDamagePer + accObj.criticalDamagePer + bangleObj.criticalDamagePer + arkObj.criticalDamagePer + elixirObj.criticalDamagePer + jobObj.criticalDamagePer) //치명타 피해량
+        //let criticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
+        //let addDamageResult = ((defaultObj.addDamagePer + accObj.addDamagePer + elixirObj.addDamagePer) / 100) + 1 // 추가 피해
+        //let finalDamageResult = ((jobObj.finalDamagePer * engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * addDamageResult * elixirObj.finalDamagePer)).toFixed(2) // 적에게 주는 피해
+        //let weaponAtkResult = ((defaultObj.weaponAtk + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus) * accObj.weaponAtkPer)
+        //let bangleStatValue = ((bangleObj.str + bangleObj.dex + bangleObj.int) * 0.00011375) / 100 + 1
         //let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * arkObj.weaponAtk) // 최종 무공 계산값
-        let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100))) // 최종 무공 계산값
-
         //let totalAtk0 = (Math.sqrt((totalStat * totalWeaponAtk) / 6))
         //let totalAtk1 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
         //let totalAtk2 = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
+        //let bangleCriticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer * bangleObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
+        //let minusBangleWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
+        //let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
+        //let minusBangleFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * elixirObj.finalDamagePer)
+        //1차 환산
+        //let finalValue = (totalAtk * criticalFinalResult * finalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special - bangleObj.crit - bangleObj.haste - bangleObj.special) / 100 * 1) / 100 + 1))
+        ////팔찌 포함 환산
+        //let bangleFinalValue = (totalAtk * criticalFinalResult * bangleFinalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 1) / 100 + 1))
+        ////팔찌 딜증율
+        //let bangleEff = ((((bangleFinalValue - finalValue) / finalValue) + 1) * (bangleObj.finalDamagePerEff) * bangleStatValue * 1.03).toFixed(4)
+
+        let attackBonus = ((gemAttackBonus() + abilityAttackBonus()) / 100) + 1 // 기본 공격력 증가(보석, 어빌리티 스톤)
+        console.log(gemAttackBonus())
+        let evolutionDamageResult = (arkObj.evolutionDamage) //진화형 피해
+        let enlightResult = arkObj.enlightenmentDamage // 깨달음 딜증
+        let enlightBuffResult = arkObj.enlightenmentBuff
+        
+        let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats() // 최종 힘민지 계산값
+        let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100))) // 최종 무공 계산값
+
         let totalAtk = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
 
         let gemsCoolValue = (1 / (1 - (gemCheckFnc().gemAvg) / 100) - 1) + 1
 
-        let bangleCriticalFinalResult = (jobObj.criFinalDamagePer * elixirObj.criFinalDamagePer * bangleObj.criFinalDamagePer) // 치명타시 적에게 주는 피해
         let bangleAddDamageResult = ((defaultObj.addDamagePer + accObj.addDamagePer + elixirObj.addDamagePer) / 100) + 1 // 추가 피해
         let bangleFinalDamageResult = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer) // 적에게 주는 피해
 
@@ -2045,11 +2054,8 @@ export function getCharacterProfile(inputName, callback) {
         let minusElixirFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer)
 
         let minusBangleStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int) * avatarStats()
-        //let minusBangleWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * arkObj.weaponAtk)
         let minusBangleWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
         let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
-        //let minusBangleAtk = ((Math.sqrt((minusBangleStat * minusBangleWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus)) * attackBonus
-        //let minusBangleFinal = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * elixirObj.finalDamagePer)
         let bangleAtkValue = ((totalAtk - minusBangleAtk) / minusBangleAtk) + 1
 
         /* **********************************************************************************************************************
@@ -2058,31 +2064,19 @@ export function getCharacterProfile(inputName, callback) {
          * description            :   모든 변수를 취합하여 스펙 포인트 계산식 작성
          * USE_TN                 :   사용
          *********************************************************************************************************************** */
-        //1차 환산
-        let finalValue = (totalAtk * criticalFinalResult * finalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special - bangleObj.crit - bangleObj.haste - bangleObj.special) / 100 * 1) / 100 + 1))
-        //팔찌 포함 환산
-        let bangleFinalValue = (totalAtk * criticalFinalResult * bangleFinalDamageResult * evolutionDamageResult * enlightResult * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 1) / 100 + 1))
-        //팔찌 딜증율
-        let bangleEff = ((((bangleFinalValue - finalValue) / finalValue) + 1) * (bangleObj.finalDamagePerEff) * bangleStatValue * 1.03).toFixed(4)
         //최종 환산
         let lastFinalValue = ((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
-        console.log(lastFinalValue)
+
         //초월 효율
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let hyperValue = ((lastFinalValue - minusHyperValue) / lastFinalValue * 100).toFixed(2)
+
         //엘릭서 효율
         let minusElixirValue = ((minusElixirAtk) * evolutionDamageResult * minusElixirFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let elixirValue = ((lastFinalValue - minusElixirValue) / lastFinalValue * 100).toFixed(2)
+        
         //팔찌 효율
         let bangleValue = (((1 * bangleAtkValue * bangleObj.finalDamagePer * (((bangleObj.crit + bangleObj.haste + bangleObj.special) / 100 * 2.55) / 100 + 1)) - 1) * 100).toFixed(2)
-        // 점수 변환
-        function formatNumber(num) {
-            if (num >= 10000) {
-                let formatted = (num / 10000).toFixed(1);
-                return formatted.endsWith('.0') ? formatted.slice(0, -2) + '만' : formatted + '만';
-            }
-            return num.toString();
-        }
         /* **********************************************************************************************************************
          * name		              :	  Variable for SpecPoint calc for sup
          * version                :   2.0
@@ -2152,7 +2146,7 @@ export function getCharacterProfile(inputName, callback) {
         highTierSpecPointObj.dealerEvloutionResult = ((evolutionDamageResult - 1) * 100)
         highTierSpecPointObj.dealerEnlightResult = ((enlightResult - 1) * 100)
         highTierSpecPointObj.dealerLeapResult = ((arkObj.leapDamage - 1) * 100)
-        highTierSpecPointObj.dealerBangleResult = (bangleEff * 100 - 100)
+        highTierSpecPointObj.dealerBangleResult = bangleValue
         // 서폿
         highTierSpecPointObj.supportStigmaResult = finalStigmaPer
         highTierSpecPointObj.supportAllTimeBuff = allTimeBuffPower
@@ -2659,8 +2653,8 @@ export function getCharacterProfile(inputName, callback) {
                 gradeObj.info = gradeInfo
 
                 return `
-                            ${grade(gradeIco, gradeInfo)}
-                            ${point(formatNumber(Math.round(lastFinalValue)))}`;
+                    ${grade(gradeIco, gradeInfo)}
+                    ${point(formatNumber(Math.round(lastFinalValue)))}`;
 
             } else if (supportCheck() == "서폿" && data.ArkPassive.IsArkPassive) { //4티어 서폿 스펙포인트
                 if (supportSpecPoint < 4000000) { //브론즈
@@ -2687,11 +2681,21 @@ export function getCharacterProfile(inputName, callback) {
 
 
                 return `
-                            ${grade(gradeIco, gradeInfo)}
-                            ${point(formatNumber(Math.round(supportSpecPoint)))}`;
+                    ${grade(gradeIco, gradeInfo)}
+                    ${point(formatNumber(Math.round(supportSpecPoint)))}`;
 
             }
         }
+
+        // 점수 변환
+        function formatNumber(num) {
+            if (num >= 10000) {
+                let formatted = (num / 10000).toFixed(1);
+                return formatted.endsWith('.0') ? formatted.slice(0, -2) + '만' : formatted + '만';
+            }
+            return num.toString();
+        }
+
 
 
         // group-info HTML
