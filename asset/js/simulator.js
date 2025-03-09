@@ -807,8 +807,6 @@ async function simulatorInputCalc() {
         result = objKeyValueSum(arr, defaultObj); // defaultObj 추가
         result.finalDamagePer *= ((result.criticalChancePer * 0.684) / 100 + 1)
         result.finalDamagePer *= ((result.criticalDamagePer * 0.3625) / 100 + 1)
-        result.finalDamagePer *= ((result.weaponAtkPer * 0.4989) / 100 + 1)
-        result.finalDamagePer *= ((result.atkPer * 0.9246) / 100 + 1)
         return result;
     }
     // accessoryValueToObj()
@@ -988,7 +986,8 @@ async function simulatorInputCalc() {
 
     /* **********************************************************************************************************************
      * function name		:	karmaRankToValue()
-     * description			: 	카르마 랭크를 accObj.weaponAtkPer 수치로 변환
+     * description			: 	카르마 랭크를 accObj.weaponAtkPer 수치로 변환 
+     * description          :   ( #수훈 : accObj가 아니라 arkObj로 넣어야 하는데, accObj로 넣어도 상관은 없음. 쉬운 방향으로 편하게 하고 나한테 말만 해주기. 궁극적으로 아래 함수는 해당 값 반환 하여 .weaponAtk 형태로 어디든 넣으면 됨. 정상 반환 값은 specpoint.js의 1984-1998 랴인 참조.)
      *********************************************************************************************************************** */
 
     function karmaRankToValue() {
