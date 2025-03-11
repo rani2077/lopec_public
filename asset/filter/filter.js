@@ -2475,11 +2475,12 @@ export let classGemFilter = [
             { name: "아이스 애로우", per: 0.135 },
             { name: "엘리멘탈 리액트", per: 0.126 },
             { name: "인페르노", per: 0.11 },
+            { name: "익스플로전", per: 0.11 },
             { name: "숭고한 해일", per: 0.094 },
             { name: "천벌", per: 0.072 },
             { name: "혹한의 부름", per: 0.072 },
             { name: "블레이즈", per: 0.064 },
-            { name: "보정치", per: -0.072 },
+            { name: "보정치", per: -0.182 },
         ],
     },
     {

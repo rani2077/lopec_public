@@ -56,6 +56,8 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     let supportCheck = await secondClassCheck(cachedData);
+    gemInfoChangeToJson()
+
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
     // console.log("오리진OBJ", extractValue)
 
@@ -357,11 +359,11 @@ async function simulatorInputCalc() {
      * function name		:	armoryLevelCalc()
      * description			: 	사용자가 선택한 장비 level stat special 객체 반환
      *********************************************************************************************************************** */
-
+    let armorWeaponStatsObj = armoryLevelCalc()
     function defaultObjChangeValue() {
         let result = {
             addDamagePer: defaultObjAddDamgerPerEdit(),
-            weaponAtk: armoryLevelCalc().weaponStats,
+            weaponAtk: armorWeaponStatsObj.weaponStats,
             special: bangleStatsNumberCalc(),
             haste: 0,
             crit: 0,
@@ -405,7 +407,6 @@ async function simulatorInputCalc() {
             }
             result.push(obj)
         }
-        // console.log(result)
 
         let armorObj = []
         armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level, result[0].special, "투구")           // 투구
@@ -414,38 +415,45 @@ async function simulatorInputCalc() {
         armorPartObjCreate(Modules.simulatorData.bottomlevels, result[3].level, result[3].special, "하의")           // 하의
         armorPartObjCreate(Modules.simulatorData.gloveslevels, result[4].level, result[4].special, "장갑")           // 장갑
 
+        console.log("result[5].level", result[5])
         if (result[5].level < 100) {
             let tierElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector(".plus").value;
-            // console.log(Number(normaleUpgradeLevelElements[5].value))
             let ellaLevelArry1 = [1100, 1200, 1300, 1400, 1500, 1600, 1650, 1665, 1680];
             let ellaLevelArry2 = [1100, 1200, 1300, 1400, 1500, 1600, 1675, 1695, 1715, 1745];
             let advancedLevel = Number(advancedUpgradeLevelElements[5].value);
-            if (tierElement === "1") {
+            if (tierElement === "1") { // 엘라1
                 let normalLevel = ellaLevelArry1[Number(normaleUpgradeLevelElements[5].value)];
                 armorPartObjCreate(Modules.simulatorData.estherEllaLevels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라1
-            } else if (tierElement === "2") {
+            } else if (tierElement === "2") { // 엘라2
                 let normalLevel = ellaLevelArry2[Number(normaleUpgradeLevelElements[5].value)]
                 armorPartObjCreate(Modules.simulatorData.estherElla2Levels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라2
-            } else if (tierElement === "0") {
+            } else if (tierElement === "0") { // 엘라0
                 armorPartObjCreate(Modules.simulatorData.estherEllaLevels, 0, 0, "무기")           // 엘라0
             }
         } else {
-            armorPartObjCreate(Modules.simulatorData.weaponlevels, result[5].level, result[5].stat, "무기")
+            armorPartObjCreate(Modules.simulatorData.weaponlevels, result[5].level, result[5].special, "무기")
         }
 
         function armorPartObjCreate(armorData, resultObj, advancedLevel, tag) {
-            let obj = armorData.find(part => part.level == resultObj);
+            let obj = armorData.find(part => part.level === resultObj);
+            if (!obj) { return; }
+            console.log(obj)
+            obj = { ...obj };
+            console.log(obj)
+
             obj.name = tag;
+
+            let originalStat = obj.stat;
             if (advancedLevel === 40) {
-                obj.stat = obj.stat * 1.05;
+                obj.stat = Math.floor(originalStat * 1.05);
             } else if (advancedLevel >= 30) {
-                obj.stat = obj.stat * 1.02;
+                obj.stat = Math.floor(originalStat * 1.02);
             }
-            armorObj.push(obj)
+            armorObj.push(obj);
         }
+        console.log("armorObj", armorObj)
         let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
         let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
-
         function sumStats(stats) {
             if (!Array.isArray(stats)) {
                 console.error("Error: Input is not an array.");
@@ -466,7 +474,6 @@ async function simulatorInputCalc() {
             armorStats: sumStats(armorStats),
             weaponStats: weaponStats.stat,
         }
-
         return returnObj;
     }
     // armoryLevelCalc()
@@ -807,6 +814,10 @@ async function simulatorInputCalc() {
         result = objKeyValueSum(arr, defaultObj); // defaultObj 추가
         result.finalDamagePer *= ((result.criticalChancePer * 0.684) / 100 + 1)
         result.finalDamagePer *= ((result.criticalDamagePer * 0.3625) / 100 + 1)
+        // console.log("적주피", result.finalDamagePer)
+        // console.log("치적 적용", result.finalDamagePer)
+        // console.log("치피 적용", result.finalDamagePer)
+        // console.log("objKeyValueSum", result)
         return result;
     }
     // accessoryValueToObj()
@@ -847,12 +858,13 @@ async function simulatorInputCalc() {
         // 그룹화된 데이터를 바탕으로 새로운 객체 생성
         const combinedObj = { ...defaultObj }; // 기본 객체 복사
         for (const key in grouped) {
+            // console.log(grouped)
             if (key === "finalDamagePer") {
                 // finalDamagePer는 곱셈
-                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1).toFixed(2));
+                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1));
             } else {
                 // 기타 스텟은 덧셈
-                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc + val, 0).toFixed(2));
+                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc + val, 0));
             }
         }
         //defaultObj에 존재하지만 combinedObj에 존재하지 않는 요소 추가
@@ -934,11 +946,8 @@ async function simulatorInputCalc() {
         }
 
     }
-
-
-    gemInfoChangeToJson()
-
-    console.log("변경된JSON",cachedData)
+    // gemInfoChangeToJson()
+    // console.log("변경된JSON",cachedData)
 
     /* **********************************************************************************************************************
      * function name		:	supportGemValueCalc
@@ -1000,7 +1009,7 @@ async function simulatorInputCalc() {
         })
         return result;
     }
-    // console.log(karmaRankToValue())
+    // console.log("카르마",karmaRankToValue())
 
     /* **********************************************************************************************************************
      * function name		:	gemAttackBonusValueCalc
@@ -1135,6 +1144,8 @@ async function simulatorInputCalc() {
             result.leapDamage += 1
         }
 
+        result.weaponAtkPer = karmaRankToValue();
+
         return result
     }
 
@@ -1190,7 +1201,7 @@ async function simulatorInputCalc() {
             expeditionStats: Math.floor((cachedData.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5,
             gemAttackBonus: gemAttackBonusValueCalc(),
             abilityAttackBonus: stoneLevelBuffStat(),
-            armorStatus: armoryLevelCalc().armorStats + accessoryInputStatsValue(),
+            armorStatus: armorWeaponStatsObj.armorStats + accessoryInputStatsValue(),
             avatarStats: avatarPointCalc(),
             gemsCoolAvg: extractValue.etcObj.gemsCoolAvg,
             gemCheckFnc: {
@@ -1229,6 +1240,7 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue, supportCheck)
+    console.log(originSpecPoint)
 
 }
 simulatorInputCalc()
@@ -2504,7 +2516,7 @@ async function selectCreate(data) {
         data.ArmoryAvatars.forEach(avatar => {
             let betweenText = betweenTextExtract(avatar.Tooltip)
             if (/무기|머리|상의|하의/.test(avatar.Type)) {
-                let part = avatar.Type.split(" ")[0]; // "무기 아바타" -> "무기"
+                let part = avatar.Type.split(" ")[0]; // 예) "무기 아바타" -> "무기"
                 if (part === "무기") {
                     part = "weapon";
                 } else if (part === "머리") {
@@ -2542,7 +2554,7 @@ async function selectCreate(data) {
         avatorSelect(partGradeCounts.helmet, helmetIndex)
         avatorSelect(partGradeCounts.armor, armorIndex)
         avatorSelect(partGradeCounts.pants, pantsIndex)
-        if (partGradeCounts.combo.hero === 1) {
+        if (partGradeCounts.combo.hero === 1 && partGradeCounts.armor.legendary === 0) {
             avatorSelect(partGradeCounts.combo, armorIndex)
             avatorSelect(partGradeCounts.combo, pantsIndex)
         }
@@ -2592,8 +2604,14 @@ async function selectCreate(data) {
                     let matchTooltipArr = [];
                     tooltipData.forEach(tooltip => {
                         let tooltipCheck = accessoryFilter.find(filter => tooltip.includes(filter));
-                        if (tooltipCheck !== undefined) {
+                        if (tooltipCheck !== undefined && !(tooltipCheck.includes("공격력 +195"))) {
                             matchTooltipArr.push(accessoryFilter.find(filter => tooltip.includes(filter)))
+                        } else if (tooltipCheck !== undefined && tooltipCheck.includes("공격력 +195")) {
+                            if ((tooltip.includes("무기 공격력 +195"))) {
+                                matchTooltipArr.push("무기 공격력 +195")
+                            } else {
+                                matchTooltipArr.push("공격력 +195")
+                            }
                         }
                     })
                     if (partsName === "목걸이") {

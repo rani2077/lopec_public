@@ -1633,12 +1633,11 @@ export async function getCharacterProfile(data) {
                 });
                 return result;
             }
-            // console.log(getLevels(gemPerObj, realGemValue))
             let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
                 return gemResultValue + finalGemValue.per * finalGemValue.skillPer
             }, 0)
-
-
+            
+            
             // special skill Value 값 계산식
             function specialSkillCalc() {
                 let result = 0;
@@ -1649,7 +1648,6 @@ export async function getCharacterProfile(data) {
                 })
                 return 1 / result
             }
-
 
             // 홍염,작열 평균레벨
             return {
@@ -1672,6 +1670,7 @@ export async function getCharacterProfile(data) {
         }
     }
     // gemCheckFnc() // <==보석 딜지분 최종값
+    // console.log("잼체크함수",gemCheckFnc())
     etcObj.gemCheckFnc = gemCheckFnc();
 
 

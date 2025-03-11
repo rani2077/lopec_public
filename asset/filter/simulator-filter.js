@@ -766,7 +766,6 @@ export let accessoryOptionData = {
             { name: "추가 피해 +0.39%", grade: "하", addDamagePer: 0.39 },
             { name: "추가 피해 +0.90%", grade: "중", addDamagePer: 0.9 },
             { name: "추가 피해 +1.50%", grade: "상", addDamagePer: 1.5 },
-
             { name: "적에게 주는 피해 +0.30%", grade: "하", finalDamagePer: 0.3 },
             { name: "적에게 주는 피해 +0.69%", grade: "중", finalDamagePer: 0.69 },
             { name: "적에게 주는 피해 +1.15%", grade: "상", finalDamagePer: 1.15 },
@@ -820,6 +819,12 @@ export let accessoryOptionData = {
             { name: "최대 마나 +5", grade: "하", value: 0 },
             { name: "최대 마나 +10", grade: "중", value: 0 },
             { name: "최대 마나 +17", grade: "상", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.15%", grade: "하", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.35%", grade: "중", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.58%", grade: "상", value: 0 },
+            { name: "전투 중 생명력 회복량 +5", grade: "하", value: 0 },
+            { name: "전투 중 생명력 회복량 +13", grade: "하", value: 0 },
+            { name: "전투 중 생명력 회복량 +21", grade: "하", value: 0 },
         ]
     },
 
@@ -887,6 +892,12 @@ export let accessoryOptionData = {
             { name: "최대 마나 +6", grade: "하", value: 0 },
             { name: "최대 마나 +13", grade: "중", value: 0 },
             { name: "최대 마나 +21", grade: "상", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.19%", grade: "하", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.42%", grade: "중", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.70%", grade: "상", value: 0 },
+            { name: "전투 중 생명력 회복량 +8", grade: "하", value: 0 },
+            { name: "전투 중 생명력 회복량 +17", grade: "하", value: 0 },
+            { name: "전투 중 생명력 회복량 +28", grade: "하", value: 0 },
         ]
     },
 
@@ -899,9 +910,9 @@ export let accessoryOptionData = {
             { name: "추가 피해 +0.70%", grade: "하", addDamagePer: 0.7 },
             { name: "추가 피해 +1.60%", grade: "중", addDamagePer: 1.6 },
             { name: "추가 피해 +2.60%", grade: "상", addDamagePer: 2.6 },
-            { name: "적에게 주는 피해 +0.55%", grade: "하", finalDamagePer: 0.55 },
-            { name: "적에게 주는 피해 +1.20%", grade: "중", finalDamagePer: 1.2 },
-            { name: "적에게 주는 피해 +2.00%", grade: "상", finalDamagePer: 2.0 },
+            { name: "적에게 주는 피해 +0.55%", grade: "하", finalDamagePer: 1.0055 },
+            { name: "적에게 주는 피해 +1.20%", grade: "중", finalDamagePer: 1.012 },
+            { name: "적에게 주는 피해 +2.00%", grade: "상", finalDamagePer: 1.02 },
             { name: "낙인력 +2.15%", grade: "하", stigmaPer: 2.15 },
             { name: "낙인력 +4.80%", grade: "중", stigmaPer: 4.8 },
             { name: "낙인력 +8.00%", grade: "상", stigmaPer: 8.0 },
@@ -952,6 +963,12 @@ export let accessoryOptionData = {
             { name: "최대 마나 +6", grade: "하", value: 0 },
             { name: "최대 마나 +15", grade: "중", value: 0 },
             { name: "최대 마나 +30", grade: "상", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.20%", grade: "하", value: 0 },
+            { name: "상태이상 공격 지속시간 +0.50%", grade: "중", value: 0 },
+            { name: "상태이상 공격 지속시간 +1.00%", grade: "상", value: 0 },
+            { name: "전투 중 생명력 회복량 +10", grade: "하", value: 0 },
+            { name: "전투 중 생명력 회복량 +25", grade: "하", value: 0 },
+            { name: "전투 중 생명력 회복량 +50", grade: "하", value: 0 },
         ]
     }
 }
