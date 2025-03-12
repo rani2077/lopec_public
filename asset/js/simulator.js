@@ -1017,6 +1017,7 @@ async function simulatorInputCalc() {
             enlightenmentDamage: 0,
             enlightenmentBuff: 0,
             evolutionDamage: 0,
+            evolutionBuff: 0,
             leapDamage: 0
         }
         let enlightElement = Number(document.querySelector(".ark-area .title-box.enlightenment .title").textContent);
@@ -1025,12 +1026,16 @@ async function simulatorInputCalc() {
 
         if (evolutionElement >= 120) { //  == 진화수치
             result.evolutionDamage += 1.45
+            result.evolutionBuff += 14
         } else if (evolutionElement >= 105) {
             result.evolutionDamage += 1.35
+            result.evolutionBuff += 14
         } else if (evolutionElement >= 90) {
             result.evolutionDamage += 1.30
+            result.evolutionBuff += 14
         } else if (evolutionElement >= 80) {
             result.evolutionDamage += 1.25
+            result.evolutionBuff += 7
         } else if (evolutionElement >= 70) {
             result.evolutionDamage += 1.20
         } else if (evolutionElement >= 60) {
@@ -1228,7 +1233,7 @@ async function simulatorInputCalc() {
         extractValue.hyperObj = extractHyperStageValue();
     }
     simulatorDataToExtractValue()
-    // console.log("오리진OBJ", extractValue)
+    //console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
