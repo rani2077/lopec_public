@@ -415,7 +415,7 @@ async function simulatorInputCalc() {
         armorPartObjCreate(Modules.simulatorData.bottomlevels, result[3].level, result[3].special, "하의")           // 하의
         armorPartObjCreate(Modules.simulatorData.gloveslevels, result[4].level, result[4].special, "장갑")           // 장갑
 
-        console.log("result[5].level", result[5])
+        // console.log("result[5].level", result[5])
         if (result[5].level < 100) {
             let tierElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector(".plus").value;
             let ellaLevelArry1 = [1100, 1200, 1300, 1400, 1500, 1600, 1650, 1665, 1680];
@@ -437,10 +437,7 @@ async function simulatorInputCalc() {
         function armorPartObjCreate(armorData, resultObj, advancedLevel, tag) {
             let obj = armorData.find(part => part.level === resultObj);
             if (!obj) { return; }
-            console.log(obj)
             obj = { ...obj };
-            console.log(obj)
-
             obj.name = tag;
 
             let originalStat = obj.stat;
@@ -451,7 +448,6 @@ async function simulatorInputCalc() {
             }
             armorObj.push(obj);
         }
-        console.log("armorObj", armorObj)
         let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
         let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
         function sumStats(stats) {
@@ -1232,7 +1228,7 @@ async function simulatorInputCalc() {
         extractValue.hyperObj = extractHyperStageValue();
     }
     simulatorDataToExtractValue()
-    console.log("오리진OBJ", extractValue)
+    // console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
@@ -1240,7 +1236,7 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue, supportCheck)
-    console.log(originSpecPoint)
+    // console.log(originSpecPoint)
 
 }
 simulatorInputCalc()
@@ -1412,36 +1408,59 @@ async function selectCreate(data) {
     *********************************************************************************************************************** */
     function armoryEnforceLimite() {
         let armorElements = document.querySelectorAll(".armor-item .armor-name");
+        const armorCounts = {}; // 각 armorElement에 대한 count 값을 저장할 객체
 
-        armorElements.forEach(armorElement => {
-            applyUpgradeOptions(armorElement);
+        armorElements.forEach((armorElement, idx) => {
+            armorCounts[idx] = 0; // 각 요소에 대한 count 값을 0으로 초기화
+            applyUpgradeOptions(armorElement, idx);
 
             armorElement.addEventListener("change", () => {
-                applyUpgradeOptions(armorElement);
+                applyUpgradeOptions(armorElement, idx);
             });
+
             armorElement.parentElement.parentElement.parentElement.querySelector(".plus").addEventListener("change", () => {
-                applyUpgradeOptions(armorElement);
+                applyUpgradeOptions(armorElement, idx);
             });
         });
-        let ellaOptions = document.querySelectorAll(".armor-area .armor-item")[5].querySelectorAll(".ella");
 
-        function applyUpgradeOptions(armorElement) {
-            let upgradeElement = armorElement.parentElement.querySelector(".armor-upgrade");
-            let normalUpgradeValue = Number(armorElement.value)
-            let tierValue = Number(armorElement.parentElement.querySelector(".plus").value)
-            if (tierValue === 1) {
+        function applyUpgradeOptions(armorElement, idx) {
+            const upgradeElement = armorElement.parentElement.querySelector(".armor-upgrade");
+            const normalUpgradeValue = Number(armorElement.value);
+            const tierValue = Number(armorElement.parentElement.querySelector(".plus").value);
+
+            // armorCounts[idx]를 사용하여 해당 요소에 대한 count 값을 가져옵니다.
+            const currentCount = armorCounts[idx];
+
+            if (tierValue === 1 && currentCount !== 1) {
                 createOptions(upgradeElement, 1, 20);
-            } else if (tierValue === 2) {
+                selectLastOption(upgradeElement)
+                armorCounts[idx] = 1; // count 값을 업데이트합니다.
+            } else if (tierValue === 2 && currentCount !== 2) {
                 createOptions(upgradeElement, 1, 40);
-            } else if (tierValue + normalUpgradeValue * 5 < 1620) {
+                selectLastOption(upgradeElement)
+                armorCounts[idx] = 2; // count 값을 업데이트합니다.
+            } else if (tierValue + normalUpgradeValue * 5 < 1620 && currentCount !== 3) {
                 createOptions(upgradeElement, -1);
-            } else if (tierValue + normalUpgradeValue * 5 < 1660) {
+                selectLastOption(upgradeElement)
+                armorCounts[idx] = 3; // count 값을 업데이트합니다.
+            } else if (tierValue + normalUpgradeValue * 5 < 1660 && currentCount !== 4) {
                 createOptions(upgradeElement, 1, 20);
-            } else if (tierValue + normalUpgradeValue * 5 >= 1660) {
+                selectLastOption(upgradeElement)
+                armorCounts[idx] = 4; // count 값을 업데이트합니다.
+            } else if (tierValue + normalUpgradeValue * 5 >= 1660 && currentCount !== 5) {
                 createOptions(upgradeElement, 1, 40);
+                selectLastOption(upgradeElement)
+                armorCounts[idx] = 5; // count 값을 업데이트합니다.
             }
-
             applyDataStringToOptions();
+        }
+        function selectLastOption(selectElement) {
+            if (!(selectElement instanceof HTMLSelectElement)) {
+                return;
+            }
+            if (selectElement.options.length > 0) {
+                selectElement.selectedIndex = selectElement.options.length - 1;
+            }
         }
 
         function createOptions(selectElement, start, end) {
@@ -1549,10 +1568,15 @@ async function selectCreate(data) {
                 let hyper = element.parentElement.querySelector("select.hyper");
                 hyper.innerHTML = "";
                 for (let i = 1; i <= stage * 3; i++) {
-                    let option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i;
-                    hyper.appendChild(option);
+                    if (stage * 3 >= i && i > (stage * 3) - 3) {
+                        let option = document.createElement('option');
+                        if (stage * 3 === i) {
+                            option.selected = true;
+                        }
+                        option.value = i;
+                        option.textContent = i;
+                        hyper.appendChild(option);
+                    }
                 }
             }
             applyDataStringToOptions()
@@ -1739,7 +1763,9 @@ async function selectCreate(data) {
             });
         }
     }
-    document.querySelector(".engraving-area").addEventListener("change", () => { userEngToStoneOption() })
+    document.querySelectorAll(".engraving-area .engraving-name").forEach(element => {
+        element.addEventListener("change", () => { userEngToStoneOption() })
+    })
 
     /* **********************************************************************************************************************
     * function name		:	bangleStatsOptionLimit()
@@ -2373,7 +2399,8 @@ async function selectCreate(data) {
                             if (!armorUpgrade.dataset.initialized && !star.dataset.initialized) {
                                 armorUpgrade.dataset.initialized = 'true'; // 이미 처리된 요소인지 표시
                                 star.dataset.initialized = 'true'; // 이미 처리된 요소인지 표시
-                                armoryEnforceLimite(); // 해당 armor-name에 대한 option을 생성
+                                armorName.dispatchEvent(new Event('change', { bubbles: true }));
+                                // armoryEnforceLimite(); // 해당 armor-name에 대한 option을 생성
                                 hyperStageToStarCreate(); // 초월 N단계를 바탕으로 3N성 생성
                                 setTimeout(() => {
                                     // 옵션이 동적으로 생성되는 시간을 고려하여 setTimeout 사용
@@ -2753,18 +2780,33 @@ async function selectCreate(data) {
     bangleAutoSelect()
 
     /* **********************************************************************************************************************
-    * function name		:	
-    * description	    : 	
+    * function name		:	bangleStatsDisable()
+    * description	    : 	팔찌옵션의 갯수를 기준으로 비활성화 활성화를 결정함
     *********************************************************************************************************************** */
 
     function bangleStatsDisable() {
         let optionElements = document.querySelectorAll(".accessory-area .accessory-item.bangle select.option");
         let bangleStatsName = document.querySelectorAll(".accessory-area .accessory-item.bangle .stats")[2];
         let bangleStatsValue = document.querySelectorAll(".accessory-area .accessory-item.bangle input.option")[2];
-        optionElements.forEach(select => {
+        // bangleStatsName.disabled=true
+        // bangleStatsValue.disabled=true
+
+        let count = 0;
+        optionElements.forEach((select, idx) => {
             if (select.options[select.selectedIndex].textContent === "없음") {
-                bangleStatsName.disabled = false;
-                bangleStatsValue.disabled = false;
+                count++
+            }
+            // console.log(idx)
+            if (idx === optionElements.length - 1) {
+                if (count >= 1) {
+                    bangleStatsName.disabled = false;
+                    bangleStatsValue.disabled = false;
+                } else {
+                    bangleStatsName.disabled = true;
+                    bangleStatsValue.disabled = true;
+                    bangleStatsName[0].selected = true;
+                    bangleStatsValue.value = 0;
+                }
             }
         })
     }
