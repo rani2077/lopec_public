@@ -110,11 +110,9 @@ export async function specPointCalc(inputObj, supportCheck) {
      * description            :   스펙포인트 계산을 위한 변수 모음
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
-    let supportTotalWeaponAtk = ((inputObj.defaultObj.weaponAtk + inputObj.hyperObj.weaponAtkPlus + inputObj.elixirObj.weaponAtkPlus + inputObj.accObj.weaponAtkPlus + inputObj.bangleObj.weaponAtkPlus) * (inputObj.arkObj.weaponAtk + (inputObj.accObj.weaponAtkPer / 100))) // 서폿 무공 계산값
-    let totalAtk4 = (Math.sqrt((totalStat * supportTotalWeaponAtk) / 6)) * attackBonus // 공격력
-    let finalStigmaPer = ((inputObj.jobObj.stigmaPer * ((inputObj.accObj.stigmaPer + inputObj.arkObj.stigmaPer + inputObj.hyperObj.stigmaPer) / 100 + 1)).toFixed(1)) // 낙인력
+    let finalStigmaPer = ((10 * ((inputObj.accObj.stigmaPer + 20 + inputObj.hyperObj.stigmaPer) / 100 + 1)).toFixed(1)) // 낙인력 // inputObj.arkObj.stigmaPer = 20으로 대체
     let atkBuff = (1 + ((inputObj.accObj.atkBuff + inputObj.elixirObj.atkBuff + inputObj.hyperObj.atkBuff + inputObj.bangleObj.atkBuff + inputObj.gemObj.atkBuff) / 100)) // 아공강 
-    let finalAtkBuff = (totalAtk4 * 0.15 * atkBuff) // 최종 공증
+    let finalAtkBuff = (totalAtk * 0.15 * atkBuff) // 최종 공증
     let damageBuff = (inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 아피강
     let hyperBuff = (10 * ((inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
     let statDamageBuff = ((inputObj.defaultObj.special + inputObj.defaultObj.haste) * 0.015) / 100 + 1 // 특화 신속
@@ -134,7 +132,7 @@ export async function specPointCalc(inputObj, supportCheck) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
     //최종 환산
-    let supportSpecPoint = (fullBuffPower ** 2.546) * 20 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonusPer * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1)
+    let supportSpecPoint = (fullBuffPower ** 2.546) * 20 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonus * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1)
     //팔찌 제외 무공&공격력
     let supportTotalWeaponAtkMinusBangle = ((inputObj.defaultObj.weaponAtk + inputObj.hyperObj.weaponAtkPlus + inputObj.elixirObj.weaponAtkPlus + inputObj.accObj.weaponAtkPlus) * (inputObj.arkObj.weaponAtk + (inputObj.accObj.weaponAtkPer / 100)))
     let totalAtk5 = (Math.sqrt((totalStat * supportTotalWeaponAtkMinusBangle) / 6)) * attackBonus

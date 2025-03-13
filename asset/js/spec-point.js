@@ -1876,9 +1876,9 @@ export function getCharacterProfile(inputName, callback) {
         let maxHealth = defaultObj.maxHp;
         let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
         let vitalityRate = defaultObj.hpActive;
-        console.log("최대 체력", maxHealth)
-        console.log("기본 체력", baseHealth)
-        console.log("생명 활성력", vitalityRate)
+        //console.log("최대 체력", maxHealth)
+        //console.log("기본 체력", baseHealth)
+        //console.log("생명 활성력", vitalityRate)
         function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
             const cases = [
                 // 1. 펫효과 ON(1.05), 만찬 OFF
@@ -2033,8 +2033,6 @@ export function getCharacterProfile(inputName, callback) {
         let enlightBuffResult = arkObj.enlightenmentBuff
         
         let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats() // 최종 힘민지 계산값
-        console.log(armorStatus())
-        console.log(avatarStats())
 
         let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100))) // 최종 무공 계산값
         let totalAtk = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (elixirObj.atkPlus + hyperObj.atkPlus + accObj.atkPlus)) * (((accObj.atkPer + elixirObj.atkPer) === 0 ? 1 : (accObj.atkPer + elixirObj.atkPer)) / 100 + 1) * attackBonus
@@ -2043,7 +2041,6 @@ export function getCharacterProfile(inputName, callback) {
 
         let bangleAddDamageResult = ((defaultObj.addDamagePer + accObj.addDamagePer) / 100) + 1 // 추가 피해
         let bangleFinalDamageResult = (engObj.finalDamagePer * accObj.finalDamagePer * hyperObj.finalDamagePer * bangleAddDamageResult * bangleObj.finalDamagePer * elixirObj.finalDamagePer) // 적에게 주는 피해
-        console.log("악세",accObj.finalDamagePer)
 
         let minusHyperStat = (armorStatus() + expeditionStats + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats()
         let minusHyperWeaponAtk = ((defaultObj.weaponAtk + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
@@ -2068,7 +2065,6 @@ export function getCharacterProfile(inputName, callback) {
          *********************************************************************************************************************** */
         //최종 환산
         let lastFinalValue = ((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
-        console.log(lastFinalValue)
         //초월 효율
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let hyperValue = ((lastFinalValue - minusHyperValue) / lastFinalValue * 100).toFixed(2)
@@ -2085,14 +2081,12 @@ export function getCharacterProfile(inputName, callback) {
          * description            :   스펙포인트 계산을 위한 변수 모음
          * USE_TN                 :   사용
          *********************************************************************************************************************** */
-        let supportTotalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100))) // 서폿 무공 계산값
-        let totalAtk4 = (Math.sqrt((totalStat * supportTotalWeaponAtk) / 6)) * attackBonus // 공격력
         let finalStigmaPer = ((jobObj.stigmaPer * ((accObj.stigmaPer + arkObj.stigmaPer + hyperObj.stigmaPer) / 100 + 1)).toFixed(1)) // 낙인력
         let atkBuff = (1 + ((accObj.atkBuff + elixirObj.atkBuff + hyperObj.atkBuff + bangleObj.atkBuff + gemObj.atkBuff) / 100)) // 아공강 
-        let finalAtkBuff = (totalAtk4 * 0.15 * atkBuff) // 최종 공증
+        let finalAtkBuff = (totalAtk * 0.15 * atkBuff) // 최종 공증
         let damageBuff = (accObj.damageBuff + bangleObj.damageBuff + gemObj.damageBuff) / 100 + 1 // 아피강
         let hyperBuff = (10 * ((accObj.damageBuff + bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
-        let statDamageBuff = ((defaultObj.special + defaultObj.haste) * 0.015) / 100 + 1 // 특화 신속
+        let statDamageBuff = ((defaultObj.special + defaultObj.haste + defaultObj.crit) * 0.015) / 100 + 1 // 특화 신속
         let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
         let evolutionBuff = (arkObj.evolutionBuff / 100) // 진화형 피해 버프
 
@@ -2808,7 +2802,7 @@ export function getCharacterProfile(inputName, callback) {
 
             } else if (supportCheck() == "서폿" && data.ArkPassive.IsArkPassive) { //4티어 서폿
 
-                bottomColumn += infoBox("공격력", (totalAtk4).toFixed(0), '공증에 적용되는 기본 공격력')
+                bottomColumn += infoBox("공격력", (totalAtk).toFixed(0), '공증에 적용되는 기본 공격력')
                 bottomColumn += infoBox("낙인력", finalStigmaPer + "%", '낙인 데미지 증가율')
                 bottomColumn += infoBox("특성합", (defaultObj.haste + defaultObj.special), '특신 합계')
                 bottomColumn += infoBox("상시 버프", (allTimeBuffPower).toFixed(2) + "%", '로펙 환산이 적용된 수치입니다.')
