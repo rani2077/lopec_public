@@ -1418,39 +1418,37 @@ async function selectCreate(data) {
                 applyUpgradeOptions(armorElement, idx);
             });
 
-            armorElement.parentElement.parentElement.parentElement.querySelector(".plus").addEventListener("change", () => {
+            // armorElement.parentElement.parentElement.parentElement.querySelector(".plus").addEventListener("change", () => {
+            armorElement.closest(".armor-item").querySelector(".plus").addEventListener("change", () => {
                 applyUpgradeOptions(armorElement, idx);
             });
         });
 
         function applyUpgradeOptions(armorElement, idx) {
-            const upgradeElement = armorElement.parentElement.querySelector(".armor-upgrade");
+            const upgradeElement = armorElement.closest(".name-wrap").querySelector(".armor-upgrade");
             const normalUpgradeValue = Number(armorElement.value);
-            const tierValue = Number(armorElement.parentElement.querySelector(".plus").value);
+            const tierValue = Number(armorElement.closest(".name-wrap").querySelector(".plus").value);
 
-            // armorCounts[idx]를 사용하여 해당 요소에 대한 count 값을 가져옵니다.
-            const currentCount = armorCounts[idx];
-
-            if (tierValue === 1 && currentCount !== 1) {
+            if (tierValue === 1 && armorCounts[idx] !== 1) {
                 createOptions(upgradeElement, 1, 20);
-                selectLastOption(upgradeElement)
-                armorCounts[idx] = 1; // count 값을 업데이트합니다.
-            } else if (tierValue === 2 && currentCount !== 2) {
+                selectLastOption(upgradeElement);
+                armorCounts[idx] = 1;
+            } else if (tierValue === 2 && armorCounts[idx] !== 2) {
                 createOptions(upgradeElement, 1, 40);
-                selectLastOption(upgradeElement)
-                armorCounts[idx] = 2; // count 값을 업데이트합니다.
-            } else if (tierValue + normalUpgradeValue * 5 < 1620 && currentCount !== 3) {
+                selectLastOption(upgradeElement);
+                armorCounts[idx] = 2;
+            } else if (tierValue + normalUpgradeValue * 5 < 1620 && armorCounts[idx] !== 3) {
                 createOptions(upgradeElement, -1);
-                selectLastOption(upgradeElement)
-                armorCounts[idx] = 3; // count 값을 업데이트합니다.
-            } else if (tierValue + normalUpgradeValue * 5 < 1660 && currentCount !== 4) {
+                selectLastOption(upgradeElement);
+                armorCounts[idx] = 3;
+            } else if (1620 <= tierValue + normalUpgradeValue * 5 && tierValue + normalUpgradeValue * 5 < 1660 && armorCounts[idx] !== 4) {
                 createOptions(upgradeElement, 1, 20);
-                selectLastOption(upgradeElement)
-                armorCounts[idx] = 4; // count 값을 업데이트합니다.
-            } else if (tierValue + normalUpgradeValue * 5 >= 1660 && currentCount !== 5) {
+                selectLastOption(upgradeElement);
+                armorCounts[idx] = 4;
+            } else if (tierValue + normalUpgradeValue * 5 >= 1660 && armorCounts[idx] !== 5) {
                 createOptions(upgradeElement, 1, 40);
-                selectLastOption(upgradeElement)
-                armorCounts[idx] = 5; // count 값을 업데이트합니다.
+                selectLastOption(upgradeElement);
+                armorCounts[idx] = 5;
             }
             applyDataStringToOptions();
         }
@@ -2811,6 +2809,148 @@ async function selectCreate(data) {
         })
     }
     bangleStatsDisable()
+
+    /* **********************************************************************************************************************
+    * function name		:	createNumpad
+    * description	    : 	number타입의 input을 쉽게 입력할 수 있도록 넘패드를 생성함
+    *********************************************************************************************************************** */
+
+    function createNumpad() {
+        const numpadTemplate = `
+        <div class="numeric-keyboard-layout js-n-keyboard" id="dynamic-numpad">
+            <ul class="list-num">
+                <li><button type="button" id="1" name="1" value="1" class="btn-num js-btn-number">1</button></li>
+                <li><button type="button" id="2" name="2" value="2" class="btn-num js-btn-number">2</button></li>
+                <li><button type="button" id="3" name="3" value="3" class="btn-num js-btn-number">3</button></li>
+                <li><button type="button" id="4" name="4" value="4" class="btn-num js-btn-number">4</button></li>
+                <li><button type="button" id="5" name="5" value="5" class="btn-num js-btn-number">5</button></li>
+                <li><button type="button" id="6" name="6" value="6" class="btn-num js-btn-number">6</button></li>
+                <li><button type="button" id="7" name="7" value="7" class="btn-num js-btn-number">7</button></li>
+                <li><button type="button" id="8" name="8" value="8" class="btn-num js-btn-number">8</button></li>
+                <li><button type="button" id="9" name="9" value="9" class="btn-num js-btn-number">9</button></li>
+                <li><button type="button" class="btn-num btn-none js-btn-close"><small class="sr-only">닫기</small></button></li>
+                <li><button type="button" id="0" name="0" value="0" class="btn-num js-btn-number">0</button></li>
+                <li><button type="button" id="backspace" name="backspace" class="btn-num btn-none js-btn-backspace">⇚</button></li>
+            </ul>
+        </div>
+    `;
+
+        let currentInput = null;
+        let numpadElement = null; // numpadElement를 전역 변수로 선언
+        let isNumpadActive = false; //Numpad가 활성화되어 있는지 여부를 추적하는 변수 추가
+
+        // Add focus event listener to input
+        document.querySelectorAll('.js-trigger-numpad').forEach(function (input) {
+            input.addEventListener('focus', function (event) {
+
+                if (isNumpadActive) {
+                    removeNumpad(); // 기존 numpad가 활성화된 경우 제거
+                }
+
+                currentInput = this;
+                //Create numpad element
+                const numpad = document.createElement('div');
+                numpad.innerHTML = numpadTemplate;
+                document.body.appendChild(numpad);
+
+                numpadElement = document.getElementById("dynamic-numpad"); // numpadElement를 초기화
+                isNumpadActive = true; //Numpad가 활성화 됐다고 표시
+
+                // Position the numpad below the input and center horizontally
+                const inputRect = currentInput.getBoundingClientRect();
+                const numpadRect = numpadElement.getBoundingClientRect();
+
+                // Calculate the horizontal center of the input
+                const inputCenterX = inputRect.left + window.scrollX + (inputRect.width / 2);
+                // Calculate the left position of the numpad to center it
+                const numpadLeft = inputCenterX - (numpadRect.width / 2);
+
+                numpadElement.style.top = `${inputRect.bottom + window.scrollY + 10}px`;
+                numpadElement.style.left = `${numpadLeft}px`;
+
+                // Add click event listeners to numpad buttons
+                addNumpadListeners();
+                // Add a document-level click listener to handle clicks outside the input and numpad
+                document.addEventListener('click', handleDocumentClick);
+            });
+        });
+        // --------------------------------------------------------
+        // Add button values to input
+        function addNumpadListeners() {
+            document.querySelectorAll('.js-btn-number').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    if (currentInput) {
+                        currentInput.value += this.value;
+                    }
+                });
+            });
+
+            // Backspace button
+            document.querySelectorAll('.js-btn-backspace').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    if (currentInput) {
+                        currentInput.value = currentInput.value.slice(0, -1);
+                    }
+                });
+            });
+            document.querySelectorAll('.js-btn-close').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    if (currentInput) {
+                        removeNumpad()
+                    }
+                });
+            });
+        }
+        // --------------------------------------------------------
+        // Remove numpad
+        function removeNumpad() {
+            if (numpadElement) {
+                numpadElement.remove();
+                numpadElement = null;
+                isNumpadActive = false; //Numpad가 제거 됐다고 표시
+                document.removeEventListener('click', handleDocumentClick);
+                currentInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+
+        // --------------------------------------------------------
+        // Handle clicks outside of input and numpad
+        function handleDocumentClick(event) {
+            if (currentInput && !currentInput.contains(event.target) && numpadElement && !numpadElement.contains(event.target)) {
+                removeNumpad();
+                currentInput.blur();
+                currentInput = null;
+            }
+        }
+    }
+    createNumpad()
+
+    /* **********************************************************************************************************************
+    * function name		:	createSpinButton()
+    * description	    : 	spin-btn클래스를 가진 요소들에 spin버튼을 생성함
+    *********************************************************************************************************************** */
+
+    function createSpinButton() {
+        let spinElement = document.querySelectorAll(".spin-wrapper");
+
+        spinElement.forEach(element => {
+            element.addEventListener("click", (e) => {
+                let btnType = e.target.classList.value;
+                let spinInput = element.querySelector("select.spin-input");
+                let index = spinInput.selectedIndex;
+                let maxIndex = spinInput.options.length - 1;
+                let minIndex = 0;
+                if (btnType === "up" && maxIndex > index) {
+                    spinInput.selectedIndex = index + 1;
+                    spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+                } else if (btnType === "down" && minIndex < index) {
+                    spinInput.selectedIndex = index - 1;
+                    spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            })
+        })
+    }
+    createSpinButton()
 
     /* **********************************************************************************************************************
     * function name		:	

@@ -109,10 +109,7 @@
     .group-equip .number-box .progress {
         position: relative;
         display: block;
-        /* input의 가로세로 크기 지정을 위해 추가 */
         width: 100%;
-        /* 필요에 따라 조절 */
-        cursor: pointer;
     }
 
 
@@ -255,8 +252,134 @@
     .sc-info .armor-area .armor-item:last-child .name-wrap input {
         width: 30px;
     }
-</style>
 
+    .spin-wrapper {
+        display: inline-block;
+        padding-right: 15px;
+        position: relative;
+    }
+
+    .spin-wrapper .up,
+    .spin-wrapper .down {
+        width: 15px;
+        height: 50%;
+        position: absolute;
+        right: 0;
+        background: #f00;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .spin-wrapper .up {
+        top: 0;
+        padding: 2px 3px;
+    }
+    .spin-wrapper .down {
+        bottom: 0;
+        padding: 2px 3px;
+    }
+    .spin-wrapper .up:after,
+    .spin-wrapper .down:after {
+        content:'';
+        width: 100%;
+        height: 100%;
+        background: #000;
+        
+    }
+    .spin-wrapper .up:after {clip-path: polygon(50% 0%, 0 100%, 100% 100%);}
+    .spin-wrapper .down:after {clip-path: polygon(50% 100%, 0 0, 100% 0);}
+
+</style>
+<style>
+    .numeric-keyboard-layout {
+        position: absolute;
+        width: 150px;
+        height: auto;
+        border: 5px solid #C4CCD8;
+        border-radius: 5px;
+        z-index: 100;
+        /* Ensure the numpad is on top */
+    }
+
+    .numeric-keyboard-layout::before {
+        content: '';
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #C4CCD8;
+    }
+
+    @supports (display: grid) {
+        .list-num {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 35px);
+        }
+
+        .list-num>li {
+            display: inline-block;
+        }
+    }
+
+    @supports not (display: grid) {
+        .list-num {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .list-num>li {
+            float: left;
+            width: calc(100% / 3);
+            height: 56px;
+        }
+    }
+
+    .list-num {
+        margin: 0;
+        padding: 0;
+    }
+
+    .list-num>li {
+        background-color: #fff;
+    }
+
+    .list-num>li:not(:last-child) {
+        border-right: 1px solid #E5E5E5;
+        border-bottom: 1px solid #E5E5E5;
+    }
+
+    .list-num>li:last-child {
+        border-right: 1px solid #E5E5E5;
+        border-bottom: 1px solid #E5E5E5;
+    }
+
+    .btn-num {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        border-color: transparent;
+        transition: color 200ms ease-out, background-color 250ms linear;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .btn-num:hover {
+        background-color: #dcdcdc;
+        /* color: #4D4D4D; */
+        transition: color 200ms ease-in, background-color 250ms linear;
+    }
+
+    .btn-none {
+        background-color: lighten(#C4CCD8, 15%);
+    }
+</style>
 
 <body>
     <header></header>
@@ -590,8 +713,12 @@
                                             <option value="1590">T4 유물</option>
                                             <option value="1590">T4 고대</option>
                                         </select>
-                                        <select class="armor-name" data-max="25" data-string="+ ">
-                                        </select>
+                                        <div class="spin-wrapper">
+                                            <select class="armor-name spin-input" data-max="25" data-string="+ ">
+                                            </select>
+                                            <span class="up"></span>
+                                            <span class="down"></span>
+                                        </div>
                                         <span class="upgrade">상급재련</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip"></select>
                                     </div>
@@ -906,8 +1033,8 @@
                                         <option value="T4고대:목걸이">T4고대</option>
                                     </select>
                                     <div class="progress legendary-progressbar arrow-up">
-                                        <input class="progress legendary-progressbar" type="number" class="" min="1000"
-                                            max="50000" value="1500">
+                                        <input class="progress legendary-progressbar js-trigger-numpad" type="number"
+                                            class="" min="1000" max="50000" value="1500">
                                     </div>
                                 </div>
                                 <div class="option-box">
@@ -948,8 +1075,8 @@
                                     </select>
                                     <div class="progress">
                                         <span>↓스텟↓</span>
-                                        <input class="progress legendary-progressbar" type="number" class="" min="1000"
-                                            max="50000" value="1500">
+                                        <input class="progress legendary-progressbar js-trigger-numpad" type="number"
+                                            class="" min="1000" max="50000" value="1500">
                                     </div>
                                 </div>
                                 <div class="option-box">
@@ -989,8 +1116,8 @@
                                         <option value="T4고대:귀걸이">T4고대</option>
                                     </select>
                                     <div class="progress legendary-progressbar arrow-up">
-                                        <input class="progress legendary-progressbar" type="number" class="" min="1000"
-                                            max="50000" value="1500">
+                                        <input class="progress legendary-progressbar js-trigger-numpad" type="number"
+                                            class="" min="1000" max="50000" value="1500">
                                     </div>
                                 </div>
                                 <div class="option-box">
@@ -1029,8 +1156,8 @@
                                         <option value="T4고대:반지">T4고대</option>
                                     </select>
                                     <div class="progress legendary-progressbar arrow-up">
-                                        <input class="progress legendary-progressbar" type="number" class="" min="1000"
-                                            max="50000" value="1500">
+                                        <input class="progress legendary-progressbar js-trigger-numpad" type="number"
+                                            class="" min="1000" max="50000" value="1500">
                                     </div>
                                 </div>
                                 <div class="option-box">
@@ -1070,8 +1197,8 @@
                                         <option value="T4고대:반지">T4고대</option>
                                     </select>
                                     <div class="progress legendary-progressbar arrow-up">
-                                        <input class="progress legendary-progressbar" type="number" class="" min="1000"
-                                            max="50000" value="1500">
+                                        <input class="progress legendary-progressbar js-trigger-numpad" type="number"
+                                            class="" min="1000" max="50000" value="1500">
                                     </div>
                                 </div>
                                 <div class="option-box">
@@ -1144,7 +1271,8 @@
                                                 <option value="dex">민첩</option>
                                                 <option value="int">지능</option>
                                             </select>
-                                            <input type="number" class="option" min="10" max="50000" value="50000">
+                                            <input type="number" class="option js-trigger-numpad" min="10" max="50000"
+                                                value="50000">
                                         </div>
                                         <div class="option-item">
                                             <span class="quality middle">중</span>
@@ -1157,7 +1285,8 @@
                                                 <option value="dex">민첩</option>
                                                 <option value="int">지능</option>
                                             </select>
-                                            <input type="number" class="option" min="10" max="50000" value="50000">
+                                            <input type="number" class="option js-trigger-numpad" min="10" max="50000"
+                                                value="50000">
                                         </div>
                                         <div class="option-item">
                                             <span class="quality middle">중</span>
@@ -1170,7 +1299,8 @@
                                                 <option value="dex">민첩</option>
                                                 <option value="int">지능</option>
                                             </select>
-                                            <input type="number" class="option" min="10" max="50000" value="0">
+                                            <input type="number" class="option js-trigger-numpad" min="10" max="50000"
+                                                value="0">
                                         </div>
                                     </div>
 
