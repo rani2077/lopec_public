@@ -9,377 +9,10 @@
 
     <link rel="stylesheet" href="../asset/css/layout.css">
     <link rel="stylesheet" href="../asset/css/main.css">
+    <link rel="stylesheet" href="../asset/css/simulator.css">
     <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
 </head>
 
-<style>
-    select {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .tooltip {
-        position: absolute;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        padding: 5px;
-        white-space: nowrap;
-        font-size: inherit;
-    }
-
-    .armor-item .plus {
-        max-width: 40px;
-    }
-
-    .sc-info .gem-area .gem-box {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .sc-info .gem-area .gem-box .level {
-        height: calc(44px / 3);
-        position: initial;
-        width: 100%;
-    }
-
-    .sc-info .gem-area .gem-box select {
-        height: calc(44px / 3);
-    }
-
-
-
-    .group-equip .number-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-    }
-
-    .group-equip .number-box .option-wrap {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-    }
-
-    .group-equip .number-box .option-wrap .option-item {
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .group-equip .number-box .option-wrap .quality {
-        padding: 2px;
-        color: #fff;
-    }
-
-
-    input[type=number] {
-        width: 100%;
-        background-color: #ddd;
-        /* Add these lines to show the arrows always */
-        -moz-appearance: textfield;
-        /* Firefox */
-    }
-
-    /* Chrome, Safari, Edge, Opera */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    input[type="number"] {
-        appearance: textfield;
-    }
-
-    input[type=number]::-webkit-outer-spin-button,
-    input[type=number]::-webkit-inner-spin-button {
-        -webkit-appearance: auto !important;
-        opacity: 1;
-    }
-
-    input[type=number]::-ms-expand {
-        /* IE, Edge*/
-        opacity: 1;
-    }
-
-
-
-
-
-    .group-equip .number-box .progress {
-        position: relative;
-        display: block;
-        width: 100%;
-    }
-
-
-
-
-    .sc-info .option-box .option {
-        width: 100%;
-    }
-
-    .sc-info .text-box .elixir-wrap .elixir {
-        width: 100%;
-    }
-
-    .sc-info .accessory-area .accessory-item:last-child {
-        flex-wrap: wrap;
-        height: initial;
-    }
-
-    .sc-info .accessory-area .accessory-item:last-child .number-box {
-        width: calc(100% - 42px - 8px);
-    }
-
-    .sc-info .accessory-area .option-box {
-        width: 100%;
-    }
-
-    .sc-info .group-equip .gem-area {
-        width: calc(100% - 20px);
-    }
-
-    .sc-info .group-equip .simple-option-area {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 20px;
-        height: 75px;
-        background: #f00;
-    }
-
-    .group-equip .simple-option-area .extend-button {
-        cursor: pointer;
-        writing-mode: vertical-lr;
-        padding: 15px 3px 5px;
-        font-size: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        position: relative;
-    }
-
-    .group-equip .simple-option-area .extend-button:after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 5px;
-        width: 10px;
-        height: 10px;
-        background: #000;
-        transition: clip-path 300ms;
-        clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 100%);
-    }
-
-    .group-equip .simple-option-area .extend-button.on:after {
-        clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 50%);
-    }
-
-    .group-equip .simple-option-area .extend-list {
-        background: #0f0;
-        position: absolute;
-        left: 100%;
-        top: 0;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        cursor: pointer;
-        overflow: hidden;
-        padding: 4px 0;
-        width: 0;
-        white-space: nowrap;
-        transition: width 300ms, padding 300ms;
-    }
-
-    .group-equip .simple-option-area .extend-list.on {
-        width: 70px;
-        padding: 4px;
-    }
-
-    .group-equip .simple-option-area .extend-item {
-        padding: 5px 8px;
-        background: rgba(0, 0, 0, 0);
-        transition: background 300ms;
-    }
-
-    .group-equip .simple-option-area .extend-item:hover {
-        background: rgba(0, 0, 0, 0.4);
-    }
-
-    .group-equip .ark-list:not(:first-child) .ark-item:last-child {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .group-equip .ark-list .ark-item .value {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .group-equip .ark-list .ark-item .value i {
-        width: 13px;
-        text-align: center;
-    }
-
-    .group-equip .ark-list .ark-item .radio {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-
-
-    .sc-info .engraving-area .engraving-ico {
-        background: initial;
-        width: 50px;
-    }
-
-
-    .sc-info .armor-area .armor-item:last-child .name-wrap {
-        text-align: center;
-    }
-
-    .sc-info .armor-area .armor-item:last-child .name-wrap>div {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .sc-info .armor-area .armor-item:last-child .name-wrap i,
-    .sc-info .armor-area .armor-item:last-child .name-wrap input {
-        width: 30px;
-    }
-
-    .spin-wrapper {
-        display: inline-block;
-        padding-right: 15px;
-        position: relative;
-    }
-
-    .spin-wrapper .up,
-    .spin-wrapper .down {
-        width: 15px;
-        height: 50%;
-        position: absolute;
-        right: 0;
-        background: #f00;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .spin-wrapper .up {
-        top: 0;
-        padding: 2px 3px;
-    }
-    .spin-wrapper .down {
-        bottom: 0;
-        padding: 2px 3px;
-    }
-    .spin-wrapper .up:after,
-    .spin-wrapper .down:after {
-        content:'';
-        width: 100%;
-        height: 100%;
-        background: #000;
-        
-    }
-    .spin-wrapper .up:after {clip-path: polygon(50% 0%, 0 100%, 100% 100%);}
-    .spin-wrapper .down:after {clip-path: polygon(50% 100%, 0 0, 100% 0);}
-
-</style>
-<style>
-    .numeric-keyboard-layout {
-        position: absolute;
-        width: 150px;
-        height: auto;
-        border: 5px solid #C4CCD8;
-        border-radius: 5px;
-        z-index: 100;
-        /* Ensure the numpad is on top */
-    }
-
-    .numeric-keyboard-layout::before {
-        content: '';
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid #C4CCD8;
-    }
-
-    @supports (display: grid) {
-        .list-num {
-            display: grid;
-            width: 100%;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(4, 35px);
-        }
-
-        .list-num>li {
-            display: inline-block;
-        }
-    }
-
-    @supports not (display: grid) {
-        .list-num {
-            display: table-cell;
-            vertical-align: middle;
-        }
-
-        .list-num>li {
-            float: left;
-            width: calc(100% / 3);
-            height: 56px;
-        }
-    }
-
-    .list-num {
-        margin: 0;
-        padding: 0;
-    }
-
-    .list-num>li {
-        background-color: #fff;
-    }
-
-    .list-num>li:not(:last-child) {
-        border-right: 1px solid #E5E5E5;
-        border-bottom: 1px solid #E5E5E5;
-    }
-
-    .list-num>li:last-child {
-        border-right: 1px solid #E5E5E5;
-        border-bottom: 1px solid #E5E5E5;
-    }
-
-    .btn-num {
-        display: block;
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        border-color: transparent;
-        transition: color 200ms ease-out, background-color 250ms linear;
-        cursor: pointer;
-        font-size: 13px;
-    }
-
-    .btn-num:hover {
-        background-color: #dcdcdc;
-        /* color: #4D4D4D; */
-        transition: color 200ms ease-in, background-color 250ms linear;
-    }
-
-    .btn-none {
-        background-color: lighten(#C4CCD8, 15%);
-    }
-</style>
 
 <body>
     <header></header>
@@ -719,7 +352,7 @@
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
-                                        <span class="upgrade">상급재련</span>
+                                        <span class="upgrade">상재</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip"></select>
                                     </div>
 
@@ -762,7 +395,7 @@
                                         </select>
                                         <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
-                                        <span class="upgrade">상급재련</span>
+                                        <span class="upgrade">상재</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
@@ -805,7 +438,7 @@
                                         </select>
                                         <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
-                                        <span class="upgrade">상급재련</span>
+                                        <span class="upgrade">상재</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
@@ -848,7 +481,7 @@
                                         </select>
                                         <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
-                                        <span class="upgrade">상급재련</span>
+                                        <span class="upgrade">상재</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
@@ -891,7 +524,7 @@
                                         </select>
                                         <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
-                                        <span class="upgrade">상급재련</span>
+                                        <span class="upgrade">상재</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
@@ -937,7 +570,7 @@
                                         </select>
                                         <select class="armor-name" data-max="25" data-string="+ ">
                                         </select>
-                                        <span class="upgrade">상급재련</span>
+                                        <span class="upgrade">상재</span>
                                         <select class="armor-upgrade" name="ArmoryEquipment Tooltip">
                                             <option value="25">+25</option>
                                         </select>
@@ -960,16 +593,10 @@
                             </li>
 
                             <li class="armor-item">
-                                <!-- <div class="img-box radius ultra-background">
-                                    <img src="/asset/image/elixir.png" alt="">
-                                    <span class="progress legendary-progressbar">99</span>
-                                </div> -->
                                 <div class="text-box">
-                                    <div class="name-wrap">
-                                        아바타
-                                    </div>
 
                                     <div class="name-wrap">
+                                        <span class="tag">아바타</span>
                                         <div class="name">
                                             <i></i>
                                             <i>무기</i>
@@ -1000,18 +627,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="img-box radius ultra-background">
-                                    <img src="/asset/image/hyper.png" alt="">
-                                    <span class="progress mythic-progressbar">99</span>
-                                </div>
-                                <div class="text-box">
-                                    <div class="name-wrap">
-                                        초월
-                                    </div>
-                                    <div class="name-wrap">
-                                        평균 21.0성
-                                    </div>
-                                </div> -->
                             </li>
                         </ul>
                     </div>

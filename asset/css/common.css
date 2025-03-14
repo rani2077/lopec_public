@@ -221,7 +221,9 @@ font {
 
 
 
-/* 스켈레톤 배경색상 */
+/* **********************************************************************************************************************
+* description	    : 	스켈레톤 애니메이션 배경색상
+*********************************************************************************************************************** */
 .skeleton {
     /* background: #ccc; */
 
@@ -245,9 +247,9 @@ font {
 
 
 
-/* 물음표 아이콘 */
-
-
+/* **********************************************************************************************************************
+* description	    : 	물음표 아이콘
+*********************************************************************************************************************** */
 .question {
     background: url("../image/question-ico.png") center no-repeat;
     background-size: cover;
@@ -287,7 +289,9 @@ font {
 
 
 
-/* 검색아이콘 */
+/* **********************************************************************************************************************
+* description	    : 	검색 아이콘
+*********************************************************************************************************************** */
 .search-btn {
     position: relative;
     border: none;
@@ -314,8 +318,9 @@ font {
 
 
 
-/* 다크모드 */
-
+/* **********************************************************************************************************************
+* description	    : 	다크모드 설정 모음
+*********************************************************************************************************************** */
 .dark-mode {
     background: #121212;
 }
@@ -361,10 +366,11 @@ html.dark-mode .sc-info .tag-list,
 }
 
 
-.dark-mode .sc-header .logo-group .link-site{
+.dark-mode .sc-header .logo-group .link-site {
     background: url("../image/dark-mode-header-logo.png") center center / contain no-repeat;
 
 }
+
 .dark-mode .sc-container .group-logo .link-logo {
     background: url("../image/dark-mode-logo.png") center center / contain no-repeat;
 }
@@ -479,54 +485,56 @@ html.dark-mode .sc-info .tag-list,
 
 #button-17 .knobs:before,
 #button-17 .knobs span {
-  content: "Light";
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 28px;
-  height: 28px;
-  color: #fff;
-  font-size: 10px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* padding: 9px 4px; */
+    content: "Light";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 28px;
+    height: 28px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding: 9px 4px; */
 }
 
 #button-17 .knobs:before {
-  transition: 0.3s ease all, left 0.5s cubic-bezier(0.18, 0.89, 0.35, 1.15);
-  z-index: 2;
+    transition: 0.3s ease all, left 0.5s cubic-bezier(0.18, 0.89, 0.35, 1.15);
+    z-index: 2;
 }
 
 #button-17 .knobs span {
-  background-color: #03a9f4;
-  border-radius: 2px;
-  transition: 0.3s ease all, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
-  z-index: 1;
+    background-color: #03a9f4;
+    border-radius: 2px;
+    transition: 0.3s ease all, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
+    z-index: 1;
 }
 
-#button-17 .checkbox:checked + .knobs:before {
-  content: "Dark";
-  left: 42px;
+#button-17 .checkbox:checked+.knobs:before {
+    content: "Dark";
+    left: 42px;
 }
 
-#button-17 .checkbox:checked + .knobs span {
-  left: 42px;
-  background-color: #03DAC5;
+#button-17 .checkbox:checked+.knobs span {
+    left: 42px;
+    background-color: #03DAC5;
 }
 
-#button-17 .checkbox:checked ~ .layer {
-  background-color: #333639;
+#button-17 .checkbox:checked~.layer {
+    background-color: #333639;
 }
 
 
 
 
 
-/* 스크롤바 */
+/* **********************************************************************************************************************
+* description	    : 	스크롤바 디자인
+*********************************************************************************************************************** */
 .scrollbar {
     overflow-y: scroll;
     width: 100%;
@@ -564,8 +572,9 @@ html.dark-mode .sc-info .tag-list,
 
 
 
-/* 광고 */
-
+/* **********************************************************************************************************************
+* description	    : 	광고
+*********************************************************************************************************************** */
 .sc-top-ads {
     /* background: #f00; */
     /* opacity: 0; */
@@ -609,8 +618,154 @@ html.dark-mode .sc-info .tag-list,
     position: fixed;
     width: inherit;
     height: inherit;
-    
+
 }
 
 
 
+/* **********************************************************************************************************************
+* description	    : 	input type=number를 쉽게 입력하게 하는 넘패드
+*********************************************************************************************************************** */
+.numeric-keyboard-layout {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    border: 5px solid #C4CCD8;
+    border-radius: 5px;
+    z-index: 100;
+    /* Ensure the numpad is on top */
+}
+
+.numeric-keyboard-layout::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #C4CCD8;
+}
+
+@supports (display: grid) {
+    .list-num {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 35px);
+    }
+
+    .list-num>li {
+        display: inline-block;
+    }
+}
+
+@supports not (display: grid) {
+    .list-num {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .list-num>li {
+        float: left;
+        width: calc(100% / 3);
+        height: 56px;
+    }
+}
+
+.list-num {
+    margin: 0;
+    padding: 0;
+}
+
+.list-num>li {
+    background-color: #fff;
+}
+
+.list-num>li:not(:last-child) {
+    border-right: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.list-num>li:last-child {
+    border-right: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.btn-num {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-color: transparent;
+    transition: color 200ms ease-out, background-color 250ms linear;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-num:hover {
+    background-color: #dcdcdc;
+    /* color: #4D4D4D; */
+    transition: color 200ms ease-in, background-color 250ms linear;
+}
+
+.btn-none {
+    background-color: lighten(#C4CCD8, 15%);
+}
+
+
+
+/* **********************************************************************************************************************
+* description	    : 	select의 드롭박스를 보다 쉽게 전환 가능하게 하는 스핀버튼
+*********************************************************************************************************************** */
+.spin-wrapper {
+    display: inline-block;
+    padding-right: 15px;
+    position: relative;
+    border:1px solid #767676;
+    border-radius:3px;
+}
+.spin-wrapper select{
+    border:none;
+}
+
+.spin-wrapper .up,
+.spin-wrapper .down {
+    width: 15px;
+    height: 50%;
+    position: absolute;
+    right: 0;
+    background: #f00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spin-wrapper .up {
+    top: 0;
+    padding: 2px 3px;
+}
+
+.spin-wrapper .down {
+    bottom: 0;
+    padding: 2px 3px;
+}
+
+.spin-wrapper .up:after,
+.spin-wrapper .down:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: #000;
+
+}
+
+.spin-wrapper .up:after {
+    clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+}
+
+.spin-wrapper .down:after {
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
