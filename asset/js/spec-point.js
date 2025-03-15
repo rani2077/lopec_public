@@ -2065,6 +2065,7 @@ export function getCharacterProfile(inputName, callback) {
          *********************************************************************************************************************** */
         //최종 환산
         let lastFinalValue = ((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
+        console.log(lastFinalValue)
         //초월 효율
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let hyperValue = ((lastFinalValue - minusHyperValue) / lastFinalValue * 100).toFixed(2)
@@ -2104,6 +2105,7 @@ export function getCharacterProfile(inputName, callback) {
          *********************************************************************************************************************** */
         //최종 환산
         let supportSpecPoint = (fullBuffPower ** 2.546) * 20 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1 / (1 - gemsCoolAvg / 100) - 1) + 1)
+        console.log(supportSpecPoint)
         //팔찌 제외 무공&공격력
         let supportTotalWeaponAtkMinusBangle = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
         let totalAtk5 = (Math.sqrt((totalStat * supportTotalWeaponAtkMinusBangle) / 6)) * attackBonus

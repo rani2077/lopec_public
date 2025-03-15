@@ -79,6 +79,7 @@ input[type=number]::-ms-expand {
 .sc-info .gem-area .gem-box {
     display: flex;
     flex-direction: column;
+    width: 48px;
 }
 
 .sc-info .gem-area .gem-box .level {
@@ -110,6 +111,9 @@ input[type=number]::-ms-expand {
     display: none;
 }
 
+.sc-info .accessory-area .accessory-item:not(:nth-child(6)) .img-box img{
+    padding-top: 10px;
+}
 .sc-info .accessory-area .accessory-item:last-child {
     flex-wrap: wrap;
     height: initial;

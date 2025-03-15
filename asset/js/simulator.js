@@ -353,13 +353,13 @@ async function simulatorInputCalc() {
         }
         return arr;
     }
-    // console.log(bangleOptionCalc())
+    // console.log("bangleOptionCalc()",bangleOptionCalc())
 
     /* **********************************************************************************************************************
      * function name		:	armoryLevelCalc()
      * description			: 	사용자가 선택한 장비 level stat special 객체 반환
      *********************************************************************************************************************** */
-    let armorWeaponStatsObj = armoryLevelCalc()
+    let armorWeaponStatsObj = await armoryLevelCalc(Modules)
     function defaultObjChangeValue() {
         let result = {
             addDamagePer: defaultObjAddDamgerPerEdit(),
@@ -389,89 +389,90 @@ async function simulatorInputCalc() {
      * description			: 	사용자가 선택한 장비 level stat special 객체 반환
      *********************************************************************************************************************** */
 
-    function armoryLevelCalc() {
-        let result = []
-        let armorNameElements = document.querySelectorAll(".armor-item .armor-tag");
-        let startLevelElements = document.querySelectorAll(".armor-item .plus");
-        let normaleUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-name");
-        let advancedUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-upgrade");
+    // function armoryLevelCalc() {
+    //     let result = []
+    //     let armorNameElements = document.querySelectorAll(".armor-item .armor-tag");
+    //     let startLevelElements = document.querySelectorAll(".armor-item .plus");
+    //     let normaleUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-name");
+    //     let advancedUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-upgrade");
 
-        for (let i = 0; i < armorNameElements.length; i++) {
-            let startLevelValue = Number(startLevelElements[i].value)
-            let normaleUpgradeLevelValue = Number(normaleUpgradeLevelElements[i].value * 5)
-            let advancedUpgradeLevelValue = Number(advancedUpgradeLevelElements[i].value)
-            let obj = {
-                name: armorNameElements[i].textContent,
-                level: startLevelValue + normaleUpgradeLevelValue + advancedUpgradeLevelValue,
-                special: advancedUpgradeLevelValue
-            }
-            result.push(obj)
-        }
+    //     for (let i = 0; i < armorNameElements.length; i++) {
+    //         let startLevelValue = Number(startLevelElements[i].value)
+    //         let normaleUpgradeLevelValue = Number(normaleUpgradeLevelElements[i].value * 5)
+    //         let advancedUpgradeLevelValue = Number(advancedUpgradeLevelElements[i].value)
+    //         let obj = {
+    //             name: armorNameElements[i].textContent,
+    //             level: startLevelValue + normaleUpgradeLevelValue + advancedUpgradeLevelValue,
+    //             special: advancedUpgradeLevelValue
+    //         }
+    //         result.push(obj)
+    //     }
 
-        let armorObj = []
-        armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level, result[0].special, "투구")           // 투구
-        armorPartObjCreate(Modules.simulatorData.shoulderlevels, result[1].level, result[1].special, "어깨")           // 어깨
-        armorPartObjCreate(Modules.simulatorData.toplevels, result[2].level, result[2].special, "상의")           // 상의
-        armorPartObjCreate(Modules.simulatorData.bottomlevels, result[3].level, result[3].special, "하의")           // 하의
-        armorPartObjCreate(Modules.simulatorData.gloveslevels, result[4].level, result[4].special, "장갑")           // 장갑
+    //     let armorObj = []
+    //     armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level, result[0].special, "투구")           // 투구
+    //     armorPartObjCreate(Modules.simulatorData.shoulderlevels, result[1].level, result[1].special, "어깨")           // 어깨
+    //     armorPartObjCreate(Modules.simulatorData.toplevels, result[2].level, result[2].special, "상의")           // 상의
+    //     armorPartObjCreate(Modules.simulatorData.bottomlevels, result[3].level, result[3].special, "하의")           // 하의
+    //     armorPartObjCreate(Modules.simulatorData.gloveslevels, result[4].level, result[4].special, "장갑")           // 장갑
 
-        // console.log("result[5].level", result[5])
-        if (result[5].level < 100) {
-            let tierElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector(".plus").value;
-            let ellaLevelArry1 = [1100, 1200, 1300, 1400, 1500, 1600, 1650, 1665, 1680];
-            let ellaLevelArry2 = [1100, 1200, 1300, 1400, 1500, 1600, 1675, 1695, 1715, 1745];
-            let advancedLevel = Number(advancedUpgradeLevelElements[5].value);
-            if (tierElement === "1") { // 엘라1
-                let normalLevel = ellaLevelArry1[Number(normaleUpgradeLevelElements[5].value)];
-                armorPartObjCreate(Modules.simulatorData.estherEllaLevels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라1
-            } else if (tierElement === "2") { // 엘라2
-                let normalLevel = ellaLevelArry2[Number(normaleUpgradeLevelElements[5].value)]
-                armorPartObjCreate(Modules.simulatorData.estherElla2Levels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라2
-            } else if (tierElement === "0") { // 엘라0
-                armorPartObjCreate(Modules.simulatorData.estherEllaLevels, 0, 0, "무기")           // 엘라0
-            }
-        } else {
-            armorPartObjCreate(Modules.simulatorData.weaponlevels, result[5].level, result[5].special, "무기")
-        }
+    //     // console.log("result[5].level", result[5])
+    //     if (result[5].level < 100) {
+    //         let tierElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector(".plus").value;
+    //         let ellaLevelArry1 = [1100, 1200, 1300, 1400, 1500, 1600, 1650, 1665, 1680];
+    //         let ellaLevelArry2 = [1100, 1200, 1300, 1400, 1500, 1600, 1675, 1695, 1715, 1745];
+    //         let advancedLevel = Number(advancedUpgradeLevelElements[5].value);
+    //         if (tierElement === "1") { // 엘라1
+    //             let normalLevel = ellaLevelArry1[Number(normaleUpgradeLevelElements[5].value)];
+    //             armorPartObjCreate(Modules.simulatorData.estherEllaLevels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라1
+    //         } else if (tierElement === "2") { // 엘라2
+    //             let normalLevel = ellaLevelArry2[Number(normaleUpgradeLevelElements[5].value)]
+    //             armorPartObjCreate(Modules.simulatorData.estherElla2Levels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라2
+    //         } else if (tierElement === "0") { // 엘라0
+    //             armorPartObjCreate(Modules.simulatorData.estherEllaLevels, 0, 0, "무기")           // 엘라0
+    //         }
+    //     } else {
+    //         armorPartObjCreate(Modules.simulatorData.weaponlevels, result[5].level, result[5].special, "무기")
+    //     }
 
-        function armorPartObjCreate(armorData, resultObj, advancedLevel, tag) {
-            let obj = armorData.find(part => part.level === resultObj);
-            if (!obj) { return; }
-            obj = { ...obj };
-            obj.name = tag;
+    //     function armorPartObjCreate(armorData, resultObj, advancedLevel, tag) {
+    //         let obj = armorData.find(part => part.level === resultObj);
+    //         if (!obj) { return; }
+    //         obj = { ...obj };
+    //         obj.name = tag;
 
-            let originalStat = obj.stat;
-            if (advancedLevel === 40) {
-                obj.stat = Math.floor(originalStat * 1.05);
-            } else if (advancedLevel >= 30) {
-                obj.stat = Math.floor(originalStat * 1.02);
-            }
-            armorObj.push(obj);
-        }
-        let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
-        let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
-        function sumStats(stats) {
-            if (!Array.isArray(stats)) {
-                console.error("Error: Input is not an array.");
-                return 0; // or handle the error in a way that suits your application
-            }
-            let totalStat = 0;
-            for (const armor of stats) {
-                if (typeof armor.stat !== 'number') {
-                    console.error(`Error: 'stat' property is not a number in object:`, armor);
-                    continue; // Skip to the next object
-                }
-                totalStat += armor.stat;
-            }
-            return totalStat;
-        }
+    //         let originalStat = obj.stat;
+    //         if (advancedLevel === 40) {
+    //             obj.stat = Math.floor(originalStat * 1.05);
+    //         } else if (advancedLevel >= 30) {
+    //             obj.stat = Math.floor(originalStat * 1.02);
+    //         }
+    //         armorObj.push(obj);
+    //     }
+    //     let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
+    //     let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
+    //     function sumStats(stats) {
+    //         if (!Array.isArray(stats)) {
+    //             console.error("Error: Input is not an array.");
+    //             return 0; // or handle the error in a way that suits your application
+    //         }
+    //         let totalStat = 0;
+    //         for (const armor of stats) {
+    //             if (typeof armor.stat !== 'number') {
+    //                 console.error(`Error: 'stat' property is not a number in object:`, armor);
+    //                 continue; // Skip to the next object
+    //             }
+    //             totalStat += armor.stat;
+    //         }
+    //         return totalStat;
+    //     }
 
-        let returnObj = {
-            armorStats: sumStats(armorStats),
-            weaponStats: weaponStats.stat,
-        }
-        return returnObj;
-    }
+    //     let returnObj = {
+    //         armorStats: sumStats(armorStats),
+    //         weaponStats: weaponStats.stat,
+    //         level:armorObj,
+    //     }
+    //     return returnObj;
+    // }
     // armoryLevelCalc()
     // console.log("장비스텟", armoryLevelCalc())
     /* **********************************************************************************************************************
@@ -1018,6 +1019,7 @@ async function simulatorInputCalc() {
             enlightenmentBuff: 0,
             evolutionDamage: 0,
             evolutionBuff: 0,
+            stigmaPer: 0,
             leapDamage: 0
         }
         let enlightElement = Number(document.querySelector(".ark-area .title-box.enlightenment .title").textContent);
@@ -1027,9 +1029,11 @@ async function simulatorInputCalc() {
         if (evolutionElement >= 120) { //  == 진화수치
             result.evolutionDamage += 1.45
             result.evolutionBuff += 14
+            result.stigmaPer += 20
         } else if (evolutionElement >= 105) {
             result.evolutionDamage += 1.35
             result.evolutionBuff += 14
+            result.stigmaPer += 10
         } else if (evolutionElement >= 90) {
             result.evolutionDamage += 1.30
             result.evolutionBuff += 14
@@ -1435,11 +1439,11 @@ async function selectCreate(data) {
             const tierValue = Number(armorElement.closest(".name-wrap").querySelector(".plus").value);
 
             if (tierValue === 1 && armorCounts[idx] !== 1) {
-                createOptions(upgradeElement, 1, 20);
+                createOptions(upgradeElement, 0, 20);
                 selectLastOption(upgradeElement);
                 armorCounts[idx] = 1;
             } else if (tierValue === 2 && armorCounts[idx] !== 2) {
-                createOptions(upgradeElement, 1, 40);
+                createOptions(upgradeElement, 0, 40);
                 selectLastOption(upgradeElement);
                 armorCounts[idx] = 2;
             } else if (tierValue + normalUpgradeValue * 5 < 1620 && armorCounts[idx] !== 3) {
@@ -1447,11 +1451,11 @@ async function selectCreate(data) {
                 selectLastOption(upgradeElement);
                 armorCounts[idx] = 3;
             } else if (1620 <= tierValue + normalUpgradeValue * 5 && tierValue + normalUpgradeValue * 5 < 1660 && armorCounts[idx] !== 4) {
-                createOptions(upgradeElement, 1, 20);
+                createOptions(upgradeElement, 0, 20);
                 selectLastOption(upgradeElement);
                 armorCounts[idx] = 4;
             } else if (tierValue + normalUpgradeValue * 5 >= 1660 && armorCounts[idx] !== 5) {
-                createOptions(upgradeElement, 1, 40);
+                createOptions(upgradeElement, 0, 40);
                 selectLastOption(upgradeElement);
                 armorCounts[idx] = 5;
             }
@@ -1571,15 +1575,10 @@ async function selectCreate(data) {
                 let hyper = element.parentElement.querySelector("select.hyper");
                 hyper.innerHTML = "";
                 for (let i = 1; i <= stage * 3; i++) {
-                    if (stage * 3 >= i && i > (stage * 3) - 3) {
-                        let option = document.createElement('option');
-                        if (stage * 3 === i) {
-                            option.selected = true;
-                        }
-                        option.value = i;
-                        option.textContent = i;
-                        hyper.appendChild(option);
-                    }
+                    let option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    hyper.appendChild(option);
                 }
             }
             applyDataStringToOptions()
@@ -1803,6 +1802,7 @@ async function selectCreate(data) {
     }
     bangleStatsOptionLimit()
 
+
     /* **********************************************************************************************************************
     * function name		:	userLevelAccessoryToEnlight()
     * description	    : 	유저레벨정보와 악세서리를 기반으로 깨달음 수치 계산
@@ -1842,7 +1842,6 @@ async function selectCreate(data) {
     * function name		:	collectToKarma()
     * description	    : 	내실 및 카르마 수치 계산
     *********************************************************************************************************************** */
-
     function collectToKarma() {
         let collectElements = document.querySelectorAll(".ark-list.enlightenment .ark-item input[type=checkbox]");
         let level = stringToNumber(data.ArmoryProfile.ItemAvgLevel);
@@ -1851,33 +1850,40 @@ async function selectCreate(data) {
             const number = parseFloat(commaRemoved);
             return number;
         }
+
+        // let sumLevel = 0;
+        // weaponLevelObj.forEach(weapon => {
+        //     sumLevel += weapon.level;
+        // });
+        // let avgLevel = sumLevel / weaponLevelObj.length;
+        // console.log(avgLevel)
         if (level < 1670) {
-            collectElements.forEach((element, idx) => {
-                let collectValue = data.ArkPassive.Points[1].Value - userLevelAccessoryToEnlight();
-                if (collectValue === 14) {
-                    element.checked = true;
-                } else if (collectValue === 11) {
-                    element.checked = true;
-                    collectElements[2].checked = false;
-                } else if (collectValue === 9) {
-                    element.checked = true;
-                    collectElements[3].checked = false;
-                } else if (collectValue === 8) {
-                    collectElements[0].checked = true;
-                    collectElements[3].checked = true;
-                } else if (collectValue === 6) {
-                    collectElements[0].checked = true;
-                    collectElements[1].checked = true;
-                } else if (collectValue === 5) {
-                    collectElements[3].checked = true;
-                } else if (collectValue === 3) {
-                    collectElements[0].checked = true;
-                }
-                console.log(collectValue)
-            })
-            document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]").forEach(radio => {
-                radio.disabled = true;
-            })
+            // collectElements.forEach((element, idx) => {
+            //     let collectValue = data.ArkPassive.Points[1].Value - userLevelAccessoryToEnlight();
+            //     if (collectValue === 14) {
+            //         element.checked = true;
+            //     } else if (collectValue === 11) {
+            //         element.checked = true;
+            //         collectElements[2].checked = false;
+            //     } else if (collectValue === 9) {
+            //         element.checked = true;
+            //         collectElements[3].checked = false;
+            //     } else if (collectValue === 8) {
+            //         collectElements[0].checked = true;
+            //         collectElements[3].checked = true;
+            //     } else if (collectValue === 6) {
+            //         collectElements[0].checked = true;
+            //         collectElements[1].checked = true;
+            //     } else if (collectValue === 5) {
+            //         collectElements[3].checked = true;
+            //     } else if (collectValue === 3) {
+            //         collectElements[0].checked = true;
+            //     }
+            //     console.log(collectValue)
+            // })
+            // document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]").forEach(radio => {
+            //     radio.disabled = true;
+            // })
         } else {
             collectElements.forEach(element => {
                 element.checked = true;
@@ -1947,6 +1953,8 @@ async function selectCreate(data) {
                 radioElements[karmaValue - 0].checked = true;
             }
         })
+
+        // if()
     }
 
     /* **********************************************************************************************************************
@@ -1964,7 +1972,6 @@ async function selectCreate(data) {
         })
         let leaf = document.querySelector(".ark-list.leap .title");
         leaf.textContent = leafPoint;
-
     }
     /* **********************************************************************************************************************
     * function name		:	userGemEquipmentToOption()
@@ -2065,8 +2072,6 @@ async function selectCreate(data) {
         let evolutionElement = document.querySelectorAll(".ark-list .title")[0];
         evolutionElement.textContent = levelEvolution;
     }
-
-
 
     /* **********************************************************************************************************************
     * function name		:	applyDataMinMaxToOptions()
@@ -2170,35 +2175,6 @@ async function selectCreate(data) {
             let icoSelect = element.querySelector(".engraving-ico");
             let relicIcoSelect = element.querySelector(".relic-ico");
 
-
-            // "없음" 옵션이 있는지 확인하고, 없으면 추가
-            // if (!nameSelect.querySelector("option[value='없음']")) {
-            //     let noneOptionName = document.createElement("option");
-            //     noneOptionName.value = "없음";
-            //     noneOptionName.textContent = "없음";
-            //     nameSelect.appendChild(noneOptionName);
-            // }
-            // if (!gradeSelect.querySelector("option[value='0']")) {
-            //     let noneOptionGrade = document.createElement("option");
-            //     noneOptionGrade.value = 0;
-            //     noneOptionGrade.textContent = "없음";
-            //     gradeSelect.appendChild(noneOptionGrade);
-            // }
-
-            // if (!icoSelect.querySelector("option[value='없음']")) {
-            //     let noneOptionIco = document.createElement("option");
-            //     noneOptionIco.value = "없음";
-            //     noneOptionIco.textContent = "없음";
-            //     icoSelect.appendChild(noneOptionIco);
-            // }
-            // if (!relicIcoSelect.querySelector("option[value='없음']")) {
-            //     let noneOptionRelic = document.createElement("option");
-            //     noneOptionRelic.value = "없음";
-            //     noneOptionRelic.textContent = "없음";
-            //     relicIcoSelect.appendChild(noneOptionRelic);
-            // }
-
-
             // data.ArmoryEngraving.ArkPassiveEffects 배열 순회
             if (data.ArmoryEngraving) {
                 if (data.ArmoryEngraving.ArkPassiveEffects && index < data.ArmoryEngraving.ArkPassiveEffects.length) {
@@ -2255,6 +2231,40 @@ async function selectCreate(data) {
     }
     engravingAutoSelect()
     userEngToStoneOption() //각인이 생성된 이후 어빌리티스톤 옵션 생성
+
+    /* **********************************************************************************************************************
+    * function name		:	engSelectToImg
+    * description	    : 	유저가 선택한 각인의 이미지로 바꿔줌
+    *********************************************************************************************************************** */
+
+    function engSelectToImg() {
+        // console.log(Modules.originFilter.engravingImg);
+        let elements = document.querySelectorAll(".engraving-area .engraving-name");
+        elements.forEach(element => {
+            imgChange(element)
+            element.addEventListener("change", () => {
+                imgChange(element)
+            })
+
+        })
+        function imgChange(element) {
+            let imgElement = element.closest(".engraving-box").querySelector("img.engraving-img");
+            let name = element.value;
+            let src = "";
+            if (element.value.includes(" - ")) {
+                name = element.value.split(" - ")[0];
+            }
+            Modules.originFilter.engravingImg.forEach(filter => {
+                let filterName = filter.split("^")[0];
+                let filterSrc = filter.split("^")[1];
+                if (name === filterName) {
+                    src = filterSrc;
+                }
+            })
+            imgElement.src = src;
+        }
+    }
+    engSelectToImg()
 
     /* **********************************************************************************************************************
     * function name		:	stoneAutoSelect()
@@ -2404,12 +2414,11 @@ async function selectCreate(data) {
                                 star.dataset.initialized = 'true'; // 이미 처리된 요소인지 표시
                                 armorName.dispatchEvent(new Event('change', { bubbles: true }));
                                 // armoryEnforceLimite(); // 해당 armor-name에 대한 option을 생성
-                                hyperStageToStarCreate(); // 초월 N단계를 바탕으로 3N성 생성
+                                // hyperStageToStarCreate(); // 초월 N단계를 바탕으로 3N성 생성
+                                optionElementAutoCheck(armorUpgrade, armorUpgrade.dataset.advancedValue, 'value');
                                 setTimeout(() => {
-                                    // 옵션이 동적으로 생성되는 시간을 고려하여 setTimeout 사용
-                                    optionElementAutoCheck(armorUpgrade, armorUpgrade.dataset.advancedValue, 'value');
                                     optionElementAutoCheck(star, star.dataset.hyperStar, 'value');
-                                }, 0); // 태스크 큐에 넣어서 비동기 처리하도록 함
+                                }, 0)
                             }
                         }
                     })
@@ -2513,6 +2522,52 @@ async function selectCreate(data) {
 
     }
     armoryTierAutoSelect()
+    hyperStageToStarCreate()
+
+    /* **********************************************************************************************************************
+    * function name		:	armorQualityToHTML
+    * description	    : 	장비의 품질을 표시해줌
+    *********************************************************************************************************************** */
+
+    function armorQualityToHTML() {
+        let elements = document.querySelectorAll(".armor-area .armor-item");
+        elements.forEach((element, idx) => {
+            if (idx < 5) {
+                let tag = element.querySelector(".armor-tag");
+                let quality = element.querySelector(".progress");
+                let tooltip = data.ArmoryEquipment.find(data => data.Type  === tag.textContent);
+                let qualityValue = Number(tooltip.Tooltip.match(/"qualityValue":\s*(\d+)/)[1]);
+                quality.textContent = qualityValue;
+            }
+        })
+    }
+    armorQualityToHTML()
+
+    /* **********************************************************************************************************************
+    * function name		:	avgLevelKarmaYN
+    * description	    : 	장비의 평균레벨을 토대로 카르마의 잠금해제를 결정
+    *********************************************************************************************************************** */
+    // body.addEventListener("click", ()=>{})
+    async function avgLevelKarmaYN() {
+        let armorLevelsObj = await armoryLevelCalc(Modules);
+        armorLevelsObj = armorLevelsObj.level;
+        let sumLevel = 0;
+        armorLevelsObj.forEach(armor => {
+            sumLevel += armor.level;
+        })
+        let avgLevel = sumLevel / armorLevelsObj.length;
+        // console.log("평균레벨",avgLevel)
+        let enlightElements = document.querySelectorAll(".ark-area .ark-list.enlightenment .radio input[type=radio]");
+        let leapElements = document.querySelectorAll(".ark-area .ark-list.leap .radio input[type=radio]");
+        if (avgLevel < 1670) {
+            enlightElements.forEach(element => { element.disabled = true; element.checked = false; })
+            leapElements.forEach(element => { element.disabled = true; element.checked = false; })
+        } else if (avgLevel >= 1670) {
+            enlightElements.forEach(element => { element.disabled = false; })
+            leapElements.forEach(element => { element.disabled = false; })
+        }
+    }
+    avgLevelKarmaYN()
 
     /* **********************************************************************************************************************
     * function name		:	weaponQualitySelect
@@ -2815,147 +2870,7 @@ async function selectCreate(data) {
     }
     bangleStatsDisable()
 
-    /* **********************************************************************************************************************
-    * function name		:	createNumpad
-    * description	    : 	number타입의 input을 쉽게 입력할 수 있도록 넘패드를 생성함
-    *********************************************************************************************************************** */
 
-    function createNumpad() {
-        const numpadTemplate = `
-        <div class="numeric-keyboard-layout js-n-keyboard" id="dynamic-numpad">
-            <ul class="list-num">
-                <li><button type="button" id="1" name="1" value="1" class="btn-num js-btn-number">1</button></li>
-                <li><button type="button" id="2" name="2" value="2" class="btn-num js-btn-number">2</button></li>
-                <li><button type="button" id="3" name="3" value="3" class="btn-num js-btn-number">3</button></li>
-                <li><button type="button" id="4" name="4" value="4" class="btn-num js-btn-number">4</button></li>
-                <li><button type="button" id="5" name="5" value="5" class="btn-num js-btn-number">5</button></li>
-                <li><button type="button" id="6" name="6" value="6" class="btn-num js-btn-number">6</button></li>
-                <li><button type="button" id="7" name="7" value="7" class="btn-num js-btn-number">7</button></li>
-                <li><button type="button" id="8" name="8" value="8" class="btn-num js-btn-number">8</button></li>
-                <li><button type="button" id="9" name="9" value="9" class="btn-num js-btn-number">9</button></li>
-                <li><button type="button" class="btn-num btn-none js-btn-close"><small class="sr-only">닫기</small></button></li>
-                <li><button type="button" id="0" name="0" value="0" class="btn-num js-btn-number">0</button></li>
-                <li><button type="button" id="backspace" name="backspace" class="btn-num btn-none js-btn-backspace">⇚</button></li>
-            </ul>
-        </div>
-    `;
-
-        let currentInput = null;
-        let numpadElement = null; // numpadElement를 전역 변수로 선언
-        let isNumpadActive = false; //Numpad가 활성화되어 있는지 여부를 추적하는 변수 추가
-
-        // Add focus event listener to input
-        document.querySelectorAll('.js-trigger-numpad').forEach(function (input) {
-            input.addEventListener('focus', function (event) {
-
-                if (isNumpadActive) {
-                    removeNumpad(); // 기존 numpad가 활성화된 경우 제거
-                }
-
-                currentInput = this;
-                //Create numpad element
-                const numpad = document.createElement('div');
-                numpad.innerHTML = numpadTemplate;
-                document.body.appendChild(numpad);
-
-                numpadElement = document.getElementById("dynamic-numpad"); // numpadElement를 초기화
-                isNumpadActive = true; //Numpad가 활성화 됐다고 표시
-
-                // Position the numpad below the input and center horizontally
-                const inputRect = currentInput.getBoundingClientRect();
-                const numpadRect = numpadElement.getBoundingClientRect();
-
-                // Calculate the horizontal center of the input
-                const inputCenterX = inputRect.left + window.scrollX + (inputRect.width / 2);
-                // Calculate the left position of the numpad to center it
-                const numpadLeft = inputCenterX - (numpadRect.width / 2);
-
-                numpadElement.style.top = `${inputRect.bottom + window.scrollY + 10}px`;
-                numpadElement.style.left = `${numpadLeft}px`;
-
-                // Add click event listeners to numpad buttons
-                addNumpadListeners();
-                // Add a document-level click listener to handle clicks outside the input and numpad
-                document.addEventListener('click', handleDocumentClick);
-            });
-        });
-        // --------------------------------------------------------
-        // Add button values to input
-        function addNumpadListeners() {
-            document.querySelectorAll('.js-btn-number').forEach(function (button) {
-                button.addEventListener('click', function (e) {
-                    if (currentInput) {
-                        currentInput.value += this.value;
-                    }
-                });
-            });
-
-            // Backspace button
-            document.querySelectorAll('.js-btn-backspace').forEach(function (button) {
-                button.addEventListener('click', function (e) {
-                    if (currentInput) {
-                        currentInput.value = currentInput.value.slice(0, -1);
-                    }
-                });
-            });
-            document.querySelectorAll('.js-btn-close').forEach(function (button) {
-                button.addEventListener('click', function (e) {
-                    if (currentInput) {
-                        removeNumpad()
-                    }
-                });
-            });
-        }
-        // --------------------------------------------------------
-        // Remove numpad
-        function removeNumpad() {
-            if (numpadElement) {
-                numpadElement.remove();
-                numpadElement = null;
-                isNumpadActive = false; //Numpad가 제거 됐다고 표시
-                document.removeEventListener('click', handleDocumentClick);
-                currentInput.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-        }
-
-        // --------------------------------------------------------
-        // Handle clicks outside of input and numpad
-        function handleDocumentClick(event) {
-            if (currentInput && !currentInput.contains(event.target) && numpadElement && !numpadElement.contains(event.target)) {
-                removeNumpad();
-                currentInput.blur();
-                currentInput = null;
-            }
-        }
-    }
-    createNumpad()
-
-    /* **********************************************************************************************************************
-    * function name		:	createSpinButton()
-    * description	    : 	spin-btn클래스를 가진 요소들에 spin버튼을 생성함
-    *********************************************************************************************************************** */
-
-    function createSpinButton() {
-        let spinElement = document.querySelectorAll(".spin-wrapper");
-
-        spinElement.forEach(element => {
-            element.addEventListener("click", (e) => {
-                let btnType = e.target.classList.value;
-                let spinInput = element.querySelector("select.spin-input");
-                let index = spinInput.selectedIndex;
-                let maxIndex = spinInput.options.length - 1;
-                let minIndex = 0;
-                if (btnType === "up" && maxIndex > index) {
-                    spinInput.selectedIndex = index + 1;
-                    spinInput.dispatchEvent(new Event('change', { bubbles: true }));
-                } else if (btnType === "down" && minIndex < index) {
-                    spinInput.selectedIndex = index - 1;
-                    spinInput.dispatchEvent(new Event('change', { bubbles: true }));
-                }
-            })
-        })
-    }
-    createSpinButton()
 
     /* **********************************************************************************************************************
     * function name		:	
@@ -2969,6 +2884,7 @@ async function selectCreate(data) {
     leafPointToKarmaSelect()
     showLeafInfo()
     userLevelAndArmorToEvolution()
+
 
     /* **********************************************************************************************************************
     * function name		:	applyDataStringToOptions()
@@ -3002,6 +2918,7 @@ async function selectCreate(data) {
         showLeafInfo();
         enlightValueChange();
         bangleStatsDisable();
+        avgLevelKarmaYN();
     })
 }
 
@@ -3392,38 +3309,234 @@ function betweenTextExtract(inputString) {
 }
 
 
-
 /* **********************************************************************************************************************
-* function name		:
-* description	    :   모든 select요소의 tooltip를 생성함
+* function name		:	createSpinButton()
+* description	    : 	spin-btn클래스를 가진 요소들에 spin버튼을 생성함
 *********************************************************************************************************************** */
 
-// const selectElements = document.querySelectorAll('select');
-// selectElements.forEach((selectElement) => {
-//     selectElement.addEventListener('mouseover', (event) => {
-//         const selectedOption = selectElement.options[selectElement.selectedIndex];
-//         const tooltip = document.createElement('div');
-//         tooltip.className = 'tooltip';
-//         tooltip.textContent = selectedOption.text;
+function createSpinButton() {
+    let spinElements = document.querySelectorAll(".spin-wrapper");
 
-//         document.body.appendChild(tooltip);
-//         tooltip.style.left = `${event.clientX + window.scrollX + 10}px`;
-//         tooltip.style.top = `${event.clientY + window.scrollY + 10}px`;
+    spinElements.forEach(element => {
+        element.addEventListener("click", (e) => {
+            let btnType = e.target.classList.value;
+            let spinInput = element.querySelector("select.spin-input");
+            let index = spinInput.selectedIndex;
+            let maxIndex = spinInput.options.length - 1;
+            let minIndex = 0;
+            if (btnType === "up" && maxIndex > index) {
+                spinInput.selectedIndex = index + 1;
+                spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+            } else if (btnType === "down" && minIndex < index) {
+                spinInput.selectedIndex = index - 1;
+                spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        })
+    })
+}
+createSpinButton()
 
-//         selectElement.addEventListener('mousemove', (moveEvent) => {
-//             tooltip.style.left = `${moveEvent.clientX + window.scrollX + 10}px`;
-//             tooltip.style.top = `${moveEvent.clientY + window.scrollY + 10}px`;
-//         });
+/* **********************************************************************************************************************
+* function name		:	createNumpad
+* description	    : 	number타입의 input을 쉽게 입력할 수 있도록 넘패드를 생성함
+*********************************************************************************************************************** */
 
-//         selectElement.addEventListener('mouseout', () => {
-//             tooltip.remove();
-//         }, { once: true });
-//     });
+function createNumpad() {
+    const numpadTemplate = `
+        <div class="numeric-keyboard-layout js-n-keyboard" id="dynamic-numpad">
+            <ul class="list-num">
+                <li><button type="button" id="1" name="1" value="1" class="btn-num js-btn-number">1</button></li>
+                <li><button type="button" id="2" name="2" value="2" class="btn-num js-btn-number">2</button></li>
+                <li><button type="button" id="3" name="3" value="3" class="btn-num js-btn-number">3</button></li>
+                <li><button type="button" id="4" name="4" value="4" class="btn-num js-btn-number">4</button></li>
+                <li><button type="button" id="5" name="5" value="5" class="btn-num js-btn-number">5</button></li>
+                <li><button type="button" id="6" name="6" value="6" class="btn-num js-btn-number">6</button></li>
+                <li><button type="button" id="7" name="7" value="7" class="btn-num js-btn-number">7</button></li>
+                <li><button type="button" id="8" name="8" value="8" class="btn-num js-btn-number">8</button></li>
+                <li><button type="button" id="9" name="9" value="9" class="btn-num js-btn-number">9</button></li>
+                <li><button type="button" class="btn-num btn-none js-btn-close"><small class="sr-only">닫기</small></button></li>
+                <li><button type="button" id="0" name="0" value="0" class="btn-num js-btn-number">0</button></li>
+                <li><button type="button" id="backspace" name="backspace" class="btn-num btn-none js-btn-backspace">⇚</button></li>
+            </ul>
+        </div>
+    `;
 
-//     selectElement.addEventListener('change', () => {
-//         const tooltip = document.querySelector('.tooltip');
-//         if (tooltip) {
-//             tooltip.textContent = selectElement.options[selectElement.selectedIndex].text;
-//         }
-//     });
-// });
+    let currentInput = null;
+    let numpadElement = null; // numpadElement를 전역 변수로 선언
+    let isNumpadActive = false; //Numpad가 활성화되어 있는지 여부를 추적하는 변수 추가
+
+    // Add focus event listener to input
+    document.querySelectorAll('.js-trigger-numpad').forEach(function (input) {
+        input.addEventListener('focus', function (event) {
+
+            if (isNumpadActive) {
+                removeNumpad(); // 기존 numpad가 활성화된 경우 제거
+            }
+
+            currentInput = this;
+            //Create numpad element
+            const numpad = document.createElement('div');
+            numpad.innerHTML = numpadTemplate;
+            document.body.appendChild(numpad);
+
+            numpadElement = document.getElementById("dynamic-numpad"); // numpadElement를 초기화
+            isNumpadActive = true; //Numpad가 활성화 됐다고 표시
+
+            // Position the numpad below the input and center horizontally
+            const inputRect = currentInput.getBoundingClientRect();
+            const numpadRect = numpadElement.getBoundingClientRect();
+
+            // Calculate the horizontal center of the input
+            const inputCenterX = inputRect.left + window.scrollX + (inputRect.width / 2);
+            // Calculate the left position of the numpad to center it
+            const numpadLeft = inputCenterX - (numpadRect.width / 2);
+
+            numpadElement.style.top = `${inputRect.bottom + window.scrollY + 10}px`;
+            numpadElement.style.left = `${numpadLeft}px`;
+
+            // Add click event listeners to numpad buttons
+            addNumpadListeners();
+            // Add a document-level click listener to handle clicks outside the input and numpad
+            document.addEventListener('click', handleDocumentClick);
+        });
+    });
+    // --------------------------------------------------------
+    // Add button values to input
+    function addNumpadListeners() {
+        document.querySelectorAll('.js-btn-number').forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                if (currentInput) {
+                    currentInput.value += this.value;
+                }
+            });
+        });
+
+        // Backspace button
+        document.querySelectorAll('.js-btn-backspace').forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                if (currentInput) {
+                    currentInput.value = currentInput.value.slice(0, -1);
+                }
+            });
+        });
+        document.querySelectorAll('.js-btn-close').forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                if (currentInput) {
+                    removeNumpad()
+                }
+            });
+        });
+    }
+    // --------------------------------------------------------
+    // Remove numpad
+    function removeNumpad() {
+        if (numpadElement) {
+            numpadElement.remove();
+            numpadElement = null;
+            isNumpadActive = false; //Numpad가 제거 됐다고 표시
+            document.removeEventListener('click', handleDocumentClick);
+            currentInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }
+
+    // --------------------------------------------------------
+    // Handle clicks outside of input and numpad
+    function handleDocumentClick(event) {
+        if (currentInput && !currentInput.contains(event.target) && numpadElement && !numpadElement.contains(event.target)) {
+            removeNumpad();
+            currentInput.blur();
+            currentInput = null;
+        }
+    }
+}
+createNumpad()
+
+/* **********************************************************************************************************************
+ * function name		:	armoryLevelCalc()
+ * description			: 	사용자가 선택한 장비 level stat special 객체 반환
+ *********************************************************************************************************************** */
+
+async function armoryLevelCalc(Modules) {
+    let result = []
+    let armorNameElements = document.querySelectorAll(".armor-item .armor-tag");
+    let startLevelElements = document.querySelectorAll(".armor-item .plus");
+    let normaleUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-name");
+    let advancedUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-upgrade");
+
+    for (let i = 0; i < armorNameElements.length; i++) {
+        let startLevelValue = Number(startLevelElements[i].value)
+        let normaleUpgradeLevelValue = Number(normaleUpgradeLevelElements[i].value * 5)
+        let advancedUpgradeLevelValue = Number(advancedUpgradeLevelElements[i].value)
+        let obj = {
+            name: armorNameElements[i].textContent,
+            level: startLevelValue + normaleUpgradeLevelValue + advancedUpgradeLevelValue,
+            special: advancedUpgradeLevelValue
+        }
+        result.push(obj)
+    }
+
+    let armorObj = []
+    armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level, result[0].special, "투구")           // 투구
+    armorPartObjCreate(Modules.simulatorData.shoulderlevels, result[1].level, result[1].special, "어깨")           // 어깨
+    armorPartObjCreate(Modules.simulatorData.toplevels, result[2].level, result[2].special, "상의")           // 상의
+    armorPartObjCreate(Modules.simulatorData.bottomlevels, result[3].level, result[3].special, "하의")           // 하의
+    armorPartObjCreate(Modules.simulatorData.gloveslevels, result[4].level, result[4].special, "장갑")           // 장갑
+
+    // console.log("result[5].level", result[5])
+    if (result[5].level < 100) {
+        let tierElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector(".plus").value;
+        let ellaLevelArry1 = [1100, 1200, 1300, 1400, 1500, 1600, 1650, 1665, 1680];
+        let ellaLevelArry2 = [1100, 1200, 1300, 1400, 1500, 1600, 1675, 1695, 1715, 1745];
+        let advancedLevel = Number(advancedUpgradeLevelElements[5].value);
+        if (tierElement === "1") { // 엘라1
+            let normalLevel = ellaLevelArry1[Number(normaleUpgradeLevelElements[5].value)];
+            armorPartObjCreate(Modules.simulatorData.estherEllaLevels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라1
+        } else if (tierElement === "2") { // 엘라2
+            let normalLevel = ellaLevelArry2[Number(normaleUpgradeLevelElements[5].value)]
+            armorPartObjCreate(Modules.simulatorData.estherElla2Levels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라2
+        } else if (tierElement === "0") { // 엘라0
+            armorPartObjCreate(Modules.simulatorData.estherEllaLevels, 0, 0, "무기")           // 엘라0
+        }
+    } else {
+        armorPartObjCreate(Modules.simulatorData.weaponlevels, result[5].level, result[5].special, "무기")
+    }
+
+    function armorPartObjCreate(armorData, resultObj, advancedLevel, tag) {
+        let obj = armorData.find(part => part.level === resultObj);
+        if (!obj) { return; }
+        obj = { ...obj };
+        obj.name = tag;
+
+        let originalStat = obj.stat;
+        if (advancedLevel === 40) {
+            obj.stat = Math.floor(originalStat * 1.05);
+        } else if (advancedLevel >= 30) {
+            obj.stat = Math.floor(originalStat * 1.02);
+        }
+        armorObj.push(obj);
+    }
+    let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
+    let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
+    function sumStats(stats) {
+        if (!Array.isArray(stats)) {
+            console.error("Error: Input is not an array.");
+            return 0; // or handle the error in a way that suits your application
+        }
+        let totalStat = 0;
+        for (const armor of stats) {
+            if (typeof armor.stat !== 'number') {
+                console.error(`Error: 'stat' property is not a number in object:`, armor);
+                continue; // Skip to the next object
+            }
+            totalStat += armor.stat;
+        }
+        return totalStat;
+    }
+
+    let returnObj = {
+        armorStats: sumStats(armorStats),
+        weaponStats: weaponStats.stat,
+        level: armorObj,
+    }
+    return returnObj;
+}

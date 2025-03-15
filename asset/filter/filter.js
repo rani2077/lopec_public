@@ -356,6 +356,7 @@ export let bangleJobFilter = [
 
 let engravingImg = [
 
+    "없음^https://placehold.co/30",
     "각성^https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Buff/Buff_113.png",
     "강령술^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_29.png",
     "강화 방패^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_239.png",
