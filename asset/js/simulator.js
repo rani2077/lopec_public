@@ -385,97 +385,6 @@ async function simulatorInputCalc() {
     // console.log(defaultObjChangeValue())
 
     /* **********************************************************************************************************************
-     * function name		:	armoryLevelCalc()
-     * description			: 	사용자가 선택한 장비 level stat special 객체 반환
-     *********************************************************************************************************************** */
-
-    // function armoryLevelCalc() {
-    //     let result = []
-    //     let armorNameElements = document.querySelectorAll(".armor-item .armor-tag");
-    //     let startLevelElements = document.querySelectorAll(".armor-item .plus");
-    //     let normaleUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-name");
-    //     let advancedUpgradeLevelElements = document.querySelectorAll(".armor-item .armor-upgrade");
-
-    //     for (let i = 0; i < armorNameElements.length; i++) {
-    //         let startLevelValue = Number(startLevelElements[i].value)
-    //         let normaleUpgradeLevelValue = Number(normaleUpgradeLevelElements[i].value * 5)
-    //         let advancedUpgradeLevelValue = Number(advancedUpgradeLevelElements[i].value)
-    //         let obj = {
-    //             name: armorNameElements[i].textContent,
-    //             level: startLevelValue + normaleUpgradeLevelValue + advancedUpgradeLevelValue,
-    //             special: advancedUpgradeLevelValue
-    //         }
-    //         result.push(obj)
-    //     }
-
-    //     let armorObj = []
-    //     armorPartObjCreate(Modules.simulatorData.helmetlevels, result[0].level, result[0].special, "투구")           // 투구
-    //     armorPartObjCreate(Modules.simulatorData.shoulderlevels, result[1].level, result[1].special, "어깨")           // 어깨
-    //     armorPartObjCreate(Modules.simulatorData.toplevels, result[2].level, result[2].special, "상의")           // 상의
-    //     armorPartObjCreate(Modules.simulatorData.bottomlevels, result[3].level, result[3].special, "하의")           // 하의
-    //     armorPartObjCreate(Modules.simulatorData.gloveslevels, result[4].level, result[4].special, "장갑")           // 장갑
-
-    //     // console.log("result[5].level", result[5])
-    //     if (result[5].level < 100) {
-    //         let tierElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector(".plus").value;
-    //         let ellaLevelArry1 = [1100, 1200, 1300, 1400, 1500, 1600, 1650, 1665, 1680];
-    //         let ellaLevelArry2 = [1100, 1200, 1300, 1400, 1500, 1600, 1675, 1695, 1715, 1745];
-    //         let advancedLevel = Number(advancedUpgradeLevelElements[5].value);
-    //         if (tierElement === "1") { // 엘라1
-    //             let normalLevel = ellaLevelArry1[Number(normaleUpgradeLevelElements[5].value)];
-    //             armorPartObjCreate(Modules.simulatorData.estherEllaLevels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라1
-    //         } else if (tierElement === "2") { // 엘라2
-    //             let normalLevel = ellaLevelArry2[Number(normaleUpgradeLevelElements[5].value)]
-    //             armorPartObjCreate(Modules.simulatorData.estherElla2Levels, normalLevel + advancedLevel, advancedLevel, "무기")           // 엘라2
-    //         } else if (tierElement === "0") { // 엘라0
-    //             armorPartObjCreate(Modules.simulatorData.estherEllaLevels, 0, 0, "무기")           // 엘라0
-    //         }
-    //     } else {
-    //         armorPartObjCreate(Modules.simulatorData.weaponlevels, result[5].level, result[5].special, "무기")
-    //     }
-
-    //     function armorPartObjCreate(armorData, resultObj, advancedLevel, tag) {
-    //         let obj = armorData.find(part => part.level === resultObj);
-    //         if (!obj) { return; }
-    //         obj = { ...obj };
-    //         obj.name = tag;
-
-    //         let originalStat = obj.stat;
-    //         if (advancedLevel === 40) {
-    //             obj.stat = Math.floor(originalStat * 1.05);
-    //         } else if (advancedLevel >= 30) {
-    //             obj.stat = Math.floor(originalStat * 1.02);
-    //         }
-    //         armorObj.push(obj);
-    //     }
-    //     let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
-    //     let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
-    //     function sumStats(stats) {
-    //         if (!Array.isArray(stats)) {
-    //             console.error("Error: Input is not an array.");
-    //             return 0; // or handle the error in a way that suits your application
-    //         }
-    //         let totalStat = 0;
-    //         for (const armor of stats) {
-    //             if (typeof armor.stat !== 'number') {
-    //                 console.error(`Error: 'stat' property is not a number in object:`, armor);
-    //                 continue; // Skip to the next object
-    //             }
-    //             totalStat += armor.stat;
-    //         }
-    //         return totalStat;
-    //     }
-
-    //     let returnObj = {
-    //         armorStats: sumStats(armorStats),
-    //         weaponStats: weaponStats.stat,
-    //         level:armorObj,
-    //     }
-    //     return returnObj;
-    // }
-    // armoryLevelCalc()
-    // console.log("장비스텟", armoryLevelCalc())
-    /* **********************************************************************************************************************
     * function name         :	armorElixirToObj()
     * description			: 	장비 엘릭서 스텟 수치를 추출함
     *********************************************************************************************************************** */
@@ -1246,6 +1155,9 @@ async function simulatorInputCalc() {
 
     let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue, supportCheck)
     // console.log(originSpecPoint)
+    let count = 0;
+    console.log(count);
+    count++;
 
 }
 simulatorInputCalc()
@@ -1569,20 +1481,29 @@ async function selectCreate(data) {
         let elements = document.querySelectorAll(".hyper-wrap select.level");
 
         elements.forEach(element => {
-            element.addEventListener("change", () => applyDataStringToOptions())
+            let hyper = element.closest(".hyper-wrap").querySelector("select.hyper");
             function applyDataStringToOptions() {
                 let stage = Number(element.value);
-                let hyper = element.parentElement.querySelector("select.hyper");
                 hyper.innerHTML = "";
-                for (let i = 1; i <= stage * 3; i++) {
+                if (stage === 0) {
                     let option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i;
+                    option.value = 0;
+                    option.textContent = 0;
                     hyper.appendChild(option);
+                } else {
+                    for (let i = 0; i <= stage * 3; i++) {
+                        let option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i;
+                        hyper.appendChild(option);
+                    }
                 }
             }
             applyDataStringToOptions()
-
+            function lastOptionSelect() {
+                hyper.options[hyper.options.length - 1].selected = true;
+            }
+            element.addEventListener("change", () => { applyDataStringToOptions(); lastOptionSelect(); })
         })
     }
     hyperStageToStarCreate()
@@ -1889,7 +1810,7 @@ async function selectCreate(data) {
                 element.checked = true;
             })
             let karma = Math.max(1, Math.min(7, data.ArkPassive.Points[1].Value - userLevelAccessoryToEnlight() - 14 + 1));
-            document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]")[karma - 1].checked = true;
+            document.querySelector(".ark-list.enlightenment .ark-item.karma-radio").querySelectorAll("input[type=radio]")[karma - 1].checked = true;
         }
     }
     collectToKarma()
@@ -1900,7 +1821,7 @@ async function selectCreate(data) {
     *********************************************************************************************************************** */
 
     function enlightValueChange() {
-        let karmaElements = document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]");
+        let karmaElements = document.querySelector(".ark-list.enlightenment .ark-item.karma-radio").querySelectorAll("input[type=radio]");
         let collectElements = document.querySelectorAll(".ark-list.enlightenment .ark-item input[type=checkbox]");
         let enlightValue = userLevelAccessoryToEnlight()
 
@@ -2006,7 +1927,7 @@ async function selectCreate(data) {
                         <select class="gems" data-select="${gemElementObj.name}">
                             ${gemTag}
                         </select>
-                        <span class="skill">${gemElementObj.skill}</span>
+                        <span class="skill tooltip-text">${gemElementObj.skill}</span>
                     </div>`;
             })
             element.innerHTML = customHtml;
@@ -2535,7 +2456,7 @@ async function selectCreate(data) {
             if (idx < 5) {
                 let tag = element.querySelector(".armor-tag");
                 let quality = element.querySelector(".progress");
-                let tooltip = data.ArmoryEquipment.find(data => data.Type  === tag.textContent);
+                let tooltip = data.ArmoryEquipment.find(data => data.Type === tag.textContent);
                 let qualityValue = Number(tooltip.Tooltip.match(/"qualityValue":\s*(\d+)/)[1]);
                 quality.textContent = qualityValue;
             }
@@ -2755,6 +2676,36 @@ async function selectCreate(data) {
     accessoryAutoSelect()
 
     /* **********************************************************************************************************************
+    * function name		:	accessoryOptionToGrade()
+    * description	    : 	선택한 악세서리의 상중하 옵션을 보여줌
+    *********************************************************************************************************************** */
+
+    function accessoryOptionToGrade() {
+        let selectElements = document.querySelectorAll(".accessory-area .accessory-item.accessory select.option");
+
+        selectElements.forEach(select => {
+            function gradeChange() {
+                let gradeElement = select.closest(".grinding-wrap").querySelector("span.quality");
+                let gradeValue = select.value.split(":")[0];
+                if (gradeValue === "상") {
+                    gradeElement.classList.remove("low", "middle", "high");
+                    gradeElement.classList.add("high")
+                } else if (gradeValue === "중") {
+                    gradeElement.classList.remove("low", "middle", "high");
+                    gradeElement.classList.add("middle")
+                } else if (gradeValue === "하") {
+                    gradeElement.classList.remove("low", "middle", "high");
+                    gradeElement.classList.add("low")
+                }
+                gradeElement.textContent = gradeValue;
+            };
+            gradeChange();
+            select.addEventListener("change", () => { gradeChange() });
+        })
+    }
+    accessoryOptionToGrade()
+
+    /* **********************************************************************************************************************
     * function name		:	bangleAutoSelect()
     * description	    : 	유저의 정보에 맞춰 팔찌의 option을 자동으로 선택함
     *********************************************************************************************************************** */
@@ -2884,6 +2835,7 @@ async function selectCreate(data) {
     leafPointToKarmaSelect()
     showLeafInfo()
     userLevelAndArmorToEvolution()
+    createTooltip() // 툴팁 텍스트 생성
 
 
     /* **********************************************************************************************************************
@@ -2919,6 +2871,7 @@ async function selectCreate(data) {
         enlightValueChange();
         bangleStatsDisable();
         avgLevelKarmaYN();
+        createTooltip(); // 툴팁생성
     })
 }
 
@@ -3320,7 +3273,7 @@ function createSpinButton() {
     spinElements.forEach(element => {
         element.addEventListener("click", (e) => {
             let btnType = e.target.classList.value;
-            let spinInput = element.querySelector("select.spin-input");
+            let spinInput = element.querySelector("select");
             let index = spinInput.selectedIndex;
             let maxIndex = spinInput.options.length - 1;
             let minIndex = 0;
@@ -3344,6 +3297,7 @@ createSpinButton()
 function createNumpad() {
     const numpadTemplate = `
         <div class="numeric-keyboard-layout js-n-keyboard" id="dynamic-numpad">
+            <span>키보드로도 입력 가능</span>
             <ul class="list-num">
                 <li><button type="button" id="1" name="1" value="1" class="btn-num js-btn-number">1</button></li>
                 <li><button type="button" id="2" name="2" value="2" class="btn-num js-btn-number">2</button></li>
@@ -3362,46 +3316,39 @@ function createNumpad() {
     `;
 
     let currentInput = null;
-    let numpadElement = null; // numpadElement를 전역 변수로 선언
-    let isNumpadActive = false; //Numpad가 활성화되어 있는지 여부를 추적하는 변수 추가
+    let numpadElement = null;
+    let isNumpadActive = false;
 
     // Add focus event listener to input
     document.querySelectorAll('.js-trigger-numpad').forEach(function (input) {
         input.addEventListener('focus', function (event) {
-
             if (isNumpadActive) {
-                removeNumpad(); // 기존 numpad가 활성화된 경우 제거
+                removeNumpad();
             }
 
             currentInput = this;
-            //Create numpad element
             const numpad = document.createElement('div');
             numpad.innerHTML = numpadTemplate;
             document.body.appendChild(numpad);
 
-            numpadElement = document.getElementById("dynamic-numpad"); // numpadElement를 초기화
-            isNumpadActive = true; //Numpad가 활성화 됐다고 표시
+            numpadElement = document.getElementById("dynamic-numpad");
+            isNumpadActive = true;
 
-            // Position the numpad below the input and center horizontally
             const inputRect = currentInput.getBoundingClientRect();
             const numpadRect = numpadElement.getBoundingClientRect();
-
-            // Calculate the horizontal center of the input
             const inputCenterX = inputRect.left + window.scrollX + (inputRect.width / 2);
-            // Calculate the left position of the numpad to center it
             const numpadLeft = inputCenterX - (numpadRect.width / 2);
 
             numpadElement.style.top = `${inputRect.bottom + window.scrollY + 10}px`;
             numpadElement.style.left = `${numpadLeft}px`;
 
-            // Add click event listeners to numpad buttons
             addNumpadListeners();
-            // Add a document-level click listener to handle clicks outside the input and numpad
             document.addEventListener('click', handleDocumentClick);
+            // Add keydown event listener for Enter key
+            currentInput.addEventListener('keydown', handleEnterKey);
         });
     });
-    // --------------------------------------------------------
-    // Add button values to input
+
     function addNumpadListeners() {
         document.querySelectorAll('.js-btn-number').forEach(function (button) {
             button.addEventListener('click', function (e) {
@@ -3411,7 +3358,6 @@ function createNumpad() {
             });
         });
 
-        // Backspace button
         document.querySelectorAll('.js-btn-backspace').forEach(function (button) {
             button.addEventListener('click', function (e) {
                 if (currentInput) {
@@ -3419,28 +3365,29 @@ function createNumpad() {
                 }
             });
         });
+
         document.querySelectorAll('.js-btn-close').forEach(function (button) {
             button.addEventListener('click', function (e) {
                 if (currentInput) {
-                    removeNumpad()
+                    removeNumpad();
                 }
             });
         });
     }
-    // --------------------------------------------------------
-    // Remove numpad
+
     function removeNumpad() {
         if (numpadElement) {
             numpadElement.remove();
             numpadElement = null;
-            isNumpadActive = false; //Numpad가 제거 됐다고 표시
+            isNumpadActive = false;
             document.removeEventListener('click', handleDocumentClick);
             currentInput.dispatchEvent(new Event('change', { bubbles: true }));
+            if (currentInput) {
+                currentInput.removeEventListener('keydown', handleEnterKey);
+            }
         }
     }
 
-    // --------------------------------------------------------
-    // Handle clicks outside of input and numpad
     function handleDocumentClick(event) {
         if (currentInput && !currentInput.contains(event.target) && numpadElement && !numpadElement.contains(event.target)) {
             removeNumpad();
@@ -3448,8 +3395,16 @@ function createNumpad() {
             currentInput = null;
         }
     }
+
+    function handleEnterKey(event) {
+        if (event.key === 'Enter') {
+            removeNumpad();
+            currentInput.blur();
+            currentInput = null;
+        }
+    }
 }
-createNumpad()
+createNumpad();
 
 /* **********************************************************************************************************************
  * function name		:	armoryLevelCalc()
@@ -3540,3 +3495,69 @@ async function armoryLevelCalc(Modules) {
     }
     return returnObj;
 }
+
+/* **********************************************************************************************************************
+ * function name		:	createTooltip()
+ * description			: 	.tooltip-text 클래스를 가진 요소에 마우스 오버 시 툴팁을 생성하고, select 요소의 경우 선택된 option의 텍스트를 표시합니다.
+ *********************************************************************************************************************** */
+function createTooltip() {
+    const hoverElements = document.querySelectorAll('.tooltip-text');
+    let tooltip = null;
+
+    hoverElements.forEach(element => {
+        element.addEventListener('mouseover', (event) => {
+            // 툴팁 생성
+            tooltip = document.createElement('div');
+            tooltip.classList.add('tooltip');
+            document.body.appendChild(tooltip);
+
+            // 툴팁 내용 설정
+            if (element.tagName === 'SELECT') {
+                tooltip.textContent = element.options[element.selectedIndex].textContent;
+            } else {
+                tooltip.textContent = element.textContent;
+            }
+
+            // 툴팁 위치 설정
+            updateTooltipPosition(event);
+        });
+
+        element.addEventListener('mousemove', (event) => {
+            // 툴팁 위치 업데이트
+            updateTooltipPosition(event);
+        });
+
+        element.addEventListener('mouseout', () => {
+            // 툴팁 제거
+            if (tooltip) {
+                tooltip.remove();
+                tooltip = null;
+            }
+        });
+    });
+
+    function updateTooltipPosition(event) {
+        if (tooltip) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+            const tooltipWidth = tooltip.offsetWidth;
+            const tooltipHeight = tooltip.offsetHeight;
+
+            // 툴팁이 화면을 벗어나지 않도록 조정
+            let tooltipX = mouseX + 10; // 마우스 오른쪽으로 10px 이동
+            let tooltipY = mouseY + 10; // 마우스 아래로 10px 이동
+
+            if (tooltipX + tooltipWidth > window.innerWidth) {
+                tooltipX = mouseX - tooltipWidth - 10; // 마우스 왼쪽으로 이동
+            }
+
+            if (tooltipY + tooltipHeight > window.innerHeight) {
+                tooltipY = mouseY - tooltipHeight - 10; // 마우스 위쪽으로 이동
+            }
+
+            tooltip.style.left = `${tooltipX}px`;
+            tooltip.style.top = `${tooltipY}px`;
+        }
+    }
+}
+window.addEventListener("load", createTooltip);

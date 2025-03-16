@@ -1309,7 +1309,7 @@
 .sc-info .ark-area .ark-list.enlightenment{}
 .sc-info .ark-area .ark-list.leap{}
 .sc-info .ark-area .ark-item{
-    padding-left: 10px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     gap: 5px;

@@ -80,6 +80,8 @@ input[type=number]::-ms-expand {
     display: flex;
     flex-direction: column;
     width: 48px;
+    background:#e6e8ec;
+    overflow: hidden;
 }
 
 .sc-info .gem-area .gem-box .level {
@@ -284,9 +286,10 @@ input[type=number]::-ms-expand {
 }
 
 /* ark-area */
-.group-equip .ark-list:not(:first-child) .ark-item:last-child {
+.group-equip .ark-list .ark-item.karma-radio {
     display: flex;
     flex-direction: column;
+    padding: 0 30px;
 }
 
 .group-equip .ark-list .ark-item .value {
