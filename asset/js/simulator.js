@@ -1153,12 +1153,8 @@ async function simulatorInputCalc() {
      * description			: 	최종 스펙포인트 계산식
      *********************************************************************************************************************** */
 
-    let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue, supportCheck)
-    // console.log(originSpecPoint)
-    let count = 0;
-    console.log(count);
-    count++;
-
+    let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue, supportCheck);
+    // console.log(originSpecPoint.completeSpecPoint);
 }
 simulatorInputCalc()
 document.body.addEventListener('change', () => { simulatorInputCalc() })
@@ -1622,6 +1618,7 @@ async function selectCreate(data) {
                     }
                     let option = document.createElement("option");
                     option.textContent = filter.name;
+                    option.setAttribute("data-grade", filter.grade);
                     let valueParts = []; // key:value 쌍을 저장할 배열
                     for (const key in filter) {
                         if (key !== 'name' && key !== 'grade') {
@@ -2776,7 +2773,7 @@ async function selectCreate(data) {
                         if (!seen.has(itemKey)) { // 중복된 키가 없는 경우
                             extractedData.push({
                                 name: item.name,
-                                fullName: item.fullName
+                                fullName: item.fullName,
                             });
                             seen.add(itemKey); // Set에 키 추가
                         }
@@ -2787,6 +2784,33 @@ async function selectCreate(data) {
         }
     }
     bangleAutoSelect()
+
+    /* **********************************************************************************************************************
+    * function name		:	bangleQualityToHTML
+    * description	    : 	팔찌의 옵션을 토대로 상중하 표시를 해줌
+    *********************************************************************************************************************** */
+
+    function bangleQualityToHTML() {
+        let selectElements = document.querySelectorAll(".accessory-item.bangle select.option");
+        let inputElements = document.querySelectorAll(".accessory-item.bangle input.option");
+
+        selectElements.forEach(select => {
+            let gradeValue = select.options[select.selectedIndex].getAttribute("data-grade");
+            let gradeElement = select.closest(".grinding-wrap").querySelector("span.quality");
+            let className = "";
+            if(gradeValue === "상"){
+                className = "high";
+            }else if(gradeValue === "중"){
+                className = "middle";
+            }else if(gradeValue === "하"){
+                className = "low";
+            }
+            gradeElement.classList.remove("high","middle","low","none");
+            gradeElement.classList.add(className);
+            gradeElement.textContent = gradeValue;
+        })
+    }
+    bangleQualityToHTML()
 
     /* **********************************************************************************************************************
     * function name		:	bangleStatsDisable()
