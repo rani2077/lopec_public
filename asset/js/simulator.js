@@ -2762,26 +2762,6 @@ async function selectCreate(data) {
             }
             return results;
         }
-        function mergeFilter(data) {
-            const extractedData = [];
-            const seen = new Set(); // 중복 확인을 위한 Set
-
-            for (const key in data) {
-                if (Array.isArray(data[key])) {
-                    data[key].forEach(item => {
-                        const itemKey = `${item.name}-${item.grade}`; // 중복 검사를 위한 키 생성
-                        if (!seen.has(itemKey)) { // 중복된 키가 없는 경우
-                            extractedData.push({
-                                name: item.name,
-                                fullName: item.fullName,
-                            });
-                            seen.add(itemKey); // Set에 키 추가
-                        }
-                    });
-                }
-            }
-            return extractedData;
-        }
     }
     bangleAutoSelect()
 
@@ -2795,20 +2775,27 @@ async function selectCreate(data) {
         let inputElements = document.querySelectorAll(".accessory-item.bangle input.option");
 
         selectElements.forEach(select => {
-            let gradeValue = select.options[select.selectedIndex].getAttribute("data-grade");
-            let gradeElement = select.closest(".grinding-wrap").querySelector("span.quality");
-            let className = "";
-            if(gradeValue === "상"){
-                className = "high";
-            }else if(gradeValue === "중"){
-                className = "middle";
-            }else if(gradeValue === "하"){
-                className = "low";
+
+            select.addEventListener("change", () => { qualityChange() })
+            function qualityChange() {
+                let gradeValue = select.options[select.selectedIndex].getAttribute("data-grade");
+                let gradeElement = select.closest(".grinding-wrap").querySelector("span.quality");
+                let className = "";
+                if (gradeValue === "상") {
+                    className = "high";
+                } else if (gradeValue === "중") {
+                    className = "middle";
+                } else if (gradeValue === "하") {
+                    className = "low";
+                }
+                gradeElement.classList.remove("high", "middle", "low", "none");
+                gradeElement.classList.add(className);
+                gradeElement.textContent = gradeValue;
             }
-            gradeElement.classList.remove("high","middle","low","none");
-            gradeElement.classList.add(className);
-            gradeElement.textContent = gradeValue;
+            qualityChange()
         })
+
+
     }
     bangleQualityToHTML()
 
@@ -2819,29 +2806,34 @@ async function selectCreate(data) {
 
     function bangleStatsDisable() {
         let optionElements = document.querySelectorAll(".accessory-area .accessory-item.bangle select.option");
+        let bangleElements = document.querySelectorAll(".accessory-area .accessory-item.bangle input.option");
         let bangleStatsName = document.querySelectorAll(".accessory-area .accessory-item.bangle .stats")[2];
         let bangleStatsValue = document.querySelectorAll(".accessory-area .accessory-item.bangle input.option")[2];
-        // bangleStatsName.disabled=true
-        // bangleStatsValue.disabled=true
 
-        let count = 0;
-        optionElements.forEach((select, idx) => {
-            if (select.options[select.selectedIndex].textContent === "없음") {
-                count++
-            }
-            // console.log(idx)
-            if (idx === optionElements.length - 1) {
-                if (count >= 1) {
-                    bangleStatsName.disabled = false;
-                    bangleStatsValue.disabled = false;
-                } else {
-                    bangleStatsName.disabled = true;
-                    bangleStatsValue.disabled = true;
-                    bangleStatsName[0].selected = true;
+
+        optionElements.forEach(element => {
+            element.addEventListener("change", () => { valueChange() })
+            function valueChange() {
+                if (element.options[element.selectedIndex].textContent !== "없음") {
+                    bangleStatsName.options[0].selected = true;
                     bangleStatsValue.value = 0;
+                    bangleQualityToHTML()
                 }
             }
+            valueChange()
         })
+        bangleElements.forEach((element, idx) => {
+            element.addEventListener("change", () => { valueChange() })
+            function valueChange() {
+                // console.log(element.value, idx)
+                if (element.value > 0 && idx === 2) {
+                    optionElements[2].options[0].selected = true;
+                    bangleQualityToHTML()
+                }
+            }
+            valueChange()
+        })
+
     }
     bangleStatsDisable()
 
@@ -2893,7 +2885,6 @@ async function selectCreate(data) {
         ellaOptionSetting(); // 엘라옵션 선택 조절
         showLeafInfo();
         enlightValueChange();
-        bangleStatsDisable();
         avgLevelKarmaYN();
         createTooltip(); // 툴팁생성
     })
@@ -3320,8 +3311,8 @@ createSpinButton()
 
 function createNumpad() {
     const numpadTemplate = `
-        <div class="numeric-keyboard-layout js-n-keyboard" id="dynamic-numpad">
-            <span>키보드로도 입력 가능</span>
+        <div class="numeric-keyboard-layout js-n-keyboard" id="dynamic-numpad" style="background-color:#fff">
+            <p style="text-align:center;border-bottom:1px solid #767676;padding:3px 0;">키보드 입력도 가능</p>
             <ul class="list-num">
                 <li><button type="button" id="1" name="1" value="1" class="btn-num js-btn-number">1</button></li>
                 <li><button type="button" id="2" name="2" value="2" class="btn-num js-btn-number">2</button></li>
@@ -3334,7 +3325,7 @@ function createNumpad() {
                 <li><button type="button" id="9" name="9" value="9" class="btn-num js-btn-number">9</button></li>
                 <li><button type="button" class="btn-num btn-none js-btn-close"><small class="sr-only">닫기</small></button></li>
                 <li><button type="button" id="0" name="0" value="0" class="btn-num js-btn-number">0</button></li>
-                <li><button type="button" id="backspace" name="backspace" class="btn-num btn-none js-btn-backspace">⇚</button></li>
+                <li><button type="button" id="backspace" name="backspace" class="btn-num btn-none js-btn-backspace">&#9003</button></li>
             </ul>
         </div>
     `;
@@ -3351,6 +3342,9 @@ function createNumpad() {
             }
 
             currentInput = this;
+            if(currentInput.value === "0"){
+                currentInput.value = "";
+            }
             const numpad = document.createElement('div');
             numpad.innerHTML = numpadTemplate;
             document.body.appendChild(numpad);
@@ -3571,12 +3565,16 @@ function createTooltip() {
             let tooltipX = mouseX + 10; // 마우스 오른쪽으로 10px 이동
             let tooltipY = mouseY + 10; // 마우스 아래로 10px 이동
 
-            if (tooltipX + tooltipWidth > window.innerWidth) {
-                tooltipX = mouseX - tooltipWidth - 10; // 마우스 왼쪽으로 이동
+            // 스크롤 위치를 고려하여 툴팁 위치 조정
+            tooltipX += window.scrollX;
+            tooltipY += window.scrollY;
+
+            if (tooltipX + tooltipWidth > window.innerWidth + window.scrollX) {
+                tooltipX = mouseX - tooltipWidth - 10 + window.scrollX; // 마우스 왼쪽으로 이동
             }
 
-            if (tooltipY + tooltipHeight > window.innerHeight) {
-                tooltipY = mouseY - tooltipHeight - 10; // 마우스 위쪽으로 이동
+            if (tooltipY + tooltipHeight > window.innerHeight + window.scrollY) {
+                tooltipY = mouseY - tooltipHeight - 10 + window.scrollY; // 마우스 위쪽으로 이동
             }
 
             tooltip.style.left = `${tooltipX}px`;

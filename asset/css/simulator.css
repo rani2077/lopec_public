@@ -15,7 +15,7 @@ select {
 
 input[type=number] {
     width: 100%;
-    background-color: #ddd;
+    background-color: #f0f3f5;
     -moz-appearance: textfield;
     /* Firefox */
 }
@@ -59,11 +59,31 @@ input[type=number]::-ms-expand {
 .group-equip .number-box .option-wrap .option-item {
     display: flex;
     justify-content: flex-start;
+    height: 18px;
+    border-radius:4px;
+    overflow: hidden;
 }
 
 .group-equip .number-box .option-wrap .quality {
-    padding: 2px;
+    height: 100%;
+    width: 18px;
     color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink:0;
+    font-size: 13px;
+}
+.group-equip .number-box .option-wrap .stats {
+    border:1px solid #b3b3b3;
+    border-radius:0;
+    border-left:none;
+}
+.group-equip .number-box .option-wrap .option {
+    border:1px solid #b3b3b3;
+}
+.group-equip .number-box .option-wrap .option[disabled] {
+    border:1px solid #e2e2e2;
 }
 
 .group-equip .number-box .progress {
@@ -95,8 +115,14 @@ input[type=number]::-ms-expand {
 }
 
 /*armor-item*/
-.armor-item .plus {
+.group-equip .armor-item .plus {
     max-width: 66px;
+}
+.group-equip .armor-item .hyper-wrap {
+    gap:4px;
+}
+.group-equip .armor-item .hyper-wrap .level{
+    padding-left: 0;
 }
 
 /* sc-info: main section style*/
@@ -126,8 +152,8 @@ input[type=number]::-ms-expand {
 }
 
 .sc-info .accessory-area .number-box input.progress {
-    background: #e6ffff;
-    border: 1px solid #00cccc;
+    background: #f0f3f5;
+    border: 1px solid #767676;
 }
 
 .sc-info .accessory-area .accessory-item:last-child .number-box {
@@ -215,20 +241,24 @@ input[type=number]::-ms-expand {
 }
 
 /* simple-option-area */
+.sc-info .group-equip .gem-area {
+    border-radius:5px 0 0 5px;
+}
 .sc-info .group-equip .simple-option-area {
     position: absolute;
     right: 0;
     top: 0;
     width: 20px;
     height: 75px;
-    background: #f00;
+    background: #e6e8ec;
+    border-radius: 0px 5px 5px 0;
 }
 
 .group-equip .simple-option-area .extend-button {
     cursor: pointer;
     writing-mode: vertical-lr;
     padding: 15px 3px 5px;
-    font-size: 12px;
+    font-size: 11px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -254,7 +284,7 @@ input[type=number]::-ms-expand {
 }
 
 .group-equip .simple-option-area .extend-list {
-    background: #0f0;
+    background: #e6e8ec;
     position: absolute;
     left: 100%;
     top: 0;
@@ -268,6 +298,7 @@ input[type=number]::-ms-expand {
     width: 0;
     white-space: nowrap;
     transition: width 300ms, padding 300ms;
+    border-radius:5px;
 }
 
 .group-equip .simple-option-area .extend-list.on {

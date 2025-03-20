@@ -1173,15 +1173,21 @@
     height: 100%;
 }
 .sc-info .text-box .grinding-wrap{
+    height: 17px;
     display: flex;
     align-items: center;
     border-radius:4px;
     overflow: hidden;
 }
 .sc-info .text-box .quality{
-    display: block;
-    padding: 2px 2px;
+    font-size: 13px;
+    height: 100%;
     color: #fff;
+    width: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink:0;
 }
 /* .sc-info .text-box .quality.high{
     background: #ecc515;
@@ -1193,12 +1199,12 @@
     background: #4671ff;
 } */
 .sc-info .text-box .option{
+    height: 100%;
     font-size:13px;
     border:1px solid rgb(179, 179, 179);
     border-left:none;
     letter-spacing: -1px;
     border-radius:0 4px 4px 0;
-    padding: 1px 0;
     padding-right: 5px;
     padding-left: 2px;
 }
