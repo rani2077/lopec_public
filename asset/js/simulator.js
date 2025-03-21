@@ -4,12 +4,12 @@
  *********************************************************************************************************************** */
 async function importModuleManager() {
     let modules = await Promise.all([
-        import("../custom-module/fetchApi.js"),     // lostark api호출
-        import("../filter/filter.js"),              // 기존 filter.js
-        import("../filter/simulator-data.js"),      // 장비레벨 스텟 정보
-        import("../filter/simulator-filter.js"),    // 시뮬레이터 필터
-        import("../custom-module/trans-value.js"),  // 유저정보 수치화
-        import("../custom-module/calculator.js"),   // 수치값을 스펙포인트로 계산
+        import("../custom-module/fetchApi.js"+`?${(new Date).getTime()}`),     // lostark api호출
+        import("../filter/filter.js"+`?${(new Date).getTime()}`),              // 기존 filter.js
+        import("../filter/simulator-data.js"+`?${(new Date).getTime()}`),      // 장비레벨 스텟 정보
+        import("../filter/simulator-filter.js"+`?${(new Date).getTime()}`),    // 시뮬레이터 필터
+        import("../custom-module/trans-value.js"+`?${(new Date).getTime()}`),  // 유저정보 수치화
+        import("../custom-module/calculator.js"+`?${(new Date).getTime()}`),   // 수치값을 스펙포인트로 계산
     ])
     let moduleObj = {
         fetchApi: modules[0],

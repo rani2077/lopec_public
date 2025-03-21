@@ -260,7 +260,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    
+
     <script>
         document.write('<script type="module" src="/asset/js/m-layout.js?' + (new Date).getTime() + '"><\/script>');
         document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
