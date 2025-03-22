@@ -1,5 +1,5 @@
 // spec-point.js html코드
-// import { getCharacterPr ofile, searchHtml } from '/asset/js/spec-point.js'
+// import { getCharacterProfile, searchHtml } from '/asset/js/spec-point.js'
 
 
 let modulePath = [

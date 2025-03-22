@@ -38,275 +38,51 @@
             </script>
         </div>
 
-        <section class="sc-info search-page" id="sc-info">
+        <section class="sc-profile">
+            <div class="group-img">
+                <span class="img"></span>
+            </div>
             <div class="group-profile">
-                <div class="img-area shadow">
-                    <button class="renew-button">갱신하기</button>
-                    <img id="character-image"
-                        src="https://img.lostark.co.kr/armory/2/80F73522A0F25E248410B876E3634E36F6611C640F07091CC2476E2EC3FB153C.jpg?v=20250212224226"
-                        alt="프로필 이미지">
-                    <em class="star full" style="user-select:none;">☆</em>
-                    <p class="level" id="character-level">Lv.70</p>
-                    <p class="name" id="character-nickname">청염각</p>
-                    <p class="class" id="character-class">난무 스트라이커</p>
+                <div class="name-area">
+                    <span class="name">LV.70 청염각 <i class="job">#일격 스트라이커</i></span>
                 </div>
-                <ul class="tag-list shadow">
-
-                    <li class="tag-item">
-                        <p class="tag radius">서버</p>
-                        <span class="name">아브렐슈드</span>
-                    </li>
-
-                    <li class="tag-item">
-                        <p class="tag radius">레벨</p>
-                        <span class="name">1,694.50</span>
-                    </li>
-
-                    <li class="tag-item">
-                        <p class="tag radius">길드</p>
-                        <span class="name">햄부기</span>
-                    </li>
-
-                    <li class="tag-item">
-                        <p class="tag radius">칭호</p>
-                        <span class="name">나야, 호랑이</span>
-                    </li>
-
-                    <li class="tag-item">
-                        <p class="tag radius">카드</p>
-                        <span class="name">사랑꾼 (20각)</span>
-                    </li>
-                </ul>
-                <div class="alert-area">
-                    <div class="alert-wrap">
-                        <p class="desc">접속을 종료해야 API가 갱신됩니다.<br>캐릭터 선택창으로 이동 후 갱신 버튼을 눌러주세요.</p>
-                        <div class="button-box">
-                            <button class="refresh">갱신</button>
-                            <button class="cancle">취소</button>
-                        </div>
+                <div class="info-area">
+                    <div class="info-box">
+                        <span class="name">서버 : 아브렐슈드</span>
+                        <span class="name">레벨 : 1697</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="name">직업랭킹 : 1111</span>
+                        <span class="name">전체랭킹 : 39211</span>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <nav class="sc-nav">
+            <a href="" class="link on">메인</a>
+            <a href="" class="link">원정대</a>
+            <a href="" class="link">시뮬레이터</a>
+        </nav>
+
+
+        <section class="sc-info search-page" id="sc-info">
+
             <div class="group-info">
                 <div class="spec-area shadow minimum flag on">
-                    <p class="title">환산 공격력</p>
-
-
                     <div class="tier-box">
-                        <img src="/asset/image/gold.png" undefined="" alt="">
-                        <p class="tier-info" undefined="">골드 티어</p>
-                    </div>
-
-                    <div class="spec-point">
-                        167.7만
-                    </div>
-                    <div class="extra-info">
-                        <p class="detail-info">세부정보</p>
-                        <div class="leftColumn" style="width:calc(50% - 15px);margin-right:15px;">
-                            <div class="info-box">
-                                <p class="text">공격력 : 109346</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        순수 공격력 수치입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">엘릭서 : 20.14%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">초월 : 16.61%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">각인 : 81.06%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="rightColumn" style="width:calc(50% - 15px);margin-right:15px;">
-                            <div class="info-box">
-                                <p class="text">진화 : 45.0%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">깨달음 : 42.0%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">도약 : 3.0%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">팔찌 : 7.52%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bottomColumn" style="margin-top:10px;">
-                            <div class="info-box">
-                                <p class="text"> 보석 순수 딜증 : 11.34%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        보석을 통해 얻은 순수 대미지 증가량
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text"> 보석 최종 딜증 : 14.63%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        보석 순수 딜증 x 보정치로 인한 최종 딜증 값
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text"> 보석 쿨감 : 14.67%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        보석 평균 쿨감
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text"> 보석 보정치 : 1.29</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        초각성스킬을 비롯한 보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수 <br> 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시
-                                    </span>
-                                </div>
-                            </div>
+                        <img src="../asset/image/bronze.png" alt="">
+                        <div class="spec-point">
+                            1800.<i style="font-size:20px">99</i>
                         </div>
                     </div>
-
-                    <span class="extra-btn" id="extra-btn"></span>
-
-                </div>
-                <div class="button-area">
-                    <a href="https://cool-kiss-ec2.notion.site/2024-10-16-121758f0e8da8029825ef61b65e22568"
-                        target="_blink" class="link-block">무효각인 목록</a>
-                    <div class="link-split">
-                        <span type="button" id="split-input" style="color:#fff;">레벨별 점수 통계</span>
-                        <i class="detail" style="">레벨 구간 : 1690이상 1695미만<br>점수 중앙값: 308.9만<br>기준 일자 : 2025.01.27
-                            <br><br> ※딜러 티어 <br> 브론즈 : 100만점 미만 <br> 실버 : 100만점 이상 <br> 골드 : 150만점 이상 <br> 다이아 : 250만점
-                            이상 <br> 마스터 : 330만점 이상 <br> 에스더 : 450만점 이상</i>
-
+                    <div class="best-box">
+                        <span class="desc">달성최고점수 - 1800.99</span>
                     </div>
                 </div>
-                <div class="engraving-area shadow">
+                <div class="detail-area shadow"
+                    style="width:100%;background-color:#2f2f2f;height:300px;margin-top:20px;">
 
-                    <div class="engraving-box">
-                        <img src="https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_235.png"
-                            class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
-                            <option value="유물">유물</option>
-                            <option value="전설">전설</option>
-                            <option value="영웅">영웅</option>
-                        </select>
-                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
-                        </select>
-                        <select class="engraving-name">
-                        </select>
-                        <div class="ability-ico engraving-ico unknown"></div>
-                        <span class="ability-level"></span>
-
-
-                    </div>
-                    <div class="engraving-box">
-                        <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/achieve/achieve_08_62.png"
-                            class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
-                            <option value="유물">유물</option>
-                            <option value="전설">전설</option>
-                            <option value="영웅">영웅</option>
-                        </select>
-                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
-                        </select>
-                        <select class="engraving-name">
-                        </select>
-                        <div class="ability-ico engraving-ico unknown"></div>
-                        <span class="ability-level"></span>
-
-
-                    </div>
-                    <div class="engraving-box">
-                        <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_237.png"
-                            class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
-                            <option value="유물">유물</option>
-                            <option value="전설">전설</option>
-                            <option value="영웅">영웅</option>
-                        </select>
-                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
-                        </select>
-                        <select class="engraving-name">
-                        </select>
-                        <div class="ability-ico engraving-ico unknown"></div>
-                        <span class="ability-level"></span>
-
-
-                    </div>
-                    <div class="engraving-box">
-                        <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_210.png"
-                            class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
-                            <option value="유물">유물</option>
-                            <option value="전설">전설</option>
-                            <option value="영웅">영웅</option>
-                        </select>
-                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
-                        </select>
-                        <select class="engraving-name">
-                        </select>
-                        <div class="ability-ico engraving-ico unknown"></div>
-                        <span class="ability-level"></span>
-
-
-                    </div>
-                    <div class="engraving-box">
-                        <img src="https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_231.png"
-                            class="engraving-img" alt="">
-                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
-                            <option value="유물">유물</option>
-                            <option value="전설">전설</option>
-                            <option value="영웅">영웅</option>
-                        </select>
-                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
-                        </select>
-                        <select class="engraving-name">
-                        </select>
-                        <div class="ability-ico engraving-ico unknown"></div>
-                        <span class="ability-level"></span>
-
-
-                    </div>
                 </div>
             </div>
             <div class="group-equip">
@@ -334,8 +110,7 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_154.png"
                                         alt="착용장비프로필">
-                                    <span class="progress legendary-progressbar"
-                                        >97</span>
+                                    <span class="progress legendary-progressbar">97</span>
                                 </div>
                                 <div class="text-box">
 
@@ -354,29 +129,28 @@
                                         </div>
                                         <span class="upgrade">상재</span>
                                         <div class="spin-wrapper">
-                                            <select class="armor-upgrade" ></select>
+                                            <select class="armor-upgrade"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius helmet" >
+                                        <select class="elixir radius helmet">
                                             <option value="value:0">없음</option>
                                         </select>
-                                        <select class="elixir radius common" ></select>
+                                        <select class="elixir radius common"></select>
                                     </div>
 
                                     <div class="hyper-wrap">
                                         <div class="spin-wrapper">
-                                            <select class="level"  data-max="7"
-                                                data-min="0"></select>
+                                            <select class="level" data-max="7" data-min="0"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
                                         <span class="level">단계</span>
                                         <div class="spin-wrapper">
-                                            <select class="hyper" ></select>
+                                            <select class="hyper"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
@@ -393,8 +167,7 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_152.png"
                                         alt="착용장비프로필">
-                                    <span class="progress legendary-progressbar"
-                                        >100</span>
+                                    <span class="progress legendary-progressbar">100</span>
                                 </div>
                                 <div class="text-box">
 
@@ -413,7 +186,7 @@
                                         </div>
                                         <span class="upgrade">상재</span>
                                         <div class="spin-wrapper">
-                                            <select class="armor-upgrade" >
+                                            <select class="armor-upgrade">
                                             </select>
                                             <span class="up"></span>
                                             <span class="down"></span>
@@ -421,20 +194,19 @@
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius shoulder" ></select>
-                                        <select class="elixir radius common" ></select>
+                                        <select class="elixir radius shoulder"></select>
+                                        <select class="elixir radius common"></select>
                                     </div>
 
                                     <div class="hyper-wrap">
                                         <div class="spin-wrapper">
-                                            <select class="level"  data-max="7"
-                                                data-min="0"></select>
+                                            <select class="level" data-max="7" data-min="0"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
                                         <span class="level">단계</span>
                                         <div class="spin-wrapper">
-                                            <select class="hyper" ></select>
+                                            <select class="hyper"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
@@ -451,8 +223,7 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_150.png"
                                         alt="착용장비프로필">
-                                    <span class="progress legendary-progressbar"
-                                        >33</span>
+                                    <span class="progress legendary-progressbar">33</span>
                                 </div>
                                 <div class="text-box">
 
@@ -471,7 +242,7 @@
                                         </div>
                                         <span class="upgrade">상재</span>
                                         <div class="spin-wrapper">
-                                            <select class="armor-upgrade" >
+                                            <select class="armor-upgrade">
                                             </select>
                                             <span class="up"></span>
                                             <span class="down"></span>
@@ -479,20 +250,19 @@
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius armor" ></select>
-                                        <select class="elixir radius common" ></select>
+                                        <select class="elixir radius armor"></select>
+                                        <select class="elixir radius common"></select>
                                     </div>
 
                                     <div class="hyper-wrap">
                                         <div class="spin-wrapper">
-                                            <select class="level"  data-max="7"
-                                                data-min="0"></select>
+                                            <select class="level" data-max="7" data-min="0"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
                                         <span class="level">단계</span>
                                         <div class="spin-wrapper">
-                                            <select class="hyper" ></select>
+                                            <select class="hyper"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
@@ -509,8 +279,7 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_151.png"
                                         alt="착용장비프로필">
-                                    <span class="progress legendary-progressbar"
-                                        >22</span>
+                                    <span class="progress legendary-progressbar">22</span>
                                 </div>
                                 <div class="text-box">
 
@@ -529,7 +298,7 @@
                                         </div>
                                         <span class="upgrade">상재</span>
                                         <div class="spin-wrapper">
-                                            <select class="armor-upgrade" >
+                                            <select class="armor-upgrade">
                                             </select>
                                             <span class="up"></span>
                                             <span class="down"></span>
@@ -537,20 +306,19 @@
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius pants" ></select>
-                                        <select class="elixir radius common" ></select>
+                                        <select class="elixir radius pants"></select>
+                                        <select class="elixir radius common"></select>
                                     </div>
 
                                     <div class="hyper-wrap">
                                         <div class="spin-wrapper">
-                                            <select class="level"  data-max="7"
-                                                data-min="0"></select>
+                                            <select class="level" data-max="7" data-min="0"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
                                         <span class="level">단계</span>
                                         <div class="spin-wrapper">
-                                            <select class="hyper" ></select>
+                                            <select class="hyper"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
@@ -567,8 +335,7 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_153.png"
                                         alt="착용장비프로필">
-                                    <span class="progress legendary-progressbar"
-                                        >11</span>
+                                    <span class="progress legendary-progressbar">11</span>
                                 </div>
                                 <div class="text-box">
 
@@ -587,7 +354,7 @@
                                         </div>
                                         <span class="upgrade">상재</span>
                                         <div class="spin-wrapper">
-                                            <select class="armor-upgrade" >
+                                            <select class="armor-upgrade">
                                             </select>
                                             <span class="up"></span>
                                             <span class="down"></span>
@@ -595,20 +362,19 @@
                                     </div>
 
                                     <div class="elixir-wrap">
-                                        <select class="elixir radius glove" ></select>
-                                        <select class="elixir radius common" ></select>
+                                        <select class="elixir radius glove"></select>
+                                        <select class="elixir radius common"></select>
                                     </div>
 
                                     <div class="hyper-wrap">
                                         <div class="spin-wrapper">
-                                            <select class="level"  data-max="7"
-                                                data-min="0"></select>
+                                            <select class="level" data-max="7" data-min="0"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
                                         <span class="level">단계</span>
                                         <div class="spin-wrapper">
-                                            <select class="hyper" ></select>
+                                            <select class="hyper"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
@@ -625,8 +391,7 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/fbm_m_item/fbm_m_item_156.png"
                                         alt="착용장비프로필">
-                                    <select class="progress legendary-progressbar" 
-                                        data-max="100"></select>
+                                    <select class="progress legendary-progressbar" data-max="100"></select>
                                 </div>
                                 <div class="text-box">
 
@@ -648,7 +413,7 @@
                                         </div>
                                         <span class="upgrade">상재</span>
                                         <div class="spin-wrapper">
-                                            <select class="armor-upgrade" >
+                                            <select class="armor-upgrade">
                                             </select>
                                             <span class="up"></span>
                                             <span class="down"></span>
@@ -660,14 +425,13 @@
 
                                     <div class="hyper-wrap">
                                         <div class="spin-wrapper">
-                                            <select class="level"  data-max="7"
-                                                data-min="0"></select>
+                                            <select class="level" data-max="7" data-min="0"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
                                         <span class="level">단계</span>
                                         <div class="spin-wrapper">
-                                            <select class="hyper" ></select>
+                                            <select class="hyper"></select>
                                             <span class="up"></span>
                                             <span class="down"></span>
                                         </div>
@@ -727,7 +491,7 @@
                                 </div>
                                 <div class="number-box">
 
-                                    <select class="tier accessory"  style="width:100%;">
+                                    <select class="tier accessory" style="width:100%;">
                                         <option value="T3유물:목걸이">T3유물</option>
                                         <option value="T3고대:목걸이">T3고대</option>
                                         <option value="T4유물:목걸이">T4유물</option>
@@ -743,17 +507,17 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                     </div>
@@ -768,7 +532,7 @@
 
                                 <div class="number-box">
 
-                                    <select class="tier accessory"  style="width:100%;">
+                                    <select class="tier accessory" style="width:100%;">
                                         <option value="T3유물:귀걸이">T3유물</option>
                                         <option value="T3고대:귀걸이">T3고대</option>
                                         <option value="T4유물:귀걸이">T4유물</option>
@@ -784,17 +548,17 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                     </div>
@@ -809,7 +573,7 @@
 
                                 <div class="number-box">
 
-                                    <select class="tier accessory"  style="width:100%;">
+                                    <select class="tier accessory" style="width:100%;">
                                         <option value="T3유물:귀걸이">T3유물</option>
                                         <option value="T3고대:귀걸이">T3고대</option>
                                         <option value="T4유물:귀걸이">T4유물</option>
@@ -825,17 +589,17 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                     </div>
@@ -849,7 +613,7 @@
                                 </div>
 
                                 <div class="number-box">
-                                    <select class="tier accessory"  style="width:100%;">
+                                    <select class="tier accessory" style="width:100%;">
                                         <option value="T3유물:반지">T3유물</option>
                                         <option value="T3고대:반지">T3고대</option>
                                         <option value="T4유물:반지">T4유물</option>
@@ -865,17 +629,17 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                     </div>
@@ -890,7 +654,7 @@
 
                                 <div class="number-box">
 
-                                    <select class="tier accessory"  style="width:100%;">
+                                    <select class="tier accessory" style="width:100%;">
                                         <option value="T3유물:반지">T3유물</option>
                                         <option value="T3고대:반지">T3고대</option>
                                         <option value="T4유물:반지">T4유물</option>
@@ -906,17 +670,17 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality low">하</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality middle">중</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                     </div>
@@ -927,15 +691,15 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/ability/ability_257.png"
                                         alt="">
-                                    <span class="progress mythic-progressbar" >고대</span>
+                                    <span class="progress mythic-progressbar">고대</span>
                                 </div>
 
                                 <div class="option-box">
 
                                     <div class="buff-wrap">
-                                        <select class="buff" >
+                                        <select class="buff">
                                         </select>
-                                        <select class="buff" >
+                                        <select class="buff">
                                         </select>
                                     </div>
 
@@ -945,12 +709,12 @@
                                 <div class="img-box radius ultra-background">
                                     <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_304.png"
                                         alt="">
-                                    <span class="progress mythic-progressbar" >고대</span>
+                                    <span class="progress mythic-progressbar">고대</span>
                                 </div>
                                 <div class="number-box">
 
                                     <div class="option-wrap">
-                                        <select class="tier bangle" >
+                                        <select class="tier bangle">
                                             <option value="T3유물">T3유물</option>
                                             <option value="T3고대">T3고대</option>
                                             <option value="T4유물">T4유물</option>
@@ -1005,18 +769,18 @@
                                     <div class="text-box">
                                         <div class="grinding-wrap">
                                             <span class="quality none">?</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
                                         <div class="grinding-wrap">
                                             <span class="quality none">?</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
 
                                         <div class="grinding-wrap">
                                             <span class="quality none">?</span>
-                                            <select class="option tooltip-text" >
+                                            <select class="option tooltip-text">
                                             </select>
                                         </div>
 
@@ -1117,6 +881,95 @@
                     </div>
                 </div>
             </div>
+            <div class="group-system">
+                <div class="engraving-area shadow">
+
+                    <div class="engraving-box">
+                        <img src="https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_235.png"
+                            class="engraving-img" alt="">
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
+                            <option value="유물">유물</option>
+                            <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
+                        </select>
+                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
+                        </select>
+                        <select class="engraving-name">
+                        </select>
+                        <div class="ability-ico engraving-ico unknown"></div>
+                        <span class="ability-level"></span>
+                    </div>
+                    <div class="engraving-box">
+                        <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/achieve/achieve_08_62.png"
+                            class="engraving-img" alt="">
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
+                            <option value="유물">유물</option>
+                            <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
+                        </select>
+                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
+                        </select>
+                        <select class="engraving-name">
+                        </select>
+                        <div class="ability-ico engraving-ico unknown"></div>
+                        <span class="ability-level"></span>
+
+
+                    </div>
+                    <div class="engraving-box">
+                        <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_237.png"
+                            class="engraving-img" alt="">
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
+                            <option value="유물">유물</option>
+                            <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
+                        </select>
+                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
+                        </select>
+                        <select class="engraving-name">
+                        </select>
+                        <div class="ability-ico engraving-ico unknown"></div>
+                        <span class="ability-level"></span>
+
+
+                    </div>
+                    <div class="engraving-box">
+                        <img src="https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_210.png"
+                            class="engraving-img" alt="">
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
+                            <option value="유물">유물</option>
+                            <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
+                        </select>
+                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
+                        </select>
+                        <select class="engraving-name">
+                        </select>
+                        <div class="ability-ico engraving-ico unknown"></div>
+                        <span class="ability-level"></span>
+
+
+                    </div>
+                    <div class="engraving-box">
+                        <img src="https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_231.png"
+                            class="engraving-img" alt="">
+                        <select class="relic-ico engraving-ico orange" name="ArmoryEngraving ArkPassiveEffects Grade">
+                            <option value="유물">유물</option>
+                            <option value="전설">전설</option>
+                            <option value="영웅">영웅</option>
+                        </select>
+                        <select class="grade orange" data-max="4" data-min="0" data-string="X ">
+                        </select>
+                        <select class="engraving-name">
+                        </select>
+                        <div class="ability-ico engraving-ico unknown"></div>
+                        <span class="ability-level"></span>
+
+
+                    </div>
+                </div>
+            </div>
+
         </section>
     </div>
     <footer></footer>

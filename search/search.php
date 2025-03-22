@@ -124,199 +124,50 @@
         <?php // 좌우광고 
         ?>
 
-
-
-
-
-        <section class="sc-info search-page" id="sc-info">
-            <div class="loader"></div>
-
-
-
+        <section class="sc-profile">
+            <div class="group-img">
+                <span class="img"></span>
+            </div>
             <div class="group-profile">
-                <div class="img-area shadow">
-                    <?php //  <img id="character-image" src="../asset/image/skeleton-img.png" alt="프로필 이미지"> 
-                    ?>
-                    <?php //  <button class="renew-button">갱신하기</button> 
-                    ?>
-                    <span class="image skeleton"></span>
-                    <p class="level" id="character-level">Lv.N/A</p>
-                    <p class="name" id="character-nickname">닉네임</p>
-                    <p class="class" id="character-class">직업</p>
+                <div class="name-area">
+                    <span class="name">LV.70 청염각 <i class="job">#일격 스트라이커</i></span>
                 </div>
-                <ul class="tag-list shadow">
-                    <li class="tag-item">
-                        <p class="tag radius">서버</p>
-                        <span class="name"></span>
-                    </li>
-                    <li class="tag-item">
-                        <p class="tag radius">레벨</p>
-                        <span class="name"></span>
-                    </li>
-                    <li class="tag-item">
-                        <p class="tag radius">길드</p>
-                        <span class="name"></span>
-                    </li>
-                    <li class="tag-item">
-                        <p class="tag radius">칭호</p>
-                        <span class="name"></span>
-                    </li>
-                    <li class="tag-item">
-                        <p class="tag radius">카드</p>
-                        <span class="name"></span>
-                    </li>
-                </ul>
-
-
-                <div class="alert-area">
-                    <div class="alert-wrap">
-                        <p class="desc">api갱신 조건에 대한 문장</p>
-                        <div class="button-box">
-                            <button class="refresh">갱신하기</button>
-                            <button class="cancle">취소하기</button>
-                        </div>
+                <div class="info-area">
+                    <div class="info-box">
+                        <span class="name">서버 : 아브렐슈드</span>
+                        <span class="name">레벨 : 1697</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="name">직업랭킹 : 1111</span>
+                        <span class="name">전체랭킹 : 39211</span>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <nav class="sc-nav">
+            <a href="" class="link on">메인</a>
+            <a href="" class="link">원정대</a>
+            <a href="" class="link">시뮬레이터</a>
+        </nav>
+
+        <section class="sc-info search-page" id="sc-info">
+
             <div class="group-info">
                 <div class="spec-area shadow minimum flag on">
-                    <p class="title">환산 공격력</p>
                     <div class="tier-box">
                         <img src="../asset/image/bronze.png" alt="">
                         <?php //  <p class="tier-info">티어정보</p> 
                         ?>
+                        <div class="spec-point">
+                            1800.<i style="font-size:20px">99</i>
+                        </div>
                     </div>
-                    <div class="spec-point">
-                        N/A
+                    <div class="best-box">
+                        <span class="desc">달성최고점수 - 1800.99</span>
                     </div>
-                    <div class="extra-info">
-                        <p class="detail-info">세부정보</p>
-                        <div class="leftColumn" style="width:calc(50% - 15px);margin-right:15px;">
-                            <div class="info-box">
-                                <p class="text">공격력 : 00000</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        순수 공격력 수치입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">엘릭서 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">초월 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">각인 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="rightColumn" style="width:calc(50% - 15px);margin-right:15px;">
-                            <div class="info-box">
-                                <p class="text">진화 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">깨달음 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">도약 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text">팔찌 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        로펙 환산 기준입니다.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bottomColumn" style="margin-top:10px;">
-                            <div class="info-box">
-                                <p class="text"> 보석 순수 딜증 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        보석을 통해 얻은 순수 대미지 증가량
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text"> 보석 최종 딜증 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        보석 순수 딜증 x 보정치로 인한 최종 딜증 값
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text"> 보석 쿨감 : 00.00%</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        보석 평균 쿨감
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <p class="text"> 보석 보정치 : 0.00</p>
-                                <div class="question">
-                                    <span class="detail">
-                                        초각성스킬을 비롯한 보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수 <br> 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <span class="extra-btn" id="extra-btn"></span>
                 </div>
-                <div class="button-area">
-                    <a href="https://cool-kiss-ec2.notion.site/2024-10-16-121758f0e8da8029825ef61b65e22568" target="_blink" class="link-block">무효각인 목록</a>
-                    <form class="link-split" action="../split/split.html" method="get">
-                        <button type="button" id="split-input">레벨별 평균점수</button>
-                    </form>
-                </div>
-                <div class="engraving-area shadow">
-                    <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
-                    </div>
-                    <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
-                    </div>
-                    <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
-                    </div>
-                    <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
-                    </div>
-                    <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
-                    </div>
+                <div class="detail-area shadow" style="width:100%;background-color:#2f2f2f;height:300px;margin-top:20px;">
 
                 </div>
             </div>
@@ -721,6 +572,26 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div class="group-system">
+                <div class="engraving-area shadow">
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                    <div class="engraving-box">
+                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                    </div>
+                </div>
+
             </div>
         </section>
     </div>

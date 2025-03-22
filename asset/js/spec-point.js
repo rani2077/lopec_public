@@ -2271,17 +2271,7 @@ export function getCharacterProfile(inputName, callback) {
 
 
 
-
-
-
-
-
         // HTML코드
-
-
-        // 프로필
-
-
 
 
         // 카드
