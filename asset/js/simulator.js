@@ -19,6 +19,13 @@ async function importModuleManager() {
         transValue: modules[4],
         calcValue: modules[5],
     }
+    
+    // let data = await moduleObj.fetchApi.lostarkApiCall("청염각")
+    // // console.log(data)
+    // let extract = await moduleObj.transValue.getCharacterProfile(data)
+    // let calcValue = await moduleObj.calcValue.specPointCalc(extract)
+
+    // console.log(calcValue)
 
     return moduleObj
 }
@@ -798,7 +805,7 @@ async function simulatorInputCalc() {
             let gem = element.querySelector(".gems").value;
             let gemDataJSON = cachedData.ArmoryGem.Gems[index];
             gemDataJSON.Level = level;
-            gemDataJSON.Name = `<P ALIGN='CENTER'><FONT COLOR='#E3C7A1'>${level}레벨 ${gem}의보석</FONT></P>`;
+            gemDataJSON.Name = `<P ALIGN='CENTER'><FONT COLOR='#E3C7A1'>${level}레벨 ${gem}의 보석</FONT></P>`;
             gemDataJSON.Tooltip = modifyGemStringInJsonString(gemDataJSON.Tooltip, level, gem)
 
             // console.log(modifyGemStringInJsonString(gemDataJSON.Tooltip, level, gem))
@@ -1146,15 +1153,15 @@ async function simulatorInputCalc() {
         extractValue.hyperObj = extractHyperStageValue();
     }
     simulatorDataToExtractValue()
-    //console.log("오리진OBJ", extractValue)
+    // console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
      * description			: 	최종 스펙포인트 계산식
      *********************************************************************************************************************** */
 
-    let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue, supportCheck);
-    // console.log(originSpecPoint.completeSpecPoint);
+    let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+    console.log(originSpecPoint);
 }
 simulatorInputCalc()
 document.body.addEventListener('change', () => { simulatorInputCalc() })

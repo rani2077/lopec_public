@@ -1,4 +1,4 @@
-export async function specPointCalc(inputObj, supportCheck) {
+export async function specPointCalc(inputObj) {
 
 
     // 4티어 스펙포인트
@@ -185,9 +185,9 @@ export async function specPointCalc(inputObj, supportCheck) {
     highTierSpecPointObj.dealerlastFinalValue = lastFinalValue //딜러 스펙포인트
     highTierSpecPointObj.supportSpecPoint = supportSpecPoint //서폿 스펙포인트
     // 스펙포인트 db저장 통합
-    if (!(supportCheck == "서폿")) {   // 딜러
+    if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
         highTierSpecPointObj.completeSpecPoint = lastFinalValue
-    } else if (supportCheck == "서폿") {
+    } else if (inputObj.etcObj.supportCheck == "서폿") {
         highTierSpecPointObj.completeSpecPoint = supportSpecPoint
     }
     highTierSpecPointObj.supportSpecPoint = isNaN(highTierSpecPointObj.supportSpecPoint) ? 0 : highTierSpecPointObj.supportSpecPoint;

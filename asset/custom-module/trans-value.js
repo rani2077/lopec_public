@@ -22,8 +22,9 @@ import {
     // engravingCheckFilterLowTier,
     classGemFilter,
 } from '../filter/filter.js';
-import * as Filter from "../filter/filter.js"
+import * as Filter from "../filter/filter.js";
 
+import * as SimulatorFilter from "../filter/simulator-filter.js";
 
 
 export async function getCharacterProfile(data) {
@@ -55,6 +56,15 @@ export async function getCharacterProfile(data) {
         }
     }
 
+
+    /* **********************************************************************************************************************
+     * name		              :     htmlObj{}
+     * version                :     2.0
+     * description            :     search, m-search 페이지에서 사용될 정보를 저장하는 객체 
+     * inUse                  :     사용중
+     *********************************************************************************************************************** */
+
+    let htmlObj = {};
 
     /* **********************************************************************************************************************
      * name		              :	 suppportCheck{}
@@ -168,6 +178,7 @@ export async function getCharacterProfile(data) {
         abilityAttackBonus: 0,
         armorStatus: 0,
         avatarStats: 1,
+        supportCheck: supportCheck(),
         gemCheckFnc: {
             specialSkill: 1,
             originGemValue: 1,
@@ -1105,7 +1116,7 @@ export async function getCharacterProfile(data) {
         gemsCool = 1
         gemsCoolCount = 1
     }
-    etcObj.gemsCoolAvg = Number( ((gemsCool / gemsCoolCount)).toFixed(1) )
+    etcObj.gemsCoolAvg = Number(((gemsCool / gemsCoolCount)).toFixed(1))
 
 
     /* **********************************************************************************************************************
@@ -1457,8 +1468,8 @@ export async function getCharacterProfile(data) {
 
     }
 
-
-    // console.log(gemSkillArry)
+    htmlObj.gemSkillArry = gemSkillArry;
+    // console.log("gemSkillArry",gemSkillArry)
 
 
     if (true) {
@@ -1636,8 +1647,8 @@ export async function getCharacterProfile(data) {
             let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
                 return gemResultValue + finalGemValue.per * finalGemValue.skillPer
             }, 0)
-            
-            
+
+
             // special skill Value 값 계산식
             function specialSkillCalc() {
                 let result = 0;
@@ -1929,7 +1940,217 @@ export async function getCharacterProfile(data) {
     }
 
 
+    /* **********************************************************************************************************************
+     * name		              :	  armoryInfoExtract
+     * version                :   2.0
+     * description            :   html에 사용될 armory정보를 반환
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function armoryInfoExtract() {
+        let result = null;
+        result = data.ArmoryEquipment.map(armoryObj => {
+            if (/무기|투구|상의|하의|장갑|어깨/.test(armoryObj.Type)) {
+                let obj = {};
+                let betweenText = armoryObj.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(1, -1)) || [];
+                let advancedLevelIndex = betweenText.findIndex(text => text === "[상급 재련]");
 
+                let elixir = betweenText.map((text, idx) => {
+                    if (/\[(투구|어깨|장갑|상의|하의|무기|공용)\]/.test(text)) {
+                        let obj = {}
+                        obj.type = text;
+                        obj.name = betweenText[idx + 1].trim();
+                        obj.level = betweenText[idx + 2].trim();
+                        return obj
+                    }
+                    return null;
+                }).filter(item => item !== null);
+
+                let qualityIndex = betweenText.findIndex(text => text === "품질");
+                let qualityValue = betweenText[qualityIndex + 3].match(/"qualityValue":\s*(\d+)/)[1];
+
+                let tierValue = betweenText.find(text => /\(티어\s[0-9]+\)/.test(text)).match(/\(티어\s([0-9]+)\)/)[1];
+
+                let hyperIndex = betweenText.findIndex(text => text === "[초월]");
+                let hyperLevel = betweenText[hyperIndex + 2];
+                let hyperStar = betweenText[hyperIndex + 4].match(/\d+/)[0];
+
+                obj.hyperIndex = hyperIndex;
+                obj.hyperLevel = hyperLevel;
+                obj.hyperStar = hyperStar;
+                obj.tier = tierValue;
+                obj.quality = qualityValue;
+                obj.elixir = elixir;
+                obj.advancedLevelIndex = advancedLevelIndex;
+                obj.advancedLevel = betweenText[advancedLevelIndex + 2];
+                obj.grade = armoryObj.Grade;
+                obj.name = armoryObj.Name;
+                obj.type = armoryObj.Type;
+                obj.icon = armoryObj.Icon;
+                return obj
+            } else {
+                return null
+            }
+        }).filter(item => item !== null);
+        return result
+    }
+    htmlObj.armoryInfo = armoryInfoExtract()
+
+    /* **********************************************************************************************************************
+     * name		              :	  accessoryInfoExtract
+     * version                :   2.0
+     * description            :   html에 사용될 accessory정보를 반환
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function accessoryInfoExtract() {
+        let result = data.ArmoryEquipment.map((accessoryObj, idx) => {
+            if (/목걸이|귀걸이|반지/.test(accessoryObj.Type)) {
+                let obj = {};
+                let betweenText = accessoryObj.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(0, -1)) || [];
+
+                let gradeMatch = betweenText[2].match(/(고대|유물)/g);
+                let grade = gradeMatch ? gradeMatch[0] : "없음";
+
+                let tierMatch = betweenText[6].match(/\d+/);
+                let tier = tierMatch ? tierMatch[0] : null;
+
+                let accessoryGradeArray = Filter.grindingFilter.filter(filter => {
+                    return betweenText.some(text => text.includes(">" + filter.split(":")[0]));
+                });
+
+                let qualityIndex = betweenText.findIndex(text => text === ">품질");
+                let qualityValueMatch = betweenText[qualityIndex + 3]?.match(/"qualityValue":\s*(\d+)/);
+                let qualityValue = qualityValueMatch ? qualityValueMatch[1] : null;
+
+                obj.grade = grade;
+                obj.quality = qualityValue;
+                obj.accessory = accessoryGradeArray;
+                obj.tier = tier;
+                obj.type = accessoryObj.Type;
+                obj.name = accessoryObj.Name;
+                obj.icon = accessoryObj.Icon;
+                return obj;
+            } else {
+                return null;
+            }
+        }).filter(item => item !== null);
+        return result;
+    }
+    htmlObj.accessoryInfo = accessoryInfoExtract();
+
+    /* **********************************************************************************************************************
+     * name		              :	  stoneInfoExtract
+     * version                :   2.0
+     * description            :   html에 사용될 accessory정보를 반환
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function stoneInfoExtract() {
+        let result = null;
+        data.ArmoryEquipment.forEach(stone => {
+            let obj = {};
+            if (stone.Type === "어빌리티 스톤") {
+                let betweenText = stone.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(1, -1)) || [];
+
+                let tier = betweenText[4].match(/\d+/)[0];
+
+                let optionArray = betweenText.map((text, idx) => {
+                    if (Filter.engravingFilter.some(filter => text === filter.name)) {
+                        let obj = {};
+                        obj.name = text;
+                        obj.level = betweenText[idx + 2].match(/\d+/)[0];
+                        return obj
+                    } else {
+                        return null;
+                    }
+                }).filter(item => item !== null);
+                obj.optionArray = optionArray;
+                obj.tier = tier
+                obj.grade = stone.Grade;
+                obj.name = stone.Name;
+                obj.icon = stone.Icon;
+                result = obj;
+            }
+        })
+        return result;
+    }
+    htmlObj.stoneInfo = stoneInfoExtract();
+
+    /* **********************************************************************************************************************
+     * name		              :	  bangleInfoExtract
+     * version                :   2.0
+     * description            :   html에 사용될 accessory정보를 반환
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+
+    function bangleInfoExtract() {
+        let result = null;
+        data.ArmoryEquipment.forEach(bangle => {
+            let obj = {};
+            if (bangle.Type === "팔찌") {
+                let betweenText = bangle.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(1, -1)) || [];
+                let replaceText = bangle.Tooltip.replace(/<[^>]*>/g, '');
+                let tier = betweenText[4].match(/\d+/)[0];
+
+                let bangleFilter;
+                if (tier === "3" && bangle.Grade === "유물") {
+                    bangleFilter = SimulatorFilter.bangleOptionData.t3RelicData;
+                } else if (tier === "3" && bangle.Grade === "고대") {
+                    bangleFilter = SimulatorFilter.bangleOptionData.t3MythicData;
+                } else if (tier === "4" && bangle.Grade === "유물") {
+                    bangleFilter = SimulatorFilter.bangleOptionData.t4RelicData;
+                } else if (tier === "4" && bangle.Grade === "고대") {
+                    bangleFilter = SimulatorFilter.bangleOptionData.t4MythicData;
+                }
+                let options = bangleFilter.filter(filter => replaceText.includes(filter.fullName));
+
+                let specialStats = betweenText.filter(text => /^(치명|특화|신속)\s\+\d+$/.test(text.trim()));
+                let normalStats = betweenText.filter(text => /^(힘|민첩|지능|체력)\s\+\d+$/.test(text.trim()));
+                obj.normalStatsArray = normalStats;
+                obj.specialStatsArray = specialStats;
+                obj.optionArray = options;
+                obj.tier = tier;
+                obj.grade = bangle.Grade;
+                obj.name = bangle.Name;
+                obj.icon = bangle.Icon;
+                result = obj;
+            }
+
+        })
+        return result;
+    }
+    htmlObj.bangleInfo = bangleInfoExtract();
+
+    /* **********************************************************************************************************************
+     * name		              :	  engravingInfoExtract
+     * version                :   2.0
+     * description            :   html에 사용될 각인정보를 반환
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function engravingInfoExtract() {
+        let result = [];
+        if (data.ArmoryEngraving.ArkPassiveEffects) {
+            data.ArmoryEngraving.ArkPassiveEffects.forEach(eng => {
+                let obj = {};
+                let icon = Filter.engravingImg.find(filter => filter.split("^")[0] === eng.Name);
+
+                obj.stone = eng.AbilityStoneLevel;
+                obj.grade = eng.Grade;
+                obj.level = eng.Level;
+                obj.name = eng.Name;
+                obj.icon = icon.split("^")[1];
+                result.push(obj);
+            })
+            
+        }
+        return result;
+    }
+    htmlObj.engravingInfo = engravingInfoExtract();
+
+    /* **********************************************************************************************************************
+     * name		              :	  
+     * version                :   2.0
+     * description            :   export할 값들을 정리
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
     let extractValue = {
         defaultObj,
         engObj,
@@ -1941,6 +2162,7 @@ export async function getCharacterProfile(data) {
         hyperObj,
         gemObj,
         etcObj,
+        htmlObj,
     }
     return extractValue
 }

@@ -15,9 +15,6 @@
 
     <link rel="icon" type="image/png" href="../asset/image/lopec-ico.png">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-
     <link rel="stylesheet" href="../asset/css/layout.css">
     <link rel="stylesheet" href="../asset/css/main.css">
     <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
@@ -40,116 +37,9 @@
     <?php //  공용헤더 
     ?>
     <header></header>
-    <?php //  공용헤더 
-    ?>
-
 
 
     <div class="wrapper">
-
-        <?php //  상단광고 
-        ?>
-        <div class="sc-top-ads">
-
-            <?php //
-            // <div class="group-top-ads swiper">
-            //     <div class="swiper-wrapper">
-            //         <div class="swiper-slide">광고1</div>
-            //         <div class="swiper-slide">광고2</div>
-            //         <div class="swiper-slide">광고3</div>
-            //     </div>
-            //     <div class="swiper-pagination"></div>
-            // </div>
-            // <div class="group-top-ads swiper">
-            //     <div class="swiper-wrapper">
-            //         <div class="swiper-slide">광고1</div>
-            //         <div class="swiper-slide">광고2</div>
-            //         <div class="swiper-slide">광고3</div>
-            //     </div>
-            //     <div class="swiper-pagination"></div>
-            // </div>
-            //
-            ?>
-
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                crossorigin="anonymous"></script>
-            <!-- main1 -->
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:800px;height:120px"
-                data-ad-client="ca-pub-5125145415518329"
-                data-ad-slot="5389359448"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        <?php //  상단광고 
-        ?>
-
-
-        <?php // 좌우광고 
-        ?>
-        <aside class="side-ads left">
-            <div class="ads">
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous"></script>
-                <!-- side1 -->
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="2763196104"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </aside>
-
-        <aside class="side-ads right">
-            <div class="ads">
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                    crossorigin="anonymous"></script>
-                <!-- side1 -->
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-5125145415518329"
-                    data-ad-slot="2763196104"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </aside>
-        <?php // 좌우광고 
-        ?>
-
-        <section class="sc-profile">
-            <div class="group-img">
-                <span class="img"></span>
-            </div>
-            <div class="group-profile">
-                <div class="name-area">
-                    <span class="name">LV.70 청염각 <i class="job">#일격 스트라이커</i></span>
-                </div>
-                <div class="info-area">
-                    <div class="info-box">
-                        <span class="name">서버 : 아브렐슈드</span>
-                        <span class="name">레벨 : 1697</span>
-                    </div>
-                    <div class="info-box">
-                        <span class="name">직업랭킹 : 1111</span>
-                        <span class="name">전체랭킹 : 39211</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <nav class="sc-nav">
-            <a href="" class="link on">메인</a>
-            <a href="" class="link">원정대</a>
-            <a href="" class="link">시뮬레이터</a>
-        </nav>
 
         <section class="sc-info search-page" id="sc-info">
 
@@ -608,14 +498,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 
     ?>
-
-
-
-    <?php //  스와이퍼 광고 
-    ?>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <?php //  스와이퍼 광고 
-    ?>
+    
 
     <script>
         document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');

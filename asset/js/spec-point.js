@@ -1179,7 +1179,7 @@ export function getCharacterProfile(inputName, callback) {
         }
         let gemsCoolAvg = Number(((gemsCool / gemsCoolCount)).toFixed(1))
 
-        
+
         /* **********************************************************************************************************************
          * name		              :	  arkObj{}
          * version                :   2.0
@@ -1978,7 +1978,7 @@ export function getCharacterProfile(inputName, callback) {
         } else if (evolutionkarmaPoint >= 1) {
             evolutionkarmaRank = 1
         }
-        console.log(evolutionkarmaRank, "랭크", evolutionkarmaPoint, "레벨")
+        // console.log(evolutionkarmaRank, "랭크", evolutionkarmaPoint, "레벨")
 
 
         let enlightkarmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14)
@@ -2031,7 +2031,7 @@ export function getCharacterProfile(inputName, callback) {
         let evolutionDamageResult = (arkObj.evolutionDamage) //진화형 피해
         let enlightResult = arkObj.enlightenmentDamage // 깨달음 딜증
         let enlightBuffResult = arkObj.enlightenmentBuff
-        
+
         let totalStat = (armorStatus() + expeditionStats + hyperObj.str + elixirObj.str + elixirObj.dex + elixirObj.int + bangleObj.str + bangleObj.dex + bangleObj.int) * avatarStats() // 최종 힘민지 계산값
 
         let totalWeaponAtk = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus + bangleObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100))) // 최종 무공 계산값
@@ -2065,7 +2065,7 @@ export function getCharacterProfile(inputName, callback) {
          *********************************************************************************************************************** */
         //최종 환산
         let lastFinalValue = ((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
-        console.log(lastFinalValue)
+        // console.log(lastFinalValue)
         //초월 효율
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let hyperValue = ((lastFinalValue - minusHyperValue) / lastFinalValue * 100).toFixed(2)
@@ -2073,7 +2073,7 @@ export function getCharacterProfile(inputName, callback) {
         //엘릭서 효율
         let minusElixirValue = ((minusElixirAtk) * evolutionDamageResult * minusElixirFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let elixirValue = ((lastFinalValue - minusElixirValue) / lastFinalValue * 100).toFixed(2)
-        
+
         //팔찌 효율
         let bangleValue = (((1 * bangleAtkValue * bangleObj.finalDamagePer * (((bangleObj.crit + bangleObj.haste + bangleObj.special) / 100 * 2.55) / 100 + 1)) - 1) * 100).toFixed(2)
         /* **********************************************************************************************************************
@@ -2105,7 +2105,7 @@ export function getCharacterProfile(inputName, callback) {
          *********************************************************************************************************************** */
         //최종 환산
         let supportSpecPoint = (fullBuffPower ** 2.546) * 20 * enlightBuffResult * arkObj.leapDamage * engObj.engBonusPer * ((1 / (1 - gemsCoolAvg / 100) - 1) + 1)
-        console.log(supportSpecPoint)
+        // console.log(supportSpecPoint)
         //팔찌 제외 무공&공격력
         let supportTotalWeaponAtkMinusBangle = ((defaultObj.weaponAtk + hyperObj.weaponAtkPlus + elixirObj.weaponAtkPlus + accObj.weaponAtkPlus) * (arkObj.weaponAtk + (accObj.weaponAtkPer / 100)))
         let totalAtk5 = (Math.sqrt((totalStat * supportTotalWeaponAtkMinusBangle) / 6)) * attackBonus
@@ -2275,7 +2275,6 @@ export function getCharacterProfile(inputName, callback) {
 
 
         // 카드
-
         let cardFilter = ['세 우마르가 오리라', "라제니스의 운명"]
         let cardEff
         let cardStr
@@ -2317,18 +2316,18 @@ export function getCharacterProfile(inputName, callback) {
                     }).trim();
 
                     return `
-                                <li class="tag-item">
-                                    <p class="tag radius">카드</p>
-                                    <span class="name">${cardNameVal}</span>
-                                </li>`
+                        <li class="tag-item">
+                            <p class="tag radius">카드</p>
+                            <span class="name">${cardNameVal}</span>
+                        </li>`
 
                 } else if (cardArryCheckFnc() == "2개이상" && cardSet) {
 
                     return `
-                                <li class="tag-item">
-                                    <p class="tag radius">카드</p>
-                                    <span class="name">세우라제</span>
-                                </li>`
+                        <li class="tag-item">
+                            <p class="tag radius">카드</p>
+                            <span class="name">세우라제</span>
+                        </li>`
                 } else {
                     cardEff.forEach(function (arry, index) {
                         let cardName = arry.Items[arry.Items.length - 1].Name;
@@ -2339,18 +2338,18 @@ export function getCharacterProfile(inputName, callback) {
 
                         return etcCardArry +=
                             `<li class="tag-item">
-                                        <p class="tag radius invisible${index}">카드</p>
-                                        <span class="name">${cardNameList} </span>
-                                    </li>`
+                                <p class="tag radius invisible${index}">카드</p>
+                                <span class="name">${cardNameList} </span>
+                            </li>`
                     })
                     return etcCardArry
                 }
             } catch {
                 return `
-                            <li class="tag-item">
-                                <p class="tag radius invisible">카드</p>
-                                <span class="name">없음</span>
-                            </li>`
+                    <li class="tag-item">
+                        <p class="tag radius invisible">카드</p>
+                        <span class="name">없음</span>
+                    </li>`
             }
         }
 
@@ -2358,10 +2357,10 @@ export function getCharacterProfile(inputName, callback) {
         // 정보
         function tagItemFnc(a, b) { //("태그명","태그내용")
             return `
-                        <li class="tag-item">
-                            <p class="tag radius">${a}</p>
-                            <span class="name">${b}</span>
-                        </li>`;
+                <li class="tag-item">
+                    <p class="tag radius">${a}</p>
+                    <span class="name">${b}</span>
+                </li>`;
         }
 
 
@@ -2469,9 +2468,9 @@ export function getCharacterProfile(inputName, callback) {
                     filter.block.forEach(function (blockEng) {
                         if (blockEng == realEng) {
                             result = `
-                                            <div class="alert">
-                                                <span class="block-text">무효각인 장착중</span>
-                                            </div>`
+                                <div class="alert">
+                                    <span class="block-text">무효각인 장착중</span>
+                                </div>`
                             return result
                         }
                     })
@@ -2718,17 +2717,10 @@ export function getCharacterProfile(inputName, callback) {
             let rightColumn = `<div class="rightColumn"  style="width:calc(50% - 15px);margin-right:15px;">`;
             let bottomColumn = `<div class="bottomColumn" style="margin-top:10px;">`;
 
-            let title = ""
-            if (supportCheck() != "서폿") {  //딜러
-                title = "환산 공격력"
-            } else {
-                title = "스펙 포인트"
-            }
 
             let infoStart = `
                             <div class="group-info">
                                 <div class="spec-area shadow minimum flag on">
-                                    <p class="title">${title}</p>
                                     ${characterGradeCheck()}
                                 <div class="extra-info">
                                 <p class="detail-info">세부정보</p>
@@ -2810,9 +2802,6 @@ export function getCharacterProfile(inputName, callback) {
                 infoStart += infoEnd
 
                 return infoStart
-
-
-
             }
 
         }
@@ -3294,10 +3283,10 @@ export function getCharacterProfile(inputName, callback) {
         // 장신구(버프디버프)
         function accessoryOptionBox(e) {
             return `
-                        <div class="option-box">
-                            ${accessoryVal(e)}
-                            ${buffVal(e)}
-                        </div>`
+                <div class="option-box">
+                    ${accessoryVal(e)}
+                    ${buffVal(e)}
+                </div>`
         }
 
         // 상중하 판별 필터
@@ -3340,9 +3329,9 @@ export function getCharacterProfile(inputName, callback) {
                 }
                 if (accessorySplitVal[1] == undefined && false) {
                     return `
-                                <div class="option-wrap">
-                                    <span class="option">${accessorySplitVal[0]}</span>
-                                </div>`
+                        <div class="option-wrap">
+                            <span class="option">${accessorySplitVal[0]}</span>
+                        </div>`
                 } else if (accessorySplitVal[2] == undefined) {
                     return `
                                 <div class="text-box">
@@ -3759,33 +3748,32 @@ export function getCharacterProfile(inputName, callback) {
 
         let groupProfile =
             `
-                    <div class="group-profile">        
-                        <div class="img-area shadow">
-                            <button class="renew-button">갱신하기</button>
-                            <img id="character-image" src="${characterImage}" alt="프로필 이미지">
-                            <em class="star ${userBookmarkCheck()}" style="user-select:none;">☆</em>
-                            <p class="level" id="character-level">Lv.${characterLevel}</p>
-                            <p class="name" id="character-nickname">${characterNickName}</p>
-                            <p class="class" id="character-class">${supportCheck()} ${characterClass}</p>
-                        </div>
-                        <ul class="tag-list shadow">
-                            ${tagItemFnc("서버", serverName)}
-                            ${tagItemFnc("레벨", itemLevel)}
-                            ${tagItemFnc("길드", guildName())}
-                            ${tagItemFnc("칭호", titleName())}
-                            ${cardArryFnc()}
-                        </ul>
-                            <div class="alert-area">
-                                <div class="alert-wrap">
-                                    <p class="desc">접속을 종료해야 API가 갱신됩니다.<BR>캐릭터 선택창으로 이동 후 갱신 버튼을 눌러주세요.</p>
-                                    <div class="button-box">
-                                        <button class="refresh">갱신</button>
-                                        <button class="cancle">취소</button>
-                                    </div>
-                                </div>
+            <div class="group-profile">        
+                <div class="img-area shadow">
+                    <button class="renew-button">갱신하기</button>
+                    <img id="character-image" src="${characterImage}" alt="프로필 이미지">
+                    <em class="star ${userBookmarkCheck()}" style="user-select:none;">☆</em>
+                    <p class="level" id="character-level">Lv.${characterLevel}</p>
+                    <p class="name" id="character-nickname">${characterNickName}</p>
+                    <p class="class" id="character-class">${supportCheck()} ${characterClass}</p>
+                </div>
+                <ul class="tag-list shadow">
+                    ${tagItemFnc("서버", serverName)}
+                    ${tagItemFnc("레벨", itemLevel)}
+                    ${tagItemFnc("길드", guildName())}
+                    ${tagItemFnc("칭호", titleName())}
+                    ${cardArryFnc()}
+                </ul>
+                    <div class="alert-area">
+                        <div class="alert-wrap">
+                            <p class="desc">접속을 종료해야 API가 갱신됩니다.<BR>캐릭터 선택창으로 이동 후 갱신 버튼을 눌러주세요.</p>
+                            <div class="button-box">
+                                <button class="refresh">갱신</button>
+                                <button class="cancle">취소</button>
                             </div>
-                    </div>`
-
+                        </div>
+                    </div>
+            </div>`
 
 
         // 아크패시브 리스트 wrap HTML
@@ -3821,14 +3809,14 @@ export function getCharacterProfile(inputName, callback) {
         function arkArea() {
             if (data.ArkPassive.IsArkPassive == true) {
                 return `
-                            <div class="ark-area shadow">
-                            ${arkListWrap}
-                            </div>`
+                    <div class="ark-area shadow">
+                    ${arkListWrap}
+                    </div>`
             } else {
                 return `
-                            <div class="ark-area shadow">
-                            <p class="ark-false">아크패시브 비활성화</p>
-                            </div>`
+                    <div class="ark-area shadow">
+                    <p class="ark-false">아크패시브 비활성화</p>
+                    </div>`
             }
         }
 
@@ -3843,7 +3831,8 @@ export function getCharacterProfile(inputName, callback) {
 
         // 최종 HTML합치기
         let scInfoHtml;
-        scInfoHtml = groupProfile;
+        // scInfoHtml = groupProfile;
+        scInfoHtml = "";
         scInfoHtml += groupInfoUseCheck();
         scInfoHtml += groupEquip;
 

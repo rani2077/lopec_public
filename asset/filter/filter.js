@@ -225,7 +225,7 @@ let grindingFilter = [
     "아군 피해량 강화 효과 +4.32%:high",
     "아군 피해량 강화 효과 +1.38%:low",
     "아군 피해량 강화 효과 +3.18%:middle",
-    "아군 피해량 강화 효과 +7.50%:high",
+    "아군 피해량 강화 효과 +5.28%:high",
     "아군 피해량 강화 효과 +2.00%:low",
     "아군 피해량 강화 효과 +4.50%:middle",
     "아군 피해량 강화 효과 +7.50%:high",
@@ -362,7 +362,7 @@ let engravingImg = [
     "강화 방패^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_239.png",
     "결투의 대가^https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_224.png",
     "구슬동자^https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Buff/Buff_18.png",
-    "굳은의지^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_44.png",
+    "굳은 의지^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_44.png",
     "급소 타격^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_168.png",
     "기습의 대가^https://cdn-lostark.game.onstove.com/efui_iconatlas/buff/buff_148.png",
     "긴급구조^https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_238.png",
@@ -412,7 +412,7 @@ export let engravingFilter = [
     , {name:"강화 방패",short:"강화방패",}
     , {name:"결투의 대가",short:"결대",}
     , {name:"구슬동자",short:"구동",}
-    , {name:"굳은의지",short:"굳은의지",}
+    , {name:"굳은 의지",short:"굳은 의지",}
     , {name:"급소 타격",short:"급타",}
     , {name:"기습의 대가",short:"기습",}
     , {name:"긴급구조",short:"긴급구조",}
