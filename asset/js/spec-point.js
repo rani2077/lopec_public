@@ -2065,7 +2065,7 @@ export function getCharacterProfile(inputName, callback) {
          *********************************************************************************************************************** */
         //최종 환산
         let lastFinalValue = ((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
-        // console.log(lastFinalValue)
+        //console.log(lastFinalValue)
         //초월 효율
         let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * arkObj.leapDamage * gemCheckFnc().gemValue * gemCheckFnc().etcAverageValue * gemsCoolValue * (((defaultObj.crit + defaultObj.haste + defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
         let hyperValue = ((lastFinalValue - minusHyperValue) / lastFinalValue * 100).toFixed(2)

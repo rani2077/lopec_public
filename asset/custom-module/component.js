@@ -58,11 +58,47 @@ export async function scProfile(imageSrc, jobName, serverName, level, name, tota
 * function name		:	scNav
 * description       : 	메인, 원정대, 시뮬레이터로 이동할 수 있는 네비게이션
 *********************************************************************************************************************** */
-export function scNav() {
+export function scNav(userName) {
+    let name = "";
+    if (userName) {
+        name = userName;
+    }
+    const urlParams = window.location.pathname;
+    let simulatorClassName = "";
+    let searchClassName = "";
+    let nowPage = "";
+    if(urlParams.includes("simulator")){
+        simulatorClassName = "on";
+        nowPage = "simulator";
+    }else if(urlParams.includes("search")){
+        searchClassName = "on";
+        nowPage = "search";
+    }
+    function scNavEvent() {
+        let elements = document.querySelectorAll(`.sc-nav .link.${nowPage}, .sc-nav .link.expedition`);
+        elements.forEach((element, idx) => {
+            element.addEventListener("click", (e) => {
+                e.preventDefault();
+                elements.forEach(sibling => {
+                    sibling.classList.remove("on");
+                });
+                element.classList.add("on");
+                let scInfo = document.querySelector(".sc-info");
+                let scExpedition = document.querySelector(".sc-expedition");
+                
+                let page = element.getAttribute("data-page");
+                scInfo.style.display = "none";
+                scExpedition.style.display = "none";
+                document.querySelector(`.${page}`).style.display = "flex";
+            })
+        })
+    }
+    setTimeout(() => { scNavEvent() }, 0)
     return `
     <nav class="sc-nav">
-        <a href="" class="link on">메인</a>
-        <a href="" class="link">원정대</a>
-        <a href="" class="link">시뮬레이터</a>
+        <a href="/search/search.php?Name=${name}" class="link ${searchClassName} search" data-page="sc-info" >메인</a>
+        <a href="" class="link expedition" data-page="sc-expedition">원정대</a>
+        <a href="/simulator/simulator.html?Name=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
     </nav>`
 }
+

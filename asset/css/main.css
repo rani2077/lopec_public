@@ -1156,126 +1156,53 @@
 
 
 
+/* 원정대 */
 
-
-/* @media (max-width:1027px){
-    .sc-info{
-        width: 660px;
-        flex-wrap:wrap;
-        gap: 20px 60px;
-    }
-
-    .sc-header .logo-group{
-        flex-direction:column;
-        align-items: flex-start;
-    }
-
-
+.sc-expedition{
+    display: none;
 }
 
+.sc-expedition .group-server{
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+}
+.sc-expedition .group-server .server-area{
+    margin-bottom: 20px;
+}
+.sc-expedition .server-area .server-name{
+    font-size: 24px;
+    font-weight: 600;
+}
 
-@media(max-width: 768px) {
+.sc-expedition .expedition-area {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
 
-    
-
-    .sc-container{
-        padding: 0 10px;
-        width: 100%;
-    }
-
-
-
-    .sc-container .group-logo{
-        width: 260px;
-    }
-    .sc-container .group-logo .logo{
-        object-fit:contain;
-    }
-
-
-
-    
-    .sc-container.on .group-input{
-        margin-top: 0;
-        max-width:480px;
-        width: 100%;
-    }
-    .sc-container.on .group-input .input-name{
-        width: 100%;
-    }
-
-
-
-    .sc-info .group-search{}
-    .sc-container .group-annoucement{}
-
-
-
-
-
-    .sc-info{
-        flex-direction:column;
-        padding: 0 20px;
-        align-items: center;
-        width: 100%;
-    }
-    .sc-info .group-equip{
-        width: initial;
-    }
-    .sc-info .group-equip .gem-area{
-        max-width:300px;
-        flex-wrap:wrap;
-        height: initial;
-        gap: 10px;
-    }
-    .sc-info .group-equip .armor-area{
-        margin-bottom: 20px;
-        width: 100%;
-    }
-    .sc-info .group-equip .accessory-area{
-        width: 100%;
-    }
-
-
-
-
-    
-    .sc-info .group-equip .armor-wrap{
-        flex-direction:column;
-        gap: 10px;
-        max-width:300px;
-    }
-
-
-    .sc-info .ark-area{}
-    .sc-info .ark-area .ark-title-wrap{
-        display: none;
-    }
-    .sc-info .ark-area .ark-list-wrap{
-        flex-direction:column;
-    }
-    .sc-info .ark-area .ark-list{
-        width: 100%;
-    }
-
-    .sc-mobile-search.on{
-        display: block;
-    }
-    .sc-mobile-search{
-        max-width:300px;
-        width: 100%;
-        margin: 0 auto;
-        margin-top: 30px;
-    }
-    .sc-mobile-search .mobile-input{
-        border:1px solid rgb(228, 228, 228);
-        border-radius:50px;
-        width:100%;
-        padding: 0 15px;
-        height: 35px;
-    }
-
-
-
-} */
-
+.sc-expedition .expedition-area .expedition-list {
+    display: flex;
+    padding: 10px;
+    gap: 15px;
+    border:1px solid #939393;
+    border-radius:3px;
+    height: 75px;
+    align-items: center;
+}
+.sc-expedition .expedition-area .expedition-list img{
+    width: 40px;
+    height: 40px;
+}
+.sc-expedition .expedition-area .expedition-list .info-box{
+    display: flex;
+    flex-direction:column;
+    justify-content: space-between;
+}
+.sc-expedition .expedition-area .expedition-list .info-box .character-level{
+    font-size: 12px;
+    color: #3e3e3e;
+}
+.sc-expedition .expedition-area .expedition-list .info-box .name{}
+.sc-expedition .expedition-area .expedition-list .info-box .armor-level{}
+.sc-expedition .expedition-area .expedition-list .info-box .spec{}

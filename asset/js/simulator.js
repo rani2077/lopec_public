@@ -4,12 +4,13 @@
  *********************************************************************************************************************** */
 async function importModuleManager() {
     let modules = await Promise.all([
-        import("../custom-module/fetchApi.js"+`?${(new Date).getTime()}`),     // lostark api호출
-        import("../filter/filter.js"+`?${(new Date).getTime()}`),              // 기존 filter.js
-        import("../filter/simulator-data.js"+`?${(new Date).getTime()}`),      // 장비레벨 스텟 정보
-        import("../filter/simulator-filter.js"+`?${(new Date).getTime()}`),    // 시뮬레이터 필터
-        import("../custom-module/trans-value.js"+`?${(new Date).getTime()}`),  // 유저정보 수치화
-        import("../custom-module/calculator.js"+`?${(new Date).getTime()}`),   // 수치값을 스펙포인트로 계산
+        import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // lostark api호출
+        import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 filter.js
+        import("../filter/simulator-data.js" + `?${(new Date).getTime()}`),      // 장비레벨 스텟 정보
+        import("../filter/simulator-filter.js" + `?${(new Date).getTime()}`),    // 시뮬레이터 필터
+        import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 유저정보 수치화
+        import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 수치값을 스펙포인트로 계산
+        import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 컴포넌트 파일을 호출
     ])
     let moduleObj = {
         fetchApi: modules[0],
@@ -18,8 +19,9 @@ async function importModuleManager() {
         simulatorFilter: modules[3],
         transValue: modules[4],
         calcValue: modules[5],
+        component: modules[6],
     }
-    
+
     // let data = await moduleObj.fetchApi.lostarkApiCall("청염각")
     // // console.log(data)
     // let extract = await moduleObj.transValue.getCharacterProfile(data)
@@ -37,6 +39,10 @@ async function importModuleManager() {
 let cachedData = null;
 async function simulatorInputCalc() {
 
+    /* ************~**********************************************************************************************************
+    * function name		:	nameParam
+    * description		: 	검색 닉네임 정의
+    *********************************************************************************************************************** */
     const urlParams = new URLSearchParams(window.location.search);
     const nameParam = urlParams.get('Name');
     /* **********************************************************************************************************************
@@ -44,16 +50,35 @@ async function simulatorInputCalc() {
     * description		: 	모든 외부모듈 정의
     *********************************************************************************************************************** */
     let Modules = await importModuleManager()
-
     /* **********************************************************************************************************************
      * function name		:	
      * description			: 	유저 JSON데이터 호출 및 캐싱처리
      *********************************************************************************************************************** */
     if (!cachedData) {
+        let component = await Modules.component;
+        let scProfileSkeleton = await component.scProfileSkeleton();
+        document.querySelector(".wrapper").insertAdjacentHTML('afterbegin', scProfileSkeleton);
+        document.querySelector(".sc-profile").insertAdjacentHTML('afterend', component.scNav(nameParam));
+        document.querySelector(".wrapper").style.display = "block";
+
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
         console.log(cachedData)
+
+        async function scProfileCreate() {
+            let src = cachedData.ArmoryProfile.CharacterImage
+            let job = cachedData.ArmoryProfile.CharacterClassName
+            let server = cachedData.ArmoryProfile.ServerName
+            let level = cachedData.ArmoryProfile.CharacterLevel
+            let userName = cachedData.ArmoryProfile.CharacterName
+            let totalLevel = cachedData.ArmoryProfile.ItemAvgLevel
+    
+            let profileHtml = await component.scProfile(src, job, server, level, userName, totalLevel);
+            document.querySelector(".sc-profile").outerHTML = profileHtml;
+        }
+        await scProfileCreate()
         await selectCreate(cachedData)
     }
+
 
     /* **********************************************************************************************************************
      * function name		:	supportCheck
@@ -87,7 +112,7 @@ async function simulatorInputCalc() {
 
             let stoneObj = Modules.simulatorFilter.stoneFilter.find((filter) => filter.name === name && filter.level === level);
             if (!stoneObj) {
-                stoneObj = { name: "없음", finalDamagePer: 1, engBonus: 1 };
+                stoneObj = { name: "없음", finalDamagePer: 1, engBonusPer: 1 };
             }
             obj.push(stoneObj)
         })
@@ -128,7 +153,7 @@ async function simulatorInputCalc() {
     function engOutputCalc(inputValueObjArr) {
         let arr = [];
         let result = {
-            engBonus: 1,
+            engBonusPer: 1,
             finalDamagePer: 1
         };
         let matchingFilters
@@ -148,7 +173,7 @@ async function simulatorInputCalc() {
                 arr.push({
                     name: filter.name,
                     finalDamagePer: filter.finalDamagePer,
-                    engBonus: filter.engBonus
+                    engBonusPer: filter.engBonusPer
                 });
             });
         });
@@ -163,7 +188,7 @@ async function simulatorInputCalc() {
                 mergedEngs.push({
                     name: eng.name,
                     finalDamagePer: eng.finalDamagePer + foundStoneEng.finalDamagePer / 100,
-                    engBonus: eng.engBonus + foundStoneEng.engBonus / 100
+                    engBonusPer: eng.engBonusPer + foundStoneEng.engBonusPer / 100
                 });
             } else {
                 // 이름이 다른 경우, arr의 객체를 그대로 추가
@@ -183,14 +208,14 @@ async function simulatorInputCalc() {
         // 최종 결과 객체 생성
         mergedEngs.forEach(eng => {
             result.finalDamagePer *= eng.finalDamagePer;
-            result.engBonus *= eng.engBonus;
+            result.engBonusPer *= eng.engBonusPer;
         });
 
         // console.log("최종결과:", result);
 
 
         // result.finalDamagePer *= stoneOutputCalc().finalDamagePer;
-        // result.engBonus *= stoneOutputCalc().engBonus;
+        // result.engBonusPer *= stoneOutputCalc().engBonusPer;
 
 
         return result;
@@ -914,7 +939,7 @@ async function simulatorInputCalc() {
 
     function karmaRankToValue() {
         let result = 1
-        let enlightKarmaElements = document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]");
+        let enlightKarmaElements = document.querySelectorAll(".ark-list.enlightenment .ark-item")[1].querySelectorAll("input[type=radio]");
         enlightKarmaElements.forEach((karma, idx) => {
             if (karma.checked) {
                 result = Number(karma.value);
@@ -936,7 +961,7 @@ async function simulatorInputCalc() {
             evolutionDamage: 0,
             evolutionBuff: 0,
             stigmaPer: 0,
-            leapDamage: 0
+            leapDamage: 0,
         }
         let enlightElement = Number(document.querySelector(".ark-area .title-box.enlightenment .title").textContent);
         let evolutionElement = Number(document.querySelector(".ark-area .title-box.evolution .title").textContent);
@@ -1125,6 +1150,7 @@ async function simulatorInputCalc() {
             armorStatus: armorWeaponStatsObj.armorStats + accessoryInputStatsValue(),
             avatarStats: avatarPointCalc(),
             gemsCoolAvg: extractValue.etcObj.gemsCoolAvg,
+            supportCheck:supportCheck,
             gemCheckFnc: {
                 specialSkill: extractValue.etcObj.gemCheckFnc.specialSkill,
                 originGemValue: extractValue.etcObj.gemCheckFnc.originGemValue,
@@ -1153,7 +1179,7 @@ async function simulatorInputCalc() {
         extractValue.hyperObj = extractHyperStageValue();
     }
     simulatorDataToExtractValue()
-    // console.log("오리진OBJ", extractValue)
+    console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
@@ -3349,7 +3375,7 @@ function createNumpad() {
             }
 
             currentInput = this;
-            if(currentInput.value === "0"){
+            if (currentInput.value === "0") {
                 currentInput.value = "";
             }
             const numpad = document.createElement('div');

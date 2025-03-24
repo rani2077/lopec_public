@@ -1140,7 +1140,7 @@ export async function getCharacterProfile(data) {
         criticalDamagePer: 0,
         evolutionBuff: 0,
         enlightenmentBuff: 0,
-        weaponAtk: 1,
+        weaponAtkPer: 1,
     }
 
     data.ArkPassive.Effects.forEach(function (arkArry) {
@@ -1924,19 +1924,19 @@ export async function getCharacterProfile(data) {
 
     let enlightkarmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14)
     if (enlightkarmaPoint >= 6) {
-        arkObj.weaponAtk = 1.021
+        arkObj.weaponAtkPer = 1.021
     } else if (enlightkarmaPoint >= 5) {
-        arkObj.weaponAtk = 1.017
+        arkObj.weaponAtkPer = 1.017
     } else if (enlightkarmaPoint >= 4) {
-        arkObj.weaponAtk = 1.013
+        arkObj.weaponAtkPer = 1.013
     } else if (enlightkarmaPoint >= 3) {
-        arkObj.weaponAtk = 1.009
+        arkObj.weaponAtkPer = 1.009
     } else if (enlightkarmaPoint >= 2) {
-        arkObj.weaponAtk = 1.005
+        arkObj.weaponAtkPer = 1.005
     } else if (enlightkarmaPoint >= 1) {
-        arkObj.weaponAtk = 1.001
+        arkObj.weaponAtkPer = 1.001
     } else {
-        arkObj.weaponAtk = 1
+        arkObj.weaponAtkPer = 1
     }
 
 
@@ -2104,6 +2104,8 @@ export async function getCharacterProfile(data) {
 
                 let specialStats = betweenText.filter(text => /^(치명|특화|신속)\s\+\d+$/.test(text.trim()));
                 let normalStats = betweenText.filter(text => /^(힘|민첩|지능|체력)\s\+\d+$/.test(text.trim()));
+                console.log("betweenText",betweenText)
+                console.log("normalStats",normalStats)
                 obj.normalStatsArray = normalStats;
                 obj.specialStatsArray = specialStats;
                 obj.optionArray = options;

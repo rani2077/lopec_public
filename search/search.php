@@ -39,7 +39,7 @@
     <header></header>
 
 
-    <div class="wrapper">
+    <div class="wrapper" style="display:none;">
 
         <section class="sc-info search-page" id="sc-info">
 
@@ -484,6 +484,57 @@
 
             </div>
         </section>
+        <section class="sc-expedition">
+            <div class="group-server shadow">
+                <div class="server-area">
+                    <span class="server-name">아브렐슈드</span>
+                </div>
+                <div class="expedition-area">
+                    <a href="" class="expedition-list">
+                        <img src="https://cdn.korlark.com/lostark/avatars/striker.png" alt="">
+                        <div class="info-box">
+                            <span class="character-level">Lv.70 스트라이커</span>
+                            <span class="name">청염각</span>
+                            <span class="armor-level">1100.00</span>
+                            <span class="spec-point">2200.00</span>
+                        </div>
+                    </a>
+                    <a href="" class="expedition-list">
+                        <img src="https://cdn.korlark.com/lostark/avatars/striker.png" alt="">
+                        <div class="info-box">
+                            <span class="level">Lv.70 스트라이커</span>
+                            <span class="name">청염각</span>
+                            <span class="spec">1100.00</span>
+                        </div>
+                    </a>
+                    <a href="" class="expedition-list">
+                        <img src="https://cdn.korlark.com/lostark/avatars/striker.png" alt="">
+                        <div class="info-box">
+                            <span class="level">Lv.70 스트라이커</span>
+                            <span class="name">청염각</span>
+                            <span class="spec">1100.00</span>
+                        </div>
+                    </a>
+                    <a href="" class="expedition-list">
+                        <img src="https://cdn.korlark.com/lostark/avatars/striker.png" alt="">
+                        <div class="info-box">
+                            <span class="level">Lv.70 스트라이커</span>
+                            <span class="name">청염각</span>
+                            <span class="spec">1100.00</span>
+                        </div>
+                    </a>
+                    <a href="" class="expedition-list">
+                        <img src="https://cdn.korlark.com/lostark/avatars/striker.png" alt="">
+                        <div class="info-box">
+                            <span class="level">Lv.70 스트라이커</span>
+                            <span class="name">청염각</span>
+                            <span class="spec">1100.00</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
     </div>
 
     <?php //  공요푸터 
@@ -498,7 +549,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 
     ?>
-    
+
 
     <script>
         document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');

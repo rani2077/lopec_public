@@ -28,6 +28,9 @@ async function importModuleManager() {
 
 async function mainSearchFunction() {
 
+    const urlParams = new URLSearchParams(window.location.search);
+    // const nameParam = urlParams.get('headerCharacterName');
+    const nameParam = urlParams.get('Name');
 
     let Modules = await importModuleManager();
     let component = await Modules.component;
@@ -37,25 +40,28 @@ async function mainSearchFunction() {
     *********************************************************************************************************************** */
     let scProfileSkeleton = await component.scProfileSkeleton();
     document.querySelector(".wrapper").insertAdjacentHTML('afterbegin', scProfileSkeleton);
-    document.querySelector(".sc-profile").insertAdjacentHTML('afterend', component.scNav());
+    document.querySelector(".sc-profile").insertAdjacentHTML('afterend', component.scNav(nameParam));
+    document.querySelector(".wrapper").style.display = "block";
 
 
-
-    const urlParams = new URLSearchParams(window.location.search);
-    // const nameParam = urlParams.get('headerCharacterName');
-    const nameParam = urlParams.get('Name');
+    /* **********************************************************************************************************************
+    * function name		:	
+    * description       : 	
+    *********************************************************************************************************************** */
     let data = await Modules.fetchApi.lostarkApiCall(nameParam);
     let extractValue = await Modules.transValue.getCharacterProfile(data);
-    // let specPoint = await Modules.calcValue.specPointCalc(extractValue);
+
+    let specPoint = await Modules.calcValue.specPointCalc(extractValue);
     console.log("data", data)
-    console.log("extractValue", extractValue.htmlObj)
+    console.log("오리진obj", extractValue)
+    console.log("specPoint", specPoint)
 
 
     /* **********************************************************************************************************************
     * function name		:	scProfileCreate
     * description       : 	user정보가 로딩완료 시 scProfile을 재생성함
     *********************************************************************************************************************** */
-    async function scProfileCreate() { //make async
+    async function scProfileCreate() {
         let src = data.ArmoryProfile.CharacterImage
         let job = data.ArmoryProfile.CharacterClassName
         let server = data.ArmoryProfile.ServerName
@@ -692,7 +698,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // 캐릭터 검색
             specPoint.getCharacterProfile(inputText, function () {
                 document.getElementById("sc-info").innerHTML = specPoint.searchHtml;
-                specBtn();                 //스펙포인트 상세정보보기
                 // userBookmarkSave(inputText)//즐겨찾기 기능
                 gemSort()                  //보석순서정렬
             });
@@ -717,25 +722,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
 });
-
-
-
-
-
-// 스펙포인트 더보기 버튼
-
-function specBtn() {
-    document.getElementById("extra-btn").addEventListener("click", function () {
-        let specAreaClass = document.querySelector(".spec-area").classList
-        // console.log(specAreaClass)
-        if (specAreaClass.contains("on")) {
-            specAreaClass.remove('on')
-        } else {
-            specAreaClass.add('on')
-        }
-    })
-}
-
 
 
 
