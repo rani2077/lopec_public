@@ -38,7 +38,7 @@ import {
 } from '../filter/filter.js';
 
 import { insertLopecCharacters } from '../js/character.js'
-import { getLopecCharacterRanking, getCombinedCharacterData } from '../js/characterRead2.js'
+import { getLopecCharacterRanking, getCombinedCharacterData, getBatchCharacterData } from '../js/characterRead2.js'
 import { insertLopecSearch } from '../js/search.js'
 
 let isRequesting = false;
@@ -2268,6 +2268,217 @@ export function getCharacterProfile(inputName, callback) {
         }).catch(function (error) {
             console.error("종합 데이터 조회 중 오류 발생:", error);
         });
+
+
+        //const characterData = [
+        //    {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "하드펀쳐",
+        //        "CharacterLevel": 70,
+        //        "CharacterClassName": "브레이커",
+        //        "ItemAvgLevel": "1,640.83",
+        //        "ItemMaxLevel": "1,640.83"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "마권식",
+        //        "CharacterLevel": 59,
+        //        "CharacterClassName": "워로드",
+        //        "ItemAvgLevel": "1,415.00",
+        //        "ItemMaxLevel": "1,415.00"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "영혼역류였둰것",
+        //        "CharacterLevel": 60,
+        //        "CharacterClassName": "소울이터",
+        //        "ItemAvgLevel": "1,445.00",
+        //        "ItemMaxLevel": "1,445.00"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "롤로노아함수훈",
+        //        "CharacterLevel": 59,
+        //        "CharacterClassName": "호크아이",
+        //        "ItemAvgLevel": "1,415.00",
+        //        "ItemMaxLevel": "1,415.00"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "함예린",
+        //        "CharacterLevel": 68,
+        //        "CharacterClassName": "블레이드",
+        //        "ItemAvgLevel": "1,605.83",
+        //        "ItemMaxLevel": "1,605.83"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "강호빈",
+        //        "CharacterLevel": 64,
+        //        "CharacterClassName": "데빌헌터",
+        //        "ItemAvgLevel": "1,545.00",
+        //        "ItemMaxLevel": "1,545.00"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "심지우",
+        //        "CharacterLevel": 69,
+        //        "CharacterClassName": "기공사",
+        //        "ItemAvgLevel": "1,590.00",
+        //        "ItemMaxLevel": "1,590.00"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "도유미",
+        //        "CharacterLevel": 61,
+        //        "CharacterClassName": "기상술사",
+        //        "ItemAvgLevel": "1,496.67",
+        //        "ItemMaxLevel": "1,496.67"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "청염각",
+        //        "CharacterLevel": 70,
+        //        "CharacterClassName": "스트라이커",
+        //        "ItemAvgLevel": "1,697.00",
+        //        "ItemMaxLevel": "1,697.00"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "홀나짱쌤홀나",
+        //        "CharacterLevel": 70,
+        //        "CharacterClassName": "홀리나이트",
+        //        "ItemAvgLevel": "1,585.00",
+        //        "ItemMaxLevel": "1,585.00"
+        //      },
+        //      {
+        //        "ServerName": "아브렐슈드",
+        //        "CharacterName": "맨중의맨칼슘맨",
+        //        "CharacterLevel": 63,
+        //        "CharacterClassName": "스카우터",
+        //        "ItemAvgLevel": "1,561.67",
+        //        "ItemMaxLevel": "1,561.67"
+        //      },
+        //      {
+        //        "ServerName": "루페온",
+        //        "CharacterName": "루페온칼슘맨",
+        //        "CharacterLevel": 1,
+        //        "CharacterClassName": "전사(남)",
+        //        "ItemAvgLevel": "0.00",
+        //        "ItemMaxLevel": "0.00"
+        //      },
+        //      {
+        //        "ServerName": "실리안",
+        //        "CharacterName": "운다트의폭풍우",
+        //        "CharacterLevel": 1,
+        //        "CharacterClassName": "전사(남)",
+        //        "ItemAvgLevel": "0.00",
+        //        "ItemMaxLevel": "0.00"
+        //      },
+        //      {
+        //        "ServerName": "카마인",
+        //        "CharacterName": "어둠의자락",
+        //        "CharacterLevel": 1,
+        //        "CharacterClassName": "전사(남)",
+        //        "ItemAvgLevel": "0.00",
+        //        "ItemMaxLevel": "0.00"
+        //      },
+        //      {
+        //        "ServerName": "니나브",
+        //        "CharacterName": "테스트하고버려질아이",
+        //        "CharacterLevel": 12,
+        //        "CharacterClassName": "기상술사",
+        //        "ItemAvgLevel": "52.50",
+        //        "ItemMaxLevel": "52.50"
+        //      }
+        //];
+//
+//
+        //async function getCharactersInfo(characterData, rankingType = "DEAL") {
+        //    try {
+        //      // 입력 데이터 검증
+        //      if (!Array.isArray(characterData) || characterData.length === 0) {
+        //        console.error("데이터가 유효하지 않음");
+        //        return Promise.reject("데이터가 유효하지 않음");
+        //      }
+        //      
+        //      // 1. 캐릭터 닉네임 추출
+        //      const nicknameArray = characterData.map(character => character.CharacterName);
+        //      
+        //      console.log(`추출된 닉네임 ${nicknameArray.length}개:`, nicknameArray);
+        //      
+        //      // 2. getBatchCharacterData 함수 호출
+        //      const result = await getBatchCharacterData(nicknameArray, rankingType);
+        //      
+        //      // 3. 결과 처리 및 반환
+        //      console.log("조회 결과:", result);
+        //      
+        //      // 4. 결과에 따른 처리
+        //      if (result && result.result === "S" && result.data) {
+        //        // 데이터 파싱 및 처리
+        //        const parsedData = parseCharacterData(result.data);
+        //        return parsedData;
+        //      } else {
+        //        console.warn("데이터 조회 실패 또는 불완전한 응답:", result);
+        //        return [];
+        //      }
+        //      
+        //    } catch (error) {
+        //      console.error("캐릭터 정보 조회 중 오류 발생:", error);
+        //      throw error;
+        //    }
+        //  }
+        //  
+        //  /**
+        //   * 조회 결과 문자열을 파싱
+        //   */
+        //  function parseCharacterData(dataStr) {
+        //    if (!dataStr || typeof dataStr !== 'string') {
+        //      return [];
+        //    }
+        //    
+        //    const characterInfoArray = [];
+        //    
+        //    // 문자열이 쉼표로 구분된 항목들로 이루어져 있다고 가정
+        //    const entries = dataStr.split(',');
+        //    console.log(`${entries.length}개 캐릭터 항목 파싱 시작`);
+        //    
+        //    for (const entry of entries) {
+        //      if (!entry || entry.trim() === '') continue;
+        //      
+        //      // 각 항목은 콜론으로 구분된 필드들로 이루어짐
+        //      const parts = entry.split(':');
+        //      
+        //      // 최소 4개 이상의 데이터가 있어야 유효함 (닉네임, 레벨, 직업, 점수1)
+        //      if (parts.length >= 4) {
+        //        const characterInfo = {
+        //          nickname: parts[0],
+        //          level: parts[1] || "",
+        //          characterClass: parts[2] || "",
+        //          totalSum: parts[3] || "",
+        //          totalSumSupport: parts[4] || "",
+        //          regDate: parts[5] || "",
+        //          isSupport: (parts[2] || "").includes("서폿"),
+        //          displayScore: (parts[2] || "").includes("서폿") ? (parts[4] || "") : (parts[3] || "")
+        //        };
+        //        
+        //        characterInfoArray.push(characterInfo);
+        //      }
+        //    }
+        //    
+        //    console.log(`${characterInfoArray.length}개 캐릭터 정보 파싱 완료`);
+        //    return characterInfoArray;
+        //  }
+        //  
+        //  // 하드코딩된 데이터로 함수 직접 호출
+        //  getCharactersInfo(characterData, "DEAL")
+        //    .then(result => {
+        //      console.log("최종 처리 결과:", result);
+        //      // 여기서 결과를 활용하는 추가 로직
+        //    })
+        //    .catch(error => {
+        //      console.error("처리 실패:", error);
+        //    });       
 
 
 
