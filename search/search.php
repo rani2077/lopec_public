@@ -484,7 +484,7 @@
 
             </div>
         </section>
-        <section class="sc-expedition">
+        <!-- <section class="sc-expedition">
             <div class="group-server shadow">
                 <div class="server-area">
                     <span class="server-name">아브렐슈드</span>
@@ -534,7 +534,7 @@
 
                 </div>
             </div>
-        </section>
+        </section> -->
     </div>
 
     <?php //  공요푸터 

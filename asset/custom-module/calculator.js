@@ -116,6 +116,7 @@ export async function specPointCalc(inputObj) {
     let damageBuff = (inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 아피강
     let hyperBuff = (10 * ((inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
     let statDamageBuff = ((inputObj.defaultObj.special + inputObj.defaultObj.haste) * 0.015) / 100 + 1 // 특화 신속
+    console.log(statDamageBuff)
     let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
 
@@ -133,7 +134,7 @@ export async function specPointCalc(inputObj) {
      *********************************************************************************************************************** */
     //최종 환산
     let supportSpecPoint = (fullBuffPower ** 2.546) * 20 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonusPer * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1)
-    console.log(inputObj.arkObj.leapDamage)
+    //console.log(supportSpecPoint)
     //팔찌 제외 무공&공격력
     let supportTotalWeaponAtkMinusBangle = ((inputObj.defaultObj.weaponAtk + inputObj.hyperObj.weaponAtkPlus + inputObj.elixirObj.weaponAtkPlus + inputObj.accObj.weaponAtkPlus) * (inputObj.arkObj.weaponAtkPer + (inputObj.accObj.weaponAtkPer / 100)))
     let totalAtk5 = (Math.sqrt((totalStat * supportTotalWeaponAtkMinusBangle) / 6)) * attackBonus
@@ -186,9 +187,9 @@ export async function specPointCalc(inputObj) {
     highTierSpecPointObj.supportSpecPoint = supportSpecPoint //서폿 스펙포인트
     // 스펙포인트 db저장 통합
     if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
-        highTierSpecPointObj.completeSpecPoint = lastFinalValue
+        highTierSpecPointObj.completeSpecPoint = lastFinalValue/1948
     } else if (inputObj.etcObj.supportCheck == "서폿") {
-        highTierSpecPointObj.completeSpecPoint = supportSpecPoint
+        highTierSpecPointObj.completeSpecPoint = supportSpecPoint/10000
     }
     highTierSpecPointObj.supportSpecPoint = isNaN(highTierSpecPointObj.supportSpecPoint) ? 0 : highTierSpecPointObj.supportSpecPoint;
 

@@ -2103,9 +2103,9 @@ export async function getCharacterProfile(data) {
                 let options = bangleFilter.filter(filter => replaceText.includes(filter.fullName));
 
                 let specialStats = betweenText.filter(text => /^(치명|특화|신속)\s\+\d+$/.test(text.trim()));
-                let normalStats = betweenText.filter(text => /^(힘|민첩|지능|체력)\s\+\d+$/.test(text.trim()));
-                console.log("betweenText",betweenText)
-                console.log("normalStats",normalStats)
+                let normalStats = betweenText.filter(text => /(힘|민첩|지능|체력)\s*\+(\d+)/g.test(text.trim()));
+                specialStats = specialStats.map(stat => stat.match(/(치명|특화|신속)\s*\+(\d+)/g)[0])
+                normalStats = normalStats.map(stat => stat.match(/(힘|민첩|지능|체력)\s*\+(\d+)/g)[0])
                 obj.normalStatsArray = normalStats;
                 obj.specialStatsArray = specialStats;
                 obj.optionArray = options;
@@ -2129,7 +2129,8 @@ export async function getCharacterProfile(data) {
      *********************************************************************************************************************** */
     function engravingInfoExtract() {
         let result = [];
-        if (data.ArmoryEngraving.ArkPassiveEffects) {
+        
+        if (data.ArmoryEngraving) {
             data.ArmoryEngraving.ArkPassiveEffects.forEach(eng => {
                 let obj = {};
                 let icon = Filter.engravingImg.find(filter => filter.split("^")[0] === eng.Name);
@@ -2141,7 +2142,7 @@ export async function getCharacterProfile(data) {
                 obj.icon = icon.split("^")[1];
                 result.push(obj);
             })
-            
+
         }
         return result;
     }

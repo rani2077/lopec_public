@@ -182,7 +182,9 @@ header:after {
     flex-direction:column;
     justify-content: space-between;
 }
-.sc-profile .name-area{}
+.sc-profile .name-area{
+    display: flex;
+}
 .sc-profile .name-area .name{
     font-weight: 600;
     font-size: 24px;

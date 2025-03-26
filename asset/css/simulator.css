@@ -50,9 +50,10 @@ input[type=number]::-ms-expand {
 }
 
 .group-equip .number-box .option-wrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* flex-direction: column;
+    justify-content: space-between; */
     height: 100%;
 }
 
@@ -60,7 +61,7 @@ input[type=number]::-ms-expand {
     display: flex;
     justify-content: flex-start;
     height: 18px;
-    border-radius:4px;
+    border-radius: 4px;
     overflow: hidden;
 }
 
@@ -71,19 +72,25 @@ input[type=number]::-ms-expand {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink:0;
+    flex-shrink: 0;
     font-size: 13px;
 }
+
+.group-equip .number-box .option-wrap .tier.bangle {
+    grid-column: 1 / -1;
+}
+
 .group-equip .number-box .option-wrap .stats {
-    border:1px solid #b3b3b3;
-    border-radius:0;
-    border-left:none;
+    border: 1px solid #b3b3b3;
+    /* border-radius:0; */
 }
+
 .group-equip .number-box .option-wrap .option {
-    border:1px solid #b3b3b3;
+    border: 1px solid #b3b3b3;
 }
+
 .group-equip .number-box .option-wrap .option[disabled] {
-    border:1px solid #e2e2e2;
+    border: 1px solid #e2e2e2;
 }
 
 .group-equip .number-box .progress {
@@ -100,7 +107,7 @@ input[type=number]::-ms-expand {
     display: flex;
     flex-direction: column;
     width: 48px;
-    background:#e6e8ec;
+    background: #e6e8ec;
     overflow: hidden;
 }
 
@@ -118,10 +125,12 @@ input[type=number]::-ms-expand {
 .group-equip .armor-item .plus {
     max-width: 66px;
 }
+
 .group-equip .armor-item .hyper-wrap {
-    gap:4px;
+    gap: 4px;
 }
-.group-equip .armor-item .hyper-wrap .level{
+
+.group-equip .armor-item .hyper-wrap .level {
     padding-left: 0;
 }
 
@@ -139,9 +148,10 @@ input[type=number]::-ms-expand {
     display: none;
 }
 
-.sc-info .accessory-area .accessory-item:not(:nth-child(6)) .img-box img{
+.sc-info .accessory-area .accessory-item:not(:nth-child(6)) .img-box img {
     padding-top: 10px;
 }
+
 .sc-info .accessory-area .accessory-item:last-child {
     flex-wrap: wrap;
     height: initial;
@@ -242,8 +252,13 @@ input[type=number]::-ms-expand {
 
 /* simple-option-area */
 .sc-info .group-equip .gem-area {
-    border-radius:5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
 }
+
+.sc-info .group-equip .gem-area .skill {
+    letter-spacing: -1px;
+}
+
 .sc-info .group-equip .simple-option-area {
     position: absolute;
     right: 0;
@@ -298,7 +313,7 @@ input[type=number]::-ms-expand {
     width: 0;
     white-space: nowrap;
     transition: width 300ms, padding 300ms;
-    border-radius:5px;
+    border-radius: 5px;
 }
 
 .group-equip .simple-option-area .extend-list.on {

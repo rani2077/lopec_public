@@ -58,7 +58,7 @@ async function simulatorInputCalc() {
         let component = await Modules.component;
         let scProfileSkeleton = await component.scProfileSkeleton();
         document.querySelector(".wrapper").insertAdjacentHTML('afterbegin', scProfileSkeleton);
-        document.querySelector(".sc-profile").insertAdjacentHTML('afterend', component.scNav(nameParam));
+        document.querySelector(".sc-profile").insertAdjacentHTML('afterend', await component.scNav(nameParam));
         document.querySelector(".wrapper").style.display = "block";
 
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
@@ -71,7 +71,7 @@ async function simulatorInputCalc() {
             let level = cachedData.ArmoryProfile.CharacterLevel
             let userName = cachedData.ArmoryProfile.CharacterName
             let totalLevel = cachedData.ArmoryProfile.ItemAvgLevel
-    
+
             let profileHtml = await component.scProfile(src, job, server, level, userName, totalLevel);
             document.querySelector(".sc-profile").outerHTML = profileHtml;
         }
@@ -252,6 +252,7 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     function bangleStatsNumberCalc() {
+        let resultObj = {};
         let bangleTooltip = cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
         let bangleStatsArry = extractValues(bangleTooltip);
 
@@ -268,6 +269,34 @@ async function simulatorInputCalc() {
             return results;
         }
         let bangleDataStats = bangleStatsArry.reduce((sum, stat) => sum + stat.value, 0);
+        console.log(bangleStatsArry)
+        console.log(cachedData.ArmoryProfile.Stats)
+        function calculateDifference(bangleStatsArry, cachedDataArmoryProfileStats) {
+            const typeConversion = {
+                "치명": "cri",
+                "특화": "special",
+                "신속": "haste"
+            };
+
+            const result = [];
+
+            bangleStatsArry.forEach(bangleStat => {
+                const matchingStat = cachedDataArmoryProfileStats.find(cachedStat => cachedStat.Type === bangleStat.name);
+                if (matchingStat && typeConversion[bangleStat.name]) {
+                    const difference = parseInt(matchingStat.Value) - bangleStat.value;
+                    result.push({
+                        Type: typeConversion[bangleStat.name],
+                        Difference: difference
+                    });
+                }
+            });
+
+            return result;
+        }
+        let originStatsObj = calculateDifference(bangleStatsArry, cachedData.ArmoryProfile.Stats)
+        console.log(originStatsObj)
+
+
 
         let originStats = 0;
         cachedData.ArmoryProfile.Stats.forEach(stat => {
@@ -276,7 +305,6 @@ async function simulatorInputCalc() {
             }
         })
         originStats = originStats - bangleDataStats;
-        // console.log(originStats)
 
         let elements = document.querySelectorAll(".accessory-item.bangle input.option");
         let statsTagElements = document.querySelectorAll(".accessory-item.bangle select.stats");
@@ -287,12 +315,16 @@ async function simulatorInputCalc() {
             let dataType = statsTagElements[idx].value;
             let value = Number(element.value);
             let obj = {}
+            console.log("statsTag",statsTag)
+            console.log("dataType",dataType)
+            console.log("value",value)
             if (statsTag.value !== "none" && dataType === "stats") {
                 obj[statsTag.value] = value;
                 obj.Type = dataType;
                 arr.push(obj)
             }
         })
+        console.log("arr",arr)
         let customStats = arr.reduce((sum, stat) => sum + stat.stats, 0);
 
 
@@ -1150,7 +1182,7 @@ async function simulatorInputCalc() {
             armorStatus: armorWeaponStatsObj.armorStats + accessoryInputStatsValue(),
             avatarStats: avatarPointCalc(),
             gemsCoolAvg: extractValue.etcObj.gemsCoolAvg,
-            supportCheck:supportCheck,
+            supportCheck: supportCheck,
             gemCheckFnc: {
                 specialSkill: extractValue.etcObj.gemCheckFnc.specialSkill,
                 originGemValue: extractValue.etcObj.gemCheckFnc.originGemValue,
@@ -1743,7 +1775,8 @@ async function selectCreate(data) {
 
                 // 이미 "- 무효"가 포함되어 있으면 추가하지 않음
                 if (!optionText.includes("- 무효")) {
-                    option.textContent = optionText + " - 무효";
+                    // option.textContent = optionText + " - 무효";
+                    option.style.color = "#f00";
                     option.value = "none";
                 }
             });
@@ -2782,6 +2815,16 @@ async function selectCreate(data) {
             optionElementAutoCheck(bangleStats[idx], stat.name, 'textContent');
             bangleNumbers[idx].value = stat.value;
         })
+        if (bangleTooltip.match(/(체력)\s*\+(\d+)/g)) {
+            let healthString = bangleTooltip.match(/(체력)\s*\+(\d+)/g)[0];
+            let healthValue = Number(healthString.match(/\d+/)[0]);
+            let healthSelectElement = document.querySelectorAll(".sc-info .accessory-item.bangle .option-wrap .option-item")[3];
+            let selectElement = healthSelectElement.querySelector("select.stats");
+            let inputElement = healthSelectElement.querySelector("input.option");
+
+            optionElementAutoCheck(selectElement, "체력", 'textContent');
+            inputElement.value = healthValue;
+        }
 
         function extractValues(str) {
             let regex = /(치명|특화|신속|힘|민첩|지능)\s*\+(\d+)/g;
@@ -2806,11 +2849,11 @@ async function selectCreate(data) {
     function bangleQualityToHTML() {
         let selectElements = document.querySelectorAll(".accessory-item.bangle select.option");
         let inputElements = document.querySelectorAll(".accessory-item.bangle input.option");
-
+        let tierValue = document.querySelector(".accessory-item.bangle .tier.bangle").value;
         selectElements.forEach(select => {
 
-            select.addEventListener("change", () => { qualityChange() })
-            function qualityChange() {
+            select.addEventListener("change", () => { selectQualityChange() })
+            function selectQualityChange() {
                 let gradeValue = select.options[select.selectedIndex].getAttribute("data-grade");
                 let gradeElement = select.closest(".grinding-wrap").querySelector("span.quality");
                 let className = "";
@@ -2825,10 +2868,8 @@ async function selectCreate(data) {
                 gradeElement.classList.add(className);
                 gradeElement.textContent = gradeValue;
             }
-            qualityChange()
+            selectQualityChange()
         })
-
-
     }
     bangleQualityToHTML()
 
@@ -2868,7 +2909,7 @@ async function selectCreate(data) {
         })
 
     }
-    bangleStatsDisable()
+    // bangleStatsDisable()
 
 
 

@@ -2392,8 +2392,8 @@ export function getCharacterProfile(inputName, callback) {
         //        "ItemMaxLevel": "52.50"
         //      }
         //];
-//
-//
+        //
+        //
         //async function getCharactersInfo(characterData, rankingType = "DEAL") {
         //    try {
         //      // 입력 데이터 검증
@@ -3362,20 +3362,20 @@ export function getCharacterProfile(inputName, callback) {
         function nameWrap() {
             if (!(elixirDoubleVal == undefined) && elixirLevel >= 35 && elixirLevel < 40) {
                 return `
-                                <div class="name-wrap">
-                                    ${elixirDoubleVal.replace(/\(/g, "").trim()} 1단계
-                                </div>`
+                    <div class="name-wrap">
+                        ${elixirDoubleVal.replace(/\(/g, "").trim()} 1단계
+                    </div>`
             } else if (!(elixirDoubleVal == undefined) && elixirLevel >= 40) {
                 return `
-                                <div class="name-wrap">
-                                    ${elixirDoubleVal.replace(/\(/g, "").trim()} 2단계
-                                </div>`
+                    <div class="name-wrap">
+                        ${elixirDoubleVal.replace(/\(/g, "").trim()} 2단계
+                    </div>`
 
             } else {
                 return `
-                                <div class="name-wrap">
-                                    비활성화
-                                </div>`
+                    <div class="name-wrap">
+                        비활성화
+                    </div>`
             }
         }
 
