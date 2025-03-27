@@ -119,10 +119,20 @@ async function mainSearchFunction() {
                     sortTag = 1;
                 } else {
                     sortTag = 2;
-
+                }
+                let grade = data.ArmoryGem.Gems[idx].Grade;
+                let gradeClassName = "";
+                if (grade === "고대") {
+                    gradeClassName = "ultra-background";
+                } else if (grade === "유물") {
+                    gradeClassName = "rare-background";
+                } else if (grade === "전설") {
+                    gradeClassName = "common-background";
+                } else if (grade === "영웅") {
+                    gradeClassName = "hero-background";
                 }
                 gemBox += `
-                <div class="gem-box radius common-background">
+                <div class="gem-box radius ${gradeClassName}">
                     <img src="${data.ArmoryGem.Gems[idx].Icon}" alt="" style="border-radius:3px;">
                     <span class="level">${gemItem.level}</span>
                     <span class="detail">${gemItem.skill} <br> 딜 지분 : ${gemItem.skillPer !== "none" ? `${(gemItem.skillPer * 100).toFixed(0)}%` : "데이터 없음"}</span>

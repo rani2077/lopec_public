@@ -252,85 +252,74 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     function bangleStatsNumberCalc() {
-        let resultObj = {};
-        let bangleTooltip = cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
-        let bangleStatsArry = extractValues(bangleTooltip);
+        const bangleTooltip = cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
+        const bangleStatsArry = extractValues(bangleTooltip);
+        const bangleDataStats = bangleStatsArry.reduce((sum, stat) => sum + stat.value, 0);
 
+        const originStatsObj = calculateDifference(bangleStatsArry, cachedData.ArmoryProfile.Stats);
+        const inputStatsArray = getInputStatsArray();
+
+        return convertArrayToObject(combineValues(originStatsObj, inputStatsArray));
+
+        // 팔찌 툴팁에서 치명, 특화, 신속 값 추출
         function extractValues(str) {
-            let regex = /(치명|특화|신속)\s*\+(\d+)/g;
+            const regex = /(치명|특화|신속)\s*\+(\d+)/g;
             let matches, results = [];
-
             while ((matches = regex.exec(str)) !== null) {
-                results.push({
-                    name: matches[1], // "치명", "특화", "신속"
-                    value: parseInt(matches[2], 10) // 추출된 숫자 값을 정수로 변환
-                });
+                results.push({ name: matches[1], value: parseInt(matches[2], 10) });
             }
             return results;
         }
-        let bangleDataStats = bangleStatsArry.reduce((sum, stat) => sum + stat.value, 0);
-        console.log(bangleStatsArry)
-        console.log(cachedData.ArmoryProfile.Stats)
-        function calculateDifference(bangleStatsArry, cachedDataArmoryProfileStats) {
-            const typeConversion = {
-                "치명": "cri",
-                "특화": "special",
-                "신속": "haste"
-            };
 
+        // cachedData.ArmoryProfile.Stats에서 치명, 특화, 신속 값 계산
+        function calculateDifference(bangleStatsArry, cachedDataArmoryProfileStats) {
+            const typeConversion = { "치명": "cri", "특화": "special", "신속": "haste" };
+            const requiredStats = ["치명", "신속", "특화"];
             const result = [];
 
-            bangleStatsArry.forEach(bangleStat => {
-                const matchingStat = cachedDataArmoryProfileStats.find(cachedStat => cachedStat.Type === bangleStat.name);
-                if (matchingStat && typeConversion[bangleStat.name]) {
-                    const difference = parseInt(matchingStat.Value) - bangleStat.value;
-                    result.push({
-                        Type: typeConversion[bangleStat.name],
-                        Difference: difference
-                    });
-                }
+            requiredStats.forEach(statName => {
+                const bangleStat = bangleStatsArry.find(stat => stat.name === statName);
+                const matchingStat = cachedDataArmoryProfileStats.find(stat => stat.Type === statName);
+                const bangleValue = bangleStat ? bangleStat.value : 0;
+                const profileValue = matchingStat ? parseInt(matchingStat.Value) : 0;
+                result.push({ type: typeConversion[statName], originValue: profileValue - bangleValue });
             });
-
             return result;
         }
-        let originStatsObj = calculateDifference(bangleStatsArry, cachedData.ArmoryProfile.Stats)
-        console.log(originStatsObj)
 
+        // HTML 요소에서 입력된 치명, 특화, 신속 값 추출
+        function getInputStatsArray() {
+            const elements = document.querySelectorAll(".accessory-item.bangle input.option");
+            const statsTagElements = document.querySelectorAll(".accessory-item.bangle select.stats");
+            const inputStatsArray = [];
 
+            elements.forEach((element, idx) => {
+                const dataType = statsTagElements[idx].value;
+                const value = Number(element.value);
+                if (dataType !== "none" && /cri|special|haste/.test(dataType)) {
+                    inputStatsArray.push({ type: dataType, value: value });
+                }
+            });
+            return inputStatsArray;
+        }
 
-        let originStats = 0;
-        cachedData.ArmoryProfile.Stats.forEach(stat => {
-            if (/치명|특화|신속/.test(stat.Type)) {
-                originStats += Number(stat.Value);
-            }
-        })
-        originStats = originStats - bangleDataStats;
+        // originArray와 valueArray의 값을 합쳐 객체 배열로 반환
+        function combineValues(originArray, valueArray) {
+            const valueMap = new Map(valueArray.map(item => [item.type, item.value]));
+            return originArray.map(item => ({
+                type: item.type,
+                value: item.originValue + (valueMap.get(item.type) || 0)
+            }));
+        }
 
-        let elements = document.querySelectorAll(".accessory-item.bangle input.option");
-        let statsTagElements = document.querySelectorAll(".accessory-item.bangle select.stats");
-        let arr = []
-
-        elements.forEach((element, idx) => {
-            let statsTag = element.parentElement.querySelector(".stats");
-            let dataType = statsTagElements[idx].value;
-            let value = Number(element.value);
-            let obj = {}
-            console.log("statsTag",statsTag)
-            console.log("dataType",dataType)
-            console.log("value",value)
-            if (statsTag.value !== "none" && dataType === "stats") {
-                obj[statsTag.value] = value;
-                obj.Type = dataType;
-                arr.push(obj)
-            }
-        })
-        console.log("arr",arr)
-        let customStats = arr.reduce((sum, stat) => sum + stat.stats, 0);
-
-
-        return originStats + customStats;
+        // 객체 배열을 객체로 변환
+        function convertArrayToObject(array) {
+            return array.reduce((obj, item) => {
+                obj[item.type] = item.value;
+                return obj;
+            }, {});
+        }
     }
-
     // console.log(bangleStatsNumberCalc())
 
     /* **********************************************************************************************************************
@@ -428,9 +417,9 @@ async function simulatorInputCalc() {
         let result = {
             addDamagePer: defaultObjAddDamgerPerEdit(),
             weaponAtk: armorWeaponStatsObj.weaponStats,
-            special: bangleStatsNumberCalc(),
-            haste: 0,
-            crit: 0,
+            special: bangleStatsNumberCalc().special,
+            haste: bangleStatsNumberCalc().haste,
+            crit: bangleStatsNumberCalc().cri,
             // 안사용되는 값들
             attackPow: 0,
             baseAttackPow: 0,
@@ -1296,7 +1285,26 @@ async function selectCreate(data) {
     }
     engFilterToOptions()
 
-
+    /* **********************************************************************************************************************
+    * function name		:	engravingGradeToLimit()
+    * description	    : 	각인 전설,영웅 등급의 4레벨 선택을 비활성화 함
+    *********************************************************************************************************************** */
+    function engravingGradeToLimit() {
+        let elements = document.querySelectorAll(".sc-info .engraving-area select.relic-ico");
+        elements.forEach(element => {
+            element.addEventListener("change", () => { disable() });
+            function disable() {
+                let gradeElement = element.closest(".engraving-box").querySelector('select.grade');
+                if (element.value !== "유물") {
+                    gradeElement.options[gradeElement.length - 1].disabled = true;
+                } else if(gradeElement.options[gradeElement.length - 1]){
+                    gradeElement.options[gradeElement.length - 1].disabled = false;
+                }
+            }
+            disable()
+        })
+    }
+    engravingGradeToLimit()
     /* **********************************************************************************************************************
     * function name		:	elixirFilterToOption()
     * description	    : 	엘릭서의 고유옵션과 공용옵션을 동적으로 생성(좌측 고유옵션+공용옵션 우측 공용옵션만)
@@ -1767,9 +1775,8 @@ async function selectCreate(data) {
             options.forEach(option => {
                 const optionValue = option.value;
                 const optionText = option.textContent;
-
                 // option의 value가 "stats"이거나 validStats.stats에 포함되는 경우, 변경하지 않음
-                if (optionValue === "stats" || validStatsValues.includes(optionValue)) {
+                if (/cri|special|haste/.test(optionValue) || validStatsValues.includes(optionValue)) {
                     return;
                 }
 
@@ -2507,7 +2514,97 @@ async function selectCreate(data) {
     }
     armoryTierAutoSelect()
     hyperStageToStarCreate()
+    /* **********************************************************************************************************************
+    * function name		:	armoryGradeToBackgroundClassName()
+    * description	    : 	장비의 등급(예:고대,유물,전설,영웅)에 따라 배경 className을 설정
+    *********************************************************************************************************************** */
+    function armoryGradeToBackgroundClassName() {
+        let armorElements = document.querySelectorAll(".sc-info .armor-area .armor-item select.plus");
+        armorElements.forEach(element => {
+            element.addEventListener("change", () => { backgroundClassNameChange() });
+            let backgroundElement = element.closest(".armor-item").querySelector(".img-box");
+            backgroundElement.classList.remove("skeleton");
+            function backgroundClassNameChange() {
+                let grade = element.options[element.selectedIndex].textContent;
+                if (grade.includes("고대")) {
+                    backgroundElement.classList.remove("ultra-background", "rare-background");
+                    backgroundElement.classList.add("ultra-background");
+                } else if (grade.includes("유물")) {
+                    backgroundElement.classList.remove("ultra-background", "rare-background");
+                    backgroundElement.classList.add("rare-background");
+                } else if (grade.includes("엘라")) {
+                    backgroundElement.classList.remove("ultra-background", "rare-background");
+                }
+            }
+            backgroundClassNameChange();
+        })
+        let accessoryElements = document.querySelectorAll(".sc-info .accessory-area .accessory-item.accessory .number-box select.tier");
+        accessoryElements.forEach(element => {
+            element.addEventListener("change", () => { backgroundClassNameChange() });
+            let backgroundElement = element.closest(".accessory-item").querySelector(".img-box");
+            backgroundElement.classList.remove("skeleton");
+            function backgroundClassNameChange() {
+                let grade = element.options[element.selectedIndex].textContent;
+                // console.log(grade)
+                if (grade.includes("고대")) {
+                    backgroundElement.classList.remove("ultra-background", "rare-background");
+                    backgroundElement.classList.add("ultra-background");
+                } else if (grade.includes("유물")) {
+                    backgroundElement.classList.remove("ultra-background", "rare-background");
+                    backgroundElement.classList.add("rare-background");
+                }
+            }
+            backgroundClassNameChange();
+        })
 
+    }
+    /* **********************************************************************************************************************
+    * function name		:	armoryImageSetting()
+    * description	    : 	처음 로딩 시 장비의 이미지를 유저가 장착한 이미지로 설정
+    *********************************************************************************************************************** */
+    function setItemImages() {
+        let armorNameElements = document.querySelectorAll(".sc-info .armor-area .armor-item .armor-tag");
+        armorNameElements.forEach(element => {
+            let imgElement = element.closest(".armor-item").querySelector(".img-box img");
+            let matchData = data.ArmoryEquipment.find(object => object.Type === element.textContent);
+            imgElement.setAttribute("src", matchData.Icon);
+            // console.log(matchData)
+        })
+        let accessoryElement = document.querySelectorAll(".sc-info .accessory-area .accessory-item");
+        let necklaceElement = accessoryElement[0].querySelector(".img-box img");
+        let earRingElement1 = accessoryElement[1].querySelector(".img-box img");
+        let earRingElement2 = accessoryElement[2].querySelector(".img-box img");
+        let ringElement1 = accessoryElement[3].querySelector(".img-box img");
+        let ringElement2 = accessoryElement[4].querySelector(".img-box img");
+        let stoneElement = accessoryElement[5].querySelector(".img-box img");
+        let bangleElement = accessoryElement[6].querySelector(".img-box img");
+        let earRingCount = 0;
+        let ringCount = 0;
+        data.ArmoryEquipment.forEach(accessory => {
+            if (accessory.Type === "목걸이") {
+                necklaceElement.setAttribute("src", accessory.Icon);
+            } else if (accessory.Type === "귀걸이") {
+                if (earRingCount === 0) {
+                    earRingElement1.setAttribute("src", accessory.Icon);
+                    earRingCount++;
+                } else if (earRingCount === 1) {
+                    earRingElement2.setAttribute("src", accessory.Icon);
+                }
+            } else if (accessory.Type === "반지") {
+                if (ringCount === 0) {
+                    ringElement1.setAttribute("src", accessory.Icon);
+                    ringCount++;
+                } else if (ringCount === 1) {
+                    ringElement2.setAttribute("src", accessory.Icon);
+                }
+            } else if (accessory.Type === "어빌리티 스톤") {
+                stoneElement.setAttribute("src", accessory.Icon);
+            } else if (accessory.Type === "팔찌") {
+                bangleElement.setAttribute("src", accessory.Icon);
+            }
+        })
+    }
+    setItemImages()
     /* **********************************************************************************************************************
     * function name		:	armorQualityToHTML
     * description	    : 	장비의 품질을 표시해줌
@@ -2737,6 +2834,7 @@ async function selectCreate(data) {
     }
 
     accessoryAutoSelect()
+    armoryGradeToBackgroundClassName() // 장비 및 악세서리 고대,유물 에 따른 배경이미지 변경
 
     /* **********************************************************************************************************************
     * function name		:	accessoryOptionToGrade()
