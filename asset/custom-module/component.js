@@ -36,8 +36,8 @@ export async function scProfileSkeleton() {
 *********************************************************************************************************************** */
 export async function scProfile(imageSrc, jobName, serverName, level, name, totalLevel, jobRank, totalRank) {
     setTimeout(() => {
-        starAnimation();
         userBookmarkSave(name);
+        starAnimation();
     }, 0)
     let jobRankVariable = "-수집중"
     let totalRankVariable = "-수집중"
@@ -187,7 +187,6 @@ function userBookmarkSave(userName) {
     // localStorage.clear();                                                                //로컬스토리지 전체 제거
     let userBookmarkList = JSON.parse(localStorage.getItem("userBookmark")) || []           //북마크 리스트
     function bookmarkToggle(el) {
-
         el.target.classList.toggle("full");                                                 //북마크 아이콘 토글  
         if (userBookmarkList.length < 5 && el.target.classList.contains("full")) {
             userBookmarkList.push(userName)                                                 //북마크 추가하기

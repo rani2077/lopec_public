@@ -403,7 +403,7 @@ async function mainSearchFunction() {
                 progressClassName = "epic";
             } else if (accessory.quality < 100) {
                 progressClassName = "legendary";
-            } else if (accessory.quality === 100) {
+            } else if (accessory.quality === '100') {
                 progressClassName = "mythic";
             }
 

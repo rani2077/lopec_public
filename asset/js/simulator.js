@@ -77,9 +77,22 @@ async function simulatorInputCalc() {
         }
         await scProfileCreate()
         await selectCreate(cachedData)
+        await originSpecPointToHtml()
     }
 
 
+    /* **********************************************************************************************************************
+     * function name		:	originSpecPointToHtml
+     * description			: 	사용자의 기본 스펙포인트를 표시해줌
+     *********************************************************************************************************************** */
+    async function originSpecPointToHtml() {
+        let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+        let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+        let element = document.querySelector(".sc-info .group-info .spec-area .best-box span.desc");
+        let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
+        element.textContent = `기존 스펙포인트 - ${specPoint}`;
+        element.setAttribute("data-spec-point", specPoint);
+    }
     /* **********************************************************************************************************************
      * function name		:	supportCheck
      * description			: 	2차 직업명 출력
@@ -250,7 +263,6 @@ async function simulatorInputCalc() {
      * function name		:	bangleStatsNumberCalc()
      * description			: 	팔찌 스텟의 치/특/신 값을 가져와 api데이터 상의 총 치/특/신값에 반영한 값을 계산
      *********************************************************************************************************************** */
-
     function bangleStatsNumberCalc() {
         const bangleTooltip = cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
         const bangleStatsArry = extractValues(bangleTooltip);
@@ -326,7 +338,6 @@ async function simulatorInputCalc() {
      * function name		:	bangleOptionCalc()
      * description			: 	팔찌 옵션의 수치를 가져옴
      *********************************************************************************************************************** */
-
     function bangleOptionCalc() {
         let elements = document.querySelectorAll(".accessory-item.bangle select.option");
         let arr = []
@@ -372,10 +383,8 @@ async function simulatorInputCalc() {
         let numberElements = bangleElement.querySelectorAll("input.option");
 
         statsElements.forEach((statOption, idx) => {
-            if (!statOption.disabled && statOption.value === "stats") {
-                arr.special += Number(numberElements[idx].value)
-            } else if (!statOption.disabled && /str|dex|int/.test(statOption.value)) {
-                arr.str += Number(numberElements[idx].value)
+            if (statOption.value !== "none") {
+                arr[statOption.value] = Number(numberElements[idx].value);
             }
         })
         function objKeyValueCombine(objArr) {
@@ -406,7 +415,7 @@ async function simulatorInputCalc() {
         }
         return arr;
     }
-    // console.log("bangleOptionCalc()",bangleOptionCalc())
+    // console.log("bangleOptionCalc()", bangleOptionCalc())
 
     /* **********************************************************************************************************************
      * function name		:	armoryLevelCalc()
@@ -820,7 +829,7 @@ async function simulatorInputCalc() {
             // console.log(grouped)
             if (key === "finalDamagePer") {
                 // finalDamagePer는 곱셈
-                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1));
+                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc + (val/100), 1));
             } else {
                 // 기타 스텟은 덧셈
                 combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc + val, 0));
@@ -1206,9 +1215,38 @@ async function simulatorInputCalc() {
      * function name		:	specPointCalc
      * description			: 	최종 스펙포인트 계산식
      *********************************************************************************************************************** */
-
     let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
     console.log(originSpecPoint);
+    /* **********************************************************************************************************************
+     * function name		:	
+     * description			: 	변환된 스펙포인트를 표시해줌
+     ********************************************************************************************************************** */
+    function calcSpecPointToHtml() {
+        let element = document.querySelector(".sc-info .group-info .spec-area");
+        let specPointElement = element.querySelector(".tier-box .spec-point");
+        let originElement = element.querySelector(".best-box .desc");
+        let originValue = Number(originElement.getAttribute("data-spec-point"));
+
+        let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
+        function formatSpecPoint(value) {
+            let integer = value.split(".")[0];
+            let decimal = value.split(".")[1];
+            return `${integer}.<i style="font-size:20px;">${decimal}</i>`;
+        }
+        let diffValue = (Number(specPoint) - originValue).toFixed(2);
+        let diffElement = element.querySelector(".tier-box .difference");
+        diffElement.classList.remove("zero", "decrease", "incress");
+        if (diffValue === "0.00") {
+            diffElement.classList.add("zero");
+        } else if (diffValue < 0) {
+            diffElement.classList.add("decrease");
+        } else if (diffValue > 0) {
+            diffElement.classList.add("incress");
+        }
+        diffElement.innerHTML = diffValue;
+        specPointElement.innerHTML = formatSpecPoint(specPoint);
+    }
+    calcSpecPointToHtml()
 }
 simulatorInputCalc()
 document.body.addEventListener('change', () => { simulatorInputCalc() })
@@ -1297,7 +1335,10 @@ async function selectCreate(data) {
                 let gradeElement = element.closest(".engraving-box").querySelector('select.grade');
                 if (element.value !== "유물") {
                     gradeElement.options[gradeElement.length - 1].disabled = true;
-                } else if(gradeElement.options[gradeElement.length - 1]){
+                    if (gradeElement.options[gradeElement.length - 1].selected) {
+                        gradeElement.options[gradeElement.length - 2].selected = true;
+                    }
+                } else if (gradeElement.options[gradeElement.length - 1]) {
                     gradeElement.options[gradeElement.length - 1].disabled = false;
                 }
             }
@@ -1340,6 +1381,7 @@ async function selectCreate(data) {
             if (element instanceof NodeList) {
 
                 element.forEach((element, idx) => {
+                    console.log(element)
                     if (idx == 0) {
                         let tag = document.createElement("option");
                         tag.value = "";
@@ -1675,9 +1717,9 @@ async function selectCreate(data) {
         function changeTierToOption() {
             elements.forEach(element => {
                 if (tier.value === "T3고대") {
-                    createOption(element, Modules.simulatorFilter.bangleOptionData.t3RelicData)
-                } else if (tier.value === "T3유물") {
                     createOption(element, Modules.simulatorFilter.bangleOptionData.t3MythicData)
+                } else if (tier.value === "T3유물") {
+                    createOption(element, Modules.simulatorFilter.bangleOptionData.t3RelicData)
                 } else if (tier.value === "T4유물") {
                     createOption(element, Modules.simulatorFilter.bangleOptionData.t4RelicData)
                 } else if (tier.value === "T4고대") {

@@ -42,6 +42,42 @@ input[type=number]::-ms-expand {
     opacity: 1;
 }
 
+.group-info .spec-area .tier-box .difference {
+    position: relative;
+    padding-left: 13px;
+}
+.group-info .spec-area .tier-box .difference:after{
+    content:'';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 8px;
+}
+.group-info .spec-area .tier-box .difference.zero{
+    color:rgb(255, 255, 255);
+}
+.group-info .spec-area .tier-box .difference.zero:after {
+    background:rgb(255, 255, 255);
+    height: 5px;
+}
+.group-info .spec-area .tier-box .difference.incress{
+    color: #FF4500;
+}
+.group-info .spec-area .tier-box .difference.incress:after {
+    background: #FF4500;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.group-info .spec-area .tier-box .difference.decrease{
+    color: #1E90FF ;
+}
+.group-info .spec-area .tier-box .difference.decrease:after {
+    background: #1E90FF;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
 /* Specific Layout Components*/
 .group-equip .number-box {
     display: flex;
