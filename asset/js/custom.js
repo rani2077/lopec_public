@@ -30,7 +30,7 @@ async function mainSearchFunction() {
 
     const urlParams = new URLSearchParams(window.location.search);
     // const nameParam = urlParams.get('headerCharacterName');
-    const nameParam = urlParams.get('Name');
+    const nameParam = urlParams.get('headerCharacterName');
 
     let Modules = await importModuleManager();
     let component = await Modules.component;
@@ -60,22 +60,10 @@ async function mainSearchFunction() {
 
 
     /* **********************************************************************************************************************
-    * function name		:	scProfileCreate
+    * function name		:	
     * description       : 	user정보가 로딩완료 시 scProfile을 재생성함
     *********************************************************************************************************************** */
-    async function scProfileCreate() {
-        let src = data.ArmoryProfile.CharacterImage
-        let job = extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName
-        let server = data.ArmoryProfile.ServerName
-        let level = data.ArmoryProfile.CharacterLevel
-        let userName = data.ArmoryProfile.CharacterName
-        let totalLevel = data.ArmoryProfile.ItemAvgLevel
-
-        let profileHtml = await component.scProfile(src, job, server, level, userName, totalLevel);
-        document.querySelector(".sc-profile").outerHTML = profileHtml;
-    }
-    await scProfileCreate()
-
+    document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue);
 
     /* **********************************************************************************************************************
     * function name		:	specAreaCreate
@@ -156,7 +144,31 @@ async function mainSearchFunction() {
 
     }
     gemAreaCreate()
-    // 보석정렬
+    /* **********************************************************************************************************************
+    * function name		:	gemSort()
+    * description       : 	보석을 정렬함
+    *********************************************************************************************************************** */
+    async function gemSort() {
+        const parent = document.querySelector('.sc-info .gem-area');
+        const children = Array.from(parent.children);
+        // 순서정렬
+        children.sort((a, b) => {
+            const iA = parseInt(a.querySelector('i').textContent);
+            const iB = parseInt(b.querySelector('i').textContent);
+            const levelA = parseInt(a.querySelector('.level').textContent);
+            const levelB = parseInt(b.querySelector('.level').textContent);
+            if (iA === iB) {
+                return levelB - levelA;
+            }
+            return iA - iB;
+        });
+        // 정렬되지 않은 html 제거
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+        // 정렬된 html 추가
+        children.forEach(child => parent.appendChild(child));
+    }
     gemSort()
 
     /* **********************************************************************************************************************
@@ -788,73 +800,6 @@ async function mainSearchFunction() {
 mainSearchFunction()
 
 
-let modulePath = [
-    `/asset/js/spec-point.js?${(new Date).getTime()}`
-]
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    let inputText = urlParams.get('headerCharacterName');
-    let inputFlag = 1;
-
-
-    Promise.all(modulePath.map(path => import(path)))
-        .then(function (modules) {
-
-            let [specPoint] = modules;
-
-            let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
-            // localStorage.removeItem("userBookmark");                                 //로컬스토리지 비우기
-
-            if (nameListStorage.includes(inputText) || nameListStorage.includes(null)) {                                  //로컬스토리지 저장
-
-                nameListStorage = nameListStorage.filter(item => item !== inputText && item !== null)
-                nameListStorage.push(inputText)
-                localStorage.setItem('nameList', JSON.stringify(nameListStorage));
-
-            } else {
-
-                if (nameListStorage.length >= 5) {
-                    nameListStorage.shift();
-                }
-                nameListStorage.push(inputText);
-                localStorage.setItem('nameList', JSON.stringify(nameListStorage));
-
-            }
-
-            // 캐릭터 검색
-            specPoint.getCharacterProfile(inputText, function () {
-                document.getElementById("sc-info").innerHTML = specPoint.searchHtml;
-                // userBookmarkSave(inputText)//즐겨찾기 기능
-                gemSort()                  //보석순서정렬
-            });
-
-
-
-        })
-        .catch(err => console.log(err))
-
-
-    if (inputText) {
-        let inputs = document.querySelectorAll('.character-name-search');
-        inputs.forEach(function (inputArry) {
-            inputArry.value = inputText;
-            inputArry.addEventListener('input', function (inputEvent) {
-                if (inputFlag == 1) {
-                    // inputEvent.target.value = '';
-                    inputFlag = 0
-                }
-            });
-        })
-    }
-
-});
-
-
-
-
-
 // 즐겨찾기 추가
 
 function userBookmarkSave(userName) {
@@ -885,30 +830,4 @@ function userBookmarkSave(userName) {
     }
 }
 
-
-
-
-// 보석 순서 정렬
-
-async function gemSort() {
-    const parent = document.querySelector('.sc-info .gem-area');
-    const children = Array.from(parent.children);
-    // 순서정렬
-    children.sort((a, b) => {
-        const iA = parseInt(a.querySelector('i').textContent);
-        const iB = parseInt(b.querySelector('i').textContent);
-        const levelA = parseInt(a.querySelector('.level').textContent);
-        const levelB = parseInt(b.querySelector('.level').textContent);
-        if (iA === iB) {
-            return levelB - levelA;
-        }
-        return iA - iB;
-    });
-    // 정렬되지 않은 html 제거
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-    // 정렬된 html 추가
-    children.forEach(child => parent.appendChild(child));
-}
 

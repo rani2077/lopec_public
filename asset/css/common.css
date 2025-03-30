@@ -315,7 +315,7 @@ body {
 html.dark-mode .sc-info .tag-list,
 .dark-mode .sc-header .search-area.on .header-input,
 .dark-mode .sc-header .search-area.on .search-btn,
-.dark-mode .sc-info .engraving-area,
+.dark-mode .sc-info .group-system .engraving-area,
 .dark-mode .sc-info .group-info .engraving-area,
 .dark-mode .sc-info .group-equip .gem-area,
 .dark-mode .sc-info .armor-wrap>div,
@@ -323,22 +323,54 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .sc-notice,
 .dark-mode .sc-notice .group-notice .name-box,
 .dark-mode .sc-answer .group-answer,
-.dark-mode .sc-footer {
+.dark-mode footer,
+.dark-mode .group-recent,
+.dark-mode .group-recent .name-area .sort.on,
+.dark-mode .sc-expedition .group-server{
     background: #2f2f2f;
+    color: #fff;
+}
+
+.dark-mode .group-recent .name-area .sort,
+.dark-mode .group-recent .memo .name-box:after,
+.dark-mode .sc-info .group-equip .simple-option-area,
+.dark-mode .group-equip .simple-option-area .extend-list{
+    background: #404040;
     color: #fff;
 }
 
 
 .dark-mode .notice,
-.dark-mode .temp-text {
+.dark-mode .temp-text,
+.dark-mode .sc-profile,
+.dark-mode .sc-nav {
     color: #fff;
 }
 
-.dark-mode .sc-info .group-profile .tag-item .tag,
-.dark-mode .sc-info .text-box .elixir-wrap .elixir {
+.dark-mode .sc-expedition .expedition-area .expedition-list .info-box .character-level,
+.dark-mode .group-recent .memo .name-box .del:before,
+.dark-mode .group-recent .memo .name-box .del:after {
+    color: #bfbfbf;
+}
+
+.dark-mode .sc-nav {
+    border-bottom: 1px solid #404040;
+}
+
+.dark-mode .sc-info .text-box .elixir-wrap .elixir,
+.dark-mode .group-recent .memo .name-box:hover {
     background: #15181d;
 }
 
+.dark-mode select:not(.progress),
+.dark-mode .spin-wrapper .up,
+.dark-mode .spin-wrapper .down,
+.dark-mode .sc-info .accessory-area .number-box input.progress,
+.dark-mode .group-equip .number-box .option-wrap .option{
+    color: #fff;
+    background: #15181d;
+    border: 1px solid rgb(87, 82, 82)
+}
 
 .dark-mode .sc-header .logo-group .link-site {
     background: url("../image/dark-mode-header-logo.png") center center / contain no-repeat;
@@ -354,7 +386,6 @@ html.dark-mode .sc-info .tag-list,
 /* .dark-mode .sc-info .group-info .spec-area .question{
     background: url('../image/dark-mode-question-ico.png') center center / cover no-repeat;
 } */
-
 
 
 /* 신 다크모드 버튼 */
@@ -755,8 +786,8 @@ html.dark-mode .sc-info .tag-list,
 * description	    : 	북마크 아이콘
 *********************************************************************************************************************** */
 .favorite-button {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     --background-default: #313440;
     --text-color-default: #FAFBFF;
     --star-color-default: #62677C;
@@ -767,7 +798,7 @@ html.dark-mode .sc-info .tag-list,
     --star-hole-inner: #20232C;
     --button-y: 0px;
     --star-y: 0px;
-    --star-scale: 1;
+    --star-scale: 1.2;
     --star-rotate: 0deg;
     --star-hole-scale: 0;
     --star-face-scale: 1;
@@ -791,6 +822,7 @@ html.dark-mode .sc-info .tag-list,
     position: relative;
     color: var(--text-color-default);
     transform: translateY(var(--button-y)) translateZ(0);
+
     &:before {
         content: '';
         position: absolute;
@@ -798,20 +830,23 @@ html.dark-mode .sc-info .tag-list,
         top: 0;
         right: 0;
         bottom: 0;
-        border-radius: 9px;
+        border-radius: 4px;
         transition: transform .2s;
         transform: scale(var(--background-scale-x, 1), var(--background-scale-y, 1)) translateZ(0);
         background: var(--background-default);
     }
+
     &:active {
         --background-scale-x: .98;
         --background-scale-y: .96;
     }
+
     span {
         display: block;
         opacity: var(--text-o);
         transform: translateX(var(--text-x));
     }
+
     .icon {
         width: 36px;
         height: 119px;
@@ -819,7 +854,8 @@ html.dark-mode .sc-info .tag-list,
         pointer-events: none;
         position: relative;
         clip-path: ellipse(150% 50% at 50% 50%);
-        margin: -100px 2px 0 -3px;
+        margin: -100px 2px 0 -8px;
+
         &:before {
             content: '';
             margin-top: auto;
@@ -832,6 +868,7 @@ html.dark-mode .sc-info .tag-list,
             transform: scale(var(--star-hole-scale));
             transform-origin: 50% 100%;
         }
+
         .star {
             width: 20px;
             height: 19px;
@@ -843,6 +880,7 @@ html.dark-mode .sc-info .tag-list,
             background: var(--star-color, var(--star-color-default));
             clip-path: var(--star-clip, polygon(10px 0, 13px 6px, 20px 7px, 15px 12px, 16px 19px, 10px 15px, 4px 19px, 5px 12px, 0 7px, 7px 6px));
             transition: clip-path .2s, border-radius .2s, background .2s;
+
             &:before,
             &:after {
                 content: '';
@@ -850,6 +888,7 @@ html.dark-mode .sc-info .tag-list,
                 background: var(--star-face-color, var(--star-face-color-default));
                 transition: background .2s, box-shadow .2s;
             }
+
             &:before {
                 width: 2px;
                 height: 2px;
@@ -859,6 +898,7 @@ html.dark-mode .sc-info .tag-list,
                 box-shadow: 4px 0 0 0 var(--star-face-color, var(--star-face-color-default));
                 transform: scaleY(var(--star-face-scale));
             }
+
             &:after {
                 width: 4px;
                 height: 2px;
@@ -869,10 +909,12 @@ html.dark-mode .sc-info .tag-list,
             }
         }
     }
+
     &.star-round {
         --star-clip: polygon(10px 0, 20px 0, 20px 7px, 20px 12px, 20px 19px, 10px 19px, 0 19px, 0 12px, 0 7px, 0 0);
         --star-radius: 50%;
     }
+
     &.active {
         --star-color: var(--star-color-active);
         --star-face-color: var(--star-face-color-active);

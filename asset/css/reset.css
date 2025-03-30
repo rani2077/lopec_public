@@ -34,9 +34,11 @@ time, mark, audio, video ,input, button{
 
 select{
 	font-size:13px;
+	border-radius:3px;
 }
 input[type=number]{
 	padding-left: 3px;
+	border-radius:3px;
 }
 
 @font-face {

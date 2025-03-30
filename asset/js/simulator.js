@@ -44,7 +44,7 @@ async function simulatorInputCalc() {
     * description		: 	검색 닉네임 정의
     *********************************************************************************************************************** */
     const urlParams = new URLSearchParams(window.location.search);
-    const nameParam = urlParams.get('Name');
+    const nameParam = urlParams.get('headerCharacterName');
     /* **********************************************************************************************************************
     * function name		:	Modules
     * description		: 	모든 외부모듈 정의
@@ -55,29 +55,16 @@ async function simulatorInputCalc() {
      * description			: 	유저 JSON데이터 호출 및 캐싱처리
      *********************************************************************************************************************** */
     if (!cachedData) {
-        let component = await Modules.component;
-        let scProfileSkeleton = await component.scProfileSkeleton();
+        let scProfileSkeleton = await Modules.component.scProfileSkeleton();
         document.querySelector(".wrapper").insertAdjacentHTML('afterbegin', scProfileSkeleton);
-        document.querySelector(".sc-profile").insertAdjacentHTML('afterend', await component.scNav(nameParam));
+        document.querySelector(".sc-profile").insertAdjacentHTML('afterend', await Modules.component.scNav(nameParam));
         document.querySelector(".wrapper").style.display = "block";
 
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
-        console.log(cachedData)
+        console.log(cachedData);
 
-        async function scProfileCreate() {
-            let src = cachedData.ArmoryProfile.CharacterImage
-            let job = cachedData.ArmoryProfile.CharacterClassName
-            let server = cachedData.ArmoryProfile.ServerName
-            let level = cachedData.ArmoryProfile.CharacterLevel
-            let userName = cachedData.ArmoryProfile.CharacterName
-            let totalLevel = cachedData.ArmoryProfile.ItemAvgLevel
 
-            let profileHtml = await component.scProfile(src, job, server, level, userName, totalLevel);
-            document.querySelector(".sc-profile").outerHTML = profileHtml;
-        }
-        await scProfileCreate()
-        await selectCreate(cachedData)
-        await originSpecPointToHtml()
+        await originSpecPointToHtml();
     }
 
 
@@ -90,15 +77,17 @@ async function simulatorInputCalc() {
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
         let element = document.querySelector(".sc-info .group-info .spec-area .best-box span.desc");
         let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
+        document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue);
         element.textContent = `기존 스펙포인트 - ${specPoint}`;
         element.setAttribute("data-spec-point", specPoint);
+        await selectCreate(cachedData);
     }
     /* **********************************************************************************************************************
-     * function name		:	supportCheck
-     * description			: 	2차 직업명 출력
-     * function name		:	extractValue
-     * description			: 	기존 spec-point.js 로직을 이용해 추출한 값
-     *********************************************************************************************************************** */
+    * function name		:	supportCheck
+    * description			: 	2차 직업명 출력
+    * function name		:	extractValue
+    * description			: 	기존 spec-point.js 로직을 이용해 추출한 값
+    *********************************************************************************************************************** */
 
     let supportCheck = await secondClassCheck(cachedData);
     gemInfoChangeToJson()
@@ -780,12 +769,14 @@ async function simulatorInputCalc() {
         };
 
         result = objKeyValueSum(arr, defaultObj); // defaultObj 추가
+        // console.log(result.finalDamagePer)
+        // console.log(result.criticalChancePer)
+        // console.log(result.criticalDamagePer)
         result.finalDamagePer *= ((result.criticalChancePer * 0.684) / 100 + 1)
         result.finalDamagePer *= ((result.criticalDamagePer * 0.3625) / 100 + 1)
         // console.log("적주피", result.finalDamagePer)
         // console.log("치적 적용", result.finalDamagePer)
         // console.log("치피 적용", result.finalDamagePer)
-        // console.log("objKeyValueSum", result)
         return result;
     }
     // accessoryValueToObj()
@@ -829,7 +820,7 @@ async function simulatorInputCalc() {
             // console.log(grouped)
             if (key === "finalDamagePer") {
                 // finalDamagePer는 곱셈
-                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc + (val/100), 1));
+                combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1));
             } else {
                 // 기타 스텟은 덧셈
                 combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc + val, 0));
@@ -1380,16 +1371,13 @@ async function selectCreate(data) {
         function optionCreate(element, filter, tag) {
             if (element instanceof NodeList) {
 
-                element.forEach((element, idx) => {
-                    console.log(element)
-                    if (idx == 0) {
-                        let tag = document.createElement("option");
-                        tag.value = "";
-                        tag.disabled = true;
-                        tag.textContent = "--------공용--------";
-                        element.appendChild(tag);
-
-                    }
+                element.forEach((element) => {
+                    // console.log(element)
+                    let tag = document.createElement("option");
+                    tag.value = "";
+                    tag.disabled = true;
+                    tag.textContent = "--------공용--------";
+                    element.appendChild(tag);
                     filter.forEach(common => {
                         for (const key in common) {
                             if (common.hasOwnProperty(key) && key !== "name" && key !== "level") {
@@ -1697,6 +1685,7 @@ async function selectCreate(data) {
                 option.value = valueParts.join(":");
                 element.appendChild(option);
             });
+            // element.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
     }
@@ -1725,6 +1714,7 @@ async function selectCreate(data) {
                 } else if (tier.value === "T4고대") {
                     createOption(element, Modules.simulatorFilter.bangleOptionData.t4MythicData)
                 }
+                // element.dispatchEvent(new Event('change', { bubbles: true }));
             })
             function createOption(element, filterArr) {
                 filterArr.forEach((filter, idx) => {
@@ -1891,29 +1881,29 @@ async function selectCreate(data) {
         // let avgLevel = sumLevel / weaponLevelObj.length;
         // console.log(avgLevel)
         if (level < 1670) {
-            // collectElements.forEach((element, idx) => {
-            //     let collectValue = data.ArkPassive.Points[1].Value - userLevelAccessoryToEnlight();
-            //     if (collectValue === 14) {
-            //         element.checked = true;
-            //     } else if (collectValue === 11) {
-            //         element.checked = true;
-            //         collectElements[2].checked = false;
-            //     } else if (collectValue === 9) {
-            //         element.checked = true;
-            //         collectElements[3].checked = false;
-            //     } else if (collectValue === 8) {
-            //         collectElements[0].checked = true;
-            //         collectElements[3].checked = true;
-            //     } else if (collectValue === 6) {
-            //         collectElements[0].checked = true;
-            //         collectElements[1].checked = true;
-            //     } else if (collectValue === 5) {
-            //         collectElements[3].checked = true;
-            //     } else if (collectValue === 3) {
-            //         collectElements[0].checked = true;
-            //     }
-            //     console.log(collectValue)
-            // })
+            collectElements.forEach((element, idx) => {
+                let collectValue = data.ArkPassive.Points[1].Value - userLevelAccessoryToEnlight();
+                if (collectValue === 14) {
+                    element.checked = true;
+                } else if (collectValue === 11) {
+                    element.checked = true;
+                    collectElements[2].checked = false;
+                } else if (collectValue === 9) {
+                    element.checked = true;
+                    collectElements[3].checked = false;
+                } else if (collectValue === 8) {
+                    collectElements[0].checked = true;
+                    collectElements[3].checked = true;
+                } else if (collectValue === 6) {
+                    collectElements[0].checked = true;
+                    collectElements[1].checked = true;
+                } else if (collectValue === 5) {
+                    collectElements[3].checked = true;
+                } else if (collectValue === 3) {
+                    collectElements[0].checked = true;
+                }
+                // console.log(collectValue)
+            })
             // document.querySelectorAll(".ark-list.enlightenment .ark-item")[5].querySelectorAll("input[type=radio]").forEach(radio => {
             //     radio.disabled = true;
             // })
@@ -2580,7 +2570,7 @@ async function selectCreate(data) {
             }
             backgroundClassNameChange();
         })
-        let accessoryElements = document.querySelectorAll(".sc-info .accessory-area .accessory-item.accessory .number-box select.tier");
+        let accessoryElements = document.querySelectorAll(".sc-info .accessory-area .accessory-item .number-box select.tier");
         accessoryElements.forEach(element => {
             element.addEventListener("change", () => { backgroundClassNameChange() });
             let backgroundElement = element.closest(".accessory-item").querySelector(".img-box");
@@ -2655,13 +2645,47 @@ async function selectCreate(data) {
     function armorQualityToHTML() {
         let elements = document.querySelectorAll(".armor-area .armor-item");
         elements.forEach((element, idx) => {
-            if (idx < 5) {
+            if (idx < 6) {
                 let tag = element.querySelector(".armor-tag");
                 let quality = element.querySelector(".progress");
                 let tooltip = data.ArmoryEquipment.find(data => data.Type === tag.textContent);
                 let qualityValue = Number(tooltip.Tooltip.match(/"qualityValue":\s*(\d+)/)[1]);
-                quality.textContent = qualityValue;
+                let className = "";
+                if (qualityValue <= 9) {
+                    className = "common-progressbar"
+                } else if (qualityValue <= 29) {
+                    className = "uncommon-progressbar"
+                } else if (qualityValue <= 69) {
+                    className = "rare-progressbar"
+                } else if (qualityValue <= 89) {
+                    className = "epic-progressbar"
+                } else if (qualityValue <= 99) {
+                    className = "legendary-progressbar"
+                } else if (qualityValue == 100) {
+                    className = "mythic-progressbar"
+                } else {
+                    className = 'unknown'
+                }
+
+                const classesToRemove = [
+                    "common-progressbar",
+                    "uncommon-progressbar",
+                    "rare-progressbar",
+                    "epic-progressbar",
+                    "legendary-progressbar",
+                    "mythic-progressbar",
+                    "unknown"
+                ];
+                classesToRemove.forEach(classNameItem => {
+                    quality.classList.remove(classNameItem);
+                });
+                quality.classList.add(className)
+                if (idx !== 5) {
+                    quality.textContent = qualityValue;
+                }
             }
+
+
         })
     }
     armorQualityToHTML()
@@ -2885,8 +2909,9 @@ async function selectCreate(data) {
 
     function accessoryOptionToGrade() {
         let selectElements = document.querySelectorAll(".accessory-area .accessory-item.accessory select.option");
-
+        let tierElements = document.querySelectorAll(".accessory-area .accessory-item.accessory select.option");
         selectElements.forEach(select => {
+            let tierElement = select.closest(".accessory-item").querySelector(".accessory-area .accessory-item select.tier");
             function gradeChange() {
                 let gradeElement = select.closest(".grinding-wrap").querySelector("span.quality");
                 let gradeValue = select.value.split(":")[0];
@@ -2904,6 +2929,7 @@ async function selectCreate(data) {
             };
             gradeChange();
             select.addEventListener("change", () => { gradeChange() });
+            tierElement.addEventListener("change", () => { gradeChange() });
         })
     }
     accessoryOptionToGrade()
@@ -2991,7 +3017,8 @@ async function selectCreate(data) {
         let inputElements = document.querySelectorAll(".accessory-item.bangle input.option");
         let tierValue = document.querySelector(".accessory-item.bangle .tier.bangle").value;
         selectElements.forEach(select => {
-
+            let tierElement = select.closest(".accessory-item").querySelector("select.tier");
+            tierElement.addEventListener("change", () => { selectQualityChange() })
             select.addEventListener("change", () => { selectQualityChange() })
             function selectQualityChange() {
                 let gradeValue = select.options[select.selectedIndex].getAttribute("data-grade");

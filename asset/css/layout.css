@@ -172,8 +172,8 @@ header:after {
 .sc-profile .group-img img {
     display: block;
     position: absolute;
-    left: -206px;
-    top: -87px;
+    /* left: -206px;
+    top: -87px; */
     width:500px;
 }
 
@@ -184,6 +184,8 @@ header:after {
 }
 .sc-profile .name-area{
     display: flex;
+    align-items: center;
+    gap:8px;
 }
 .sc-profile .name-area .name{
     font-weight: 600;
@@ -197,7 +199,7 @@ header:after {
 
 .sc-profile .info-area{
     display: flex;
-    gap: 55px;
+    gap: 20px;
 }
 .sc-profile .info-area .info-box{
     display: flex;
@@ -251,7 +253,7 @@ header:after {
     width: 100%;
     height: 3px;
     display: block;
-    background: #ff4654;
+    background: #03dac5;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -429,9 +431,10 @@ body.home .page-content {
     position: absolute;
     width: 100%;
     height: 3px;
-    background: rgba(48, 48, 48, 0.7);
+    background: #6e6e6e;
+    opacity: 0.7;
     transform-origin: top center;
-    transition: background 300ms;
+    transition: opacity 300ms;
     cursor: pointer;
 }
 
@@ -451,7 +454,7 @@ body.home .page-content {
 
 .group-recent .memo .name-box .del:hover:before,
 .group-recent .memo .name-box .del:hover:after {
-    background: rgba(28, 28, 28, 1);
+    opacity: 1;
 
 }
 

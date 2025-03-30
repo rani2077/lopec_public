@@ -405,7 +405,6 @@ export async function getCharacterProfile(data) {
             }
         })
     }
-
     accObj.finalDamagePer *= ((accObj.criticalChancePer * 0.684) / 100 + 1)
     accObj.finalDamagePer *= ((accObj.criticalDamagePer * 0.3625) / 100 + 1)
     //accObj.finalDamagePer *= ((accObj.weaponAtkPer * 0.4989) / 100 + 1)

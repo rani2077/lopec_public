@@ -10,13 +10,13 @@ function name() {
     let queryString = window.location.search;
 
     if (mobileCheck) {    //모바일
-        
-        if( !currentPath.startsWith('/mobile') ){
+
+        if (!currentPath.startsWith('/mobile')) {
             window.location.href = window.location.origin + '/mobile' + currentPath + queryString;
         }
-    }else{
+    } else {
 
-        if(currentPath.startsWith('/mobile')){
+        if (currentPath.startsWith('/mobile')) {
             window.location.href = window.location.origin + currentPath.replace('/mobile', '') + queryString;
         }
     }
@@ -26,10 +26,23 @@ name()
 
 
 // 헤더
-
-
 function scHeader() {
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const nameParam = urlParams.get('headerCharacterName');
+    let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
+    // localStorage.removeItem("userBookmark");                                 //로컬스토리지 비우기
+    if (nameListStorage.includes(nameParam) || nameListStorage.includes(null)) {
+        //로컬스토리지 저장
+        nameListStorage = nameListStorage.filter(item => item !== nameParam && item !== null)
+        nameListStorage.push(nameParam)
+        localStorage.setItem('nameList', JSON.stringify(nameListStorage));
+    } else {
+        if (nameListStorage.length >= 5) {
+            nameListStorage.shift();
+        }
+        nameListStorage.push(nameParam);
+        localStorage.setItem('nameList', JSON.stringify(nameListStorage));
+    }
     let userDevice = navigator.userAgent.toLowerCase();
     let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userDevice);
     let searchPath = ""
@@ -39,7 +52,7 @@ function scHeader() {
         searchPath = "/search/search.php"
     )
 
-    
+
 
     return `
     <div class="sc-header">
@@ -77,7 +90,7 @@ document.querySelector('header').innerHTML = scHeader();
 
 
 // 좌우스크롤
-window.addEventListener("scroll",function(){
+window.addEventListener("scroll", function () {
     document.querySelector("header").style.left = "-" + window.scrollX + "px"
 })
 
@@ -86,24 +99,18 @@ window.addEventListener("scroll",function(){
 
 
 // 다크모드 스크립트
-
 function enableDarkMode() {
     document.documentElement.classList.add('dark-mode');
     localStorage.setItem('darkMode', 'enabled');
 
 }
-
 function disableDarkMode() {
     document.documentElement.classList.remove('dark-mode');
     localStorage.setItem('darkMode', 'disabled');
 }
-
 if (localStorage.getItem('darkMode') == 'enabled') {
     enableDarkMode();
 }
-
-
-
 
 document.querySelector('.dark-mode-button').addEventListener('click', () => {
     if (localStorage.getItem('darkMode') == 'enabled') {
@@ -122,12 +129,10 @@ if (localStorage.getItem('darkMode') == 'enabled') {
 // 최근검색및 즐겨찾기
 function recentBookmark() {
 
-
     let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []            //로컬스토리지 최근 검색어
     let userBookmarkStorage = JSON.parse(localStorage.getItem("userBookmark")) || []    //로컬스토리지 즐겨찾기 목록
     nameListStorage = nameListStorage.reverse()                                         //최신순으로 정렬
     userBookmarkStorage = userBookmarkStorage.reverse()                                 //최신순으로 정렬
-
 
     let recentNameBox = ""
     let bookmarkNameBox = ""
@@ -188,10 +193,7 @@ function userInputMemoHtml(inputElement) {
             )
         }
 
-
-
         let recentHtml = document.querySelector(".group-recent")
-
         recentHtml.style.top = topPos + 55 + "px";
         recentHtml.style.left = leftPos + "px";
 
@@ -251,8 +253,6 @@ function userInputMemoHtml(inputElement) {
                 removeBtn.parentElement.remove()
             })
         })
-
-
 
         //.group-recent포커스해제
         recentHtml.addEventListener("blur", inputBlur)
@@ -321,9 +321,9 @@ window.addEventListener("resize", footerPositionFnc)
 
 // 헤더푸터 너비조정
 
-window.addEventListener("resize",widthSetFnc)
+window.addEventListener("resize", widthSetFnc)
 
-function widthSetFnc(){
+function widthSetFnc() {
     document.querySelector("header").style.width = document.querySelector("body").offsetWidth + "px"
     document.querySelector("footer").style.width = document.querySelector("body").offsetWidth + "px"
 }
