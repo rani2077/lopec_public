@@ -80,7 +80,7 @@ async function mainSearchFunction() {
         nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2).replace(/\.(\d{2})$/, ".<i style='font-size:20px'>$1</i>");
         //nowSpecElement.innerHTML = "2000.<i style='font-size:20px'>99</i>";
         bestSpecElement.textContent = "달성 최고 점수 - 2100.99";
-        tierImageElement.setAttribute("src", "../asset/image/gold.png");
+        tierImageElement.setAttribute("src", "/asset/image/gold.png");
 
     }
     specAreaCreate()
@@ -798,36 +798,3 @@ async function mainSearchFunction() {
 
 }
 mainSearchFunction()
-
-
-// 즐겨찾기 추가
-
-function userBookmarkSave(userName) {
-
-    document.querySelector(".group-profile .star").addEventListener("click", bookmarkToggle)
-    // localStorage.removeItem("userBookmark");                                             //로컬스토리지 비우기
-    // localStorage.clear();                                                                //로컬스토리지 전체 제거
-    function bookmarkToggle(el) {
-
-        let userBookmarkList = JSON.parse(localStorage.getItem("userBookmark")) || []     //북마크 리스트
-
-        el.target.classList.toggle("full");                                                 //북마크 아이콘 토글  
-        if (userBookmarkList.length < 5 && el.target.classList.contains("full")) {
-
-            userBookmarkList.push(userName)                                                 //북마크 추가하기
-            localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
-
-        } else if (!el.target.classList.contains("full")) {
-
-            userBookmarkList = userBookmarkList.filter(item => item !== userName)
-            localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
-
-        } else if (userBookmarkList.length >= 5) {
-            el.target.classList.remove("full");                                              //북마크 아이콘 토글  
-            alert("즐겨찾기는 5개까지 저장됩니다.")
-        }
-        // console.log(userBookmarkList)
-    }
-}
-
-

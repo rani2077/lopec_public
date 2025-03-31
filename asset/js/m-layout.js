@@ -10,13 +10,13 @@ function name() {
     let queryString = window.location.search;
 
     if (mobileCheck) {    //모바일
-        
-        if( !currentPath.startsWith('/mobile') ){
+
+        if (!currentPath.startsWith('/mobile')) {
             window.location.href = window.location.origin + '/mobile' + currentPath + queryString;
         }
-    }else{
+    } else {
 
-        if(currentPath.startsWith('/mobile')){
+        if (currentPath.startsWith('/mobile')) {
             window.location.href = window.location.origin + currentPath.replace('/mobile', '') + queryString;
         }
     }
@@ -41,84 +41,76 @@ function scHeader() {
     } else (              //데스크탑
         searchPath = "/search/search.php"
     )
-
-    console.log(searchPath)
-    
-
+    // console.log(searchPath)
     return `
-    <div class="sc-header">
-        <div class="logo-group">
-            <h1 class="logo">
-                <span class="blind">로스트아크 전투정보실 전투력계산 스펙포인트</span>
-                <a href="https://lopec.kr/mobile/" class="link-site"></a>
-
-            </h1>
-
-        </div>
-        <div class="group-search">
-            <span class="recent-close"><span class="blind">검색화면 나가기 버튼</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m12.718 4.707-1.413-1.415L2.585 12l8.72 8.707 1.413-1.415L6.417 13H20v-2H6.416l6.302-6.293z"/></svg></span>
-            <form action="${searchPath}" class="search-area search-page on">
-                <input id="headerInput" autocomplete="off" name="headerCharacterName" class="header-input character-name-search" type="text" value="" placeholder="캐릭터 검색">
-                <button class="search-btn"></button>
-            </form>
-
-
-        </div>
-
-
-    </div>
-
-    <span class="side-btn">
-
-        <em class="blind">사이드메뉴 토글 버튼</em>
-        <em class="line1"></em>
-        <em class="line2"></em>
-        <em class="line3"></em>
-    </span>
-    <div class="side-blur"></div>
-    
-    <aside class="sc-sidemenu">
-
-        <div class="group-link">
-            <a href="https://open.kakao.com/o/smvJ4DQg" class="link-item" target="_blink">1:1문의</a>
-            <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link-item">후원안내</a>
-            <a href="https://discord.gg/5B8SjX4ug4" class="link-item" target="_blink">디스코드</a>
-            <a href="https://cool-kiss-ec2.notion.site/v1-0-137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="link-item">로펙체커</a>
-        </div>
-
-
-        <div class="group-darkmode">
-            <div  class="button b2 dark-mode-button" id="button-17">
-                <input type="checkbox" class="checkbox" />
-                <div class="knobs">
-                    <span></span>
+        <header>
+            <div class="sc-header">
+                <div class="logo-group">
+                    <h1 class="logo">
+                        <span class="blind">로스트아크 전투정보실 전투력계산 스펙포인트</span>
+                        <a href="https://lopec.kr/mobile/" class="link-site"></a>
+                    </h1>
                 </div>
-                <div class="layer"></div>
+                <div class="group-search">
+                    <span class="recent-close"><span class="blind">검색화면 나가기 버튼</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="m12.718 4.707-1.413-1.415L2.585 12l8.72 8.707 1.413-1.415L6.417 13H20v-2H6.416l6.302-6.293z"/></svg></span>
+                    <form action="${searchPath}" class="search-area search-page on">
+                        <input id="headerInput" autocomplete="off" name="headerCharacterName" class="header-input character-name-search" type="text" value="" placeholder="캐릭터 검색">
+                        <button class="search-btn"></button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </aside>
+
+        <span class="side-btn">
+
+            <em class="blind">사이드메뉴 토글 버튼</em>
+            <em class="line1"></em>
+            <em class="line2"></em>
+            <em class="line3"></em>
+        </span>
+        <div class="side-blur"></div>
+        
+        <aside class="sc-sidemenu">
+
+            <div class="group-link">
+                <a href="https://open.kakao.com/o/smvJ4DQg" class="link-item" target="_blink">1:1문의</a>
+                <a href="https://cool-kiss-ec2.notion.site/120758f0e8da80889d2fe738c694a7a1" target="_blink" class="link-item">후원안내</a>
+                <a href="https://discord.gg/5B8SjX4ug4" class="link-item" target="_blink">디스코드</a>
+                <a href="https://cool-kiss-ec2.notion.site/v1-0-137758f0e8da80bc95c7da1ffc0f3e34" target="_blink" class="link-item">로펙체커</a>
+            </div>
+
+
+            <div class="group-darkmode">
+                <div  class="button b2 dark-mode-button" id="button-17">
+                    <input type="checkbox" class="checkbox" />
+                    <div class="knobs">
+                        <span></span>
+                    </div>
+                    <div class="layer"></div>
+                </div>
+            </div>
+        </aside>
+    </header>
+
     `;
 }
-
-
-document.querySelector('header').innerHTML = scHeader();
+document.body.insertAdjacentHTML('afterbegin', scHeader());
 
 
 
 // 사이드메뉴 토글
-document.querySelector(".side-btn").addEventListener("click",function(){
+document.querySelector(".side-btn").addEventListener("click", function () {
     this.classList.toggle("on");
 
-    if(this.classList.contains("on")){
+    if (this.classList.contains("on")) {
         document.documentElement.style.overflow = "hidden";
-    }else{
+    } else {
         document.documentElement.style.overflow = "";
     }
 
     document.querySelector("header .sc-sidemenu").classList.toggle("on")
     document.querySelector("header .side-blur").classList.toggle("on")
 })
-document.querySelector(".side-blur").addEventListener("click",function(){
+document.querySelector(".side-blur").addEventListener("click", function () {
     document.documentElement.style.overflow = "";
     document.querySelector(".side-btn").classList.remove("on")
     document.querySelector("header .sc-sidemenu").classList.remove("on")
@@ -318,14 +310,14 @@ function inputBlur() {
     let input = document.querySelector("input")
 
 
-    
+
     setTimeout(function () {
         if (!input.contains(document.activeElement) && !recentHTML.contains(document.activeElement)) {
             document.querySelector(".group-search").classList.remove("on")
             document.documentElement.style.overflow = '';
             recentHTML.remove()
             recentFlag = 0;
-            
+
         }
     }, 0)
 }
@@ -333,7 +325,9 @@ function inputBlur() {
 
 
 // 푸터
-document.querySelector('footer').innerHTML = `<span>Copyright 2024 lopec.kr All rights reserved.</span>`;
+let footerElement = `<footer class="sc-footer"><span>Copyright 2024 lopec.kr All rights reserved.</span></footer>`
+// document.querySelector('footer').innerHTML = `<span>Copyright 2024 lopec.kr All rights reserved.</span>`;
+document.body.insertAdjacentHTML('beforeend', footerElement);
 
 
 
@@ -346,8 +340,8 @@ function footerPositionFnc() {
 }
 
 
-let observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
+let observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
         if (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0) {
             footerPositionFnc();
         }
@@ -379,12 +373,12 @@ window.addEventListener("resize", footerPositionFnc)
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     window.scrollTo(0, 0);
 });
 
 
-(function() {
+(function () {
     const currentVersion = "1.0.006";
     const savedVersion = localStorage.getItem('version');
 

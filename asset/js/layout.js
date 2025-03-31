@@ -24,24 +24,25 @@ function name() {
 name()
 
 
-
 // 헤더
 function scHeader() {
     const urlParams = new URLSearchParams(window.location.search);
     const nameParam = urlParams.get('headerCharacterName');
-    let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
-    // localStorage.removeItem("userBookmark");                                 //로컬스토리지 비우기
-    if (nameListStorage.includes(nameParam) || nameListStorage.includes(null)) {
-        //로컬스토리지 저장
-        nameListStorage = nameListStorage.filter(item => item !== nameParam && item !== null)
-        nameListStorage.push(nameParam)
-        localStorage.setItem('nameList', JSON.stringify(nameListStorage));
-    } else {
-        if (nameListStorage.length >= 5) {
-            nameListStorage.shift();
+    if (nameParam) {
+        let nameListStorage = JSON.parse(localStorage.getItem("nameList")) || []
+        // localStorage.removeItem("userBookmark");                                 //로컬스토리지 비우기
+        if (nameListStorage.includes(nameParam) || nameListStorage.includes(null)) {
+            //로컬스토리지 저장
+            nameListStorage = nameListStorage.filter(item => item !== nameParam && item !== null)
+            nameListStorage.push(nameParam)
+            localStorage.setItem('nameList', JSON.stringify(nameListStorage));
+        } else {
+            if (nameListStorage.length >= 5) {
+                nameListStorage.shift();
+            }
+            nameListStorage.push(nameParam);
+            localStorage.setItem('nameList', JSON.stringify(nameListStorage));
         }
-        nameListStorage.push(nameParam);
-        localStorage.setItem('nameList', JSON.stringify(nameListStorage));
     }
     let userDevice = navigator.userAgent.toLowerCase();
     let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userDevice);
