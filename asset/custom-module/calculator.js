@@ -104,6 +104,9 @@ export async function specPointCalc(inputObj) {
 
     //팔찌 효율
     let bangleValue = (((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2.55) / 100 + 1)) - 1) * 100).toFixed(2)
+    console.log ("뱅글어택밸류" + bangleAtkValue + typeof(bangleAtkValue))
+    console.log ("팔찌 피해증가" + inputObj.bangleObj.finalDamagePer + typeof(inputObj.bangleObj.finalDamagePer))
+    console.log ("팔찌 치특신" + (inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) + typeof((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special)))
     /* **********************************************************************************************************************
      * name		              :	  Variable for SpecPoint calc for sup
      * version                :   2.0
@@ -186,7 +189,7 @@ export async function specPointCalc(inputObj) {
     highTierSpecPointObj.supportSpecPoint = supportSpecPoint //서폿 스펙포인트
     // 스펙포인트 db저장 통합
     if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
-        highTierSpecPointObj.completeSpecPoint = lastFinalValue/1948
+        highTierSpecPointObj.completeSpecPoint = lastFinalValue/2020
     } else if (inputObj.etcObj.supportCheck == "서폿") {
         highTierSpecPointObj.completeSpecPoint = supportSpecPoint/10000
     }

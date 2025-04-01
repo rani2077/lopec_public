@@ -51,6 +51,7 @@ async function mainSearchFunction() {
     *********************************************************************************************************************** */
     let data = await Modules.fetchApi.lostarkApiCall(nameParam);
     let extractValue = await Modules.transValue.getCharacterProfile(data);
+    await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
 
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
     // console.log("data", data)
@@ -79,7 +80,7 @@ async function mainSearchFunction() {
         nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2);
         nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2).replace(/\.(\d{2})$/, ".<i style='font-size:20px'>$1</i>");
         //nowSpecElement.innerHTML = "2000.<i style='font-size:20px'>99</i>";
-        bestSpecElement.textContent = "달성 최고 점수 - 2100.99";
+        bestSpecElement.textContent = "달성 최고 점수 - 준비중";
         tierImageElement.setAttribute("src", "/asset/image/gold.png");
 
     }
@@ -791,10 +792,16 @@ async function mainSearchFunction() {
     }
     engravingAreaCreate();
     /* **********************************************************************************************************************
-    * function name		:	engravingAreaCreate
-    * description       : 	engraving-area html을 생성함
+    * function name		:	detailAreaToggle
+    * description       : 	상세정보를 토글함
     *********************************************************************************************************************** */
-
-
+    function detailAreaToggle() {
+        let element = document.querySelector(".sc-info .detail-area span.button");
+        element.addEventListener("click", () => {
+            let detailArea = document.querySelector(".sc-info .detail-area");
+            detailArea.classList.toggle("on");
+        })
+    };
+    detailAreaToggle();
 }
 mainSearchFunction()

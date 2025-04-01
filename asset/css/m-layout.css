@@ -48,6 +48,7 @@ header{
     background: #fff;
     padding: 12px 20px 12px;
     border-radius:0 !important;
+    border-bottom:1px solid #f0f3f5;
 }
 .sc-header {
     margin: 0 auto;
@@ -288,7 +289,7 @@ header .side-btn.on .line3 {
 }
 .sc-profile .name-area{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap:8px;
 }
 .sc-profile .name-area .name{

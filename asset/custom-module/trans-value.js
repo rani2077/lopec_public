@@ -486,10 +486,8 @@ export async function getCharacterProfile(data) {
 
             if (realBangleArry == filterArry.name && bangleOptionArry[realIdx + 1] == filterArry.option && filterArry.secondCheck == null) {
                 typeCheck(filterArry)
-
             } else if (realBangleArry == filterArry.name && filterArry.option == null && filterArry.secondCheck == null) {
                 typeCheck(filterArry)
-
             } else if (realBangleArry == filterArry.name && bangleOptionArry[realIdx + 1] == filterArry.option && bangleOptionArry[realIdx + 2] != filterArry.secondCheck) {
                 typeCheck(filterArry)
 

@@ -792,7 +792,6 @@ let bangleFilter = [
     { name: "추가 피해가", option: "3%", tier: "Pmiddle", initial: "추피 +3.0% | 악마&대악마 피해량 +2.5%",finalDamagePer:4.67},
     { name: "추가 피해가", option: "3.5%", tier: "Phigh", initial: "추피 +3.5% | 악마&대악마 피해량 +2.5%",finalDamagePer:5.04},
 
-    
     { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1000", tier: "DuelLlow1", initial: "공격 적중 시 무공 1000, 공이속 1% 증가",finalDamagePer:0.33, weaponAtkPlus:6000},
     { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1160", tier: "DuelLlow2", initial: "공격 적중 시 무공 1160, 공이속 1% 증가",finalDamagePer:0.37, weaponAtkPlus:6960},
     { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1320", tier: "DuelLmiddle", initial: "공격 적중 시 무공 1320, 공이속 1% 증가",finalDamagePer:0.405, weaponAtkPlus:7920},
@@ -1737,60 +1736,61 @@ export let elixirCalFilter = [
 ]
 
 export let arkCalFilter = [
-    {name:"끝없는 마나",level:1,skillCool:7},
-    {name:"끝없는 마나",level:2,skillCool:14},
-
-    {name:"금단의 주문",level:1,evolutionDamage:0},
-    {name:"금단의 주문",level:2,evolutionDamage:0},
-
-    {name:"예리한 감각",level:1,evolutionDamage:0, criticalChancePer:4},
-    {name:"예리한 감각",level:2,evolutionDamage:0, criticalChancePer:8},
-    
-    {name:"한계 돌파",level:1,evolutionDamage:0},
-    {name:"한계 돌파",level:2,evolutionDamage:0},
-    {name:"한계 돌파",level:3,evolutionDamage:0},
-
-    {name:"최적화 훈련",level:1,evolutionDamage:0,skillCool:4},
-    {name:"최적화 훈련",level:2,evolutionDamage:0,skillCool:8},
-
-    {name:"축복의 여신",level:1,moveSpeed:3,atkSpeed:3},
-    {name:"축복의 여신",level:2,moveSpeed:6,atkSpeed:6},
-    {name:"축복의 여신",level:3,moveSpeed:9,atkSpeed:9},
+    //{name:"끝없는 마나",level:1,skillCool:7},
+    //{name:"끝없는 마나",level:2,skillCool:14},
+//
+    //{name:"금단의 주문",level:1,evolutionDamage:0},
+    //{name:"금단의 주문",level:2,evolutionDamage:0},
+//
+    //{name:"예리한 감각",level:1,evolutionDamage:0, criticalChancePer:4},
+    //{name:"예리한 감각",level:2,evolutionDamage:0, criticalChancePer:8},
+    //
+    //{name:"한계 돌파",level:1,evolutionDamage:0},
+    //{name:"한계 돌파",level:2,evolutionDamage:0},
+    //{name:"한계 돌파",level:3,evolutionDamage:0},
+//
+    //{name:"최적화 훈련",level:1,evolutionDamage:0,skillCool:4},
+    //{name:"최적화 훈련",level:2,evolutionDamage:0,skillCool:8},
+//
+    //{name:"축복의 여신",level:1,moveSpeed:3,atkSpeed:3},
+    //{name:"축복의 여신",level:2,moveSpeed:6,atkSpeed:6},
+    //{name:"축복의 여신",level:3,moveSpeed:9,atkSpeed:9},
 
     //// 여기부터 3티어
 
-    {name:"무한한 마력",level:1,evolutionDamage:0,skillCool:7},
-    {name:"무한한 마력",level:2,evolutionDamage:0,skillCool:14},
-
-    {name:"혼신의 강타",level:1,evolutionDamage:0, criticalChancePer:12},
-    {name:"혼신의 강타",level:2,evolutionDamage:0, criticalChancePer:24},
-
-    {name:"일격",level:1,criticalDamagePer:16, criticalChancePer:10},
-    {name:"일격",level:2,criticalDamagePer:32, criticalChancePer:20},
-
-    {name:"파괴 전차",level:1,evolutionDamage:0, atkSpeed:4},
-    {name:"파괴 전차",level:2,evolutionDamage:0, atkSpeed:8},
-
-    {name:"타이밍 지배",level:1,evolutionDamage:0, skillCool:5},
-    {name:"타이밍 지배",level:2,evolutionDamage:0, skillCool:10},
+    //{name:"무한한 마력",level:1,evolutionDamage:0,skillCool:7},
+    //{name:"무한한 마력",level:2,evolutionDamage:0,skillCool:14},
+//
+    //{name:"혼신의 강타",level:1,evolutionDamage:0, criticalChancePer:12},
+    //{name:"혼신의 강타",level:2,evolutionDamage:0, criticalChancePer:24},
+//
+    //{name:"일격",level:1,criticalDamagePer:16, criticalChancePer:10},
+    //{name:"일격",level:2,criticalDamagePer:32, criticalChancePer:20},
+//
+    //{name:"파괴 전차",level:1,evolutionDamage:0, atkSpeed:4},
+    //{name:"파괴 전차",level:2,evolutionDamage:0, atkSpeed:8},
+//
+    //{name:"타이밍 지배",level:1,evolutionDamage:0, skillCool:5},
+    //{name:"타이밍 지배",level:2,evolutionDamage:0, skillCool:10},
 
     {name:"정열의 춤사위",level:1,evolutionDamage:0, evolutionBuff:7},
     {name:"정열의 춤사위",level:2,evolutionDamage:0, evolutionBuff:14},
 
     //// 여기부터 4티어
 
-    {name:"인파이팅",level:1,evolutionDamage:0},
-    {name:"인파이팅",level:2,evolutionDamage:0},
-
+    
     {name:"입식 타격가",level:1,evolutionDamage:0, stigmaPer:10},
     {name:"입식 타격가",level:2,evolutionDamage:0, stigmaPer:20},
-
+    
     {name:"마나 용광로",level:1,evolutionDamage:0, stigmaPer:10},
     {name:"마나 용광로",level:2,evolutionDamage:0, stigmaPer:20},
-
+    
     {name:"안정된 관리자",level:1,stigmaPer:10},
     {name:"안정된 관리자",level:2,stigmaPer:20},
-
+    
+    //{name:"인파이팅",level:1,evolutionDamage:0},
+    //{name:"인파이팅",level:2,evolutionDamage:0},
+    
     //// 여기서부터 깨달음
 
     {name:"전술 훈련",level:1, criticalChancePer:1.6},

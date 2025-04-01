@@ -59,11 +59,12 @@ async function simulatorInputCalc() {
         document.querySelector(".wrapper").insertAdjacentHTML('afterbegin', scProfileSkeleton);
         document.querySelector(".sc-profile").insertAdjacentHTML('afterend', await Modules.component.scNav(nameParam));
         document.querySelector(".wrapper").style.display = "block";
-
+        
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
         console.log(cachedData);
-
-
+        
+        
+        await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
         await originSpecPointToHtml();
     }
 
@@ -88,7 +89,6 @@ async function simulatorInputCalc() {
     * function name		:	extractValue
     * description			: 	기존 spec-point.js 로직을 이용해 추출한 값
     *********************************************************************************************************************** */
-
     let supportCheck = await secondClassCheck(cachedData);
     gemInfoChangeToJson()
 
@@ -253,6 +253,14 @@ async function simulatorInputCalc() {
      * description			: 	팔찌 스텟의 치/특/신 값을 가져와 api데이터 상의 총 치/특/신값에 반영한 값을 계산
      *********************************************************************************************************************** */
     function bangleStatsNumberCalc() {
+        if(!cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌")){
+            let result = {
+                special:0,
+                haset:0,
+                cri:0
+            }
+            return result;
+        }
         const bangleTooltip = cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
         const bangleStatsArry = extractValues(bangleTooltip);
         const bangleDataStats = bangleStatsArry.reduce((sum, stat) => sum + stat.value, 0);
@@ -274,7 +282,7 @@ async function simulatorInputCalc() {
 
         // cachedData.ArmoryProfile.Stats에서 치명, 특화, 신속 값 계산
         function calculateDifference(bangleStatsArry, cachedDataArmoryProfileStats) {
-            const typeConversion = { "치명": "cri", "특화": "special", "신속": "haste" };
+            const typeConversion = { "치명": "crit", "특화": "special", "신속": "haste" };
             const requiredStats = ["치명", "신속", "특화"];
             const result = [];
 
@@ -297,7 +305,7 @@ async function simulatorInputCalc() {
             elements.forEach((element, idx) => {
                 const dataType = statsTagElements[idx].value;
                 const value = Number(element.value);
-                if (dataType !== "none" && /cri|special|haste/.test(dataType)) {
+                if (dataType !== "none" && /crit|special|haste/.test(dataType)) {
                     inputStatsArray.push({ type: dataType, value: value });
                 }
             });
@@ -321,7 +329,7 @@ async function simulatorInputCalc() {
             }, {});
         }
     }
-    // console.log(bangleStatsNumberCalc())
+    console.log(bangleStatsNumberCalc())
 
     /* **********************************************************************************************************************
      * function name		:	bangleOptionCalc()
@@ -417,7 +425,7 @@ async function simulatorInputCalc() {
             weaponAtk: armorWeaponStatsObj.weaponStats,
             special: bangleStatsNumberCalc().special,
             haste: bangleStatsNumberCalc().haste,
-            crit: bangleStatsNumberCalc().cri,
+            crit: bangleStatsNumberCalc().crit,
             // 안사용되는 값들
             attackPow: 0,
             baseAttackPow: 0,
@@ -990,18 +998,12 @@ async function simulatorInputCalc() {
 
         if (evolutionElement >= 120) { //  == 진화수치
             result.evolutionDamage += 1.45
-            result.evolutionBuff += 14
-            result.stigmaPer += 20
         } else if (evolutionElement >= 105) {
             result.evolutionDamage += 1.35
-            result.evolutionBuff += 14
-            result.stigmaPer += 10
         } else if (evolutionElement >= 90) {
             result.evolutionDamage += 1.30
-            result.evolutionBuff += 14
         } else if (evolutionElement >= 80) {
             result.evolutionDamage += 1.25
-            result.evolutionBuff += 7
         } else if (evolutionElement >= 70) {
             result.evolutionDamage += 1.20
         } else if (evolutionElement >= 60) {
@@ -1112,8 +1114,39 @@ async function simulatorInputCalc() {
         }
 
         result.weaponAtkPer = karmaRankToValue();
-
+        result.evolutionBuff = evloutionArkCheck().evolutionBuff;
+        result.stigmaPer = evloutionArkCheck().stigmaPer;
         return result
+    }
+    /* **********************************************************************************************************************
+    * function name		:	evloutionArkCheck()
+    * description	    : 	진화 노드 검사
+    *********************************************************************************************************************** */
+    function evloutionArkCheck() {
+        let result = {
+            evolutionBuff: 1,
+            stigmaPer: 0,
+        }
+        let evloutionArkPassive = cachedData.ArkPassive.Effects.filter(data => data.Name === "진화");
+        evloutionArkPassive = evloutionArkPassive.map(evloution => evloution.Description.match(/>([^<]+)</g)[2].slice(1, -1));
+        evloutionArkPassive.forEach(arkPassive => {
+            if (arkPassive === "정열의 춤사위 Lv.1") {
+                result.evolutionBuff = 7;
+            } else if (arkPassive === "정열의 춤사위 Lv.2") {
+                result.evolutionBuff = 14;
+            }
+            if (/입식 타격가|마나 용광로|안정된 관리자/.test(arkPassive)) {
+                if (arkPassive.includes("Lv.1")) {
+                    result.stigmaPer += 10;
+                } else if (arkPassive.includes("Lv.2")) {
+                    result.stigmaPer += 20;
+                }
+            }
+        })
+        if (result.stigmaPer === 0) {
+            result.stigmaPer = 1;
+        }
+        return result;
     }
 
     /* **********************************************************************************************************************
@@ -2095,7 +2128,6 @@ async function selectCreate(data) {
         let evolutionElement = document.querySelectorAll(".ark-list .title")[0];
         evolutionElement.textContent = levelEvolution;
     }
-
     /* **********************************************************************************************************************
     * function name		:	applyDataMinMaxToOptions()
     * description	    : 	data-min data-max값을 이용하여 select 드롭박스 숫자값 자동생성
@@ -2599,8 +2631,10 @@ async function selectCreate(data) {
         armorNameElements.forEach(element => {
             let imgElement = element.closest(".armor-item").querySelector(".img-box img");
             let matchData = data.ArmoryEquipment.find(object => object.Type === element.textContent);
+            if(!matchData){
+                return;
+            }
             imgElement.setAttribute("src", matchData.Icon);
-            // console.log(matchData)
         })
         let accessoryElement = document.querySelectorAll(".sc-info .accessory-area .accessory-item");
         let necklaceElement = accessoryElement[0].querySelector(".img-box img");
@@ -2649,6 +2683,9 @@ async function selectCreate(data) {
                 let tag = element.querySelector(".armor-tag");
                 let quality = element.querySelector(".progress");
                 let tooltip = data.ArmoryEquipment.find(data => data.Type === tag.textContent);
+                if(!tooltip){
+                    return;
+                }
                 let qualityValue = Number(tooltip.Tooltip.match(/"qualityValue":\s*(\d+)/)[1]);
                 let className = "";
                 if (qualityValue <= 9) {
@@ -2723,7 +2760,10 @@ async function selectCreate(data) {
 
     function weaponQualitySelect() {
         let weaponData = data.ArmoryEquipment.find(armory => armory.Type === "무기");
-        let betweenText = betweenTextExtract(weaponData.Tooltip)
+        if(!weaponData){
+            return;
+        }
+        let betweenText = betweenTextExtract(weaponData.Tooltip);
         let qualityString = betweenText.find(between => between.includes("\"qualityValue\": ") && /\d/.test(between))
         let qualityValue = Number(qualityString.match(/"qualityValue":\s*(\d+)/)[1]);
         let weaponElement = document.querySelectorAll(".armor-area .armor-item")[5].querySelector("select.progress");
@@ -2941,6 +2981,9 @@ async function selectCreate(data) {
 
     function bangleAutoSelect() {
 
+        // if (betweenTextExtract(data.ArmoryEquipment.find(obj => obj.Type === "팔찌")).length === 0 ) {
+        //     return;
+        // }
         let bangleTierData = betweenTextExtract(data.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip);
         let tierNumber = Number(bangleTierData[8].match(/\d+/));
         let tierName = bangleTierData[5].match(/(고대|유물)/g)[0];

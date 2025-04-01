@@ -358,7 +358,15 @@
 .sc-info .spec-area .best-box .desc{
 
 }
-
+.sc-info .spec-area .reset{
+    padding: 3px 5px;
+    cursor:pointer;
+    border:1px solid #ffffff;
+    border-radius:4px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
 
 .sc-info .group-equip{
     width: 660px;

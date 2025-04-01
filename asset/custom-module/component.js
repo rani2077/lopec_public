@@ -59,10 +59,7 @@ export async function scProfile(userData, extractValue, rankData) {
         jobRankVariable = rankData.jobRank
         totalRankVariable = rankData.totalRank
     }
-    setTimeout(() => {
-        userBookmarkSave(userName);
-        starAnimation();
-    }, 0)
+    setTimeout(() => { userBookmarkSave(userName); }, 0)
     return `
     <section class="sc-profile">
         <div class="group-img">
@@ -167,102 +164,97 @@ function profileImagePosition(jobName) {
 * description       : 	북마크 별 아이콘 애니메이션
 *********************************************************************************************************************** */
 function starAnimation() {
-    document.querySelectorAll('.sc-profile .favorite-button').forEach(button => {
-        button.addEventListener('click', e => {
-            e.preventDefault();
+    let button = document.querySelector('.sc-profile .favorite-button');
+    button.style.pointerEvents = 'none';
 
-            if (button.classList.contains('animated')) {
-                return;
-            }
-            button.classList.add('animated');
+    button.classList.add('animated');
 
-            const starY = { value: -20 };
-            const starScale = { value: 1.2 };
-            const buttonY = { value: 0 };
-            const starFaceScale = { value: 1 };
-            const starHoleScale = { value: 1 };
-            const starRotate = { value: 0 };
+    const starY = { value: -20 };
+    const starScale = { value: 1.2 };
+    const buttonY = { value: 0 };
+    const starFaceScale = { value: 1 };
+    const starHoleScale = { value: 1 };
+    const starRotate = { value: 0 };
 
-            // 애니메이션 1 (위로 튀어오르기 + 빠른 회전)
-            animate(starY, -36, 300, 'easeOutPower2', () => {
-                button.classList.add('star-round');
-                animate(starY, 48, 350, 'easeOutPower2', () => {
-                    setTimeout(() => button.classList.remove('star-round'), 100);
-                    // starScale.value = 0.4;
-                    animate(starY, -64, 450, 'easeOutPower2', () => {
-                        button.classList.toggle('active');
-                        starScale.value = 1.2;
-                        animate(starY, 0, 450, 'easeInPower2', () => {
-                            animate(buttonY, 3, 210, '', () => {
-                                starFaceScale.value = 0.65;
-                                animate(buttonY, 0, 225, '', () => {
-                                    starFaceScale.value = 1;
-                                    // 회전 애니메이션을 여기에서 제거하고 별이 튀어오를 때 함께 실행
-                                    button.classList.remove('animated');
-                                    button.style.setProperty('--star-y', '0px');
-                                    button.style.setProperty('--star-scale', '1.2');
-                                    button.style.setProperty('--button-y', '0px');
-                                    button.style.setProperty('--star-face-scale', '1');
-                                    button.style.setProperty('--star-rotate', '0deg');
-                                });
-                            });
+    const speedFactor = 0.8; // 30% faster
+
+    // 애니메이션 1 (위로 튀어오르기 + 빠른 회전)
+    animate(starY, -36, 300 * speedFactor, 'easeOutPower2', () => {
+        button.classList.add('star-round');
+        animate(starY, 48, 350 * speedFactor, 'easeOutPower2', () => {
+            button.classList.toggle('active');
+            setTimeout(() => button.classList.remove('star-round'), 100 * speedFactor);
+            animate(starY, -64, 450 * speedFactor, 'easeOutPower2', () => {
+                starScale.value = 1.2;
+                animate(starY, 0, 450 * speedFactor, 'easeInPower2', () => {
+                    animate(buttonY, 3, 210 * speedFactor, '', () => {
+                        starFaceScale.value = 0.65;
+                        animate(buttonY, 0, 225 * speedFactor, '', () => {
+                            starFaceScale.value = 1;
+                            button.classList.remove('animated');
+                            button.style.setProperty('--star-y', '0px');
+                            button.style.setProperty('--star-scale', '1.2');
+                            button.style.setProperty('--button-y', '0px');
+                            button.style.setProperty('--star-face-scale', '1');
+                            button.style.setProperty('--star-rotate', '0deg');
+                            button.style.pointerEvents = 'auto';
                         });
                     });
                 });
             });
-
-            // 회전 애니메이션을 별이 튀어오를 때 함께 실행 (속도 증가)
-            animate(starRotate, 360, 1400, ''); // duration 값을 700으로 줄임
-
-            // 애니메이션 2 (별 구멍 확장)
-            animate(starHoleScale, 0.8, 500, 'easeOutElastic', () => {
-                setTimeout(() => {
-                    animate(starHoleScale, 0, 200, '');
-                }, 200);
-            });
-
-            // 애니메이션 함수 (간단한 선형 애니메이션)
-            function animate(target, to, duration, ease, onComplete) {
-                const start = target.value;
-                const startTime = performance.now();
-
-                function update() {
-                    const currentTime = performance.now();
-                    const elapsed = currentTime - startTime;
-                    let progress = elapsed / duration;
-
-                    if (progress > 1) progress = 1;
-
-                    if (ease === 'easeOutPower2') {
-                        progress = 1 - (1 - progress) * (1 - progress);
-                    } else if (ease === 'easeInPower2') {
-                        progress = progress * progress;
-                    } else if (ease === 'easeOutElastic') {
-                        const p = 0.3;
-                        const s = p / 4;
-                        progress = 1 + Math.pow(2, -10 * progress) * Math.sin((progress - s) * (2 * Math.PI) / p);
-                    }
-
-                    target.value = start + (to - start) * progress;
-
-                    button.style.setProperty('--star-y', starY.value + 'px');
-                    button.style.setProperty('--star-scale', starScale.value);
-                    button.style.setProperty('--button-y', buttonY.value + 'px');
-                    button.style.setProperty('--star-face-scale', starFaceScale.value);
-                    button.style.setProperty('--star-hole-scale', starHoleScale.value);
-                    button.style.setProperty('--star-rotate', starRotate.value + 'deg');
-
-                    if (elapsed < duration) {
-                        requestAnimationFrame(update);
-                    } else if (onComplete) {
-                        onComplete();
-                    }
-                }
-
-                requestAnimationFrame(update);
-            }
         });
     });
+
+    // 회전 애니메이션을 별이 튀어오를 때 함께 실행 (속도 증가)
+    animate(starRotate, 360, 1400 * speedFactor, '');
+
+    // 애니메이션 2 (별 구멍 확장)
+    animate(starHoleScale, 0.8, 500 * speedFactor, 'easeOutElastic', () => {
+        setTimeout(() => {
+            animate(starHoleScale, 0, 200 * speedFactor, '');
+        }, 200 * speedFactor);
+    });
+
+    // 애니메이션 함수 (간단한 선형 애니메이션)
+    function animate(target, to, duration, ease, onComplete) {
+        const start = target.value;
+        const startTime = performance.now();
+
+        function update() {
+            const currentTime = performance.now();
+            const elapsed = currentTime - startTime;
+            let progress = elapsed / duration;
+
+            if (progress > 1) progress = 1;
+
+            if (ease === 'easeOutPower2') {
+                progress = 1 - (1 - progress) * (1 - progress);
+            } else if (ease === 'easeInPower2') {
+                progress = progress * progress;
+            } else if (ease === 'easeOutElastic') {
+                const p = 0.3;
+                const s = p / 4;
+                progress = 1 + Math.pow(2, -10 * progress) * Math.sin((progress - s) * (2 * Math.PI) / p);
+            }
+
+            target.value = start + (to - start) * progress;
+
+            button.style.setProperty('--star-y', starY.value + 'px');
+            button.style.setProperty('--star-scale', starScale.value);
+            button.style.setProperty('--button-y', buttonY.value + 'px');
+            button.style.setProperty('--star-face-scale', starFaceScale.value);
+            button.style.setProperty('--star-hole-scale', starHoleScale.value);
+            button.style.setProperty('--star-rotate', starRotate.value + 'deg');
+
+            if (elapsed < duration) {
+                requestAnimationFrame(update);
+            } else if (onComplete) {
+                onComplete();
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
 }
 
 /* **********************************************************************************************************************
@@ -276,18 +268,22 @@ function userBookmarkSave(userName) {
     // localStorage.clear();                                                                //로컬스토리지 전체 제거
     let userBookmarkList = JSON.parse(localStorage.getItem("userBookmark")) || []           //북마크 리스트
     function bookmarkToggle(el) {
-        el.target.classList.toggle("full");                                                 //북마크 아이콘 토글  
-        if (userBookmarkList.length < 5 && el.target.classList.contains("full")) {
+        // el.target.classList.toggle("active");                                                 //북마크 아이콘 토글  
+        if (userBookmarkList.length < 5 && !el.target.classList.contains("active")) {
             userBookmarkList.push(userName)                                                 //북마크 추가하기
             localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
-
-        } else if (!el.target.classList.contains("full")) {
+            starAnimation();
+            // alert("북마크 저장")
+        } else if (el.target.classList.contains("active")) {
             userBookmarkList = userBookmarkList.filter(item => item !== userName)
             localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
+            starAnimation();
+            // alert("북마크 저장2")
 
         } else if (userBookmarkList.length >= 5) {
-            el.target.classList.remove("full");                                             //북마크 아이콘 토글  
-            alert("즐겨찾기는 5개까지 저장됩니다.")
+            el.target.classList.remove("active");                                             //북마크 아이콘 토글  
+            alert("즐겨찾기는 5개까지 저장됩니다.");
+            return;
         }
     }
     if (userBookmarkList.includes(userName)) {
@@ -295,8 +291,6 @@ function userBookmarkSave(userName) {
     } else {
         element.classList.remove("active");
     }
-
-
     // userBookmarkList.includes(userName) ? document.querySelector(".sc-profile .favorite-button").classList.add("active") : document.querySelector(".sc-profile .favorite-button").classList.remove("active")
 }
 
@@ -368,43 +362,7 @@ async function scExpeditionSkeleton() {
                     <span class="server-name">서버</span>
                 </div>
                 <div class="expedition-area">
-                    <a href="" class="expedition-list">
-                        <div class="info-box">
-                            <span class="character-level">Lv.70 스트라이커</span>
-                            <span class="name">청염각</span>
-                            <span class="armor-level">1100.00</span>
-                            <span class="spec-point">2200.00</span>
-                        </div>
-                    </a>
-                    <a href="" class="expedition-list">
-                        <div class="info-box">
-                            <span class="level">Lv.70 스트라이커</span>
-                            <span class="name">청염각</span>
-                            <span class="spec">1100.00</span>
-                        </div>
-                    </a>
-                    <a href="" class="expedition-list">
-                        <div class="info-box">
-                            <span class="level">Lv.70 스트라이커</span>
-                            <span class="name">청염각</span>
-                            <span class="spec">1100.00</span>
-                        </div>
-                    </a>
-                    <a href="" class="expedition-list">
-                        <div class="info-box">
-                            <span class="level">Lv.70 스트라이커</span>
-                            <span class="name">청염각</span>
-                            <span class="spec">1100.00</span>
-                        </div>
-                    </a>
-                    <a href="" class="expedition-list">
-                        <div class="info-box">
-                            <span class="level">Lv.70 스트라이커</span>
-                            <span class="name">청염각</span>
-                            <span class="spec">1100.00</span>
-                        </div>
-                    </a>
-
+                    <i>로딩중...</i>
                 </div>
             </div>
         </section>`;
@@ -490,11 +448,11 @@ async function manageExpeditionData(inputName) {
         existingEntry = expeditionData[existingEntryIndex];
         const timestamp = existingEntry[0].timestamp; // 첫 번째 객체의 타임스탬프 사용 (가정)
         if (Date.now() - timestamp < CACHE_DURATION) {
-            alert("로컬 스토리지에서 데이터를 가져왔습니다.");
+            // alert("로컬 스토리지에서 데이터를 가져왔습니다.");
             console.log('Data is fresh from local storage.');
             return existingEntry;
         } else {
-            alert("캐시가 만료되었습니다. API를 호출합니다.");
+            // alert("캐시가 만료되었습니다. API를 호출합니다.");
             console.log('Local storage data is stale. Fetching new data.');
             expeditionData.splice(existingEntryIndex, 1); // 오래된 데이터 제거
         }
@@ -502,7 +460,7 @@ async function manageExpeditionData(inputName) {
 
     // API에서 새 데이터 가져오기
     try {
-        alert("첫검색 api 호출")
+        // alert("첫검색 api 호출")
         let Module = await import("./fetchApi.js");
         let newData = await Module.expeditionApiCall(inputName);
 

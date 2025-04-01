@@ -36,7 +36,7 @@ font {
     max-width: 600px;
     width: 100%;
     padding: 20px;
-    margin: 80px auto;
+    margin: 110px auto;
     position: relative;
     margin-bottom: 40px;
 }
@@ -317,6 +317,10 @@ html.dark-mode .sc-info .tag-list,
     color: #fff;
 }
 
+.dark-mode header {
+    border-bottom: 1px solid #2f2f2f;
+}
+
 .dark-mode .notice,
 .dark-mode .temp-text,
 .dark-mode .sc-profile,
@@ -339,7 +343,6 @@ html.dark-mode .sc-info .tag-list,
     background: #15181d;
     border: 1px solid rgb(87, 82, 82)
 }
-
 
 .dark-mode .sc-info .group-profile .tag-item .tag,
 .dark-mode .sc-info .text-box .elixir-wrap .elixir {
@@ -629,8 +632,8 @@ html.dark-mode .sc-info .tag-list,
 .favorite-button {
     width: 30px;
     height: 30px;
-    min-width:30px;
-    min-height:30px;
+    min-width: 30px;
+    min-height: 30px;
     --background-default: #313440;
     --text-color-default: #FAFBFF;
     --star-color-default: #62677C;

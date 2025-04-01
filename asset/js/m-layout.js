@@ -170,7 +170,7 @@ function recentBookmark() {
 
         recentNameBox += `
             <div class="name-box" data-sort="recent">
-                <a href="/mobile/search/search.php?mainCharacterName=${recentNameArry}" class="name">${recentNameArry}</a>
+                <a href="/mobile/search/search.php?headerCharacterName=${recentNameArry}" class="name">${recentNameArry}</a>
                 <em class="del remove"></em>
             </div>`;
     })
@@ -179,7 +179,7 @@ function recentBookmark() {
 
         bookmarkNameBox += `
         <div class="name-box" data-sort="bookmark">
-            <a href="/mobile/search/search.php?mainCharacterName=${bookmarkArry}" class="name">${bookmarkArry}</a>
+            <a href="/mobile/search/search.php?headerCharacterName=${bookmarkArry}" class="name">${bookmarkArry}</a>
             <em class="star remove">☆</em>
         </div>`;
     })

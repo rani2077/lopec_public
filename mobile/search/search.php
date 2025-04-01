@@ -49,9 +49,24 @@
                     <div class="best-box">
                         <span class="desc">달성최고점수 - 준비중</span>
                     </div>
+                    <span class="reset">갱신하기</span>
                 </div>
-                <div class="detail-area shadow" style="width:100%;background-color:#2f2f2f;height:300px;margin-top:20px;">
-
+                <div class="detail-area shadow">
+                    <div class="title-box">
+                        <span class="title">상세정보</span>
+                    </div>
+                    <span class="button"></span>
+                    <div class="info-wrap">
+                        <div class="info-box">
+                            <span class="text">상세정보1</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">상세정보2</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">상세정보3</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="group-equip">

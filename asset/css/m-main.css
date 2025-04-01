@@ -666,7 +666,66 @@
 
 .sc-info .spec-area .best-box .desc {}
 
+.sc-info .spec-area .reset {
+    padding: 3px 5px;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
 
+
+.sc-info .detail-area {
+    position: relative;
+    color: #fff;
+    padding: 15px;
+    width: 100%;
+    background-color: #2f2f2f;
+    margin-top: 20px;
+}
+
+.sc-info .detail-area .title-box {
+    text-align: center;
+}
+
+.sc-info .detail-area .title-box .title {
+    font-size: 16px;
+}
+
+.sc-info .detail-area .info-wrap {
+    margin-top: 0px;
+    height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 7px 0px;
+}
+
+.sc-info .detail-area.on .info-wrap {
+    height: auto;
+    margin-top: 13px;
+}
+
+.sc-info .detail-area .info-box {}
+
+
+.sc-info .detail-area .info-box .text {}
+
+.sc-info .detail-area .button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 20px;
+    height: 10px;
+    background: #cecece;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.sc-info .detail-area.on .button {
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
 
 
 .sc-info .group-equip {
@@ -1044,7 +1103,7 @@
     width: 100%;
     position: relative;
     margin-top: 30px;
-    min-height:80px;
+    min-height: 80px;
 }
 
 .sc-info .ark-area .ark-list:first-child {
@@ -1242,7 +1301,7 @@
 }
 
 .sc-expedition .server-area .server-name {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
 }
 
