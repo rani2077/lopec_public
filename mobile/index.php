@@ -31,11 +31,6 @@
 
 <body>
 
-    <?php //  공용헤더 ?>
-    <header class="shadow"></header>
-    <?php //  공용헤더 ?>
-
-
 
     <div class="wrapper">
 
@@ -191,11 +186,6 @@
     </div>
 
     
-    
-
-    <?php //  공요푸터 ?>
-    <footer class="sc-footer"></footer>
-    <?php //  공요푸터 ?>
 
     <?php //  db관련 ?>
     <script type="module" src= "/asset/js/lopec.js"></script>
@@ -264,8 +254,8 @@
     <script>
         document.write('<script type="module" src="/asset/js/m-layout.js?' + (new Date).getTime() + '"><\/script>');
         document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
-        document.write('<script type="module" src="/asset/js/filter.js?' + (new Date).getTime() + '"><\/script>');
-        document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
+        // document.write('<script type="module" src="/asset/js/filter.js?' + (new Date).getTime() + '"><\/script>');
+        // document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
     </script>
 
 </body>

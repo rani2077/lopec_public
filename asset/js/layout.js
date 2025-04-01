@@ -60,10 +60,8 @@ function scHeader() {
         <div class="logo-group">
             <h1 class="logo">
                 <span class="blind">로스트아크 전투정보실 전투력계산 스펙포인트</span>
-                <a href="https://lopec.kr/" class="link-site"></a>
-
+                <a href="/" class="link-site"></a>
             </h1>
-
         </div>
         <div class="group-search">
             <form action="${searchPath}" class="search-area search-page on">
