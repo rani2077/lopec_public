@@ -3,14 +3,15 @@
  * description			: 	사용하는 모든 외부 module파일 import
  *********************************************************************************************************************** */
 async function importModuleManager() {
+    let interValTime = 60 * 1000;
     let modules = await Promise.all([
-        import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // lostark api호출
-        import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 filter.js
-        import("../filter/simulator-data.js" + `?${(new Date).getTime()}`),      // 장비레벨 스텟 정보
-        import("../filter/simulator-filter.js" + `?${(new Date).getTime()}`),    // 시뮬레이터 필터
-        import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 유저정보 수치화
-        import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 수치값을 스펙포인트로 계산
-        import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 컴포넌트 파일을 호출
+        import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // lostark api호출
+        import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 filter.js
+        import("../filter/simulator-data.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),      // 장비레벨 스텟 정보
+        import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 시뮬레이터 필터
+        import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
+        import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+        import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 파일을 호출
     ])
     let moduleObj = {
         fetchApi: modules[0],
@@ -37,6 +38,7 @@ async function importModuleManager() {
 
 
 let cachedData = null;
+let Modules;
 async function simulatorInputCalc() {
 
     /* ************~**********************************************************************************************************
@@ -49,22 +51,24 @@ async function simulatorInputCalc() {
     * function name		:	Modules
     * description		: 	모든 외부모듈 정의
     *********************************************************************************************************************** */
-    let Modules = await importModuleManager()
+    // let Modules = await importModuleManager()
     /* **********************************************************************************************************************
      * function name		:	
      * description			: 	유저 JSON데이터 호출 및 캐싱처리
      *********************************************************************************************************************** */
     if (!cachedData) {
+        Modules = await importModuleManager();
+        // console.log(Modules)
         let scProfileSkeleton = await Modules.component.scProfileSkeleton();
         document.querySelector(".wrapper").insertAdjacentHTML('afterbegin', scProfileSkeleton);
         document.querySelector(".sc-profile").insertAdjacentHTML('afterend', await Modules.component.scNav(nameParam));
         document.querySelector(".wrapper").style.display = "block";
-        
+
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
         console.log(cachedData);
-        
-        
-        await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
+
+
+        // await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset")); // 캐싱없이 api갱신
         await originSpecPointToHtml();
     }
 
@@ -81,7 +85,7 @@ async function simulatorInputCalc() {
         document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue);
         element.textContent = `기존 스펙포인트 - ${specPoint}`;
         element.setAttribute("data-spec-point", specPoint);
-        await selectCreate(cachedData);
+        await selectCreate(cachedData, Modules);
     }
     /* **********************************************************************************************************************
     * function name		:	supportCheck
@@ -93,7 +97,7 @@ async function simulatorInputCalc() {
     gemInfoChangeToJson()
 
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-    // console.log("오리진OBJ", extractValue)
+    console.log("오리진OBJ", extractValue)
 
 
     /* **********************************************************************************************************************
@@ -253,11 +257,11 @@ async function simulatorInputCalc() {
      * description			: 	팔찌 스텟의 치/특/신 값을 가져와 api데이터 상의 총 치/특/신값에 반영한 값을 계산
      *********************************************************************************************************************** */
     function bangleStatsNumberCalc() {
-        if(!cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌")){
+        if (!cachedData.ArmoryEquipment.find(obj => obj.Type === "팔찌")) {
             let result = {
-                special:0,
-                haset:0,
-                cri:0
+                special: 0,
+                haset: 0,
+                cri: 0
             }
             return result;
         }
@@ -533,7 +537,7 @@ async function simulatorInputCalc() {
             // console.log("회심, 달인, 선봉대 중 2개 이상 존재합니다. 레벨 40 이상");
             combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.12
         } else if (group1Count >= 2 && combinedObj.level >= 35) {
-            console.log("회심, 달인, 선봉대 중 2개 이상 존재합니다. 레벨 35 이상");
+            // console.log("회심, 달인, 선봉대 중 2개 이상 존재합니다. 레벨 35 이상");
             combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.06
         }
         if (group2Count >= 2 && combinedObj.level >= 40) {
@@ -1233,7 +1237,7 @@ async function simulatorInputCalc() {
         extractValue.hyperObj = extractHyperStageValue();
     }
     simulatorDataToExtractValue()
-    console.log("오리진OBJ", extractValue)
+    // console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
@@ -1242,7 +1246,7 @@ async function simulatorInputCalc() {
     let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
     console.log(originSpecPoint);
     /* **********************************************************************************************************************
-     * function name		:	
+     * function name		:	calcSpecPointToHtml
      * description			: 	변환된 스펙포인트를 표시해줌
      ********************************************************************************************************************** */
     function calcSpecPointToHtml() {
@@ -1270,7 +1274,7 @@ async function simulatorInputCalc() {
         diffElement.innerHTML = diffValue;
         specPointElement.innerHTML = formatSpecPoint(specPoint);
     }
-    calcSpecPointToHtml()
+    calcSpecPointToHtml();
 }
 simulatorInputCalc()
 document.body.addEventListener('change', () => { simulatorInputCalc() })
@@ -1283,13 +1287,13 @@ document.body.addEventListener('change', () => { simulatorInputCalc() })
 * data              :   유저 JSON데이터
 * description		: 	시뮬레이터 정보를 이용해 html을 생성
 *********************************************************************************************************************** */
-async function selectCreate(data) {
+async function selectCreate(data, Modules) {
 
     /* **********************************************************************************************************************
     * function name		:	Modules
     * description		: 	모든 외부모듈 정의
     *********************************************************************************************************************** */
-    let Modules = await importModuleManager()
+    // let Modules = await importModuleManager()
 
 
     /* **********************************************************************************************************************
@@ -2631,7 +2635,7 @@ async function selectCreate(data) {
         armorNameElements.forEach(element => {
             let imgElement = element.closest(".armor-item").querySelector(".img-box img");
             let matchData = data.ArmoryEquipment.find(object => object.Type === element.textContent);
-            if(!matchData){
+            if (!matchData) {
                 return;
             }
             imgElement.setAttribute("src", matchData.Icon);
@@ -2683,7 +2687,7 @@ async function selectCreate(data) {
                 let tag = element.querySelector(".armor-tag");
                 let quality = element.querySelector(".progress");
                 let tooltip = data.ArmoryEquipment.find(data => data.Type === tag.textContent);
-                if(!tooltip){
+                if (!tooltip) {
                     return;
                 }
                 let qualityValue = Number(tooltip.Tooltip.match(/"qualityValue":\s*(\d+)/)[1]);
@@ -2760,7 +2764,7 @@ async function selectCreate(data) {
 
     function weaponQualitySelect() {
         let weaponData = data.ArmoryEquipment.find(armory => armory.Type === "무기");
-        if(!weaponData){
+        if (!weaponData) {
             return;
         }
         let betweenText = betweenTextExtract(weaponData.Tooltip);
@@ -2863,10 +2867,20 @@ async function selectCreate(data) {
                     let accessoryOptionCount = 0;
 
                     let tooltipData = betweenTextExtract(accessory.Tooltip);
-                    let accessoryFilter = extractItem(Modules.simulatorFilter.accessoryOptionData);
-
                     let accessoryTierName = tooltipData[5].match(/(고대|유물)/g)[0];
                     let accessoryTierNumber = Number(tooltipData[10].match(/\d+/));
+                    let accessoryFilter = Modules.simulatorFilter.accessoryOptionData;
+                    if (accessoryTierNumber == 3) {
+                        if (accessoryTierName === "유물") {
+                            accessoryFilter = extractItem(accessoryFilter.t3RelicData);
+                        } else if (accessoryTierName === "고대") {
+                            accessoryFilter = extractItem(accessoryFilter.t3MythicData);
+                        }
+                    } else if (accessoryTierNumber == 4) {
+                        accessoryFilter = extractItem(accessoryFilter.t4Data);
+
+                    }
+
 
                     let accessoryItem = document.querySelectorAll(".accessory-list .accessory-item.accessory");
 
@@ -2886,6 +2900,10 @@ async function selectCreate(data) {
                             }
                         }
                     })
+                    console.log(accessoryTierName)
+                    console.log(accessoryTierNumber)
+                    console.log(Modules.simulatorFilter.accessoryOptionData)
+                    console.log(accessoryFilter)
                     if (partsName === "목걸이") {
                         let necklace = document.querySelectorAll('.accessory-list .accessory-item.accessory .tier')[0];
                         let necklaceStatsElement = document.querySelectorAll('.accessory-list .accessory-item.accessory input.progress')[0];
@@ -2926,12 +2944,10 @@ async function selectCreate(data) {
 
         function extractItem(accessoryData) {
             const names = [];
-            for (const category in accessoryData) {
-                for (const type in accessoryData[category]) {
-                    accessoryData[category][type].forEach(item => {
-                        names.push(item.name);
-                    });
-                }
+            for (const type in accessoryData) {
+                accessoryData[type].forEach(item => {
+                    names.push(item.name);
+                });
             }
             // 중복 제거
             return [...new Set(names)];
@@ -2993,7 +3009,6 @@ async function selectCreate(data) {
         tierElement.dispatchEvent(new Event("change"));
 
         let bangleTooltip = data.ArmoryEquipment.find(obj => obj.Type === "팔찌").Tooltip.replace(/<[^>]*>/g, '');
-        // console.log(bangleTooltip)
         // let bangleMergeFilter = mergeFilter(Modules.simulatorFilter.bangleOptionData);
         let optionElements = parentElement.querySelectorAll("select.option");
         let count = 0;
@@ -3011,7 +3026,13 @@ async function selectCreate(data) {
             tierOptionSelect(tier4Mythic)
         }
         function tierOptionSelect(tierFilter) {
-            let userEquipOption = tierFilter.filter(filter => bangleTooltip.includes(filter.fullName));
+            let userEquipOption = tierFilter.filter(filter => {
+                if (bangleTooltip.includes(filter.fullName)) {
+                    bangleTooltip = bangleTooltip.replace(filter.fullName, "")
+                    return true;
+                }
+            });
+            // console.log(userEquipOption)
             userEquipOption.forEach((option, idx) => {
                 optionElementAutoCheck(optionElements[idx], option.name, 'textContent');
             })
@@ -3798,6 +3819,15 @@ async function armoryLevelCalc(Modules) {
     return returnObj;
 }
 
+/* **********************************************************************************************************************
+ * function name		:	simulatorReset
+ * description			: 	버튼을 클릭시 초기 설정으로 돌아감
+ *********************************************************************************************************************** */
+function simulatorReset() {
+    let element = document.querySelector("span.reset-area");
+    element.addEventListener("click", () => { location.reload() })
+}
+simulatorReset()
 /* **********************************************************************************************************************
  * function name		:	createTooltip()
  * description			: 	.tooltip-text 클래스를 가진 요소에 마우스 오버 시 툴팁을 생성하고, select 요소의 경우 선택된 option의 텍스트를 표시합니다.

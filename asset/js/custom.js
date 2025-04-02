@@ -253,18 +253,14 @@ async function mainSearchFunction() {
 
             if (item.type === "투구") {
                 helmetElement.outerHTML = armorItem;
-            } else if (item.type === "상의") {
-                shoulderElement.outerHTML = armorItem;
-
-            } else if (item.type === "하의") {
-                topElement.outerHTML = armorItem;
-
             } else if (item.type === "어깨") {
+                shoulderElement.outerHTML = armorItem;
+            } else if (item.type === "상의") {
+                topElement.outerHTML = armorItem;
+            } else if (item.type === "하의") {
                 bottomElement.outerHTML = armorItem;
-
             } else if (item.type === "장갑") {
                 gloveElement.outerHTML = armorItem;
-
             } else if (item.type === "무기") {
                 weaponElement.outerHTML = armorItem;
             }
@@ -793,10 +789,80 @@ async function mainSearchFunction() {
     }
     engravingAreaCreate();
     /* **********************************************************************************************************************
-    * function name		:	engravingAreaCreate
-    * description       : 	engraving-area html을 생성함
+    * function name		:	detailAreaCreate()
+    * description       : 	detail-area 상세정보의 내용을 생성함
     *********************************************************************************************************************** */
+    function detailAreaCreate() {
+        console.log(extractValue.etcObj.supportCheck);
+        let element = document.querySelector(".sc-info .group-info .detail-area");
 
+        function infoWrap(tag, array) {
+            const infoBox = array.map(object => {
+                const escapedValue = escapeHtml(object.value);
+                return `
+                    <div class="info-box">
+                        <span class="text">${object.name}</span>
+                        <span class="text">${escapedValue}</span>
+                    </div>`;
+            });
+            return `
+                <div class="info-wrap">
+                    <span class="tag">${tag}</span>
+                    ${infoBox.join('')}
+                </div>`;
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        let data = specPoint;
+        let specPointInfo = [
+            { name: "달성 최고 점수", value: "9999.99" },
+            { name: "현재 레벨 중앙값", value: "9999.99" },
+            { name: "최고 점수 달성일", value: "26.12.31" },
+        ]
+        let armorInfo = [
+            { name: "공격력", value: Number(data.dealerAttackPowResult).toFixed(0) },
+            { name: "엘릭서", value: Number(data.dealerExlixirValue).toFixed(2) + "%" },
+            { name: "초월", value: Number(data.dealerHyperValue).toFixed(2) + "%" },
+            { name: "각인", value: Number(data.dealerEngResult).toFixed(2) + "%" },
+            { name: "팔찌", value: Number(data.dealerBangleResult).toFixed(2) + "%" },
+        ]
+        let arkPassiveInfo = [
+            { name: "진화", value: Number(data.dealerEvloutionResult).toFixed(0) + "%" },
+            { name: "깨달음", value: Number(data.dealerEnlightResult).toFixed(0) + "%" },
+            { name: "도약", value: Number(data.dealerLeapResult).toFixed(0) + "%" },
+        ]
+        let gemInfo;
+        if (extractValue.etcObj.gemCheckFnc.originGemValue === 0) {
+            gemInfo = [
+                { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.etcAverageValue).toFixed(2) + "%" },
+                { name: "보석 최종 딜증", value: Number(extractValue.etcObj.gemCheckFnc.etcAverageValue).toFixed(2) + "%" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) },
+            ]
+        } else {
+            gemInfo = [
+                { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.originGemValue).toFixed(2) + "%" },
+                { name: "보석 최종 딜증", value: Number(extractValue.etcObj.gemCheckFnc.gemValue).toFixed(2) + "%" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) },
+            ]
+        }
+        let result = "";
+        result += infoWrap("점수 통계", specPointInfo);
+        result += infoWrap("장비 효과", armorInfo);
+        result += infoWrap("아크패시브", arkPassiveInfo);
+        result += infoWrap("보석 효과", gemInfo);
+        element.innerHTML = result;
+        console.log(infoWrap("점수 통계", armorInfo))
+    }
+    detailAreaCreate()
 
 }
 mainSearchFunction()

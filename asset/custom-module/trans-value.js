@@ -2005,17 +2005,21 @@ export async function getCharacterProfile(data) {
             if (/목걸이|귀걸이|반지/.test(accessoryObj.Type)) {
                 let obj = {};
                 let betweenText = accessoryObj.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(0, -1)) || [];
-
                 let gradeMatch = betweenText[2].match(/(고대|유물)/g);
                 let grade = gradeMatch ? gradeMatch[0] : "없음";
 
                 let tierMatch = betweenText[6].match(/\d+/);
                 let tier = tierMatch ? tierMatch[0] : null;
+                let accessoryTooltip = accessoryObj.Tooltip.replace(/<[^>]*>/g, '')
 
                 let accessoryGradeArray = Filter.grindingFilter.filter(filter => {
-                    return betweenText.some(text => text.includes(">" + filter.split(":")[0]));
-                });
-
+                    let check = filter.split(":")[0];
+                    if (accessoryTooltip.includes(check)) {
+                        accessoryTooltip = accessoryTooltip.replace(check, "")
+                        return true;
+                    }
+                })
+                // console.log(accessoryGradeArray)
                 let qualityIndex = betweenText.findIndex(text => text === ">품질");
                 let qualityValueMatch = betweenText[qualityIndex + 3]?.match(/"qualityValue":\s*(\d+)/);
                 let qualityValue = qualityValueMatch ? qualityValueMatch[1] : null;
@@ -2099,7 +2103,15 @@ export async function getCharacterProfile(data) {
                 } else if (tier === "4" && bangle.Grade === "고대") {
                     bangleFilter = SimulatorFilter.bangleOptionData.t4MythicData;
                 }
-                let options = bangleFilter.filter(filter => replaceText.includes(filter.fullName));
+                // console.log(replaceText)
+                let options = bangleFilter.filter(filter => {
+                    if (replaceText.includes(filter.fullName)) {
+                        // console.log(filter.fullName)
+                        replaceText = replaceText.replace(filter.fullName, "")
+                        return true;
+                    }
+
+                });
 
                 let specialStats = betweenText.filter(text => /^(치명|특화|신속)\s\+\d+$/.test(text.trim()));
                 let normalStats = betweenText.filter(text => /(힘|민첩|지능|체력)\s*\+(\d+)/g.test(text.trim()));
@@ -2120,7 +2132,6 @@ export async function getCharacterProfile(data) {
     }
     htmlObj.bangleInfo = bangleInfoExtract();
 
-
     /* **********************************************************************************************************************
      * name		                   :   DB READ
      * version                     :   2.0
@@ -2128,60 +2139,60 @@ export async function getCharacterProfile(data) {
      * USE_TN                      :   사용
      * getCombinedCharacterData    :   단일 요청으로 캐릭터 종합 데이터 조회
      *********************************************************************************************************************** */
-        // getCombinedCharacterData(
-        //     data.ArmoryProfile.CharacterName,
-        //     supportCheck() == "서폿" ? "SUP" : "DEAL"
-        // ).then(function (response) {
-        //     if (response.result === "S") {
-        //         const combinedData = response.data;
-        //         const characterClass = data.ArmoryProfile.CharacterClassName;
-        //         const isSupport = supportCheck() === "서폿";
-        //         const rankingType = isSupport ? "SUP" : "DEAL";
+    // getCombinedCharacterData(
+    //     data.ArmoryProfile.CharacterName,
+    //     supportCheck() == "서폿" ? "SUP" : "DEAL"
+    // ).then(function (response) {
+    //     if (response.result === "S") {
+    //         const combinedData = response.data;
+    //         const characterClass = data.ArmoryProfile.CharacterClassName;
+    //         const isSupport = supportCheck() === "서폿";
+    //         const rankingType = isSupport ? "SUP" : "DEAL";
 
-        //         // 1. 캐릭터 최고 점수 정보 출력
-        //         if (combinedData.characterBest) {
-        //             const characterData = combinedData.characterBest;
-        //             console.log("=== 달성 최고 점수 정보 ===");
-        //             console.log("달성 최고 점수(서포트):", characterData.LCHB_TOTALSUMSUPPORT);
-        //             console.log("달성 최고 점수(딜러):", characterData.LCHB_TOTALSUM);
-        //             console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
-        //         }
+    //         // 1. 캐릭터 최고 점수 정보 출력
+    //         if (combinedData.characterBest) {
+    //             const characterData = combinedData.characterBest;
+    //             console.log("=== 달성 최고 점수 정보 ===");
+    //             console.log("달성 최고 점수(서포트):", characterData.LCHB_TOTALSUMSUPPORT);
+    //             console.log("달성 최고 점수(딜러):", characterData.LCHB_TOTALSUM);
+    //             console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
+    //         }
 
-        //         // 2. 직업별 랭킹 정보 출력
-        //         if (combinedData.classRanking) {
-        //             const rankingData = combinedData.classRanking;
-        //             let CLASS_PERCENTILE = ((rankingData.CLASS_RANK / rankingData.TOTAL_IN_CLASS) * 100).toFixed(2)
+    //         // 2. 직업별 랭킹 정보 출력
+    //         if (combinedData.classRanking) {
+    //             const rankingData = combinedData.classRanking;
+    //             let CLASS_PERCENTILE = ((rankingData.CLASS_RANK / rankingData.TOTAL_IN_CLASS) * 100).toFixed(2)
 
-        //             // 직접 객체 사용 (배열이 아님)
-        //             console.log("=== 직업 랭킹 정보 ===");
-        //             console.log(`${characterClass} 직업 내 순위: ${rankingData.CLASS_RANK}위`);
-        //             console.log(`전체 ${rankingData.TOTAL_IN_CLASS}명 중 상위 ${CLASS_PERCENTILE}%`);
-        //         } else {
-        //             console.log(`${characterClass} 직업 랭킹 정보를 찾을 수 없습니다.`);
-        //         }
+    //             // 직접 객체 사용 (배열이 아님)
+    //             console.log("=== 직업 랭킹 정보 ===");
+    //             console.log(`${characterClass} 직업 내 순위: ${rankingData.CLASS_RANK}위`);
+    //             console.log(`전체 ${rankingData.TOTAL_IN_CLASS}명 중 상위 ${CLASS_PERCENTILE}%`);
+    //         } else {
+    //             console.log(`${characterClass} 직업 랭킹 정보를 찾을 수 없습니다.`);
+    //         }
 
-        //         // 3. 캐릭터 랭킹 정보 출력
-        //         if (combinedData.characterRanking) {
-        //             const rankData = combinedData.characterRanking;
-        //             console.log("랭킹:", rankData.RANKING_NUM);
-        //             console.log("점수:", rankData.LCHB_TOTALSUM);
-        //         } else {
-        //             console.log("랭킹에 해당 캐릭터 정보가 없습니다.");
-        //         }
+    //         // 3. 캐릭터 랭킹 정보 출력
+    //         if (combinedData.characterRanking) {
+    //             const rankData = combinedData.characterRanking;
+    //             console.log("랭킹:", rankData.RANKING_NUM);
+    //             console.log("점수:", rankData.LCHB_TOTALSUM);
+    //         } else {
+    //             console.log("랭킹에 해당 캐릭터 정보가 없습니다.");
+    //         }
 
-        //         // 4. 전체 랭킹 백분율 정보 출력
-        //         if (combinedData.percentile) {
-        //             const rankData = combinedData.percentile;
-        //             console.log("=== 전체 랭킹 정보 ===");
-        //             console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
-        //             console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
-        //         }
-        //     } else {
-        //         console.log("종합 데이터 조회 실패:", response.error);
-        //     }
-        // }).catch(function (error) {
-        //     console.error("종합 데이터 조회 중 오류 발생:", error);
-        // });
+    //         // 4. 전체 랭킹 백분율 정보 출력
+    //         if (combinedData.percentile) {
+    //             const rankData = combinedData.percentile;
+    //             console.log("=== 전체 랭킹 정보 ===");
+    //             console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
+    //             console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
+    //         }
+    //     } else {
+    //         console.log("종합 데이터 조회 실패:", response.error);
+    //     }
+    // }).catch(function (error) {
+    //     console.error("종합 데이터 조회 중 오류 발생:", error);
+    // });
 
     /* **********************************************************************************************************************
      * name		              :	  engravingInfoExtract
@@ -2191,7 +2202,7 @@ export async function getCharacterProfile(data) {
      *********************************************************************************************************************** */
     function engravingInfoExtract() {
         let result = [];
-        
+
         if (data.ArmoryEngraving) {
             data.ArmoryEngraving.ArkPassiveEffects.forEach(eng => {
                 let obj = {};

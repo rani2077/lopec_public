@@ -46,8 +46,9 @@ input[type=number]::-ms-expand {
     position: relative;
     padding-left: 13px;
 }
-.group-info .spec-area .tier-box .difference:after{
-    content:'';
+
+.group-info .spec-area .tier-box .difference:after {
+    content: '';
     display: block;
     position: absolute;
     left: 0;
@@ -56,26 +57,43 @@ input[type=number]::-ms-expand {
     width: 10px;
     height: 8px;
 }
-.group-info .spec-area .tier-box .difference.zero{
-    color:rgb(255, 255, 255);
+
+.group-info .spec-area .tier-box .difference.zero {
+    color: rgb(255, 255, 255);
 }
+
 .group-info .spec-area .tier-box .difference.zero:after {
-    background:rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
     height: 5px;
 }
-.group-info .spec-area .tier-box .difference.incress{
+
+.group-info .spec-area .tier-box .difference.incress {
     color: #FF4500;
 }
+
 .group-info .spec-area .tier-box .difference.incress:after {
     background: #FF4500;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
-.group-info .spec-area .tier-box .difference.decrease{
-    color: #1E90FF ;
+
+.group-info .spec-area .tier-box .difference.decrease {
+    color: #1E90FF;
 }
+
 .group-info .spec-area .tier-box .difference.decrease:after {
     background: #1E90FF;
     clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.group-info .reset-area {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    background: #2f2f2f;
+    color: #fff;
+    cursor:pointer;
 }
 
 /* Specific Layout Components*/
@@ -87,9 +105,9 @@ input[type=number]::-ms-expand {
 
 .group-equip .number-box .option-wrap {
     display: flex;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     height: 100%;
-    align-items:center;
+    align-items: center;
 }
 
 .group-equip .number-box .option-wrap .option-item {
@@ -97,7 +115,7 @@ input[type=number]::-ms-expand {
     justify-content: flex-start;
     height: 18px;
     border-radius: 2px;
-    border:1px solid #767676;
+    border: 1px solid #767676;
     overflow: hidden;
     width: 50%;
     height: 18px;
@@ -121,12 +139,12 @@ input[type=number]::-ms-expand {
 
 .group-equip .number-box .option-wrap .stats {
     /* border: 1px solid #b3b3b3; */
-    border:none;
-    border-radius:0;
+    border: none;
+    border-radius: 0;
 }
 
 .group-equip .number-box .option-wrap .option {
-    border-radius:0;
+    border-radius: 0;
 }
 
 .group-equip .number-box .option-wrap .option[disabled] {
@@ -149,23 +167,23 @@ input[type=number]::-ms-expand {
     width: 48px;
     background: initial;
     overflow: hidden;
-    border:1px solid #767676;
+    border: 1px solid #767676;
 }
 
 .sc-info .gem-area .gem-box .level {
     height: calc(44px / 3);
     position: initial;
     width: 100%;
-    border-radius:0;
-    border:none;
+    border-radius: 0;
+    border: none;
 }
 
 .sc-info .gem-area .gem-box select {
     height: calc(44px / 3);
-    border-radius:0;
-    border:1px solid #747474;
-    border-left:none;
-    border-right:none;
+    border-radius: 0;
+    border: 1px solid #747474;
+    border-left: none;
+    border-right: none;
 }
 
 /*armor-item*/
@@ -185,7 +203,7 @@ input[type=number]::-ms-expand {
 
 .sc-info .option-box .option {
     width: 100%;
-    border:1px solid #767676;
+    border: 1px solid #767676;
 }
 
 .sc-info .text-box .elixir-wrap .elixir {
@@ -204,9 +222,11 @@ input[type=number]::-ms-expand {
     flex-wrap: wrap;
     height: initial;
 }
-.sc-info .accessory-area .accessory-item:last-child .img-box{
+
+.sc-info .accessory-area .accessory-item:last-child .img-box {
     height: 64px;
 }
+
 .sc-info .accessory-area .accessory-item .number-box {
     width: 110px;
 }

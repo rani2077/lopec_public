@@ -58,8 +58,80 @@
                     </div>
                     <span class="reset">갱신하기</span>
                 </div>
-                <div class="detail-area shadow" style="width:100%;background-color:#2f2f2f;height:300px;margin-top:20px;">
+                <div class="detail-area shadow">
 
+                    <div class="info-wrap">
+                        <span class="tag">점수 통계</span>
+                        <div class="info-box">
+                            <span class="text">달성 최고 점수</span>
+                            <span class="text">9999.99</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">현재 레벨 중앙값</span>
+                            <span class="text">9999.99</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">최고 점수 달성일</span>
+                            <span class="text">26.12.31</span>
+                        </div>
+                    </div>
+                    <div class="info-wrap">
+                        <span class="tag">장비 효과</span>
+                        <div class="info-box">
+                            <span class="text">공격력</span>
+                            <span class="text">113266</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">엘릭서</span>
+                            <span class="text">20.80%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">초월</span>
+                            <span class="text">16.30%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">각인</span>
+                            <span class="text">126.64%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">팔찌</span>
+                            <span class="text">11.79%</span>
+                        </div>
+                    </div>
+                    <div class="info-wrap">
+                        <span class="tag">아크패시브</span>
+                        <div class="info-box">
+                            <span class="text">진화</span>
+                            <span class="text">45.0%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">깨달음</span>
+                            <span class="text">42.0%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">도약</span>
+                            <span class="text">11.0%</span>
+                        </div>
+                    </div>
+                    <div class="info-wrap">
+                        <span class="tag">보석 효과</span>
+                        <div class="info-box">
+                            <span class="text">보석 실질 딜증</span>
+                            <span class="text">0.00%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">보석 최종 딜증</span>
+                            <span class="text">0.00%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">보석 쿨감</span>
+                            <span class="text">18.00%</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text">보석 보정치</span>
+                            <span class="text">1.98</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="group-equip">
@@ -499,7 +571,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php //  db관련 
     ?>
-    
+
     <script type="text/javascript">
         $(document).ready(function() {
             insertLopecLog();
@@ -539,42 +611,42 @@
     </script>
 
     <script type="text/javascript">
-            $(document).ready(function() {
-                insertLopecLog();
-            });
+        $(document).ready(function() {
+            insertLopecLog();
+        });
 
-            var insertLopecLog = function() {
-                var atMode = "insertlog";
-                var llogUrl = document.URL;
-                var saveDatas = {
-                    atMode: atMode,
-                    llogUrl: llogUrl
-                }
-                $.ajax({
-                    dataType: "json",
-                    type: "POST",
-                    url: "/applications/process/lopecLog/",
-                    data: saveDatas,
-                    success: function(msg) {
-                        // console.log("msg : " + msg);
-                        // console.log("msg.result : " + msg.result);
-                        if (msg.result == "S") {
-                            // console.log("log insert result : LOPEC_LOG 저장 성공");
-                        } else if (msg.result == "F") {
-                            // console.log("log insert result : LOPEC_LOG 저장 실패");
-                        } else if (msg.result == "E") {
-                            // console.log("log insert result : LOPEC_LOG 저장 Exception");
-                        }
-                    },
-                    error: function(request, status, error) {
-                        // console.log("log insert result : LOPEC_LOG 저장 Error");
-                        // console.log("request.status : " + request.status);
-                        // console.log("request.responseText : " + request.responseText);
-                        // console.log("request.error : " + request.error);
-                    }
-                });
+        var insertLopecLog = function() {
+            var atMode = "insertlog";
+            var llogUrl = document.URL;
+            var saveDatas = {
+                atMode: atMode,
+                llogUrl: llogUrl
             }
-        </script>
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/applications/process/lopecLog/",
+                data: saveDatas,
+                success: function(msg) {
+                    // console.log("msg : " + msg);
+                    // console.log("msg.result : " + msg.result);
+                    if (msg.result == "S") {
+                        // console.log("log insert result : LOPEC_LOG 저장 성공");
+                    } else if (msg.result == "F") {
+                        // console.log("log insert result : LOPEC_LOG 저장 실패");
+                    } else if (msg.result == "E") {
+                        // console.log("log insert result : LOPEC_LOG 저장 Exception");
+                    }
+                },
+                error: function(request, status, error) {
+                    // console.log("log insert result : LOPEC_LOG 저장 Error");
+                    // console.log("request.status : " + request.status);
+                    // console.log("request.responseText : " + request.responseText);
+                    // console.log("request.error : " + request.error);
+                }
+            });
+        }
+    </script>
 
 
     <script>

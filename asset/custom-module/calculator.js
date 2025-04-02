@@ -104,9 +104,6 @@ export async function specPointCalc(inputObj) {
 
     //팔찌 효율
     let bangleValue = (((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2.55) / 100 + 1)) - 1) * 100).toFixed(2)
-    console.log ("뱅글어택밸류" + bangleAtkValue + typeof(bangleAtkValue))
-    console.log ("팔찌 피해증가" + inputObj.bangleObj.finalDamagePer + typeof(inputObj.bangleObj.finalDamagePer))
-    console.log ("팔찌 치특신" + (inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) + typeof((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special)))
     /* **********************************************************************************************************************
      * name		              :	  Variable for SpecPoint calc for sup
      * version                :   2.0
@@ -176,6 +173,8 @@ export async function specPointCalc(inputObj) {
     highTierSpecPointObj.dealerEnlightResult = ((enlightResult - 1) * 100)
     highTierSpecPointObj.dealerLeapResult = ((inputObj.arkObj.leapDamage - 1) * 100)
     highTierSpecPointObj.dealerBangleResult = bangleValue
+    highTierSpecPointObj.dealerExlixirValue = elixirValue
+    highTierSpecPointObj.dealerHyperValue = hyperValue
     // 서폿
     highTierSpecPointObj.supportStigmaResult = finalStigmaPer
     highTierSpecPointObj.supportAllTimeBuff = allTimeBuffPower

@@ -112,6 +112,7 @@ function profileImagePosition(jobName) {
             break;
         case "인파이터":
         case "배틀마스터":
+        case "창술사":
         case "기공사":
             posObj.left = -213;
             posObj.top = -87;
@@ -176,7 +177,7 @@ function starAnimation() {
     const starHoleScale = { value: 1 };
     const starRotate = { value: 0 };
 
-    const speedFactor = 0.8; // 30% faster
+    const speedFactor = 0.5; // 30% faster
 
     // 애니메이션 1 (위로 튀어오르기 + 빠른 회전)
     animate(starY, -36, 300 * speedFactor, 'easeOutPower2', () => {
@@ -382,7 +383,6 @@ async function scExpedition(inputName) {
             }
             result[item.ServerName].push(item);
         });
-
         // 정렬 로직
         for (const serverName in result) {
             result[serverName].sort((a, b) => {
@@ -397,7 +397,27 @@ async function scExpedition(inputName) {
             Characters: characters,
         }));
     }
+    function sortCharacters(data, targetCharacterName) {
+        const matchingServer = data.find((server) =>
+            server.Characters.some(
+                (character) => character.CharacterName === targetCharacterName
+            )
+        );
+
+        if (matchingServer) {
+            const remainingServers = data.filter(
+                (server) => server !== matchingServer
+            );
+            return [matchingServer, ...remainingServers];
+        } else {
+            return data; // 일치하는 캐릭터가 없으면 원래 순서대로 반환
+        }
+    }
+
     let groupData = groupByServerName(data);
+    groupData = sortCharacters(groupData,inputName)
+
+    console.log(groupData)
     let groupServer = groupData.map(serverName => {
         let expeditionListElement = serverName.Characters.map(character => expeditionList(character));
         return `
@@ -412,7 +432,7 @@ async function scExpedition(inputName) {
     })
     function expeditionList(info) {
         return `
-            <a href="/search/search.php?Name=${info.CharacterName}" class="expedition-list">
+            <a href="/search/search.php?headerCharacterName=${info.CharacterName}" class="expedition-list">
                 <!-- <img src="https://cdn.korlark.com/lostark/avatars/striker.png" alt=""> -->
                 <div class="info-box">
                     <span class="character-level">Lv.${info.CharacterLevel} ${info.CharacterClassName}</span>
@@ -434,10 +454,9 @@ async function scExpedition(inputName) {
 async function manageExpeditionData(inputName) {
     const MAX_STORAGE = 100; // 로컬 스토리지 최대 저장 개수
     const STORAGE_KEY = 'lopecExpeditionData'; // 로컬 스토리지 키
-    const CACHE_DURATION = 3600 * 1000; // 캐시 유효 시간 (60초)
+    const CACHE_DURATION = 3600 * 1000; // 캐시 유효 시간 (60분)
 
     let expeditionData = JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || []; // 로컬 스토리지에서 데이터 가져오기 (없으면 빈 배열)
-
     // 기존 항목 찾기 및 타임스탬프 확인
     const existingEntryIndex = expeditionData.findIndex(item =>
         item.some(obj => obj.CharacterName === inputName)
