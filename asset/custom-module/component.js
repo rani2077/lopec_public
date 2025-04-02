@@ -176,7 +176,7 @@ function starAnimation() {
     const starHoleScale = { value: 1 };
     const starRotate = { value: 0 };
 
-    const speedFactor = 0.8; // 30% faster
+    const speedFactor = 0.5; // 30% faster
 
     // 애니메이션 1 (위로 튀어오르기 + 빠른 회전)
     animate(starY, -36, 300 * speedFactor, 'easeOutPower2', () => {
