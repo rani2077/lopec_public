@@ -915,12 +915,12 @@ async function mainSearchFunction() {
             const year = dateString.substring(2, 4);
             const month = dateString.substring(4, 6);
             const day = dateString.substring(6, 8);
-
+            
             // 'YY.MM.DD' 형식의 문자열을 생성합니다.
             return `${year}.${month}.${day}`;
         }
 
-
+        
         let data = specPoint;
         let specPointInfo = [
             { name: "달성 최고 점수", value: userDbInfo.data.characterBest.LCHB_TOTALSUM },
@@ -974,14 +974,14 @@ async function mainSearchFunction() {
             { name: "각인 보너스", value: Number(data.supportEngBonus).toFixed(2) + "%" },
             { name: "쿨타임 감소", value: data.supportgemsCoolAvg },
         ]
-
+        
         let result = "";
         if (extractValue.etcObj.supportCheck !== "서폿") {
             result += infoWrap("점수 통계", specPointInfo);
             result += infoWrap("장비 효과", armorInfo);
             result += infoWrap("아크패시브", arkPassiveInfo);
             result += infoWrap("보석 효과", gemInfo);
-
+            
         } else {
             result += infoWrap("점수 통계", supportSpecPointInfo);
             result += infoWrap("버프 정보", supportBuffInfo);
@@ -990,7 +990,6 @@ async function mainSearchFunction() {
         element.innerHTML = result;
     }
     detailAreaCreate()
-
     /* **********************************************************************************************************************
     * function name		:	dataBaseWrite
     * description       : 	유저정보를 db로 보내 저장하게 함
@@ -1014,7 +1013,6 @@ async function mainSearchFunction() {
             "2.0"                                                                           // 현재 버전 
         );
     }
-    //dataBaseWrite()
-
+    dataBaseWrite()
 }
 mainSearchFunction()

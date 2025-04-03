@@ -2221,6 +2221,7 @@ export async function getCharacterProfile(data) {
         return result;
     }
     htmlObj.engravingInfo = engravingInfoExtract();
+    
 
     /* **********************************************************************************************************************
      * name		              :	  
