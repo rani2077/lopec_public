@@ -80,7 +80,7 @@ async function simulatorInputCalc() {
     async function originSpecPointToHtml() {
         let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        let element = document.querySelector(".sc-info .group-info .spec-area .best-box span.desc");
+        let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
         let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
         document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue);
         element.textContent = `기존 스펙포인트 - ${specPoint}`;
@@ -966,8 +966,7 @@ async function simulatorInputCalc() {
 
     /* **********************************************************************************************************************
      * function name		:	karmaRankToValue()
-     * description			: 	카르마 랭크를 accObj.weaponAtkPer 수치로 변환 
-     * description          :   ( #수훈 : accObj가 아니라 arkObj로 넣어야 하는데, accObj로 넣어도 상관은 없음. 쉬운 방향으로 편하게 하고 나한테 말만 해주기. 궁극적으로 아래 함수는 해당 값 반환 하여 .weaponAtk 형태로 어디든 넣으면 됨. 정상 반환 값은 specpoint.js의 1984-1998 랴인 참조.)
+     * description			: 	카르마 랭크를 arkObj.weaponAtkPer 수치로 변환 
      *********************************************************************************************************************** */
 
     function karmaRankToValue() {
@@ -1252,7 +1251,7 @@ async function simulatorInputCalc() {
     function calcSpecPointToHtml() {
         let element = document.querySelector(".sc-info .group-info .spec-area");
         let specPointElement = element.querySelector(".tier-box .spec-point");
-        let originElement = element.querySelector(".best-box .desc");
+        let originElement = element.querySelector(".gauge-box span.spec.desc");
         let originValue = Number(originElement.getAttribute("data-spec-point"));
 
         let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
@@ -1272,6 +1271,17 @@ async function simulatorInputCalc() {
             diffElement.classList.add("incress");
         }
         diffElement.innerHTML = diffValue;
+        let itemLevelElement = document.querySelector(".sc-info .spec-area .gauge-box .level");
+        function itemLevelAverage() {
+            let avgLevel = 0;
+            let sumValue = 0;
+            armorWeaponStatsObj.level.forEach(item => {
+                sumValue += item.level;
+            })
+            avgLevel = sumValue / 6;
+            return avgLevel;
+        }
+        itemLevelElement.textContent = "아이템 레벨 - " + itemLevelAverage().toFixed(2);
         specPointElement.innerHTML = formatSpecPoint(specPoint);
     }
     calcSpecPointToHtml();
@@ -2707,7 +2717,6 @@ async function selectCreate(data, Modules) {
                 } else {
                     className = 'unknown'
                 }
-
                 const classesToRemove = [
                     "common-progressbar",
                     "uncommon-progressbar",
@@ -2900,10 +2909,10 @@ async function selectCreate(data, Modules) {
                             }
                         }
                     })
-                    console.log(accessoryTierName)
-                    console.log(accessoryTierNumber)
-                    console.log(Modules.simulatorFilter.accessoryOptionData)
-                    console.log(accessoryFilter)
+                    // console.log(accessoryTierName)
+                    // console.log(accessoryTierNumber)
+                    // console.log(Modules.simulatorFilter.accessoryOptionData)
+                    // console.log(accessoryFilter)
                     if (partsName === "목걸이") {
                         let necklace = document.querySelectorAll('.accessory-list .accessory-item.accessory .tier')[0];
                         let necklaceStatsElement = document.querySelectorAll('.accessory-list .accessory-item.accessory input.progress')[0];

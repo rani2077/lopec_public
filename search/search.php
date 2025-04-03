@@ -49,14 +49,17 @@
                         <img src="/asset/image/skeleton-img.png" style="border-radius:4px;" alt="">
                         <?php //  <p class="tier-info">티어정보</p> 
                         ?>
-                        <div class="spec-point">
-                            로딩중
+                        <div class="spec-point">로딩중</div>
+                    </div>
+                    <div class="gauge-box">
+                        <div class="gauge">
+                            <span class="tier now diamond">NN</span>
+                            <span class="tier next master">NN</span>
+                            <span class="value">NN/NN</span>
+                            <i class="bar"></i>
                         </div>
                     </div>
-                    <div class="best-box">
-                        <span class="desc">달성최고점수 - 준비중</span>
-                    </div>
-                    <span class="reset">갱신하기</span>
+                    <span class="reset">갱신</span>
                 </div>
                 <div class="detail-area shadow">
 
@@ -176,7 +179,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -190,7 +193,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -204,7 +207,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -218,7 +221,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -232,7 +235,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -246,7 +249,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -260,7 +263,7 @@
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -268,7 +271,7 @@
                                 </div>
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="name-wrap">
@@ -282,7 +285,7 @@
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
                                     <div class="grinding-wrap">
@@ -294,7 +297,7 @@
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
                                     <div class="option-wrap">
@@ -306,7 +309,7 @@
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
                                     <div class="option-wrap">
@@ -318,7 +321,7 @@
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
                                     <div class="option-wrap">
@@ -330,7 +333,7 @@
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
                                     <div class="option-wrap">
@@ -342,7 +345,7 @@
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">NN</span>
                                 </div>
                                 <div class="option-box">
                                     <div class="option-wrap">
@@ -354,7 +357,7 @@
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
                                     <img src="../asset/image/skeleton-img.png" alt="">
-                                    <span class="progress"></span>
+                                    <span class="progress">NN</span>
                                 </div>
                                 <div class="option-box">
                                     <div class="option-wrap">

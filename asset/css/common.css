@@ -68,6 +68,9 @@ font {
 
 
 /* 악세서리 및 장비 품질(하단) 바 색상 */
+.progress {
+    background: #888;
+}
 .common-progressbar {
     background: #a80000
 }

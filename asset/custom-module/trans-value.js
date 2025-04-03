@@ -23,7 +23,7 @@ import {
     classGemFilter,
 } from '../filter/filter.js';
 import * as Filter from "../filter/filter.js";
-import { getCombinedCharacterData } from '../js/characterRead2.js'
+import { getCombinedCharacterData, getLopecCharacterRanking } from '../js/characterRead2.js'
 import * as SimulatorFilter from "../filter/simulator-filter.js";
 
 
@@ -2139,60 +2139,61 @@ export async function getCharacterProfile(data) {
      * USE_TN                      :   사용
      * getCombinedCharacterData    :   단일 요청으로 캐릭터 종합 데이터 조회
      *********************************************************************************************************************** */
-    getCombinedCharacterData(
-        data.ArmoryProfile.CharacterName,
-        supportCheck() == "서폿" ? "SUP" : "DEAL"
-    ).then(function (response) {
-        if (response.result === "S") {
-            const combinedData = response.data;
-            const characterClass = data.ArmoryProfile.CharacterClassName;
-            const isSupport = supportCheck() === "서폿";
-            const rankingType = isSupport ? "SUP" : "DEAL";
+    // getCombinedCharacterData(
+    //     data.ArmoryProfile.CharacterName,
+    //     supportCheck() == "서폿" ? "SUP" : "DEAL"
+    // ).then(function (response) {
+    //     if (response.result === "S") {
+    //         const combinedData = response.data;
+    //         const characterClass = data.ArmoryProfile.CharacterClassName;
+    //         const isSupport = supportCheck() === "서폿";
+    //         const rankingType = isSupport ? "SUP" : "DEAL";
 
-            // 1. 캐릭터 최고 점수 정보 출력
-            if (combinedData.characterBest) {
-                const characterData = combinedData.characterBest;
-                console.log("=== 달성 최고 점수 정보 ===");
-                console.log("달성 최고 점수(서포트):", characterData.LCHB_TOTALSUMSUPPORT);
-                console.log("달성 최고 점수(딜러):", characterData.LCHB_TOTALSUM);
-                console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
-            }
+    //         // 1. 캐릭터 최고 점수 정보 출력
+    //         if (combinedData.characterBest) {
+    //             const characterData = combinedData.characterBest;
+    //             console.log("=== 달성 최고 점수 정보 ===");
+    //             console.log("달성 최고 점수(서포트):", characterData.LCHB_TOTALSUMSUPPORT);
+    //             console.log("달성 최고 점수(딜러):", characterData.LCHB_TOTALSUM);
+    //             console.log("달성 일시:", characterData.LCHB_ACHIEVE_DATE);
+    //         }
 
-            // 2. 직업별 랭킹 정보 출력
-            if (combinedData.classRanking) {
-                const rankingData = combinedData.classRanking;
-                let CLASS_PERCENTILE = ((rankingData.CLASS_RANK / rankingData.TOTAL_IN_CLASS) * 100).toFixed(2)
+    //         // 2. 직업별 랭킹 정보 출력
+    //         if (combinedData.classRanking) {
+    //             const rankingData = combinedData.classRanking;
+    //             let CLASS_PERCENTILE = ((rankingData.CLASS_RANK / rankingData.TOTAL_IN_CLASS) * 100).toFixed(2)
 
-                // 직접 객체 사용 (배열이 아님)
-                console.log("=== 직업 랭킹 정보 ===");
-                console.log(`${characterClass} 직업 내 순위: ${rankingData.CLASS_RANK}위`);
-                console.log(`전체 ${rankingData.TOTAL_IN_CLASS}명 중 상위 ${CLASS_PERCENTILE}%`);
-            } else {
-                console.log(`${characterClass} 직업 랭킹 정보를 찾을 수 없습니다.`);
-            }
+    //             // 직접 객체 사용 (배열이 아님)
+    //             console.log("=== 직업 랭킹 정보 ===");
+    //             console.log(`${characterClass} 직업 내 순위: ${rankingData.CLASS_RANK}위`);
+    //             console.log(`전체 ${rankingData.TOTAL_IN_CLASS}명 중 상위 ${CLASS_PERCENTILE}%`);
+    //         } else {
+    //             console.log(`${characterClass} 직업 랭킹 정보를 찾을 수 없습니다.`);
+    //         }
 
-            // 3. 캐릭터 랭킹 정보 출력
-            if (combinedData.characterRanking) {
-                const rankData = combinedData.characterRanking;
-                console.log("랭킹:", rankData.RANKING_NUM);
-                console.log("점수:", rankData.LCHB_TOTALSUM);
-            } else {
-                console.log("랭킹에 해당 캐릭터 정보가 없습니다.");
-            }
+    //         // 3. 캐릭터 랭킹 정보 출력
+    //         if (combinedData.characterRanking) {
+    //             const rankData = combinedData.characterRanking;
+    //             console.log("랭킹:", rankData.RANKING_NUM);
+    //             console.log("점수:", rankData.LCHB_TOTALSUM);
+    //         } else {
+    //             console.log("랭킹에 해당 캐릭터 정보가 없습니다.");
+    //         }
 
-            // 4. 전체 랭킹 백분율 정보 출력
-            if (combinedData.percentile) {
-                const rankData = combinedData.percentile;
-                console.log("=== 전체 랭킹 정보 ===");
-                console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
-                console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
-            }
-        } else {
-            console.log("종합 데이터 조회 실패:", response.error);
-        }
-    }).catch(function (error) {
-        console.error("종합 데이터 조회 중 오류 발생:", error);
-    });
+    //         // 4. 전체 랭킹 백분율 정보 출력
+    //         if (combinedData.percentile) {
+    //             const rankData = combinedData.percentile;
+    //             console.log("=== 전체 랭킹 정보 ===");
+    //             console.log(`전체 순위: ${rankData.OVERALL_RANK}위`);
+    //             console.log(`전체 ${rankData.TOTAL_CHARACTERS}명 중 상위 ${rankData.OVERALL_PERCENTILE}%`);
+    //         }
+    //     } else {
+    //         console.log("종합 데이터 조회 실패:", response.error);
+    //     }
+    // }).catch(function (error) {
+    //     console.error("종합 데이터 조회 중 오류 발생:", error);
+    // });
+
 
     /* **********************************************************************************************************************
      * name		              :	  engravingInfoExtract

@@ -336,7 +336,6 @@
     justify-content: center;
     gap: 10px;
     padding: 20px 0 10px;
-    border-bottom: 2px solid #747474;
 }
 
 .sc-info .spec-area .tier-box:hover .tier-info {
@@ -385,11 +384,49 @@
     text-align-last: left;
 }
 
-.sc-info .spec-area .best-box {
-    padding: 20px 0;
+.sc-info .spec-area .gauge-box {
+    padding: 7px 20px 20px;
 }
 
-.sc-info .spec-area .best-box .desc {}
+.sc-info .spec-area .gauge-box .gauge {
+    padding: 5px 8px;
+    border-radius: 15px;
+    background: rgba(92, 92, 92, 0.7);
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.sc-info .spec-area .gauge-box .tier {
+    z-index: 1;
+    font-size: 12px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
+.sc-info .spec-area .gauge-box .value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    font-size: 10px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.sc-info .spec-area .gauge-box .bar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: linear-gradient(90deg, #11a0f8 0%, #69d0fd 100%);
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    z-index: 0;
+}
+
+.sc-info .spec-area .gauge-box .desc {}
 
 .sc-info .spec-area .reset {
     padding: 3px 5px;
@@ -416,15 +453,18 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border-top:1px solid #636363;
+    border-top: 1px solid #636363;
     padding: 15px 15px 0;
 }
-.sc-info .detail-area .info-wrap:first-child{
-    border:none;
+
+.sc-info .detail-area .info-wrap:first-child {
+    border: none;
 }
-.sc-info .detail-area .info-wrap:last-child{
+
+.sc-info .detail-area .info-wrap:last-child {
     padding-bottom: 15px;
 }
+
 .sc-info .detail-area .info-wrap .tag {
     font-size: 16px;
     color: #03dac5;
@@ -436,9 +476,10 @@
     display: flex;
     justify-content: space-between;
     padding-left: 10px;
-    border-bottom:1px solid #404040;
+    border-bottom: 1px solid #404040;
 }
-.sc-info .detail-area .info-box:last-child{
+
+.sc-info .detail-area .info-box:last-child {
     border: none;
 }
 

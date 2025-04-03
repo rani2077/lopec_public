@@ -27,12 +27,12 @@ export function getCombinedCharacterData(characterNickname, rankingType = "DEAL"
     });
 }
 
-// 랭킹 정보 읽기 (타입별)
-export function getLopecCharacterRanking(type, startRank = 1, limit = 100) {
+// 랭킹 정보 읽기 (DEAL과 SUP 데이터 모두 반환)
+export function getLopecCharacterRanking(type = "DEAL", startRank = 1, limit = 100) {
     var atMode = "selectRanking";
     var requestData = {
         atMode: atMode,
-        rankingType: type,
+        rankingType: type,  // 호환성을 위해 파라미터 유지 (서버에서는 무시됨)
         page: startRank,
         limit: limit
     };
@@ -43,12 +43,12 @@ export function getLopecCharacterRanking(type, startRank = 1, limit = 100) {
         url: "/applications/process/lopecCharacterBest/",
         data: requestData,
         success: function(response) {
-            //console.log("전체 랭킹 조회 성공");
+            //console.log("DEAL/SUP 랭킹 조회 성공");
             return response;
         },
         error: function(request, status, error) {
-            console.log("LOPEC_CHARACTER_BEST_RANKING 조회 실패");
-            //console.log("request.status : " + request.status);
+            console.log("랭킹 조회 실패");
+            console.log("오류 상세: " + error);
         }
     });
 }

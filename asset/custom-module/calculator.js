@@ -177,6 +177,7 @@ export async function specPointCalc(inputObj) {
     highTierSpecPointObj.dealerHyperValue = hyperValue
     // 서폿
     highTierSpecPointObj.supportStigmaResult = finalStigmaPer
+    highTierSpecPointObj.supportTotalStatus = (inputObj.defaultObj.haste + inputObj.defaultObj.special)
     highTierSpecPointObj.supportAllTimeBuff = allTimeBuffPower
     highTierSpecPointObj.supportFullBuff = fullBuffPower
     highTierSpecPointObj.supportEngBonus = ((inputObj.engObj.engBonusPer - 1) * 100)

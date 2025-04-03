@@ -12,6 +12,10 @@ async function importModuleManager() {
         import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 유저정보 수치화
         import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 수치값을 스펙포인트로 계산
         import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 컴포넌트 모듈
+
+        import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 유저정보 DB읽기 함수
+        import('../js/search.js' + `?${(new Date).getTime()}`),                   // 닉네임을 검색한 사람의 로그를 저장
+        import('../js/character.js' + `?${(new Date).getTime()}`),                // 특정 유저의 상세정보를 저장함
     ])
     let moduleObj = {
         fetchApi: modules[0],
@@ -19,6 +23,10 @@ async function importModuleManager() {
         transValue: modules[2],
         calcValue: modules[3],
         component: modules[4],
+
+        userDataRead: modules[5],
+        userDataWriteDeviceLog: modules[6],
+        userDataWriteDetailInfo: modules[7],
     }
 
     return moduleObj
@@ -44,12 +52,12 @@ async function mainSearchFunction() {
     document.querySelector(".sc-profile").insertAdjacentHTML('afterend', await component.scNav(nameParam));
     document.querySelector(".wrapper").style.display = "block";
 
-
     /* **********************************************************************************************************************
     * function name		:	
     * description       : 	
     *********************************************************************************************************************** */
     let data = await Modules.fetchApi.lostarkApiCall(nameParam);
+    console.log(data)
     let extractValue = await Modules.transValue.getCharacterProfile(data);
     await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
 
@@ -74,15 +82,100 @@ async function mainSearchFunction() {
     function specAreaCreate() {
         let specAreaElement = document.querySelector(".sc-info .group-info .spec-area");
         let nowSpecElement = specAreaElement.querySelector(".spec-point");
-        let bestSpecElement = specAreaElement.querySelector(".best-box .desc");
+        let gaugeElement = specAreaElement.querySelector(".gauge-box");
         let tierImageElement = specAreaElement.querySelector(".tier-box > img");
 
+        //브론즈 500미만
+        //실버 500+
+        //골드 700+
+        //다이아 900+
+        //마스터 1000+
+        //에스더 1300+
 
+        let gradeImageSrc = "";
+        let nextTierValue = 0;
+        let tierIndex = 0;
+        let tierNameArray = ['브론즈', '실버', '골드', '다이아몬드', '마스터', '에스더'];
+        let tierNameEngArray = ['bronze', 'silver', 'gold', 'diamond', 'master', 'esther'];
+        if (extractValue.etcObj.supportCheck !== "서폿") {
+            if (specPoint.completeSpecPoint >= 3000) {
+                gradeImageSrc = "/asset/image/esther.png";
+                nextTierValue = 0;
+                tierIndex = 5;
+            } else if (specPoint.completeSpecPoint >= 2500) {
+                gradeImageSrc = "/asset/image/master.png";
+                nextTierValue = 3000;
+                tierIndex = 4;
+            } else if (specPoint.completeSpecPoint >= 2000) {
+                gradeImageSrc = "/asset/image/diamond.png";
+                nextTierValue = 2500;
+                tierIndex = 3;
+            } else if (specPoint.completeSpecPoint >= 1600) {
+                gradeImageSrc = "/asset/image/gold.png";
+                nextTierValue = 2000;
+                tierIndex = 2;
+            } else if (specPoint.completeSpecPoint >= 1400) {
+                gradeImageSrc = "/asset/image/silver.png";
+                nextTierValue = 1600;
+                tierIndex = 1;
+            } else if (specPoint.completeSpecPoint < 1400) {
+                gradeImageSrc = "/asset/image/bronze.png";
+                nextTierValue = 1400;
+                tierIndex = 0;
+            }
+        } else {
+            if (specPoint.completeSpecPoint >= 1300) {
+                gradeImageSrc = "/asset/image/esther.png";
+                nextTierValue = 0;
+                tierIndex = 5;
+            } else if (specPoint.completeSpecPoint >= 1000) {
+                gradeImageSrc = "/asset/image/master.png";
+                nextTierValue = 1300;
+                tierIndex = 4;
+            } else if (specPoint.completeSpecPoint >= 800) {
+                gradeImageSrc = "/asset/image/diamond.png";
+                nextTierValue = 1000;
+                tierIndex = 3;
+            } else if (specPoint.completeSpecPoint >= 700) {
+                gradeImageSrc = "/asset/image/gold.png";
+                nextTierValue = 800;
+                tierIndex = 2;
+            } else if (specPoint.completeSpecPoint >= 400) {
+                gradeImageSrc = "/asset/image/silver.png";
+                nextTierValue = 700;
+                tierIndex = 1;
+            } else if (specPoint.completeSpecPoint < 400) {
+                gradeImageSrc = "/asset/image/bronze.png";
+                nextTierValue = 400;
+                tierIndex = 0;
+            }
+        }
+        let gaugePercent = specPoint.completeSpecPoint / nextTierValue * 100;
+        let gauge = "";
+        if (tierIndex !== 5) {
+            gauge = `
+            <div class="gauge">
+                <span class="tier now ${tierNameEngArray[tierIndex]}">${tierNameArray[tierIndex]}</span>
+                <span class="tier next ${tierNameEngArray[tierIndex + 1]}">${tierNameArray[tierIndex + 1]}</span>
+                <span class="value">${Math.floor(specPoint.completeSpecPoint)}/${nextTierValue}</span>
+                <i class="bar" style="clip-path: polygon(0 0, ${gaugePercent}% 0, ${gaugePercent}% 100%, 0% 100%);"></i>
+            </div>`;
+        } else {
+            gauge = `
+                <div class="gauge">
+                    <span class="tier now">에스더</span>
+                    <span class="value">최고티어달성</span>
+                    <i class="bar" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);"></i>
+                </div>`;
+        }
+
+        gaugeElement.innerHTML = gauge;
         nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2);
         nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2).replace(/\.(\d{2})$/, ".<i style='font-size:20px'>$1</i>");
-        //nowSpecElement.innerHTML = "2000.<i style='font-size:20px'>99</i>";
-        bestSpecElement.textContent = "달성 최고 점수 - 준비중";
-        tierImageElement.setAttribute("src", "/asset/image/gold.png");
+
+
+        // bestSpecElement.innerHTML = "다이아몬드 티어<br> 마스터까지 앞으로 100점!";
+        tierImageElement.setAttribute("src", gradeImageSrc);
 
     }
     specAreaCreate()
@@ -792,17 +885,17 @@ async function mainSearchFunction() {
     * function name		:	detailAreaCreate()
     * description       : 	detail-area 상세정보의 내용을 생성함
     *********************************************************************************************************************** */
-    function detailAreaCreate() {
-        console.log(extractValue.etcObj.supportCheck);
+    async function detailAreaCreate() {
         let element = document.querySelector(".sc-info .group-info .detail-area");
+        let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL")
+        // console.log(userDbInfo)
 
         function infoWrap(tag, array) {
-            const infoBox = array.map(object => {
-                const escapedValue = escapeHtml(object.value);
+            let infoBox = array.map(object => {
                 return `
                     <div class="info-box">
                         <span class="text">${object.name}</span>
-                        <span class="text">${escapedValue}</span>
+                        <span class="text">${object.value}</span>
                     </div>`;
             });
             return `
@@ -812,19 +905,27 @@ async function mainSearchFunction() {
                 </div>`;
         }
 
-        function escapeHtml(unsafe) {
-            return unsafe
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+        function formatDate(dateString) {
+            // 입력된 날짜 문자열의 형식을 검증합니다.
+            if (!/^\d{14}$/.test(dateString)) {
+                return '잘못된 날짜 형식입니다.';
+            }
+
+            // 문자열에서 년, 월, 일을 추출합니다.
+            const year = dateString.substring(2, 4);
+            const month = dateString.substring(4, 6);
+            const day = dateString.substring(6, 8);
+
+            // 'YY.MM.DD' 형식의 문자열을 생성합니다.
+            return `${year}.${month}.${day}`;
         }
+
+
         let data = specPoint;
         let specPointInfo = [
-            { name: "달성 최고 점수", value: "9999.99" },
-            { name: "현재 레벨 중앙값", value: "9999.99" },
-            { name: "최고 점수 달성일", value: "26.12.31" },
+            { name: "달성 최고 점수", value: userDbInfo.data.characterBest.LCHB_TOTALSUM },
+            { name: "현재 레벨 중앙값", value: "수집중" },
+            { name: "최고 점수 달성일", value: formatDate(userDbInfo.data.characterBest.REG_DATE) },
         ]
         let armorInfo = [
             { name: "공격력", value: Number(data.dealerAttackPowResult).toFixed(0) },
@@ -849,20 +950,71 @@ async function mainSearchFunction() {
         } else {
             gemInfo = [
                 { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.originGemValue).toFixed(2) + "%" },
-                { name: "보석 최종 딜증", value: Number(extractValue.etcObj.gemCheckFnc.gemValue).toFixed(2) + "%" },
+                { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.gemValue - 1) * 100).toFixed(2) + "%" },
                 { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" },
                 { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) },
             ]
         }
+
+        let supportSpecPointInfo = [
+            { name: "달성 최고 점수", value: userDbInfo.data.characterBest.LCHB_TOTALSUMSUPPORT },
+            { name: "현재 레벨 중앙값", value: "수집중" },
+            { name: "딜러 환산 점수", value: "수집중" },
+            { name: "최고 점수 달성일", value: formatDate(userDbInfo.data.characterBest.REG_DATE) },
+        ]
+        let supportBuffInfo = [
+            { name: "상시버프", value: Number(data.supportAllTimeBuff).toFixed(2) + "%" },
+            { name: "풀버프", value: Number(data.supportFullBuff).toFixed(2) + "%" },
+            { name: "낙인력", value: Number(data.supportStigmaResult).toFixed(1) + "%" },
+            { name: "팔찌", value: Number(data.supportBangleResult).toFixed(2) + "%" },
+        ]
+        let supportEffectInfo = [
+            { name: "특성", value: data.supportTotalStatus },
+            { name: "케어력", value: Number(data.supportCarePowerResult).toFixed(2) + "%" },
+            { name: "각인 보너스", value: Number(data.supportEngBonus).toFixed(2) + "%" },
+            { name: "쿨타임 감소", value: data.supportgemsCoolAvg },
+        ]
+
         let result = "";
-        result += infoWrap("점수 통계", specPointInfo);
-        result += infoWrap("장비 효과", armorInfo);
-        result += infoWrap("아크패시브", arkPassiveInfo);
-        result += infoWrap("보석 효과", gemInfo);
+        if (extractValue.etcObj.supportCheck !== "서폿") {
+            result += infoWrap("점수 통계", specPointInfo);
+            result += infoWrap("장비 효과", armorInfo);
+            result += infoWrap("아크패시브", arkPassiveInfo);
+            result += infoWrap("보석 효과", gemInfo);
+
+        } else {
+            result += infoWrap("점수 통계", supportSpecPointInfo);
+            result += infoWrap("버프 정보", supportBuffInfo);
+            result += infoWrap("추가 효과", supportEffectInfo);
+        }
         element.innerHTML = result;
-        console.log(infoWrap("점수 통계", armorInfo))
     }
     detailAreaCreate()
+
+    /* **********************************************************************************************************************
+    * function name		:	dataBaseWrite
+    * description       : 	유저정보를 db로 보내 저장하게 함
+    *********************************************************************************************************************** */
+    async function dataBaseWrite() {
+        await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
+        await Modules.userDataWriteDetailInfo.insertLopecCharacters(
+            nameParam,                                                                      // 닉네임 
+            data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
+            extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
+            "IMGURL",                                                                       // 프로필 이미지 
+            data.ArmoryProfile.ServerName,                                                  // 서버 
+            parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
+            data.ArmoryProfile.GuildName,                                                   // 길드 
+            data.ArmoryProfile.Title,                                                       // 칭호 
+            specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
+            specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
+            specPoint.supportAllTimeBuff,                                                   // 상시버프 
+            specPoint.supportFullBuff,                                                      // 풀버프 
+            null,                                                                           // 진화 카르마 랭크                  
+            "2.0"                                                                           // 현재 버전 
+        );
+    }
+    //dataBaseWrite()
 
 }
 mainSearchFunction()

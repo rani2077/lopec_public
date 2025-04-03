@@ -1,6 +1,13 @@
 import { localApiKey } from "../../config.js"
+import { insertLopecCharacters } from '../js/character.js'
+import { insertLopecSearch } from '../js/search.js'
 
-
+/* **********************************************************************************************************************
+* name		             :	 lostarkApiCall
+* version                :   2.0
+* description            :   검색한 유저의 json정보를 반환
+* USE_TN                 :   사용
+*********************************************************************************************************************** */
 export async function lostarkApiCall(inputName) {
     const cacheKey = `lostarkApiData_${inputName}`;
     const cachedData = sessionStorage.getItem(cacheKey);
@@ -23,11 +30,11 @@ export async function lostarkApiCall(inputName) {
     // alert("api 호출")
     // 캐시가 없거나 만료되었을 경우 API 호출
     let apiKey = localApiKey;
-    // let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
-    // if (cloudflareResponse.status !== 403) {
-    //     const responseData = await cloudflareResponse.json();
-    //     apiKey = responseData.apiKey;
-    // }
+    let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
+    if (cloudflareResponse.status !== 403) {
+        const responseData = await cloudflareResponse.json();
+        apiKey = responseData.apiKey;
+    }
     const options = {
         method: 'GET',
         headers: {
@@ -45,6 +52,15 @@ export async function lostarkApiCall(inputName) {
     return data;
 }
 
+/* **********************************************************************************************************************
+* name		             :	 clearLostarkApiCache
+* variable
+* inputName              :   유저 닉네임
+* element                :   초기화 버튼 html 요소
+* version                :   2.0
+* description            :   element에 해당하는 요소를 클릭시 캐싱데이터가 아닌 새로 데이터를 호출
+* USE_TN                 :   사용
+*********************************************************************************************************************** */
 export async function clearLostarkApiCache(inputName, element) {
     const cacheKey = `lostarkApiData_${inputName}`;
     element.addEventListener("click", () => { clearCache() })
@@ -57,14 +73,19 @@ export async function clearLostarkApiCache(inputName, element) {
 }
 
 
-
+/* **********************************************************************************************************************
+* name		             :	 expeditionApiCall
+* version                :   2.0
+* description            :   해당 닉네임의 원정대 정보를 호출
+* USE_TN                 :   사용
+*********************************************************************************************************************** */
 export async function expeditionApiCall(inputName) {
     let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
     let apiKey = localApiKey;
-    // if(cloudflareResponse.status !== 403){
-    //     apiKey = await cloudflareResponse.json();
-    //     apiKey = apiKey.apiKey;
-    // }
+    if (cloudflareResponse.status !== 403) {
+        apiKey = await cloudflareResponse.json();
+        apiKey = apiKey.apiKey;
+    }
     const options = {
         method: 'GET',
         headers: {
