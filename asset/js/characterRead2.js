@@ -107,3 +107,41 @@ export function getBatchCharacterData(nicknames, rankingType = "DEAL") {
         });
     });
 }
+
+// 캐릭터 최고 점수 이력 조회
+export function getCharacterHistory(characterNickname, options = {}) {
+    const {
+        historyType = "",       // DEAL, SUP, KARMA 또는 빈 문자열(전체)
+        startDate = "",         // YYYYMMDDhhmmss 형식
+        endDate = "",           // YYYYMMDDhhmmss 형식
+        page = 1,               // 페이지 번호
+        limit = 20              // 페이지당 항목 수
+    } = options;
+    
+    const atMode = "selectCharacterHistory";
+    const requestData = {
+        atMode: atMode,
+        lchaCharacterNickname: characterNickname,
+        historyType: historyType,
+        startDate: startDate,
+        endDate: endDate,
+        page: page,
+        limit: limit
+    };
+    
+    return $.ajax({ 
+        dataType: "json",
+        type: "POST",
+        url: "/applications/process/lopecCharacterBest/",
+        data: requestData,
+        success: function(response) {
+            console.log("캐릭터 이력 조회 성공");
+            return response;
+        },
+        error: function(request, status, error) {
+            console.log("캐릭터 이력 조회 실패");
+            console.log("request.status : " + request.status);
+            console.log("오류 상세: " + error);
+        }
+    });
+}
