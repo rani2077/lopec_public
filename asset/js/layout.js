@@ -503,4 +503,9 @@ async function simpleLogSave() {
     }
 
 }
-simpleLogSave()
+if (/lopec.kr/.test(window.location.host)) {
+    simpleLogSave()
+} else {
+    await import('https://code.jquery.com/jquery-3.7.1.min.js');
+}
+

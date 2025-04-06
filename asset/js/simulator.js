@@ -353,7 +353,7 @@ async function simulatorInputCalc() {
             let obj = {
                 addDamagePer: 0,
                 atkBuff: 0,
-                atkBuffPlus: 0,
+                atkBuffPlus: 1,
                 damageBuff: 0,
                 weaponAtkPlus: 0,
                 finalDamagePer: 1,
@@ -410,8 +410,9 @@ async function simulatorInputCalc() {
 
             // 그룹화된 데이터를 바탕으로 새로운 객체 생성
             for (const key in grouped) {
-                if (key === "finalDamagePer") {
-                    // finalDamagePer는 곱셈
+                // if (key === "finalDamagePer" || key === "atkBuffPlus" /finalDamagePer|atkBuffPlus/.test(key)) {
+                if (/finalDamagePer|atkBuffPlus/.test(key)) {
+                    // finalDamagePer, atkBuffPlus는 곱셈
                     combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1);
                 } else {
                     // 기타 스텟은 덧셈
@@ -1243,7 +1244,7 @@ async function simulatorInputCalc() {
         extractValue.hyperObj = extractHyperStageValue();
     }
     simulatorDataToExtractValue()
-    // console.log("오리진OBJ", extractValue)
+    console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
      * function name		:	specPointCalc
@@ -1887,17 +1888,105 @@ async function selectCreate(data, Modules) {
     *********************************************************************************************************************** */
 
     function userLevelAccessoryToEnlight() {
-        let elements = document.querySelectorAll(".accessory-item .accessory");
         let levelEvolution = Math.max(data.ArmoryProfile.CharacterLevel - 50, 0);
-        // console.log(data.ArmoryEquipment[6].Tooltip.match(/깨달음 \+(\d+)/)[1])
-        data.ArmoryEquipment.forEach(accessory => {
-            if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
-                levelEvolution += Number(accessory.Tooltip.match(/깨달음 \+(\d+)/)[1]);
-            }
+
+        let elements = document.querySelectorAll(".accessory-item .accessory");
+        elements.forEach(element => {
+            let value = Number(element.dataset.enlight);
+            levelEvolution += value;
         })
+        // console.log("깨포", levelEvolution)
         return levelEvolution;
     }
-    userLevelAccessoryToEnlight()
+    // userLevelAccessoryToEnlight()
+
+    /* **********************************************************************************************************************
+    * function name		:	userRealEnlightArray()
+    * description	    : 	유저의 악세서리에서 깨달음 수치와 해당 부위를 객체배열형태로 저장하여 반환함
+    *********************************************************************************************************************** */
+    function userRealEnlightArray() {
+        let result = [];
+        data.ArmoryEquipment.forEach(accessory => {
+            if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
+                let enlightValue = Number(accessory.Tooltip.match(/깨달음 \+(\d+)/)[1]);
+                let obj = {}
+                obj.type = accessory.Type;
+                obj.value = enlightValue;
+                result.push(obj);
+            }
+        })
+        return result;
+    }
+    /* **********************************************************************************************************************
+    * function name		:	enlightValueAttributeSet()
+    * description	    : 	유저의 깨달음 수치를 data-enlight에 설정하고 유저가 악세서리의 등급을 수정할 시 올바른 깨포값으로 수정함
+    *********************************************************************************************************************** */
+    function enlightValueAttributeSet() {
+        let elements = document.querySelectorAll(".accessory-item .accessory");
+        elements.forEach(element => {
+            element.addEventListener("change", () => {
+                let tier = element.value.split(":")[0];
+                let parts = element.value.split(":")[1];
+                let enlightValue = 0;
+                if (/T3고대|T3유물|T4유물/.test(tier)) {
+                    if (parts === "목걸이") {
+                        enlightValue = 10;
+                    } else if (parts === "귀걸이") {
+                        enlightValue = 9;
+                    } else if (parts === "반지") {
+                        enlightValue = 9;
+                    }
+                } else if (/T4고대/.test(tier)) {
+                    if (parts === "목걸이") {
+                        enlightValue = 13;
+                    } else if (parts === "귀걸이") {
+                        enlightValue = 12;
+                    } else if (parts === "반지") {
+                        enlightValue = 12;
+                    }
+                }
+                element.dataset.enlight = enlightValue;
+            });
+        })
+    }
+    enlightValueAttributeSet()
+
+    /* **********************************************************************************************************************
+    * function name		:	enlightValueAttributeSet()
+    * description	    : 	유저의 깨달음 수치를 data-enlight에 설정하고 유저가 악세서리의 등급을 수정할 시 올바른 깨포값으로 수정함
+    *********************************************************************************************************************** */
+    function userEnlightValueSetData() {
+        let enlightArray = userRealEnlightArray();
+        let elements = document.querySelectorAll(".accessory-item .accessory");
+        let necklaceElement = elements[0];
+        let earRingElement1 = elements[1];
+        let earRingElement2 = elements[2];
+        let ringElement1 = elements[3];
+        let ringElement2 = elements[4];
+
+        let earRingCount = 0;
+        let ringCount = 0;
+        enlightArray.forEach(item => {
+            if (item.type === "목걸이") {
+                necklaceElement.dataset.enlight = item.value;
+            } else if (item.type === "귀걸이") {
+                if (earRingCount === 0) {
+                    earRingElement1.dataset.enlight = item.value;
+                    earRingCount++;
+                } else if (earRingCount === 1) {
+                    earRingElement2.dataset.enlight = item.value;
+                }
+            } else if (item.type === "반지") {
+                if (ringCount === 0) {
+                    ringElement1.dataset.enlight = item.value;
+                    ringCount++;
+                } else if (ringCount === 1) {
+                    ringElement2.dataset.enlight = item.value;
+                }
+            }
+        })
+    }
+    userEnlightValueSetData();
 
     /* **********************************************************************************************************************
     * function name		:	collectToKarma()
@@ -2935,7 +3024,6 @@ async function selectCreate(data, Modules) {
     * function name		:	accessoryAutoSelect()
     * description	    : 	악세서리를 자동으로 선택하는 함수
     *********************************************************************************************************************** */
-
     function accessoryAutoSelect() {
 
         partsAutoSelect("목걸이");
@@ -3038,15 +3126,152 @@ async function selectCreate(data, Modules) {
         }
 
     }
+    accessoryAutoSelect();
+    /* **********************************************************************************************************************
+    * function name		:	accessoryTierAutoSelect()
+    * description	    : 	악세서리를 자동으로 선택하는 함수
+    *********************************************************************************************************************** */
+    function accessoryTierAutoSelect() {
+        let elements = document.querySelectorAll(".accessory-item .accessory");
+        let necklaceElement = elements[0];
+        let earRingElement1 = elements[1];
+        let earRingElement2 = elements[2];
+        let ringElement1 = elements[3];
+        let ringElement2 = elements[4];
 
-    accessoryAutoSelect()
+        let earRingCount = 0;
+        let ringCount = 0;
+        data.ArmoryEquipment.forEach(accessory => {
+            let tooltipData = betweenTextExtract(accessory.Tooltip);
+            let accessoryTierName = tooltipData[5].match(/(고대|유물)/g)[0];
+            let accessoryTierNumber = Number(tooltipData[10].match(/\d+/));
+            let optionIndex = 0;
+            if (accessoryTierNumber <= 3) {
+                if (accessoryTierName === "유물") {
+                    optionIndex = 0;
+                } else if (accessoryTierName === "고대") {
+                    optionIndex = 1;
+                }
+            } else if (accessoryTierNumber === 4) {
+                if (accessoryTierName === "유물") {
+                    optionIndex = 2;
+                } else if (accessoryTierName === "고대") {
+                    optionIndex = 3;
+                }
+            }
+            if (accessory.Type === "목걸이") {
+                necklaceElement.options[optionIndex].selected = true;
+                necklaceElement.dispatchEvent(new Event("change"));
+            } else if (accessory.Type === "귀걸이") {
+                if (earRingCount === 0) {
+                    earRingElement1.options[optionIndex].selected = true;
+                    earRingElement1.dispatchEvent(new Event("change"));
+                    earRingCount++;
+                } else if (earRingCount === 1) {
+                    earRingElement2.options[optionIndex].selected = true;
+                    earRingElement2.dispatchEvent(new Event("change"));
+                }
+            } else if (accessory.Type === "반지") {
+                if (ringCount === 0) {
+                    ringElement1.options[optionIndex].selected = true;
+                    ringElement1.dispatchEvent(new Event("change"));
+                    ringCount++;
+                } else if (ringCount === 1) {
+                    ringElement2.options[optionIndex].selected = true;
+                    ringElement2.dispatchEvent(new Event("change"));
+                }
+            }
+            if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
+
+                // console.log(accessoryTierName, accessoryTierNumber);
+            }
+        })
+
+    }
+    // accessoryTierAutoSelect();
+    /* **********************************************************************************************************************
+    * function name		:	accessoryOptionsAutoSelect()
+    * description	    : 	악세서리를 자동으로 선택하는 함수
+    *********************************************************************************************************************** */
+    function accessoryOptionsAutoSelect() {
+        let elements = document.querySelectorAll(".accessory-item.accessory");
+        let necklaceElement = elements[0];
+        let earRingElement1 = elements[1];
+        let earRingElement2 = elements[2];
+        let ringElement1 = elements[3];
+        let ringElement2 = elements[4];
+
+        let earRingCount = 0;
+        let ringCount = 0;
+        let accessoryFilter;
+        data.ArmoryEquipment.forEach(accessory => {
+            let tooltipData = betweenTextExtract(accessory.Tooltip);
+            let accessoryTierName = tooltipData[5].match(/(고대|유물)/g)[0];
+            let accessoryTierNumber = Number(tooltipData[10].match(/\d+/));
+            if (accessoryTierNumber <= 3) {
+                if (accessoryTierName === "유물") {
+                    accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t3RelicData;
+                } else if (accessoryTierName === "고대") {
+                    accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t3MythicData;
+                }
+            } else if (accessoryTierNumber === 4) {
+                accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t4Data;
+            }
+            if (accessory.Type === "목걸이") {
+
+            } else if (accessory.Type === "귀걸이") {
+                if (earRingCount === 0) {
+
+                } else if (earRingCount === 1) {
+
+                }
+            } else if (accessory.Type === "반지") {
+
+                if (ringCount === 0) {
+                } else if (ringCount === 1) {
+
+                }
+            }
+
+            if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
+                let temp = mergeFilter(accessoryFilter).filter(filter => {
+                    return tooltipData.some((item, idx) => {
+                        if (typeof item === 'string' && item.includes(filter)) {
+                            tooltipData.splice(idx, 1);
+                            return true;
+                        }
+                    });
+                });
+                console.log(temp)
+                // console.log(tooltipData.includes("추가 피해 +1.60%"));
+                // console.log(tooltipData);
+                // console.log(mergeFilter(accessoryFilter))
+                // console.log(accessoryFilter);
+            }
+
+        })
+
+        function mergeFilter(filterData) {
+            const names = [];
+            for (const key in filterData) {
+                if (filterData.hasOwnProperty(key) && Array.isArray(filterData[key])) {
+                    filterData[key].forEach(item => {
+                        if (item.hasOwnProperty("name")) {
+                            names.push(item.name);
+                        }
+                    });
+                }
+            }
+            return names
+        }
+    }
+    // accessoryOptionsAutoSelect();  // <==작업중
     armoryGradeToBackgroundClassName() // 장비 및 악세서리 고대,유물 에 따른 배경이미지 변경
 
     /* **********************************************************************************************************************
     * function name		:	accessoryOptionToGrade()
     * description	    : 	선택한 악세서리의 상중하 옵션을 보여줌
     *********************************************************************************************************************** */
-
     function accessoryOptionToGrade() {
         let selectElements = document.querySelectorAll(".accessory-area .accessory-item.accessory select.option");
         let tierElements = document.querySelectorAll(".accessory-area .accessory-item.accessory select.option");
@@ -3233,7 +3458,7 @@ async function selectCreate(data, Modules) {
     * description	    : 	data-name함수 이후 실행되어야 하는 스크립트
     *********************************************************************************************************************** */
 
-    userLevelAccessoryToEnlight()
+    // userLevelAccessoryToEnlight()
     collectToKarma()
     enlightValueChange()
     ellaOptionSetting(); // 엘라옵션 선택 조절
@@ -3270,7 +3495,7 @@ async function selectCreate(data, Modules) {
 
     document.body.addEventListener('change', () => {
         userLevelAndArmorToEvolution();
-        userLevelAccessoryToEnlight();
+        // userLevelAccessoryToEnlight();
         ellaOptionSetting(); // 엘라옵션 선택 조절
         showLeafInfo();
         enlightValueChange();

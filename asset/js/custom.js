@@ -64,10 +64,10 @@ async function mainSearchFunction() {
 
 
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
-    // console.log("data", data)
-    console.log("오리진obj", extractValue)
-    //console.log("specPoint", specPoint)
-    // console.log("specPoint", specPoint.completeSpecPoint)
+    // console.log("data", data);
+    // console.log("오리진obj", extractValue);
+    //console.log("specPoint", specPoint);
+    // console.log("specPoint", specPoint.completeSpecPoint);
 
 
     /* **********************************************************************************************************************
@@ -939,24 +939,64 @@ async function mainSearchFunction() {
             // 'YY.MM.DD' 형식의 문자열을 생성합니다.
             return `${year}.${month}.${day}`;
         }
-
-        let data = specPoint;
+        let itemLevel = Number(data.ArmoryProfile.ItemAvgLevel.replace(",", ""));
+        let dealerMedianValue = 0;
+        // console.log(itemLevel)
+        if (itemLevel >= 1660 && itemLevel < 1665) {
+            dealerMedianValue = 847.84;
+        } else if (itemLevel >= 1665 && itemLevel < 1670) {
+            dealerMedianValue = 926.64;
+        } else if (itemLevel >= 1670 && itemLevel < 1675) {
+            dealerMedianValue = 965.69;
+        } else if (itemLevel >= 1675 && itemLevel < 1680) {
+            dealerMedianValue = 985.01;
+        } else if (itemLevel >= 1680 && itemLevel < 1685) {
+            dealerMedianValue = 1307.2;
+        } else if (itemLevel >= 1685 && itemLevel < 1690) {
+            dealerMedianValue = 1511.65;
+        } else if (itemLevel >= 1690 && itemLevel < 1695) {
+            dealerMedianValue = 1575.72;
+        } else if (itemLevel >= 1695 && itemLevel < 1700) {
+            dealerMedianValue = 1644.27;
+        } else if (itemLevel >= 1700 && itemLevel < 1705) {
+            dealerMedianValue = 1745.77;
+        } else if (itemLevel >= 1705 && itemLevel < 1710) {
+            dealerMedianValue = 1882.61;
+        } else if (itemLevel >= 1710 && itemLevel < 1715) {
+            dealerMedianValue = 1966.17;
+        } else if (itemLevel >= 1715 && itemLevel < 1720) {
+            dealerMedianValue = 2028.52;
+        } else if (itemLevel >= 1720 && itemLevel < 1725) {
+            dealerMedianValue = 2177.96;
+        } else if (itemLevel >= 1725 && itemLevel < 1730) {
+            dealerMedianValue = 2297.06;
+        } else if (itemLevel >= 1730 && itemLevel < 1735) {
+            dealerMedianValue = 2420.02;
+        } else if (itemLevel >= 1735 && itemLevel < 1740) {
+            dealerMedianValue = 2557.86;
+        } else if (itemLevel >= 1740 && itemLevel < 1745) {
+            dealerMedianValue = 2734.59;
+        } else if (itemLevel >= 1745 && itemLevel < 1750) {
+            dealerMedianValue = 2864.79;
+        } else if (itemLevel >= 1750) {
+            dealerMedianValue = 3209.7;
+        }
         let specPointInfo = [
             { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUM, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
-            { name: "현재 레벨 중앙값", value: "수집중", icon: "chart-simple-solid" },
-            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.REG_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
+            { name: "현재 레벨 중앙값", value: dealerMedianValue, icon: "chart-simple-solid" },
+            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.LCHB_ACHIEVE_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
         ]
         let armorInfo = [
-            { name: "공격력", value: Number(data.dealerAttackPowResult).toFixed(0), icon: "bolt-solid" },
-            { name: "엘릭서", value: Number(data.dealerExlixirValue).toFixed(2) + "%", icon: "flask-solid" },
-            { name: "초월", value: Number(data.dealerHyperValue).toFixed(2) + "%", icon: "star-solid" },
-            { name: "각인", value: Number(data.dealerEngResult).toFixed(2) + "%", icon: "book-solid" },
-            { name: "팔찌", value: Number(data.dealerBangleResult).toFixed(2) + "%", icon: "ring-solid" },
+            { name: "공격력", value: Number(specPoint.dealerAttackPowResult).toFixed(0), icon: "bolt-solid" },
+            { name: "엘릭서", value: Number(specPoint.dealerExlixirValue).toFixed(2) + "%", icon: "flask-solid" },
+            { name: "초월", value: Number(specPoint.dealerHyperValue).toFixed(2) + "%", icon: "star-solid" },
+            { name: "각인", value: Number(specPoint.dealerEngResult).toFixed(2) + "%", icon: "book-solid" },
+            { name: "팔찌", value: Number(specPoint.dealerBangleResult).toFixed(2) + "%", icon: "ring-solid" },
         ]
         let arkPassiveInfo = [
-            { name: "진화", value: Number(data.dealerEvloutionResult).toFixed(0) + "%", icon: "fire-solid" },
-            { name: "깨달음", value: Number(data.dealerEnlightResult).toFixed(0) + "%", icon: "lightbulb-solid" },
-            { name: "도약", value: Number(data.dealerLeapResult).toFixed(0) + "%", icon: "feather-pointed-solid" },
+            { name: "진화", value: Number(specPoint.dealerEvloutionResult).toFixed(0) + "%", icon: "fire-solid" },
+            { name: "깨달음", value: Number(specPoint.dealerEnlightResult).toFixed(0) + "%", icon: "lightbulb-solid" },
+            { name: "도약", value: Number(specPoint.dealerLeapResult).toFixed(0) + "%", icon: "feather-pointed-solid" },
         ]
         let gemInfo;
         if (extractValue.etcObj.gemCheckFnc.originGemValue === 0) {
@@ -979,19 +1019,19 @@ async function mainSearchFunction() {
             { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUMSUPPORT, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: "수집중", icon: "chart-simple-solid" },
             { name: "딜러 환산 점수", value: "수집중", icon: "arrows-left-right-to-line-solid" },
-            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.REG_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
+            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.LCHB_ACHIEVE_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
         ]
         let supportBuffInfo = [
-            { name: "상시버프", value: Number(data.supportAllTimeBuff).toFixed(2) + "%", icon: "arrows-rotate-solid" },
-            { name: "풀버프", value: Number(data.supportFullBuff).toFixed(2) + "%", icon: "wand-magic-sparkles-solid" },
-            { name: "낙인력", value: Number(data.supportStigmaResult).toFixed(1) + "%", icon: "bullseye-solid" },
-            { name: "팔찌", value: Number(data.supportBangleResult).toFixed(2) + "%", icon: "ring-solid" },
+            { name: "상시버프", value: Number(specPoint.supportAllTimeBuff).toFixed(2) + "%", icon: "arrows-rotate-solid" },
+            { name: "풀버프", value: Number(specPoint.supportFullBuff).toFixed(2) + "%", icon: "wand-magic-sparkles-solid" },
+            { name: "낙인력", value: Number(specPoint.supportStigmaResult).toFixed(1) + "%", icon: "bullseye-solid" },
+            { name: "팔찌", value: Number(specPoint.supportBangleResult).toFixed(2) + "%", icon: "ring-solid" },
         ]
         let supportEffectInfo = [
-            { name: "특성", value: data.supportTotalStatus, icon: "person-solid" },
-            { name: "케어력", value: Number(data.supportCarePowerResult).toFixed(2) + "%", icon: "shield-halved-solid" },
-            { name: "각인 보너스", value: Number(data.supportEngBonus).toFixed(2) + "%", icon: "book-solid" },
-            { name: "쿨타임 감소", value: data.supportgemsCoolAvg + "%", icon: "gem-solid" },
+            { name: "특성", value: specPoint.supportTotalStatus, icon: "person-solid" },
+            { name: "케어력", value: Number(specPoint.supportCarePowerResult).toFixed(2) + "%", icon: "shield-halved-solid" },
+            { name: "각인 보너스", value: Number(specPoint.supportEngBonus).toFixed(2) + "%", icon: "book-solid" },
+            { name: "쿨타임 감소", value: specPoint.supportgemsCoolAvg + "%", icon: "gem-solid" },
         ]
 
         let result = "";
@@ -1040,7 +1080,9 @@ async function mainSearchFunction() {
             "2.0"                                                                           // 현재 버전 
         );
     }
-    setTimeout(() => { dataBaseWrite() }, 0);
+    if (/lopec.kr/.test(window.location.host)) {
+        setTimeout(() => { dataBaseWrite() }, 0);
+    }
 
 }
 mainSearchFunction()

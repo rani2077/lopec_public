@@ -103,8 +103,7 @@ export async function specPointCalc(inputObj) {
     let elixirValue = ((lastFinalValue - minusElixirValue) / lastFinalValue * 100).toFixed(2)
 
     //팔찌 효율
-    let bangleValue = (((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2.55) / 100 + 1)) - 1) * 100).toFixed(2)
-
+    let bangleValue = ((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2)
     /* **********************************************************************************************************************
      * name		              :	  Variable for SpecPoint calc for sup
      * version                :   2.0
@@ -122,12 +121,17 @@ export async function specPointCalc(inputObj) {
     let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
 
-    let beforeBuff = ((150000 ** 1.095) * 1.7 * (5.275243 ** 1.01) * 1.4 * 1.1 * 1.80978) // 가상의 딜러
-    let afterBuff = ((((150000 + finalAtkBuff) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035 * (inputObj.bangleObj.atkBuffPlus / 100 + 1)
-    let afterFullBuff = ((((150000 + finalAtkBuff) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035 * (inputObj.bangleObj.atkBuffPlus / 100 + 1) * finalDamageBuff * hyperBuff
+    //let beforeBuff = ((150000 ** 1.095) * 1.7 * (5.275243 ** 1.01) * 1.4 * 1.1 * 1.80978) // 가상의 딜러
+    
+    //((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.crit + inputObj.defaultObj.haste + inputObj.defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
+    let beforeBuff = (111000) * 1.45 * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174
+    //let afterBuff = ((((150000 + finalAtkBuff) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035 * (inputObj.bangleObj.atkBuffPlus / 100 + 1)
+    let afterBuff = (111000 + finalAtkBuff) * (1.45+evolutionBuff) * (4 * (inputObj.bangleObj.atkBuffPlus)) * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035
+    let afterFullBuff = (111000 + finalAtkBuff) * (1.45+evolutionBuff) * (4 * (inputObj.bangleObj.atkBuffPlus)) * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuff * hyperBuff
 
     let allTimeBuffPower = ((afterBuff - beforeBuff) / beforeBuff) * 100
     let fullBuffPower = ((afterFullBuff - beforeBuff) / beforeBuff) * 100
+
     /* **********************************************************************************************************************
      * name		              :	  최종 계산식 for sup
      * version                :   2.0
@@ -135,8 +139,9 @@ export async function specPointCalc(inputObj) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
     //최종 환산
-    let supportSpecPoint = (fullBuffPower ** 2.546) * 20 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonusPer * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1)
-    //console.log(supportSpecPoint)
+    let supportSpecPoint = (fullBuffPower ** 2.546) * 22.5 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonusPer * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1)
+    //let supportSpecPoint = ((fullBuffPower ** 2.546) * 24.5 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonusPer * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1) * 0.55) + ((allTimeBuffPower ** 2.546) * 24.5 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonusPer * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1) * 0.45)
+
     //팔찌 제외 무공&공격력
     let supportTotalWeaponAtkMinusBangle = ((inputObj.defaultObj.weaponAtk + inputObj.hyperObj.weaponAtkPlus + inputObj.elixirObj.weaponAtkPlus + inputObj.accObj.weaponAtkPlus) * (inputObj.arkObj.weaponAtkPer + (inputObj.accObj.weaponAtkPer / 100)))
     let totalAtk5 = (Math.sqrt((totalStat * supportTotalWeaponAtkMinusBangle) / 6)) * attackBonus
@@ -150,15 +155,17 @@ export async function specPointCalc(inputObj) {
     let statDamageBuffMinusBangle = ((inputObj.defaultObj.special + inputObj.defaultObj.haste - inputObj.bangleObj.special - inputObj.bangleObj.haste) * 0.015) / 100 + 1 // 팔찌 제외 스탯
     let finalDamageBuffMinusBangle = (13 * damageBuffMinusBangle * statDamageBuffMinusBangle) / 100 + 1 // 팔찌 제외 최종 피증
     //팔찌 효율 계산
-    let afterBuffMinusBangle = ((((150000 + finalAtkBuffMinusBangle) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035
-    let afterFullBuffMinusBangle = ((((150000 + finalAtkBuffMinusBangle) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuffMinusBangle * hyperBuffMinusBangle
+    //let afterBuffMinusBangle = ((((150000 + finalAtkBuffMinusBangle) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035
+    //let afterFullBuffMinusBangle = ((((150000 + finalAtkBuffMinusBangle) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuffMinusBangle * hyperBuffMinusBangle
+    let afterBuffMinusBangle = (111000 + finalAtkBuffMinusBangle) * (1.45+evolutionBuff) * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035
+    let afterFullBuffMinusBangle = (111000 + finalAtkBuffMinusBangle) * (1.45+evolutionBuff) * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuffMinusBangle * hyperBuffMinusBangle
 
     let allTimeBuffPowerMinusBangle = ((afterBuffMinusBangle - beforeBuff) / beforeBuff) * 100
     let fullBuffPowerMinusBangle = ((afterFullBuffMinusBangle - beforeBuff) / beforeBuff) * 100
 
     let supportSpecPointMinusBangle = (fullBuffPowerMinusBangle ** 2.546) * 20 * enlightBuffResult * inputObj.arkObj.leapDamage * inputObj.engObj.engBonusPer * ((1 / (1 - inputObj.etcObj.gemsCoolAvg / 100) - 1) + 1)
-    let supportBangleEff = ((fullBuffPower - fullBuffPowerMinusBangle) / fullBuffPowerMinusBangle * 100)
-    let supportBangleEff2 = ((fullBuffPower - fullBuffPowerMinusBangle) / fullBuffPowerMinusBangle * 100)
+    let supportBangleEff = ((((fullBuffPower - fullBuffPowerMinusBangle) / fullBuffPowerMinusBangle * 100) * 0.55) + (((allTimeBuffPower - allTimeBuffPowerMinusBangle) / allTimeBuffPowerMinusBangle * 100) * 0.45)) * 2
+    let supportBangleEff2 = ((supportSpecPoint - supportSpecPointMinusBangle) / supportSpecPointMinusBangle * 100)
 
     let carePower = (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1)
     let finalCarePower = (inputObj.defaultObj.maxHp * 0.3) * (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1)
@@ -191,6 +198,7 @@ export async function specPointCalc(inputObj) {
     // 최종 스펙 포인트
     highTierSpecPointObj.dealerlastFinalValue = (lastFinalValue / 2020).toFixed(2) //딜러 스펙포인트
     highTierSpecPointObj.supportSpecPoint = (supportSpecPoint / 10000).toFixed(2) //서폿 스펙포인트
+    console.log(highTierSpecPointObj.supportSpecPoint)
     // 스펙포인트 db저장 통합
     if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
         highTierSpecPointObj.completeSpecPoint = lastFinalValue / 2020

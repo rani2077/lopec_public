@@ -460,7 +460,7 @@ export async function getCharacterProfile(data) {
         atkSpeed: 0,
         skillCool: 0,
         atkBuff: 0,
-        atkBuffPlus: 0,
+        atkBuffPlus: 1,
         damageBuff: 0,
 
         crit: 0,
@@ -480,8 +480,8 @@ export async function getCharacterProfile(data) {
 
     bangleOptionArry.forEach(function (realBangleArry, realIdx) {
 
-        let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff', 'atkBuffPlus']
-        let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff']
+        let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff']
+        let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff','atkBuffPlus']
         let statsArry = ["치명:crit", "특화:special", "신속:haste", "힘:str", "민첩:dex", "지능:int", "최대 생명력:statHp"];
 
         statsArry.forEach(function (stats) {
