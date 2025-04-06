@@ -7,37 +7,25 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="description" content="로스트아크 스펙 점수 확인, 전투정보실, 캐릭터 정보, 랭킹">
-    <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보">
+    <meta name="description" content="로스트아크 스펙 점수 확인, 전투정보실, 캐릭터 정보, 랭킹, 환산점수">
+    <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보, 환산점수">
 
 
 
 
-    <link rel="icon" type="image/png" href="../asset/image/lopec-ico.png">
-
-    <link rel="stylesheet" href="../asset/css/layout.css">
-    <link rel="stylesheet" href="../asset/css/main.css">
-    <title>로펙 : 로아 스펙 포인트 및 캐릭터 정보</title>
+    <link rel="icon" type="image/png" href="/asset/image/lopec-ico.png">
+    <!-- <link rel="stylesheet" href="/asset/css/layout.css">
+    <link rel="stylesheet" href="/asset/css/main.css"> -->
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for (let registration of registrations) {
-                    registration.unregister();
-                }
-            }).catch(function(error) {
-                console.log('Service Worker 등록 해제 실패:', error);
-            });
-        }
+        document.write('<link rel="stylesheet" href="/asset/css/layout.css?' + (new Date).getTime() + '">');
+        document.write('<link rel="stylesheet" href="/asset/css/main.css?' + (new Date).getTime() + '">');
     </script>
+
+    <title>로펙 : 스펙포인트 및 환산점수</title>
 </head>
 
 
 <body class="">
-
-    <?php //  공용헤더 
-    ?>
-    <header></header>
-
 
     <div class="wrapper" style="display:none;">
 
@@ -66,75 +54,87 @@
                     <div class="info-wrap">
                         <span class="tag">점수 통계</span>
                         <div class="info-box">
-                            <span class="text">달성 최고 점수</span>
-                            <span class="text">9999.99</span>
+                            <span class="text"><i class="medal-solid icon"></i>달성 최고 점수</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">현재 레벨 중앙값</span>
-                            <span class="text">9999.99</span>
+                            <span class="text"><i class="chart-simple-solid icon"></i>현재 레벨 중앙값</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">최고 점수 달성일</span>
-                            <span class="text">26.12.31</span>
+                            <span class="text"><i class="calendar-check-solid icon"></i>최고 점수 달성일</span>
+                            <span class="text">로딩중</span>
                         </div>
                     </div>
                     <div class="info-wrap">
                         <span class="tag">장비 효과</span>
                         <div class="info-box">
-                            <span class="text">공격력</span>
-                            <span class="text">113266</span>
+                            <span class="text"><i class="bolt-solid icon"></i>공격력</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">엘릭서</span>
-                            <span class="text">20.80%</span>
+                            <span class="text"><i class="flask-solid icon"></i>엘릭서</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">초월</span>
-                            <span class="text">16.30%</span>
+                            <span class="text"><i class="star-solid icon"></i>초월</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">각인</span>
-                            <span class="text">126.64%</span>
+                            <span class="text"><i class="book-solid icon"></i>각인</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">팔찌</span>
-                            <span class="text">11.79%</span>
+                            <span class="text"><i class="ring-solid icon"></i>팔찌</span>
+                            <span class="text">로딩중</span>
                         </div>
                     </div>
                     <div class="info-wrap">
                         <span class="tag">아크패시브</span>
                         <div class="info-box">
-                            <span class="text">진화</span>
-                            <span class="text">45.0%</span>
+                            <span class="text"><i class="fire-solid icon"></i>진화</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">깨달음</span>
-                            <span class="text">42.0%</span>
+                            <span class="text"><i class="lightbulb-solid icon"></i>깨달음</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">도약</span>
-                            <span class="text">11.0%</span>
+                            <span class="text"><i class="feather-pointed-solid icon"></i>도약</span>
+                            <span class="text">로딩중</span>
                         </div>
                     </div>
                     <div class="info-wrap">
                         <span class="tag">보석 효과</span>
                         <div class="info-box">
-                            <span class="text">보석 실질 딜증</span>
-                            <span class="text">0.00%</span>
+                            <span class="text"><i class="gem-solid icon"></i>보석 실질 딜증</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">보석 최종 딜증</span>
-                            <span class="text">0.00%</span>
+                            <span class="text"><i class="gem-solid icon"></i>보석 최종 딜증</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">보석 쿨감</span>
-                            <span class="text">18.00%</span>
+                            <span class="text"><i class="gem-solid icon"></i>보석 쿨감</span>
+                            <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text">보석 보정치</span>
-                            <span class="text">1.98</span>
+                            <span class="text"><i class="gem-solid icon"></i>보석 보정치</span>
+                            <span class="text">로딩중</span>
                         </div>
                     </div>
+                </div>
+                <div class="ads-area" style="width:100%;height:143px;margin-top:20px;">
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+                        crossorigin="anonymous"></script>
+                    <!-- main-left-side-1 -->
+                    <ins class="adsbygoogle"
+                        style="display:inline-block;width:300px;height:143px"
+                        data-ad-client="ca-pub-5125145415518329"
+                        data-ad-slot="9880125998"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
             </div>
             <div class="group-equip">
@@ -557,99 +557,22 @@
                         <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                 </div>
-
+                <div class="ads-area" style="width:100%;height:660px;margin-top:20px;">
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
+                        crossorigin="anonymous"></script>
+                    <!-- main-right-side-1 -->
+                    <ins class="adsbygoogle"
+                        style="display:inline-block;width:300px;height:660px"
+                        data-ad-client="ca-pub-5125145415518329"
+                        data-ad-slot="5681860685"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
             </div>
         </section>
 
     </div>
-
-    <?php //  공요푸터 
-    ?>
-    <footer class="sc-footer"></footer>
-    <?php //  공요푸터 
-    ?>
-
-    <?php //  db관련 
-    ?>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <?php //  db관련 
-    ?>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            insertLopecLog();
-        });
-
-        var insertLopecLog = function() {
-            var atMode = "insertlog";
-            var llogUrl = document.URL;
-            var saveDatas = {
-                atMode: atMode,
-                llogUrl: llogUrl
-            }
-            $.ajax({
-                dataType: "json",
-                type: "POST",
-                url: "/applications/process/lopecLog/",
-                data: saveDatas,
-                success: function(msg) {
-                    // console.log("msg : " + msg);
-                    // console.log("msg.result : " + msg.result);
-                    if (msg.result == "S") {
-                        // console.log("log insert result : LOPEC_LOG 저장 성공");
-                    } else if (msg.result == "F") {
-                        // console.log("log insert result : LOPEC_LOG 저장 실패");
-                    } else if (msg.result == "E") {
-                        // console.log("log insert result : LOPEC_LOG 저장 Exception");
-                    }
-                },
-                error: function(request, status, error) {
-                    // console.log("log insert result : LOPEC_LOG 저장 Error");
-                    // console.log("request.status : " + request.status);
-                    // console.log("request.responseText : " + request.responseText);
-                    // console.log("request.error : " + request.error);
-                }
-            });
-        }
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            insertLopecLog();
-        });
-
-        var insertLopecLog = function() {
-            var atMode = "insertlog";
-            var llogUrl = document.URL;
-            var saveDatas = {
-                atMode: atMode,
-                llogUrl: llogUrl
-            }
-            $.ajax({
-                dataType: "json",
-                type: "POST",
-                url: "/applications/process/lopecLog/",
-                data: saveDatas,
-                success: function(msg) {
-                    // console.log("msg : " + msg);
-                    // console.log("msg.result : " + msg.result);
-                    if (msg.result == "S") {
-                        // console.log("log insert result : LOPEC_LOG 저장 성공");
-                    } else if (msg.result == "F") {
-                        // console.log("log insert result : LOPEC_LOG 저장 실패");
-                    } else if (msg.result == "E") {
-                        // console.log("log insert result : LOPEC_LOG 저장 Exception");
-                    }
-                },
-                error: function(request, status, error) {
-                    // console.log("log insert result : LOPEC_LOG 저장 Error");
-                    // console.log("request.status : " + request.status);
-                    // console.log("request.responseText : " + request.responseText);
-                    // console.log("request.error : " + request.error);
-                }
-            });
-        }
-    </script>
 
 
     <script>

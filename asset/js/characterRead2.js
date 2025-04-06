@@ -16,7 +16,7 @@ export function getCombinedCharacterData(characterNickname, rankingType = "DEAL"
         url: "/applications/process/lopecCharacterBest/",
         data: requestData,
         success: function(response) {
-            console.log("캐릭터 종합 데이터 조회 성공");
+            //console.log("캐릭터 종합 데이터 조회 성공");
             return response;
         },
         error: function(request, status, error) {

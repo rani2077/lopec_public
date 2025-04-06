@@ -70,8 +70,14 @@ async function simulatorInputCalc() {
 
         // await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset")); // 캐싱없이 api갱신
         await originSpecPointToHtml();
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isFirefox = /firefox/i.test(navigator.userAgent);
+        if (isSafari || isFirefox) {
+            console.log('사파리 또는 파이어폭스 브라우저에서 실행 중입니다.');
+            setTimeout(() => { document.body.dispatchEvent(new Event("change")) }, 0);
+            setTimeout(() => { document.body.dispatchEvent(new Event("change")) }, 500);
+        }
     }
-
 
     /* **********************************************************************************************************************
      * function name		:	originSpecPointToHtml
@@ -97,7 +103,7 @@ async function simulatorInputCalc() {
     gemInfoChangeToJson()
 
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-    console.log("오리진OBJ", extractValue)
+    //console.log("오리진OBJ", extractValue)
 
 
     /* **********************************************************************************************************************
@@ -333,7 +339,7 @@ async function simulatorInputCalc() {
             }, {});
         }
     }
-    console.log(bangleStatsNumberCalc())
+    //console.log(bangleStatsNumberCalc())
 
     /* **********************************************************************************************************************
      * function name		:	bangleOptionCalc()
@@ -511,69 +517,70 @@ async function simulatorInputCalc() {
         const group3 = ["선각자", "신념"];
         const group4 = ["진군"];
 
-        let group1Count = 0;
-        let group2Count = 0;
-        let group3Count = 0;
-        let group4Count = 0;
-
+        const groupElixir = ["회심", "달인", "선봉대", "강맹", "칼날방패", "행운", "선각자", "신념", "진군"];
+        let elixirIndexArray = [];
         elixirNames.forEach(name => {
-            if (group1.includes(name)) {
-                group1Count++;
-            }
-            if (group2.includes(name)) {
-                group2Count++;
-            }
-            if (group3.includes(name)) {
-                group3Count++;
-            }
-            if (group4.includes(name)) {
-                group4Count++;
+            let elixirIndex = groupElixir.indexOf(name);
+            if (elixirIndex !== -1) {
+                elixirIndexArray.push(groupElixir[elixirIndex]);
             }
         });
+        // 중복된 단어가 속한 그룹을 찾는 함수
+        function findGroupWithDuplicates(b) {
+            const wordCounts = {};
+            for (const word of b) {
+                wordCounts[word] = (wordCounts[word] || 0) + 1;
+            }
+            const duplicateWords = Object.keys(wordCounts).filter(word => wordCounts[word] > 1);
+            if (duplicateWords.length === 0) {
+                return null;
+            }
+            const a = {
+                group1: group1,
+                group2: group2,
+                group3: group3,
+                group4: group4,
+            };
 
-        // console.log("----------------엘릭서 확인------------------");
-
-        if (group1Count >= 2 && combinedObj.level >= 40) {
-            // console.log("회심, 달인, 선봉대 중 2개 이상 존재합니다. 레벨 40 이상");
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.12
-        } else if (group1Count >= 2 && combinedObj.level >= 35) {
-            // console.log("회심, 달인, 선봉대 중 2개 이상 존재합니다. 레벨 35 이상");
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.06
+            for (const groupName in a) {
+                const group = a[groupName];
+                const allDuplicatesInGroup = duplicateWords.every(word => group.includes(word));
+                if (allDuplicatesInGroup) {
+                    return groupName;
+                }
+            }
+            return null;
         }
-        if (group2Count >= 2 && combinedObj.level >= 40) {
-            // console.log("강맹, 칼날방패, 행운 중 2개 이상 존재합니다. 레벨 40 이상");
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.08
-        } else if (group2Count >= 2 && combinedObj.level >= 35) {
-            // console.log("강맹, 칼날방패, 행운 중 2개 이상 존재합니다. 레벨 35 이상");
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.04
+        const duplicateElixirGroup = findGroupWithDuplicates(elixirIndexArray);
+
+        if (duplicateElixirGroup === "group1" && combinedObj.level >= 40) {
+            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.12;
+        } else if (duplicateElixirGroup === "group1" && combinedObj.level >= 35) {
+            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.06;
         }
-
-        if (group3Count >= 2 && combinedObj.level >= 40) {
-            // console.log("선각자, 신념 이 모두 존재합니다. 레벨 40 이상");
-            combinedObj.atkBuff = combinedObj.atkBuff + 14
-        } else if (group3Count >= 2 && combinedObj.level >= 35) {
-            // console.log("선각자, 신념 이 모두 존재합니다. 레벨 35 이상");
-            combinedObj.atkBuff = combinedObj.atkBuff + 8
+        if (duplicateElixirGroup === "group2" && combinedObj.level >= 40) {
+            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.08;
+        } else if (duplicateElixirGroup === "group2" && combinedObj.level >= 35) {
+            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.04;
         }
-
-        if (group4Count >= 1 && combinedObj.level >= 40) {
-            // console.log("진군 존재합니다. 레벨 40 이상");
-            combinedObj.atkBuff = combinedObj.atkBuff + 6
-        } else if (group4Count >= 1 && combinedObj.level >= 35) {
-            // console.log("진군 존재합니다. 레벨 35 이상");
-            combinedObj.atkBuff = combinedObj.atkBuff + 0
+        if (duplicateElixirGroup === "group3" && combinedObj.level >= 40) {
+            combinedObj.atkBuff = combinedObj.atkBuff + 14;
+        } else if (duplicateElixirGroup === "group3" && combinedObj.level >= 35) {
+            combinedObj.atkBuff = combinedObj.atkBuff + 8;
         }
-
-
-        // 결과 확인
-        // console.log("그룹화된 데이터:", grouped);
-        // console.log("병합된 객체:", combinedObj);
+        if (duplicateElixirGroup === "group4" && combinedObj.level >= 40) {
+            combinedObj.atkBuff = combinedObj.atkBuff + 6;
+        }
+        else if (duplicateElixirGroup === "group4" && combinedObj.level >= 35) {
+            combinedObj.atkBuff = combinedObj.atkBuff + 3;
+        }
         delete combinedObj.name;
         delete combinedObj.level;
         delete combinedObj.value;
         combinedObj.str = combinedObj.stats;
-        result = combinedObj
-        return result
+        result = combinedObj;
+        return result;
+
     }
     // armorElixirToObj()
     // console.log("엘릭서OBJ", armorElixirToObj())
@@ -1243,7 +1250,6 @@ async function simulatorInputCalc() {
      * description			: 	최종 스펙포인트 계산식
      *********************************************************************************************************************** */
     let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-    console.log(originSpecPoint);
     /* **********************************************************************************************************************
      * function name		:	calcSpecPointToHtml
      * description			: 	변환된 스펙포인트를 표시해줌
@@ -1287,6 +1293,7 @@ async function simulatorInputCalc() {
     calcSpecPointToHtml();
 }
 simulatorInputCalc()
+
 document.body.addEventListener('change', () => { simulatorInputCalc() })
 
 
@@ -1495,26 +1502,27 @@ async function selectCreate(data, Modules) {
             const upgradeElement = armorElement.closest(".name-wrap").querySelector(".armor-upgrade");
             const normalUpgradeValue = Number(armorElement.value);
             const tierValue = Number(armorElement.closest(".name-wrap").querySelector(".plus").value);
-
+            // console.log(upgradeElement)
+            // console.log(normalUpgradeValue)
             if (tierValue === 1 && armorCounts[idx] !== 1) {
                 createOptions(upgradeElement, 0, 20);
-                selectLastOption(upgradeElement);
+                // selectLastOption(upgradeElement);
                 armorCounts[idx] = 1;
             } else if (tierValue === 2 && armorCounts[idx] !== 2) {
                 createOptions(upgradeElement, 0, 40);
-                selectLastOption(upgradeElement);
+                // selectLastOption(upgradeElement);
                 armorCounts[idx] = 2;
             } else if (tierValue + normalUpgradeValue * 5 < 1620 && armorCounts[idx] !== 3) {
                 createOptions(upgradeElement, -1);
-                selectLastOption(upgradeElement);
+                // selectLastOption(upgradeElement);
                 armorCounts[idx] = 3;
             } else if (1620 <= tierValue + normalUpgradeValue * 5 && tierValue + normalUpgradeValue * 5 < 1660 && armorCounts[idx] !== 4) {
                 createOptions(upgradeElement, 0, 20);
-                selectLastOption(upgradeElement);
+                // selectLastOption(upgradeElement);
                 armorCounts[idx] = 4;
             } else if (tierValue + normalUpgradeValue * 5 >= 1660 && armorCounts[idx] !== 5) {
                 createOptions(upgradeElement, 0, 40);
-                selectLastOption(upgradeElement);
+                // selectLastOption(upgradeElement);
                 armorCounts[idx] = 5;
             }
             applyDataStringToOptions();
@@ -1881,30 +1889,13 @@ async function selectCreate(data, Modules) {
     function userLevelAccessoryToEnlight() {
         let elements = document.querySelectorAll(".accessory-item .accessory");
         let levelEvolution = Math.max(data.ArmoryProfile.CharacterLevel - 50, 0);
-        elements.forEach(element => {
-            let tier = element.value.split(":")[0];
-            let tag = element.value.split(":")[1];
-            if (/T3고대|T3유물|T4유물/.test(tier)) {
-                if (tag === "목걸이") {
-                    levelEvolution += 10;
-                } else if (tag === "귀걸이") {
-                    levelEvolution += 9;
-                } else if (tag === "반지") {
-                    levelEvolution += 9;
-                }
-            } else if (/T4고대/.test(tier)) {
-                if (tag === "목걸이") {
-                    levelEvolution += 13;
-                } else if (tag === "귀걸이") {
-                    levelEvolution += 12;
-                } else if (tag === "반지") {
-                    levelEvolution += 12;
-                }
+        // console.log(data.ArmoryEquipment[6].Tooltip.match(/깨달음 \+(\d+)/)[1])
+        data.ArmoryEquipment.forEach(accessory => {
+            if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
+                levelEvolution += Number(accessory.Tooltip.match(/깨달음 \+(\d+)/)[1]);
             }
         })
-        // document.querySelectorAll(".ark-list .title")[1].textContent = levelEvolution;
-        // console.log(levelEvolution)
-        return levelEvolution
+        return levelEvolution;
     }
     userLevelAccessoryToEnlight()
 
@@ -2390,6 +2381,32 @@ async function selectCreate(data, Modules) {
     stoneAutoSelect()
 
     /* **********************************************************************************************************************
+    * function name		:	keepStoneOption
+    * description	    : 	사용자가 어빌리티 스톤이 포함되지 않은 각인을 변경시 현재 선택된 어빌리티 스톤 옵션을 유지
+    *********************************************************************************************************************** */
+    function keepStoneOption() {
+        let eventElements = document.querySelectorAll(".engraving-box .engraving-name, .buff-wrap .buff");
+        let engElements = document.querySelectorAll(".engraving-box .engraving-name");
+        let stoneElements = document.querySelectorAll(".buff-wrap .buff");
+        stoneElements.forEach(stone => {
+            stone.addEventListener("change", () => { stoneAttributeSet() });
+            function stoneAttributeSet() {
+                stone.setAttribute("data-stone", stone.value);
+            };
+            stoneAttributeSet();
+        })
+        engElements.forEach(eng => {
+            eng.addEventListener("change", () => { stoneChange() });
+            function stoneChange() {
+                stoneElements.forEach(stone => {
+                    optionElementAutoCheck(stone, stone.getAttribute("data-stone"), "value");
+                })
+            };
+            stoneChange();
+        })
+    }
+    keepStoneOption()
+    /* **********************************************************************************************************************
     * function name		    :	armoryTierAutoSelect()
     * description	        : 	방어구의 티어등급을 자동으로 선택해줌
     *                       :   변수설명
@@ -2592,6 +2609,36 @@ async function selectCreate(data, Modules) {
     }
     armoryTierAutoSelect()
     hyperStageToStarCreate()
+
+    /* **********************************************************************************************************************
+    * function name		:	keppAdvancedUpgradeValue
+    * description		: 	상급재련의 강화수치가 초기화되지 않게 함
+    *********************************************************************************************************************** */
+    function keppAdvancedUpgradeValue() {
+        let advancedElements = document.querySelectorAll(".sc-info .armor-area .armor-item select.armor-upgrade");
+        let normalElements = document.querySelectorAll(".sc-info .armor-area .armor-item select.armor-name");
+        advancedElements.forEach(element => {
+            element.addEventListener("change", () => { valueAttribute() })
+            function valueAttribute() {
+                element.setAttribute("data-selected", element.value);
+            }
+            valueAttribute()
+        })
+        normalElements.forEach(normal => {
+            let advancedElement = normal.closest(".armor-item").querySelector("select.armor-upgrade");
+            normal.addEventListener("change", () => {
+                let advancedValue = advancedElement.getAttribute("data-selected");
+                if (advancedElement.options.length >= Number(advancedValue)) {
+                    advancedElement.options[advancedValue].selected = 'true';
+                } else {
+
+                    advancedElement.setAttribute("data-selected", 0);
+                }
+            })
+        })
+    }
+    keppAdvancedUpgradeValue()
+
     /* **********************************************************************************************************************
     * function name		:	armoryGradeToBackgroundClassName()
     * description	    : 	장비의 등급(예:고대,유물,전설,영웅)에 따라 배경 className을 설정
@@ -2685,6 +2732,34 @@ async function selectCreate(data, Modules) {
         })
     }
     setItemImages()
+    /* **********************************************************************************************************************
+    * function name		:	stoneProgressAndBackground
+    * description	    : 	어비리티 스톤의 등급에 따라 배경과 progress의 색상을 변경
+    *********************************************************************************************************************** */
+    function stoneProgressAndBackground() {
+        let imgBoxElement = document.querySelectorAll(".sc-info .accessory-area .accessory-item")[5].querySelector(".img-box");
+        let progressElement = imgBoxElement.querySelector("span.progress");
+        let backgroundClassName = "";
+        let progressClassName = "";
+        let stoneData = data.ArmoryEquipment.filter(data => data.Type === "어빌리티 스톤")[0];
+        if (!stoneData) {
+            return;
+        }
+        if (stoneData.Grade === "고대") {
+            backgroundClassName = "ultra-background";
+            progressClassName = "mythic-progressbar";
+        } else if (stoneData.Grade === "유물") {
+            backgroundClassName = "rare-background";
+            progressClassName = "relics-progressbar";
+        }
+
+        // console.log(stoneData)
+        imgBoxElement.classList.remove("skeleton");
+        imgBoxElement.classList.add(backgroundClassName);
+        progressElement.classList.add(progressClassName);
+        progressElement.textContent = stoneData.Grade;
+    }
+    stoneProgressAndBackground()
     /* **********************************************************************************************************************
     * function name		:	armorQualityToHTML
     * description	    : 	장비의 품질을 표시해줌
@@ -3355,6 +3430,7 @@ async function calculateGemData(data) {
         return supportCheck == className;
     }
 
+
     if (classCheck("전태") && skillCheck(gemSkillArry, "버스트 캐넌", dmg)) {
         specialClass = "버캐 채용 전태";
     } else if (classCheck("세맥") && !skillCheck(gemSkillArry, "환영격", dmg)) {
@@ -3363,10 +3439,15 @@ async function calculateGemData(data) {
         specialClass = "7멸 핸건";
     } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)) {
         specialClass = "에필 포강";
-    } else if (classCheck("환류") && skillCheck(gemSkillArry, "종말의 날", dmg)) {
-        specialClass = "데이터 없음";
-    } else if (classCheck("환류") && !skillCheck(gemSkillArry, "인페르노", dmg)) {
-        specialClass = "6딜 환류";
+    } else if (classCheck("환류") &&
+        skillCheck(gemSkillArry, "리버스 그래비티", dmg) &&
+        skillCheck(gemSkillArry, "아이스 애로우", dmg) &&
+        skillCheck(gemSkillArry, "앨리멘탈 리액트", dmg) &&
+        skillCheck(gemSkillArry, "인페르노", dmg) &&
+        skillCheck(gemSkillArry, "숭고한 해일", dmg) &&
+        (skillCheck(gemSkillArry, "천벌", dmg) || skillCheck(gemSkillArry, "혹한의 부름", dmg))
+        && skillCheck(gemSkillArry, "블레이즈", dmg)) {
+        specialClass = "7딜 환류";
     } else if (classCheck("질풍") && !skillCheck(gemSkillArry, "여우비 스킬", dmg)) {
         specialClass = "5멸 질풍";
     } else if (classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)) {
@@ -3383,7 +3464,7 @@ async function calculateGemData(data) {
         specialClass = "슈차 잔재";
     } else if (classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)) {
         specialClass = "데이터 없음";
-    } else if (classCheck("야성") || classCheck("두동") || classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("심판자") || classCheck("회귀")) {
+    } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀")) {
         specialClass = "데이터 없음";
     } else {
         specialClass = supportCheck;

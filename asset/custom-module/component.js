@@ -1,6 +1,8 @@
-
-
-
+/* **********************************************************************************************************************
+* variable name		:	mobileCheck
+* description       : 	현재 접속한 디바이스 기기가 모바일, 태블릿일 경우 true를 반환
+*********************************************************************************************************************** */
+let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 
 /* **********************************************************************************************************************
 * function name		:	scProfileSkeleton
@@ -59,7 +61,10 @@ export async function scProfile(userData, extractValue, rankData) {
         jobRankVariable = rankData.jobRank
         totalRankVariable = rankData.totalRank
     }
-    setTimeout(() => { userBookmarkSave(userName); }, 0)
+    setTimeout(() => {
+        userBookmarkSave(userName);
+        // profileImagePosUserSetting(userName)
+    }, 0)
     return `
     <section class="sc-profile">
         <div class="group-img">
@@ -257,7 +262,16 @@ function starAnimation() {
         requestAnimationFrame(update);
     }
 }
-
+/* **********************************************************************************************************************
+* function name		:	profileImagePosUserSetting()
+* description       : 	프로필 이미지를 위치를 유저가 원하는대로 설정할 수 있게 하는 기능
+* state             :   ~개발중~
+*********************************************************************************************************************** */
+function profileImagePosUserSetting(userName) {
+    console.log(userName);
+    let groupImg = document.querySelector('.sc-profile .group-img');
+    let originalImg = groupImg.querySelector('img');
+}
 /* **********************************************************************************************************************
 * function name		:	userBookmarkSave
 * description       : 	즐겨찾기 저장
@@ -343,11 +357,15 @@ export async function scNav(userName) {
         })
     }
     setTimeout(() => { scNavEvent() }, 0)
+    let mobilePath = "";
+    if (mobileCheck) {
+        mobilePath = "/mobile"
+    }
     return `
     <nav class="sc-nav">
-        <a href="/search/search.php?headerCharacterName=${name}" class="link ${searchClassName} search" data-page="sc-info" >메인</a>
+        <a href="${mobilePath}/search/search.php?headerCharacterName=${name}" class="link ${searchClassName} search" data-page="sc-info" >메인</a>
         <a href="" class="link expedition" data-page="sc-expedition">원정대</a>
-        <a href="/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
+        <a href="${mobilePath}/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
     </nav>`
 }
 
@@ -415,9 +433,9 @@ async function scExpedition(inputName) {
     }
 
     let groupData = groupByServerName(data);
-    groupData = sortCharacters(groupData,inputName)
+    groupData = sortCharacters(groupData, inputName)
 
-    console.log(groupData)
+    //console.log(groupData)
     let groupServer = groupData.map(serverName => {
         let expeditionListElement = serverName.Characters.map(character => expeditionList(character));
         return `

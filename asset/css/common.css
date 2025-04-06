@@ -71,6 +71,7 @@ font {
 .progress {
     background: #888;
 }
+
 .common-progressbar {
     background: #a80000
 }
@@ -103,7 +104,7 @@ font {
 
 /* 각인 아이콘 is */
 .engraving-ico {
-    background: url("../image/img_engrave_icon.png");
+    background: url("/asset/image/img_engrave_icon.png");
     background-repeat: no-repeat;
     background-position-x: 1px;
     margin-right: 3px;
@@ -329,7 +330,7 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode footer,
 .dark-mode .group-recent,
 .dark-mode .group-recent .name-area .sort.on,
-.dark-mode .sc-expedition .group-server{
+.dark-mode .sc-expedition .group-server {
     background: #2f2f2f;
     color: #fff;
 }
@@ -337,7 +338,7 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .group-recent .name-area .sort,
 .dark-mode .group-recent .memo .name-box:after,
 .dark-mode .sc-info .group-equip .simple-option-area,
-.dark-mode .group-equip .simple-option-area .extend-list{
+.dark-mode .group-equip .simple-option-area .extend-list {
     background: #404040;
     color: #fff;
 }
@@ -369,7 +370,7 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .spin-wrapper .up,
 .dark-mode .spin-wrapper .down,
 .dark-mode .sc-info .accessory-area .number-box input.progress,
-.dark-mode .group-equip .number-box .option-wrap .option{
+.dark-mode .group-equip .number-box .option-wrap .option {
     color: #fff;
     background: #15181d;
     border: 1px solid rgb(87, 82, 82)
@@ -570,60 +571,6 @@ html.dark-mode .sc-info .tag-list,
     background: #555;
     /* 손잡이 호버 시 색상 */
 }
-
-
-
-
-
-/* **********************************************************************************************************************
-* description	    : 	광고
-*********************************************************************************************************************** */
-.sc-top-ads {
-    /* background: #f00; */
-    /* opacity: 0; */
-    width: 800px;
-    height: 120px;
-    margin: 0 auto;
-    margin-top: 90px;
-    display: flex;
-}
-
-.sc-top-ads .group-top-ads {
-    background: #f00;
-    width: 50%;
-    height: 100%;
-}
-
-.sc-top-ads img {
-    object-fit: contain;
-}
-
-
-
-.side-ads {
-    width: 190px;
-    height: 700px;
-    position: absolute;
-    /* background: #f00; */
-}
-
-.side-ads.left {
-    right: calc(100% + 100px);
-}
-
-.side-ads.right {
-    left: calc(100% + 100px);
-}
-
-.ads {
-    top: 50%;
-    transform: translateY(-50%);
-    position: fixed;
-    width: inherit;
-    height: inherit;
-
-}
-
 
 
 /* **********************************************************************************************************************
@@ -924,3 +871,91 @@ html.dark-mode .sc-info .tag-list,
         --star-face-radius: 0 0 2px 2px;
     }
 }
+
+/* **********************************************************************************************************************
+* description	    : 	폰트어썸 로컬 아이콘
+*********************************************************************************************************************** */
+i.icon {
+    /* opacity: 0.7; */
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display: inline-block;
+}
+
+i.star-solid {
+    background-image: url("/asset/image/star-solid.svg");
+}
+
+i.arrows-left-right-to-line-solid {
+    background: url("/asset/image/arrows-left-right-to-line-solid.svg");
+}
+
+i.bolt-solid {
+    background-image: url("/asset/image/bolt-solid.svg");
+}
+
+i.book-solid {
+    background-image: url("/asset/image/book-solid.svg");
+}
+
+i.calendar-check-solid {
+    background-image: url("/asset/image/calendar-check-solid.svg");
+}
+
+i.chart-simple-solid {
+    background-image: url("/asset/image/chart-simple-solid.svg");
+}
+
+i.feather-pointed-solid {
+    background-image: url("/asset/image/feather-pointed-solid.svg");
+}
+
+i.fire-solid {
+    background-image: url("/asset/image/fire-solid.svg");
+}
+
+i.flask-solid {
+    background-image: url("/asset/image/flask-solid.svg");
+}
+
+i.gem-solid {
+    background-image: url("/asset/image/gem-solid.svg");
+}
+
+i.lightbulb-solid {
+    background-image: url("/asset/image/lightbulb-solid.svg");
+}
+
+i.medal-solid {
+    background-image: url("/asset/image/medal-solid.svg");
+}
+
+i.ring-solid {
+    background-image: url("/asset/image/ring-solid.svg");
+}
+
+i.star-solid {
+    background-image: url("/asset/image/star-solid.svg");
+}
+
+i.arrows-rotate-solid {
+    background-image: url("/asset/image/arrows-rotate-solid.svg");
+}
+
+i.wand-magic-sparkles-solid {
+    background-image: url("/asset/image/wand-magic-sparkles-solid.svg");
+}
+
+i.bullseye-solid {
+    background-image: url("/asset/image/bullseye-solid.svg");
+}
+
+i.person-solid {
+    background-image: url("/asset/image/person-solid.svg");
+}
+
+i.shield-halved-solid {
+    background-image: url("/asset/image/shield-halved-solid.svg");
+}
+

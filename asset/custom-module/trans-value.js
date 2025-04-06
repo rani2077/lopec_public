@@ -1,34 +1,48 @@
 // import 'https://code.jquery.com/jquery-3.6.0.min.js';
 
 
+async function importModuleManager() {
+    let interValTime = 60 * 1000;
+    let modules = await Promise.all([
+        import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 filter.js
+        import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 시뮬레이터 필터
+    ])
+    let moduleObj = {
+        originFilter: modules[0],
+        simulatorFilter: modules[1],
+    }
+    return moduleObj
+}
 
 // 필터
-import {
-    keywordList,
-    grindingFilter,
-    arkFilter,
-    bangleJobFilter,
-    engravingImg,
-    engravingCalFilter,
-    dealerAccessoryFilter,
-    calAccessoryFilter,
-    elixirFilter,
-    cardPointFilter,
-    bangleFilter,
-    engravingCheckFilter,
-    stoneCheckFilter,
-    elixirCalFilter,
-    arkCalFilter,
-    // engravingCheckFilterLowTier,
-    classGemFilter,
-} from '../filter/filter.js';
-import * as Filter from "../filter/filter.js";
-import { getCombinedCharacterData, getLopecCharacterRanking } from '../js/characterRead2.js'
-import * as SimulatorFilter from "../filter/simulator-filter.js";
+// import {
+//     keywordList,
+//     grindingFilter,
+//     arkFilter,
+//     bangleJobFilter,
+//     engravingImg,
+//     engravingCalFilter,
+//     dealerAccessoryFilter,
+//     calAccessoryFilter,
+//     elixirFilter,
+//     cardPointFilter,
+//     bangleFilter,
+//     engravingCheckFilter,
+//     stoneCheckFilter,
+//     elixirCalFilter,
+//     arkCalFilter,
+//     // engravingCheckFilterLowTier,
+//     classGemFilter,
+// } from '../filter/filter.js';
+// import * as Filter from "../filter/filter.js";
+// import * as SimulatorFilter from "../filter/simulator-filter.js";
+
 
 
 export async function getCharacterProfile(data) {
-
+    let Modules = await importModuleManager();
+    // console.log(Modules.originFilter)
+    // console.log(Modules.simulatorFilter.bangleOptionData.t4MythicData)
 
 
 
@@ -96,7 +110,7 @@ export async function getCharacterProfile(data) {
     function supportCheck() {
         let arkResult = ""
         try {
-            arkFilter.forEach(function (arry) {
+            Modules.originFilter.arkFilter.forEach(function (arry) {
                 let arkInput = arry.name;
                 let arkOutput = arry.initial;
                 enlightenmentArry.forEach(function (supportCheckArry) {
@@ -301,7 +315,7 @@ export async function getCharacterProfile(data) {
         criFinalDamagePer: 1,
     }
 
-    arkFilter.forEach(function (filterArry) {
+    Modules.originFilter.arkFilter.forEach(function (filterArry) {
 
         let plusArry = []
         let perArry = []
@@ -374,7 +388,7 @@ export async function getCharacterProfile(data) {
 
     equimentCalPoint()
     function accessoryFilterFnc(accessoryOption) {
-        calAccessoryFilter.forEach(function (filterArry) {
+        Modules.originFilter.calAccessoryFilter.forEach(function (filterArry) {
             let optionCheck = accessoryOption.includes(filterArry.name)
             if (optionCheck && filterArry.attr == "AddDamagePer") { //추가 피해 %
                 accObj.addDamagePer += filterArry.value
@@ -482,7 +496,7 @@ export async function getCharacterProfile(data) {
         })
 
 
-        bangleFilter.forEach(function (filterArry) {
+        Modules.originFilter.bangleFilter.forEach(function (filterArry) {
 
             if (realBangleArry == filterArry.name && bangleOptionArry[realIdx + 1] == filterArry.option && filterArry.secondCheck == null) {
                 typeCheck(filterArry)
@@ -811,7 +825,7 @@ export async function getCharacterProfile(data) {
 
 
     // 4티어 각인 모든 옵션 값 계산(무효옵션 하단 제거)
-    engravingCheckFilter.forEach(function (checkArry) {
+    Modules.originFilter.engravingCheckFilter.forEach(function (checkArry) {
         if (!(data.ArmoryEngraving == null) && !(data.ArmoryEngraving.ArkPassiveEffects == null)) {
             data.ArmoryEngraving.ArkPassiveEffects.forEach(function (realEngArry) {
                 if (checkArry.name == realEngArry.Name && checkArry.grade == realEngArry.Grade && checkArry.level == realEngArry.Level) {
@@ -837,7 +851,7 @@ export async function getCharacterProfile(data) {
 
     // 무효옵션 값 제거4티어만 해당
     function engCalMinus(name, finalDamagePer, criticalChancePer, criticalDamagePer, atkPer) {
-        engravingCalFilter.forEach(function (FilterArry) {
+        Modules.originFilter.engravingCalFilter.forEach(function (FilterArry) {
             if (FilterArry.job == supportCheck()) {
                 FilterArry.block.forEach(function (blockArry) {
                     if (blockArry == name) {
@@ -860,7 +874,7 @@ export async function getCharacterProfile(data) {
             }
         }
         data.ArmoryEngraving.ArkPassiveEffects.forEach(function (stoneArry) {
-            stoneCheckFilter.forEach(function (filterArry, idx) {
+            Modules.originFilter.stoneCheckFilter.forEach(function (filterArry, idx) {
                 if (idx === 0) {
 
                 }
@@ -908,7 +922,7 @@ export async function getCharacterProfile(data) {
         let elixirValString = data.ArmoryEquipment[e].Tooltip;
 
 
-        const matchedKeywordsWithContext = keywordList.flatMap(keyword => {
+        const matchedKeywordsWithContext = Modules.originFilter.keywordList.flatMap(keyword => {
             const index = elixirValString.indexOf(keyword);
             if (index !== -1) {
                 const endIndex = Math.min(index + keyword.length + 4, elixirValString.length);
@@ -939,7 +953,7 @@ export async function getCharacterProfile(data) {
     elixirData.forEach(function (realElixir) {
         // console.log(realElixir.name)
 
-        elixirCalFilter.forEach(function (filterArry) {
+        Modules.originFilter.elixirCalFilter.forEach(function (filterArry) {
             if (realElixir.name == filterArry.name && !(filterArry.atkPlus == undefined)) {
 
                 elixirObj.atkPlus += filterArry.atkPlus[realElixir.level - 1]
@@ -1002,14 +1016,14 @@ export async function getCharacterProfile(data) {
         })
     })
 
-    elixirCalFilter.forEach(function (arr) {
+    Modules.originFilter.elixirCalFilter.forEach(function (arr) {
 
     })
 
     let elixirLevel = 0
 
     elixirData.forEach(function (arry) {
-        elixirFilter.forEach(function (filterArry) {
+        Modules.originFilter.elixirFilter.forEach(function (filterArry) {
             if (arry.name == filterArry.split(":")[0]) {
                 elixirLevel += Number(arry.level)
             } else {
@@ -1158,7 +1172,7 @@ export async function getCharacterProfile(data) {
     });
 
     arkPassiveArry.forEach(function (ark) {
-        arkCalFilter.forEach(function (filter) {
+        Modules.originFilter.arkCalFilter.forEach(function (filter) {
             if (ark.name == filter.name && ark.level == filter.level) {
                 arkAttrCheck(filter)
             }
@@ -1490,8 +1504,6 @@ export async function getCharacterProfile(data) {
             return supportCheck() == className;
         }
 
-
-
         if (classCheck("전태") && skillCheck(gemSkillArry, "버스트 캐넌", dmg)) {
             specialClass = "버캐 채용 전태";
         } else if (classCheck("세맥") && !skillCheck(gemSkillArry, "환영격", dmg)) {
@@ -1500,10 +1512,16 @@ export async function getCharacterProfile(data) {
             specialClass = "7멸 핸건";
         } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)) {
             specialClass = "에필 포강";
-        } else if (classCheck("환류") && skillCheck(gemSkillArry, "종말의 날", dmg)) {
-            specialClass = "데이터 없음";
-        } else if (classCheck("환류") && !skillCheck(gemSkillArry, "인페르노", dmg)) {
-            specialClass = "6딜 환류";
+            //} else if (
+            //    classCheck("환류") &&
+            //    skillCheck(gemSkillArry, "리버스 그래비티", dmg) &&
+            //    skillCheck(gemSkillArry, "아이스 애로우", dmg) &&
+            //    skillCheck(gemSkillArry, "앨리멘탈 리액트", dmg) &&
+            //    skillCheck(gemSkillArry, "인페르노", dmg) &&
+            //    skillCheck(gemSkillArry, "숭고한 해일", dmg) &&
+            //    (skillCheck(gemSkillArry, "천벌", dmg) || skillCheck(gemSkillArry, "혹한의 부름", dmg))
+            //    && skillCheck(gemSkillArry, "블레이즈", dmg)) {
+            //    specialClass = "7딜 환류";
         } else if (classCheck("질풍") && !skillCheck(gemSkillArry, "여우비 스킬", dmg)) {
             specialClass = "5멸 질풍";
         } else if (classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)) {
@@ -1518,9 +1536,11 @@ export async function getCharacterProfile(data) {
             specialClass = "6M 피메";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
             specialClass = "슈차 잔재";
+        } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "방천격", dmg)) {
+            specialClass = "4멸 일격";
         } else if (classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)) {
             specialClass = "데이터 없음";
-        } else if (classCheck("야성") || classCheck("두동") || classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("심판자") || classCheck("회귀")) {
+        } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
             specialClass = "데이터 없음";
         } else {
             specialClass = supportCheck();
@@ -1532,7 +1552,7 @@ export async function getCharacterProfile(data) {
 
     gemSkillArry.forEach(function (gemSkill, idx) {
 
-        let realClass = classGemFilter.filter(item => item.class == specialClass);
+        let realClass = Modules.originFilter.classGemFilter.filter(item => item.class == specialClass);
 
         if (realClass.length == 0) {
             gemSkillArry[idx].skillPer = "none"
@@ -1550,7 +1570,7 @@ export async function getCharacterProfile(data) {
 
 
     // 직업별 보석 지분율 필터
-    let classGemEquip = classGemFilter.filter(function (filterArry) {
+    let classGemEquip = Modules.originFilter.classGemFilter.filter(function (filterArry) {
         return filterArry.class == specialClass;
     })
     //console.log(classGemEquip)
@@ -1644,6 +1664,9 @@ export async function getCharacterProfile(data) {
                 return result;
             }
             let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
+                // console.log("gemResultValue" + gemResultValue)
+                // console.log("finalGemValue.per" + finalGemValue.per)
+                // console.log("finalGemValue.skillper" + finalGemValue.skillPer)
                 return gemResultValue + finalGemValue.per * finalGemValue.skillPer
             }, 0)
 
@@ -1813,111 +1836,111 @@ export async function getCharacterProfile(data) {
      *********************************************************************************************************************** */
 
 
-    let maxHealth = defaultObj.maxHp;
-    let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
-    let vitalityRate = defaultObj.hpActive;
-    // console.log("최대 체력", maxHealth)
-    // console.log("기본 체력", baseHealth)
-    // console.log("생명 활성력", vitalityRate)
-    function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
-        const cases = [
-            // 1. 펫효과 ON(1.05), 만찬 OFF
-            {
-                formula: "펫효과 ON, 만찬 OFF",
-                karma: ((maxHealth / (vitalityRate * 1.05)) - baseHealth) / 400
-            },
-
-            // 2. 펫효과 OFF(1.00), 만찬 OFF
-            {
-                formula: "펫효과 OFF, 만찬 OFF",
-                karma: ((maxHealth / vitalityRate) - baseHealth) / 400
-            },
-
-            // 3. 펫효과 ON(1.05), 만찬 ON(+10000, x1.1)
-            {
-                formula: "펫효과 ON, 만찬 ON",
-                karma: ((maxHealth / (vitalityRate * 1.15)) - baseHealth - 10000) / 400
-            },
-
-            // 4. 펫효과 OFF(1.00), 만찬 ON(+10000, x1.1)
-            {
-                formula: "펫효과 OFF, 만찬 ON",
-                karma: ((maxHealth / (vitalityRate * 1.1)) - baseHealth - 10000) / 400
-            }
-        ];
-
-        // 각 결과값이 정수에 얼마나 가까운지 계산
-        const results = cases.map(item => {
-            const roundedValue = Math.round(item.karma);
-            return {
-                formula: item.formula,
-                karmaExact: item.karma,
-                karmaRounded: roundedValue,
-                proximity: Math.abs(item.karma - roundedValue),
-                isPossible: (item.karma >= -1 && !isNaN(item.karma)) // 음수나 NaN 결과는 불가능
-            };
-        });
-
-        // 가능한 결과 중 정수에 가장 가까운 값 선택
-        const possibleResults = results.filter(result => result.isPossible);
-
-        if (possibleResults.length === 0) {
-            return {
-                error: "유효한 결과가 없습니다. 데이터를 확인해주세요."
-            };
-        }
-
-        // 30 이하의 결과와 30 초과의 결과 분리
-        const resultsUnder30 = possibleResults.filter(result => result.karmaExact <= 30);
-        const resultsOver30 = possibleResults.filter(result => result.karmaExact > 30);
-
-        let bestResult;
-
-        // 30 이하의 결과가 있으면 그 중에서 정수에 가장 가까운 값 선택
-        if (resultsUnder30.length > 0) {
-            resultsUnder30.sort((a, b) => a.proximity - b.proximity);
-            bestResult = resultsUnder30[0];
-        }
-        // 30 이하의 결과가 없으면 30 초과 결과 중 정수에 가장 가까운 값을 선택 (30으로 제한)
-        else {
-            resultsOver30.sort((a, b) => a.proximity - b.proximity);
-            bestResult = resultsOver30[0];
-            bestResult.karmaRounded = 30;
-            bestResult.formula += " (최대 30 레벨로 제한됨)";
-        }
-
-        if (bestResult.karmaExact < 0) {
-            bestResult.karmaRounded = 0;
-            bestResult.formula += " (오차 보정: 0으로 처리됨)";
-        }
-        // 모든 가능한 결과 포함해서 반환
-        return {
-            bestResult: {
-                formula: bestResult.formula,
-                karmaLevel: bestResult.karmaRounded,
-                exactValue: bestResult.karmaExact.toFixed(4),
-                proximity: bestResult.proximity.toFixed(4)
-            },
-            allResults: possibleResults
-        };
-    }
-    const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
-
-    let evolutionkarmaPoint = result.bestResult.karmaLevel
-    let evolutionkarmaRank = 0
-    if (evolutionkarmaPoint >= 21) {
-        evolutionkarmaRank = 6
-    } else if (evolutionkarmaPoint >= 17) {
-        evolutionkarmaRank = 5
-    } else if (evolutionkarmaPoint >= 13) {
-        evolutionkarmaRank = 4
-    } else if (evolutionkarmaPoint >= 9) {
-        evolutionkarmaRank = 3
-    } else if (evolutionkarmaPoint >= 5) {
-        evolutionkarmaRank = 2
-    } else if (evolutionkarmaPoint >= 1) {
-        evolutionkarmaRank = 1
-    }
+    //let maxHealth = defaultObj.maxHp;
+    //let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
+    //let vitalityRate = defaultObj.hpActive;
+    //// console.log("최대 체력", maxHealth)
+    //// console.log("기본 체력", baseHealth)
+    //// console.log("생명 활성력", vitalityRate)
+    //function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
+    //    const cases = [
+    //        // 1. 펫효과 ON(1.05), 만찬 OFF
+    //        {
+    //            formula: "펫효과 ON, 만찬 OFF",
+    //            karma: ((maxHealth / (vitalityRate * 1.05)) - baseHealth) / 400
+    //        },
+    //
+    //        // 2. 펫효과 OFF(1.00), 만찬 OFF
+    //        {
+    //            formula: "펫효과 OFF, 만찬 OFF",
+    //            karma: ((maxHealth / vitalityRate) - baseHealth) / 400
+    //        },
+    //
+    //        // 3. 펫효과 ON(1.05), 만찬 ON(+10000, x1.1)
+    //        {
+    //            formula: "펫효과 ON, 만찬 ON",
+    //            karma: ((maxHealth / (vitalityRate * 1.15)) - baseHealth - 10000) / 400
+    //        },
+    //
+    //        // 4. 펫효과 OFF(1.00), 만찬 ON(+10000, x1.1)
+    //        {
+    //            formula: "펫효과 OFF, 만찬 ON",
+    //            karma: ((maxHealth / (vitalityRate * 1.1)) - baseHealth - 10000) / 400
+    //        }
+    //    ];
+    //
+    //    // 각 결과값이 정수에 얼마나 가까운지 계산
+    //    const results = cases.map(item => {
+    //        const roundedValue = Math.round(item.karma);
+    //        return {
+    //            formula: item.formula,
+    //            karmaExact: item.karma,
+    //            karmaRounded: roundedValue,
+    //            proximity: Math.abs(item.karma - roundedValue),
+    //            isPossible: (item.karma >= -1 && !isNaN(item.karma)) // 음수나 NaN 결과는 불가능
+    //        };
+    //    });
+    //
+    //    // 가능한 결과 중 정수에 가장 가까운 값 선택
+    //    const possibleResults = results.filter(result => result.isPossible);
+    //
+    //    if (possibleResults.length === 0) {
+    //        return {
+    //            error: "유효한 결과가 없습니다. 데이터를 확인해주세요."
+    //        };
+    //    }
+    //
+    //    // 30 이하의 결과와 30 초과의 결과 분리
+    //    const resultsUnder30 = possibleResults.filter(result => result.karmaExact <= 30);
+    //    const resultsOver30 = possibleResults.filter(result => result.karmaExact > 30);
+    //
+    //    let bestResult;
+    //
+    //    // 30 이하의 결과가 있으면 그 중에서 정수에 가장 가까운 값 선택
+    //    if (resultsUnder30.length > 0) {
+    //        resultsUnder30.sort((a, b) => a.proximity - b.proximity);
+    //        bestResult = resultsUnder30[0];
+    //    }
+    //    // 30 이하의 결과가 없으면 30 초과 결과 중 정수에 가장 가까운 값을 선택 (30으로 제한)
+    //    else {
+    //        resultsOver30.sort((a, b) => a.proximity - b.proximity);
+    //        bestResult = resultsOver30[0];
+    //        bestResult.karmaRounded = 30;
+    //        bestResult.formula += " (최대 30 레벨로 제한됨)";
+    //    }
+    //
+    //    if (bestResult.karmaExact < 0) {
+    //        bestResult.karmaRounded = 0;
+    //        bestResult.formula += " (오차 보정: 0으로 처리됨)";
+    //    }
+    //    // 모든 가능한 결과 포함해서 반환
+    //    return {
+    //        bestResult: {
+    //            formula: bestResult.formula,
+    //            karmaLevel: bestResult.karmaRounded,
+    //            exactValue: bestResult.karmaExact.toFixed(4),
+    //            proximity: bestResult.proximity.toFixed(4)
+    //        },
+    //        allResults: possibleResults
+    //    };
+    //}
+    //const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
+    //
+    //let evolutionkarmaPoint = result.bestResult.karmaLevel
+    //let evolutionkarmaRank = 0
+    //if (evolutionkarmaPoint >= 21) {
+    //    evolutionkarmaRank = 6
+    //} else if (evolutionkarmaPoint >= 17) {
+    //    evolutionkarmaRank = 5
+    //} else if (evolutionkarmaPoint >= 13) {
+    //    evolutionkarmaRank = 4
+    //} else if (evolutionkarmaPoint >= 9) {
+    //    evolutionkarmaRank = 3
+    //} else if (evolutionkarmaPoint >= 5) {
+    //    evolutionkarmaRank = 2
+    //} else if (evolutionkarmaPoint >= 1) {
+    //    evolutionkarmaRank = 1
+    //}
     // console.log(evolutionkarmaRank, "랭크", evolutionkarmaPoint, "레벨")
 
 
@@ -2012,7 +2035,7 @@ export async function getCharacterProfile(data) {
                 let tier = tierMatch ? tierMatch[0] : null;
                 let accessoryTooltip = accessoryObj.Tooltip.replace(/<[^>]*>/g, '')
 
-                let accessoryGradeArray = Filter.grindingFilter.filter(filter => {
+                let accessoryGradeArray = Modules.originFilter.grindingFilter.filter(filter => {
                     let check = filter.split(":")[0];
                     if (accessoryTooltip.includes(check)) {
                         accessoryTooltip = accessoryTooltip.replace(check, "")
@@ -2056,7 +2079,7 @@ export async function getCharacterProfile(data) {
                 let tier = betweenText[4].match(/\d+/)[0];
 
                 let optionArray = betweenText.map((text, idx) => {
-                    if (Filter.engravingFilter.some(filter => text === filter.name)) {
+                    if (Modules.originFilter.engravingFilter.some(filter => text === filter.name)) {
                         let obj = {};
                         obj.name = text;
                         obj.level = betweenText[idx + 2].match(/\d+/)[0];
@@ -2092,16 +2115,15 @@ export async function getCharacterProfile(data) {
                 let betweenText = bangle.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(1, -1)) || [];
                 let replaceText = bangle.Tooltip.replace(/<[^>]*>/g, '');
                 let tier = betweenText[4].match(/\d+/)[0];
-
                 let bangleFilter;
                 if (tier === "3" && bangle.Grade === "유물") {
-                    bangleFilter = SimulatorFilter.bangleOptionData.t3RelicData;
+                    bangleFilter = Modules.simulatorFilter.bangleOptionData.t3RelicData;
                 } else if (tier === "3" && bangle.Grade === "고대") {
-                    bangleFilter = SimulatorFilter.bangleOptionData.t3MythicData;
+                    bangleFilter = Modules.simulatorFilter.bangleOptionData.t3MythicData;
                 } else if (tier === "4" && bangle.Grade === "유물") {
-                    bangleFilter = SimulatorFilter.bangleOptionData.t4RelicData;
+                    bangleFilter = Modules.simulatorFilter.bangleOptionData.t4RelicData;
                 } else if (tier === "4" && bangle.Grade === "고대") {
-                    bangleFilter = SimulatorFilter.bangleOptionData.t4MythicData;
+                    bangleFilter = Modules.simulatorFilter.bangleOptionData.t4MythicData;
                 }
                 // console.log(replaceText)
                 let options = bangleFilter.filter(filter => {
@@ -2112,8 +2134,7 @@ export async function getCharacterProfile(data) {
                     }
 
                 });
-
-                let specialStats = betweenText.filter(text => /^(치명|특화|신속)\s\+\d+$/.test(text.trim()));
+                let specialStats = betweenText.filter(text => /(치명|특화|신속)\s*\+(\d+)/g.test(text.trim()));
                 let normalStats = betweenText.filter(text => /(힘|민첩|지능|체력)\s*\+(\d+)/g.test(text.trim()));
                 specialStats = specialStats.map(stat => stat.match(/(치명|특화|신속)\s*\+(\d+)/g)[0])
                 normalStats = normalStats.map(stat => stat.match(/(힘|민첩|지능|체력)\s*\+(\d+)/g)[0])
@@ -2207,7 +2228,7 @@ export async function getCharacterProfile(data) {
         if (data.ArmoryEngraving) {
             data.ArmoryEngraving.ArkPassiveEffects.forEach(eng => {
                 let obj = {};
-                let icon = Filter.engravingImg.find(filter => filter.split("^")[0] === eng.Name);
+                let icon = Modules.originFilter.engravingImg.find(filter => filter.split("^")[0] === eng.Name);
 
                 obj.stone = eng.AbilityStoneLevel;
                 obj.grade = eng.Grade;
@@ -2221,7 +2242,7 @@ export async function getCharacterProfile(data) {
         return result;
     }
     htmlObj.engravingInfo = engravingInfoExtract();
-    
+
 
     /* **********************************************************************************************************************
      * name		              :	  

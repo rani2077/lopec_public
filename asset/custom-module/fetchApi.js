@@ -30,11 +30,12 @@ export async function lostarkApiCall(inputName) {
     // alert("api 호출")
     // 캐시가 없거나 만료되었을 경우 API 호출
     let apiKey = localApiKey;
-    let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
-    if (cloudflareResponse.status !== 403) {
-        const responseData = await cloudflareResponse.json();
-        apiKey = responseData.apiKey;
-    }
+    // let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
+    // console.log(cloudflareResponse)
+    // if (cloudflareResponse.status !== 403) {
+    //     const responseData = await cloudflareResponse.json();
+    //     apiKey = responseData.apiKey;
+    // }
     const options = {
         method: 'GET',
         headers: {

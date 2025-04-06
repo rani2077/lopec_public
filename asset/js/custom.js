@@ -1,5 +1,8 @@
-// spec-point.js html코드
-// import { getCharacterProfile, searchHtml } from '/asset/js/spec-point.js'
+/* **********************************************************************************************************************
+* variable name		:	mobileCheck
+* description       : 	현재 접속한 디바이스 기기가 모바일, 태블릿일 경우 true를 반환
+*********************************************************************************************************************** */
+let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 
 /* **********************************************************************************************************************
  * function name		:	importModuleManager()
@@ -32,8 +35,6 @@ async function importModuleManager() {
     return moduleObj
 }
 
-
-
 async function mainSearchFunction() {
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -65,7 +66,7 @@ async function mainSearchFunction() {
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
     // console.log("data", data)
     console.log("오리진obj", extractValue)
-    console.log("specPoint", specPoint)
+    //console.log("specPoint", specPoint)
     // console.log("specPoint", specPoint.completeSpecPoint)
 
 
@@ -102,17 +103,17 @@ async function mainSearchFunction() {
                 gradeImageSrc = "/asset/image/esther.png";
                 nextTierValue = 0;
                 tierIndex = 5;
-            } else if (specPoint.completeSpecPoint >= 2500) {
+            } else if (specPoint.completeSpecPoint >= 2400) {
                 gradeImageSrc = "/asset/image/master.png";
                 nextTierValue = 3000;
                 tierIndex = 4;
-            } else if (specPoint.completeSpecPoint >= 2000) {
+            } else if (specPoint.completeSpecPoint >= 1900) {
                 gradeImageSrc = "/asset/image/diamond.png";
-                nextTierValue = 2500;
+                nextTierValue = 2400;
                 tierIndex = 3;
             } else if (specPoint.completeSpecPoint >= 1600) {
                 gradeImageSrc = "/asset/image/gold.png";
-                nextTierValue = 2000;
+                nextTierValue = 1900;
                 tierIndex = 2;
             } else if (specPoint.completeSpecPoint >= 1400) {
                 gradeImageSrc = "/asset/image/silver.png";
@@ -218,7 +219,7 @@ async function mainSearchFunction() {
                 <div class="gem-box radius ${gradeClassName}">
                     <img src="${data.ArmoryGem.Gems[idx].Icon}" alt="" style="border-radius:3px;">
                     <span class="level">${gemItem.level}</span>
-                    <span class="detail">${gemItem.skill} <br> 딜 지분 : ${gemItem.skillPer !== "none" ? `${(gemItem.skillPer * 100).toFixed(0)}%` : "데이터 없음"}</span>
+                    <span class="detail">${gemItem.skill} <br> 딜 지분 : ${gemItem.skillPer !== "none" ? `${(gemItem.skillPer * 100).toFixed(1)}%` : "데이터 없음"}</span>
                     <i style="display:none;">${sortTag}</i>
                 </div>`
             })
@@ -337,7 +338,7 @@ async function mainSearchFunction() {
                 <div class="text-box">
                     <div class="name-wrap">
                         <span class="tag"></span>
-                        <span class="armor-name">${item.name} ${advancedLevel}</span>
+                        <span class="armor-name">${item.name} <strong style="font-weight:600;">${advancedLevel}</strong></span>
                     </div>
                     ${elixirWrap}
                     ${hyperWrap}
@@ -888,13 +889,25 @@ async function mainSearchFunction() {
     async function detailAreaCreate() {
         let element = document.querySelector(".sc-info .group-info .detail-area");
         let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL")
-        // console.log(userDbInfo)
+        //console.log(userDbInfo)
+
 
         function infoWrap(tag, array) {
+            let mobilePos = "";
+            if (mobileCheck) {
+                mobilePos = "top:initial;bottom:95%;left:-50px;";
+            }
             let infoBox = array.map(object => {
                 return `
                     <div class="info-box">
-                        <span class="text">${object.name}</span>
+                        <span class="text">
+                            <i class="icon ${object.icon}"></i>
+                            ${object.name}
+                            ${object.question ?
+                        `<div class="question" style="margin-left:5px;">
+                            <span class="detail" style="${mobilePos};width:200px;white-space:wrap;">${object.question}</span>
+                        </div>` : ""}
+                        </span>
                         <span class="text">${object.value}</span>
                     </div>`;
             });
@@ -904,7 +917,14 @@ async function mainSearchFunction() {
                     ${infoBox.join('')}
                 </div>`;
         }
+        function todayFormattedDate() {
+            const today = new Date();
+            const year = String(today.getFullYear()).slice(-2); // 년도의 마지막 두 자리
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 +1), 두 자리로 만들기
+            const day = String(today.getDate()).padStart(2, '0'); // 일, 두 자리로 만들기
 
+            return `${year}.${month}.${day}`;
+        }
         function formatDate(dateString) {
             // 입력된 날짜 문자열의 형식을 검증합니다.
             if (!/^\d{14}$/.test(dateString)) {
@@ -915,73 +935,79 @@ async function mainSearchFunction() {
             const year = dateString.substring(2, 4);
             const month = dateString.substring(4, 6);
             const day = dateString.substring(6, 8);
-            
+
             // 'YY.MM.DD' 형식의 문자열을 생성합니다.
             return `${year}.${month}.${day}`;
         }
 
-        
         let data = specPoint;
         let specPointInfo = [
-            { name: "달성 최고 점수", value: userDbInfo.data.characterBest.LCHB_TOTALSUM },
-            { name: "현재 레벨 중앙값", value: "수집중" },
-            { name: "최고 점수 달성일", value: formatDate(userDbInfo.data.characterBest.REG_DATE) },
+            { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUM, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
+            { name: "현재 레벨 중앙값", value: "수집중", icon: "chart-simple-solid" },
+            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.REG_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
         ]
         let armorInfo = [
-            { name: "공격력", value: Number(data.dealerAttackPowResult).toFixed(0) },
-            { name: "엘릭서", value: Number(data.dealerExlixirValue).toFixed(2) + "%" },
-            { name: "초월", value: Number(data.dealerHyperValue).toFixed(2) + "%" },
-            { name: "각인", value: Number(data.dealerEngResult).toFixed(2) + "%" },
-            { name: "팔찌", value: Number(data.dealerBangleResult).toFixed(2) + "%" },
+            { name: "공격력", value: Number(data.dealerAttackPowResult).toFixed(0), icon: "bolt-solid" },
+            { name: "엘릭서", value: Number(data.dealerExlixirValue).toFixed(2) + "%", icon: "flask-solid" },
+            { name: "초월", value: Number(data.dealerHyperValue).toFixed(2) + "%", icon: "star-solid" },
+            { name: "각인", value: Number(data.dealerEngResult).toFixed(2) + "%", icon: "book-solid" },
+            { name: "팔찌", value: Number(data.dealerBangleResult).toFixed(2) + "%", icon: "ring-solid" },
         ]
         let arkPassiveInfo = [
-            { name: "진화", value: Number(data.dealerEvloutionResult).toFixed(0) + "%" },
-            { name: "깨달음", value: Number(data.dealerEnlightResult).toFixed(0) + "%" },
-            { name: "도약", value: Number(data.dealerLeapResult).toFixed(0) + "%" },
+            { name: "진화", value: Number(data.dealerEvloutionResult).toFixed(0) + "%", icon: "fire-solid" },
+            { name: "깨달음", value: Number(data.dealerEnlightResult).toFixed(0) + "%", icon: "lightbulb-solid" },
+            { name: "도약", value: Number(data.dealerLeapResult).toFixed(0) + "%", icon: "feather-pointed-solid" },
         ]
         let gemInfo;
         if (extractValue.etcObj.gemCheckFnc.originGemValue === 0) {
             gemInfo = [
-                { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.etcAverageValue).toFixed(2) + "%" },
-                { name: "보석 최종 딜증", value: Number(extractValue.etcObj.gemCheckFnc.etcAverageValue).toFixed(2) + "%" },
-                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" },
-                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) },
+                { name: "보석 실질 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%", icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
+                { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%", icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%", icon: "gem-solid", question: "보석 평균 쿨감 수치" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
             ]
         } else {
             gemInfo = [
-                { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.originGemValue).toFixed(2) + "%" },
-                { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.gemValue - 1) * 100).toFixed(2) + "%" },
-                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" },
-                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) },
+                { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.originGemValue).toFixed(2) + "%", icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
+                { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.gemValue - 1) * 100).toFixed(2) + "%", icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%", icon: "gem-solid", question: "보석 평균 쿨감 수치" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
             ]
         }
 
         let supportSpecPointInfo = [
-            { name: "달성 최고 점수", value: userDbInfo.data.characterBest.LCHB_TOTALSUMSUPPORT },
-            { name: "현재 레벨 중앙값", value: "수집중" },
-            { name: "딜러 환산 점수", value: "수집중" },
-            { name: "최고 점수 달성일", value: formatDate(userDbInfo.data.characterBest.REG_DATE) },
+            { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUMSUPPORT, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
+            { name: "현재 레벨 중앙값", value: "수집중", icon: "chart-simple-solid" },
+            { name: "딜러 환산 점수", value: "수집중", icon: "arrows-left-right-to-line-solid" },
+            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.REG_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
         ]
         let supportBuffInfo = [
-            { name: "상시버프", value: Number(data.supportAllTimeBuff).toFixed(2) + "%" },
-            { name: "풀버프", value: Number(data.supportFullBuff).toFixed(2) + "%" },
-            { name: "낙인력", value: Number(data.supportStigmaResult).toFixed(1) + "%" },
-            { name: "팔찌", value: Number(data.supportBangleResult).toFixed(2) + "%" },
+            { name: "상시버프", value: Number(data.supportAllTimeBuff).toFixed(2) + "%", icon: "arrows-rotate-solid" },
+            { name: "풀버프", value: Number(data.supportFullBuff).toFixed(2) + "%", icon: "wand-magic-sparkles-solid" },
+            { name: "낙인력", value: Number(data.supportStigmaResult).toFixed(1) + "%", icon: "bullseye-solid" },
+            { name: "팔찌", value: Number(data.supportBangleResult).toFixed(2) + "%", icon: "ring-solid" },
         ]
         let supportEffectInfo = [
-            { name: "특성", value: data.supportTotalStatus },
-            { name: "케어력", value: Number(data.supportCarePowerResult).toFixed(2) + "%" },
-            { name: "각인 보너스", value: Number(data.supportEngBonus).toFixed(2) + "%" },
-            { name: "쿨타임 감소", value: data.supportgemsCoolAvg },
+            { name: "특성", value: data.supportTotalStatus, icon: "person-solid" },
+            { name: "케어력", value: Number(data.supportCarePowerResult).toFixed(2) + "%", icon: "shield-halved-solid" },
+            { name: "각인 보너스", value: Number(data.supportEngBonus).toFixed(2) + "%", icon: "book-solid" },
+            { name: "쿨타임 감소", value: data.supportgemsCoolAvg + "%", icon: "gem-solid" },
         ]
-        
+
         let result = "";
-        if (extractValue.etcObj.supportCheck !== "서폿") {
+        if (mobileCheck) {
+            result = `
+                <div class="title-box">
+                    <span class="title">상세정보</span>
+                </div>
+                <span class="button" onclick="document.querySelector('.sc-info .detail-area').classList.toggle('on');"></span>`;
+        }
+        // extractValue.etcObj.supportCheck !== "서폿"
+        if (!/서폿|회귀|심판자|진실된 용맹/.test(extractValue.etcObj.supportCheck)) {
             result += infoWrap("점수 통계", specPointInfo);
             result += infoWrap("장비 효과", armorInfo);
             result += infoWrap("아크패시브", arkPassiveInfo);
             result += infoWrap("보석 효과", gemInfo);
-            
         } else {
             result += infoWrap("점수 통계", supportSpecPointInfo);
             result += infoWrap("버프 정보", supportBuffInfo);
@@ -993,6 +1019,7 @@ async function mainSearchFunction() {
     /* **********************************************************************************************************************
     * function name		:	dataBaseWrite
     * description       : 	유저정보를 db로 보내 저장하게 함
+    * useDevice         :   모두사용
     *********************************************************************************************************************** */
     async function dataBaseWrite() {
         await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
@@ -1013,6 +1040,7 @@ async function mainSearchFunction() {
             "2.0"                                                                           // 현재 버전 
         );
     }
-    dataBaseWrite()
+    setTimeout(() => { dataBaseWrite() }, 0);
+
 }
 mainSearchFunction()
