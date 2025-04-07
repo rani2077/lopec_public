@@ -557,12 +557,18 @@
                         <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                 </div>
-                <div class="ads-area" style="width:100%;height:660px;margin-top:20px;">
+                <div class="karma-area shadow">
+                    <span style="font-size:16px;font-weight:600;">진화 카르마 예상 수치</span>
+                    <span>알고리즘 추정치로, 실제 값과 다를 수 있습니다.</span>
+                    <span class="karma"><em style="color:#f00;font-weight:600;">?</em>랭크 <em style="color:#f00;font-weight:600;">?</em>레벨</span>
+                    <a href="https://forms.gle/QYfYAGEmQZQ7oX7n6" target="_blank" style="color:#00f">카르마 랭크 불일치 제보</a>
+                </div>
+                <div class="ads-area" style="width:100%;height:513px;margin-top:20px;">
                     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
                         crossorigin="anonymous"></script>
                     <!-- main-right-side-1 -->
                     <ins class="adsbygoogle"
-                        style="display:inline-block;width:300px;height:660px"
+                        style="display:inline-block;width:300px;height:513px"
                         data-ad-client="ca-pub-5125145415518329"
                         data-ad-slot="5681860685"></ins>
                     <script>

@@ -1293,8 +1293,7 @@ async function simulatorInputCalc() {
     }
     calcSpecPointToHtml();
 }
-simulatorInputCalc()
-
+await simulatorInputCalc()
 document.body.addEventListener('change', () => { simulatorInputCalc() })
 
 
@@ -1892,7 +1891,7 @@ async function selectCreate(data, Modules) {
 
         let elements = document.querySelectorAll(".accessory-item .accessory");
         elements.forEach(element => {
-            let value = Number(element.dataset.enlight);
+            let value = Number(element.dataset.enlight ? element.dataset.enlight : 0);
             levelEvolution += value;
         })
         // console.log("깨포", levelEvolution)
@@ -1949,7 +1948,6 @@ async function selectCreate(data, Modules) {
             });
         })
     }
-    enlightValueAttributeSet()
 
     /* **********************************************************************************************************************
     * function name		:	enlightValueAttributeSet()
@@ -3021,7 +3019,7 @@ async function selectCreate(data, Modules) {
     avatarAutoSelect()
 
     /* **********************************************************************************************************************
-    * function name		:	accessoryAutoSelect()
+    * function name		:	accessoryAutoSelect() <== 삭제예정
     * description	    : 	악세서리를 자동으로 선택하는 함수
     *********************************************************************************************************************** */
     function accessoryAutoSelect() {
@@ -3126,7 +3124,7 @@ async function selectCreate(data, Modules) {
         }
 
     }
-    accessoryAutoSelect();
+    // accessoryAutoSelect();
     /* **********************************************************************************************************************
     * function name		:	accessoryTierAutoSelect()
     * description	    : 	악세서리를 자동으로 선택하는 함수
@@ -3142,59 +3140,66 @@ async function selectCreate(data, Modules) {
         let earRingCount = 0;
         let ringCount = 0;
         data.ArmoryEquipment.forEach(accessory => {
-            let tooltipData = betweenTextExtract(accessory.Tooltip);
-            let accessoryTierName = tooltipData[5].match(/(고대|유물)/g)[0];
-            let accessoryTierNumber = Number(tooltipData[10].match(/\d+/));
-            let optionIndex = 0;
-            if (accessoryTierNumber <= 3) {
-                if (accessoryTierName === "유물") {
-                    optionIndex = 0;
-                } else if (accessoryTierName === "고대") {
-                    optionIndex = 1;
-                }
-            } else if (accessoryTierNumber === 4) {
-                if (accessoryTierName === "유물") {
-                    optionIndex = 2;
-                } else if (accessoryTierName === "고대") {
-                    optionIndex = 3;
-                }
-            }
-            if (accessory.Type === "목걸이") {
-                necklaceElement.options[optionIndex].selected = true;
-                necklaceElement.dispatchEvent(new Event("change"));
-            } else if (accessory.Type === "귀걸이") {
-                if (earRingCount === 0) {
-                    earRingElement1.options[optionIndex].selected = true;
-                    earRingElement1.dispatchEvent(new Event("change"));
-                    earRingCount++;
-                } else if (earRingCount === 1) {
-                    earRingElement2.options[optionIndex].selected = true;
-                    earRingElement2.dispatchEvent(new Event("change"));
-                }
-            } else if (accessory.Type === "반지") {
-                if (ringCount === 0) {
-                    ringElement1.options[optionIndex].selected = true;
-                    ringElement1.dispatchEvent(new Event("change"));
-                    ringCount++;
-                } else if (ringCount === 1) {
-                    ringElement2.options[optionIndex].selected = true;
-                    ringElement2.dispatchEvent(new Event("change"));
-                }
-            }
-            if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
 
-                // console.log(accessoryTierName, accessoryTierNumber);
+            let optionIndex = 0;
+            if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
+                let tooltipData = betweenTextExtract(accessory.Tooltip);
+                let accessoryTierName = tooltipData[5].match(/(고대|유물)/g)[0];
+                let accessoryTierNumber = Number(tooltipData[10].match(/\d+/));
+                let accessoryStatsValue = Number(/(힘|민첩|지능)\s*\+(\d+)/g.exec(tooltipData)[2])
+
+                if (accessoryTierNumber <= 3) {
+                    if (accessoryTierName === "유물") {
+                        optionIndex = 0;
+                    } else if (accessoryTierName === "고대") {
+                        optionIndex = 1;
+                    }
+                } else if (accessoryTierNumber === 4) {
+                    if (accessoryTierName === "유물") {
+                        optionIndex = 2;
+                    } else if (accessoryTierName === "고대") {
+                        optionIndex = 3;
+                    }
+                }
+                if (accessory.Type === "목걸이") {
+                    necklaceElement.options[optionIndex].selected = true;
+                    necklaceElement.closest(".number-box").querySelector("input.progress").value = accessoryStatsValue;
+                    necklaceElement.dispatchEvent(new Event("change"));
+                } else if (accessory.Type === "귀걸이") {
+                    if (earRingCount === 0) {
+                        earRingElement1.options[optionIndex].selected = true;
+                        earRingElement1.closest(".number-box").querySelector("input.progress").value = accessoryStatsValue;
+                        earRingElement1.dispatchEvent(new Event("change"));
+                        earRingCount++;
+                    } else if (earRingCount === 1) {
+                        earRingElement2.options[optionIndex].selected = true;
+                        earRingElement2.closest(".number-box").querySelector("input.progress").value = accessoryStatsValue;
+                        earRingElement2.dispatchEvent(new Event("change"));
+                    }
+                } else if (accessory.Type === "반지") {
+                    if (ringCount === 0) {
+                        ringElement1.options[optionIndex].selected = true;
+                        ringElement1.closest(".number-box").querySelector("input.progress").value = accessoryStatsValue;
+                        ringElement1.dispatchEvent(new Event("change"));
+                        ringCount++;
+                    } else if (ringCount === 1) {
+                        ringElement2.options[optionIndex].selected = true;
+                        ringElement2.closest(".number-box").querySelector("input.progress").value = accessoryStatsValue;
+                        ringElement2.dispatchEvent(new Event("change"));
+                    }
+                }
             }
+
         })
 
     }
-    // accessoryTierAutoSelect();
+    accessoryTierAutoSelect();
     /* **********************************************************************************************************************
     * function name		:	accessoryOptionsAutoSelect()
     * description	    : 	악세서리를 자동으로 선택하는 함수
     *********************************************************************************************************************** */
     function accessoryOptionsAutoSelect() {
-        let elements = document.querySelectorAll(".accessory-item.accessory");
+        let elements = document.querySelectorAll(".accessory-item.accessory .option-box");
         let necklaceElement = elements[0];
         let earRingElement1 = elements[1];
         let earRingElement2 = elements[2];
@@ -3205,36 +3210,21 @@ async function selectCreate(data, Modules) {
         let ringCount = 0;
         let accessoryFilter;
         data.ArmoryEquipment.forEach(accessory => {
-            let tooltipData = betweenTextExtract(accessory.Tooltip);
-            let accessoryTierName = tooltipData[5].match(/(고대|유물)/g)[0];
-            let accessoryTierNumber = Number(tooltipData[10].match(/\d+/));
-            if (accessoryTierNumber <= 3) {
-                if (accessoryTierName === "유물") {
-                    accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t3RelicData;
-                } else if (accessoryTierName === "고대") {
-                    accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t3MythicData;
-                }
-            } else if (accessoryTierNumber === 4) {
-                accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t4Data;
-            }
-            if (accessory.Type === "목걸이") {
-
-            } else if (accessory.Type === "귀걸이") {
-                if (earRingCount === 0) {
-
-                } else if (earRingCount === 1) {
-
-                }
-            } else if (accessory.Type === "반지") {
-
-                if (ringCount === 0) {
-                } else if (ringCount === 1) {
-
-                }
-            }
-
             if (/목걸이|귀걸이|반지/.test(accessory.Type)) {
-                let temp = mergeFilter(accessoryFilter).filter(filter => {
+                let tooltipData = betweenTextExtract(accessory.Tooltip);
+                let accessoryTierName = tooltipData[5].match(/(고대|유물)/g)[0];
+                let accessoryTierNumber = Number(tooltipData[10].match(/\d+/));
+                if (accessoryTierNumber <= 3) {
+                    if (accessoryTierName === "유물") {
+                        accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t3RelicData;
+                    } else if (accessoryTierName === "고대") {
+                        accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t3MythicData;
+                    }
+                } else if (accessoryTierNumber === 4) {
+                    accessoryFilter = Modules.simulatorFilter.accessoryOptionData.t4Data;
+                }
+
+                let userAccessoryOptionArray = mergeFilter(accessoryFilter).filter(filter => {
                     return tooltipData.some((item, idx) => {
                         if (typeof item === 'string' && item.includes(filter)) {
                             tooltipData.splice(idx, 1);
@@ -3242,11 +3232,36 @@ async function selectCreate(data, Modules) {
                         }
                     });
                 });
-                console.log(temp)
-                // console.log(tooltipData.includes("추가 피해 +1.60%"));
-                // console.log(tooltipData);
-                // console.log(mergeFilter(accessoryFilter))
-                // console.log(accessoryFilter);
+
+                if (accessory.Type === "목걸이") {
+                    userAccessoryOptionArray.forEach((option, idx) => {
+                        optionElementAutoCheck(necklaceElement.querySelectorAll("select.option")[idx], option, 'textContent');
+                    })
+                } else if (accessory.Type === "귀걸이") {
+                    if (earRingCount === 0) {
+                        userAccessoryOptionArray.forEach((option, idx) => {
+                            optionElementAutoCheck(earRingElement1.querySelectorAll("select.option")[idx], option, 'textContent');
+                        })
+                        earRingCount++;
+                    } else if (earRingCount === 1) {
+                        userAccessoryOptionArray.forEach((option, idx) => {
+                            optionElementAutoCheck(earRingElement2.querySelectorAll("select.option")[idx], option, 'textContent');
+                        })
+
+                    }
+                } else if (accessory.Type === "반지") {
+                    if (ringCount === 0) {
+                        userAccessoryOptionArray.forEach((option, idx) => {
+                            optionElementAutoCheck(ringElement1.querySelectorAll("select.option")[idx], option, 'textContent');
+                        })
+                        ringCount++;
+                    } else if (ringCount === 1) {
+                        userAccessoryOptionArray.forEach((option, idx) => {
+                            optionElementAutoCheck(ringElement2.querySelectorAll("select.option")[idx], option, 'textContent');
+                        })
+                    }
+                }
+
             }
 
         })
@@ -3265,7 +3280,9 @@ async function selectCreate(data, Modules) {
             return names
         }
     }
-    // accessoryOptionsAutoSelect();  // <==작업중
+    accessoryOptionsAutoSelect();
+    enlightValueAttributeSet();
+
     armoryGradeToBackgroundClassName() // 장비 및 악세서리 고대,유물 에 따른 배경이미지 변경
 
     /* **********************************************************************************************************************
@@ -3838,7 +3855,7 @@ async function calculateGemData(data) {
 
 
 /* **********************************************************************************************************************
-* function name		:   armorAutoCheck(element, selectValue, tag)
+* function name		:   optionElementAutoCheck(element, selectValue, tag)
 * description	    :   조건과 일치하는 option값을 자동으로 선택함
 
 * parameter         :   element

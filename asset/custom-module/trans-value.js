@@ -481,7 +481,7 @@ export async function getCharacterProfile(data) {
     bangleOptionArry.forEach(function (realBangleArry, realIdx) {
 
         let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff']
-        let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff','atkBuffPlus']
+        let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff', 'atkBuffPlus']
         let statsArry = ["치명:crit", "특화:special", "신속:haste", "힘:str", "민첩:dex", "지능:int", "최대 생명력:statHp"];
 
         statsArry.forEach(function (stats) {
@@ -526,7 +526,28 @@ export async function getCharacterProfile(data) {
             })
         }
     })
-    // console.log(bangleObj)
+    /* **********************************************************************************************************************
+     * name		              :	  bangleBlockStats
+     * version                :   2.0
+     * description            :   직업에 따라 팔찌의 힘/민첩/지능 수치를 일부 무효처리함
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function bangleBlockStats() {
+        let userClass = data.ArmoryProfile.CharacterClassName;
+        let filter = Modules.originFilter.bangleJobFilter;
+        let vailedStat = filter.find(item => item.job === userClass).stats;
+        if (vailedStat === "str") {
+            bangleObj.dex = 0;
+            bangleObj.int = 0;
+        } else if (vailedStat === "dex") {
+            bangleObj.str = 0;
+            bangleObj.int = 0;
+        } else if (vailedStat === "int") {
+            bangleObj.str = 0;
+            bangleObj.dex = 0;
+        }
+    };
+    bangleBlockStats();
 
 
     /* **********************************************************************************************************************
@@ -1837,131 +1858,135 @@ export async function getCharacterProfile(data) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
 
+    function karmaPointCalc() {
+        let maxHealth = defaultObj.maxHp;
+        let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
+        let vitalityRate = defaultObj.hpActive;
+        // console.log("최대 체력", maxHealth)
+        // console.log("기본 체력", baseHealth)
+        // console.log("생명 활성력", vitalityRate)
+        function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
+            const cases = [
+                // 1. 펫효과 ON(1.05), 만찬 OFF
+                {
+                    formula: "펫효과 ON, 만찬 OFF",
+                    karma: ((maxHealth / (vitalityRate * 1.05)) - baseHealth) / 400
+                },
 
-    //let maxHealth = defaultObj.maxHp;
-    //let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
-    //let vitalityRate = defaultObj.hpActive;
-    //// console.log("최대 체력", maxHealth)
-    //// console.log("기본 체력", baseHealth)
-    //// console.log("생명 활성력", vitalityRate)
-    //function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
-    //    const cases = [
-    //        // 1. 펫효과 ON(1.05), 만찬 OFF
-    //        {
-    //            formula: "펫효과 ON, 만찬 OFF",
-    //            karma: ((maxHealth / (vitalityRate * 1.05)) - baseHealth) / 400
-    //        },
-    //
-    //        // 2. 펫효과 OFF(1.00), 만찬 OFF
-    //        {
-    //            formula: "펫효과 OFF, 만찬 OFF",
-    //            karma: ((maxHealth / vitalityRate) - baseHealth) / 400
-    //        },
-    //
-    //        // 3. 펫효과 ON(1.05), 만찬 ON(+10000, x1.1)
-    //        {
-    //            formula: "펫효과 ON, 만찬 ON",
-    //            karma: ((maxHealth / (vitalityRate * 1.15)) - baseHealth - 10000) / 400
-    //        },
-    //
-    //        // 4. 펫효과 OFF(1.00), 만찬 ON(+10000, x1.1)
-    //        {
-    //            formula: "펫효과 OFF, 만찬 ON",
-    //            karma: ((maxHealth / (vitalityRate * 1.1)) - baseHealth - 10000) / 400
-    //        }
-    //    ];
-    //
-    //    // 각 결과값이 정수에 얼마나 가까운지 계산
-    //    const results = cases.map(item => {
-    //        const roundedValue = Math.round(item.karma);
-    //        return {
-    //            formula: item.formula,
-    //            karmaExact: item.karma,
-    //            karmaRounded: roundedValue,
-    //            proximity: Math.abs(item.karma - roundedValue),
-    //            isPossible: (item.karma >= -1 && !isNaN(item.karma)) // 음수나 NaN 결과는 불가능
-    //        };
-    //    });
-    //
-    //    // 가능한 결과 중 정수에 가장 가까운 값 선택
-    //    const possibleResults = results.filter(result => result.isPossible);
-    //
-    //    if (possibleResults.length === 0) {
-    //        return {
-    //            error: "유효한 결과가 없습니다. 데이터를 확인해주세요."
-    //        };
-    //    }
-    //
-    //    // 30 이하의 결과와 30 초과의 결과 분리
-    //    const resultsUnder30 = possibleResults.filter(result => result.karmaExact <= 30);
-    //    const resultsOver30 = possibleResults.filter(result => result.karmaExact > 30);
-    //
-    //    let bestResult;
-    //
-    //    // 30 이하의 결과가 있으면 그 중에서 정수에 가장 가까운 값 선택
-    //    if (resultsUnder30.length > 0) {
-    //        resultsUnder30.sort((a, b) => a.proximity - b.proximity);
-    //        bestResult = resultsUnder30[0];
-    //    }
-    //    // 30 이하의 결과가 없으면 30 초과 결과 중 정수에 가장 가까운 값을 선택 (30으로 제한)
-    //    else {
-    //        resultsOver30.sort((a, b) => a.proximity - b.proximity);
-    //        bestResult = resultsOver30[0];
-    //        bestResult.karmaRounded = 30;
-    //        bestResult.formula += " (최대 30 레벨로 제한됨)";
-    //    }
-    //
-    //    if (bestResult.karmaExact < 0) {
-    //        bestResult.karmaRounded = 0;
-    //        bestResult.formula += " (오차 보정: 0으로 처리됨)";
-    //    }
-    //    // 모든 가능한 결과 포함해서 반환
-    //    return {
-    //        bestResult: {
-    //            formula: bestResult.formula,
-    //            karmaLevel: bestResult.karmaRounded,
-    //            exactValue: bestResult.karmaExact.toFixed(4),
-    //            proximity: bestResult.proximity.toFixed(4)
-    //        },
-    //        allResults: possibleResults
-    //    };
-    //}
-    //const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
-    //
-    //let evolutionkarmaPoint = result.bestResult.karmaLevel
-    //let evolutionkarmaRank = 0
-    //if (evolutionkarmaPoint >= 21) {
-    //    evolutionkarmaRank = 6
-    //} else if (evolutionkarmaPoint >= 17) {
-    //    evolutionkarmaRank = 5
-    //} else if (evolutionkarmaPoint >= 13) {
-    //    evolutionkarmaRank = 4
-    //} else if (evolutionkarmaPoint >= 9) {
-    //    evolutionkarmaRank = 3
-    //} else if (evolutionkarmaPoint >= 5) {
-    //    evolutionkarmaRank = 2
-    //} else if (evolutionkarmaPoint >= 1) {
-    //    evolutionkarmaRank = 1
-    //}
-    // console.log(evolutionkarmaRank, "랭크", evolutionkarmaPoint, "레벨")
+                // 2. 펫효과 OFF(1.00), 만찬 OFF
+                {
+                    formula: "펫효과 OFF, 만찬 OFF",
+                    karma: ((maxHealth / vitalityRate) - baseHealth) / 400
+                },
 
+                // 3. 펫효과 ON(1.05), 만찬 ON(+10000, x1.1)
+                {
+                    formula: "펫효과 ON, 만찬 ON",
+                    karma: ((maxHealth / (vitalityRate * 1.15)) - baseHealth - 10000) / 400
+                },
 
-    let enlightkarmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14)
-    if (enlightkarmaPoint >= 6) {
-        arkObj.weaponAtkPer = 1.021
-    } else if (enlightkarmaPoint >= 5) {
-        arkObj.weaponAtkPer = 1.017
-    } else if (enlightkarmaPoint >= 4) {
-        arkObj.weaponAtkPer = 1.013
-    } else if (enlightkarmaPoint >= 3) {
-        arkObj.weaponAtkPer = 1.009
-    } else if (enlightkarmaPoint >= 2) {
-        arkObj.weaponAtkPer = 1.005
-    } else if (enlightkarmaPoint >= 1) {
-        arkObj.weaponAtkPer = 1.001
-    } else {
-        arkObj.weaponAtkPer = 1
-    }
+                // 4. 펫효과 OFF(1.00), 만찬 ON(+10000, x1.1)
+                {
+                    formula: "펫효과 OFF, 만찬 ON",
+                    karma: ((maxHealth / (vitalityRate * 1.1)) - baseHealth - 10000) / 400
+                }
+            ];
+
+            // 각 결과값이 정수에 얼마나 가까운지 계산
+            const results = cases.map(item => {
+                const roundedValue = Math.round(item.karma);
+                return {
+                    formula: item.formula,
+                    karmaExact: item.karma,
+                    karmaRounded: roundedValue,
+                    proximity: Math.abs(item.karma - roundedValue),
+                    isPossible: (item.karma >= -1 && !isNaN(item.karma)) // 음수나 NaN 결과는 불가능
+                };
+            });
+
+            // 가능한 결과 중 정수에 가장 가까운 값 선택
+            const possibleResults = results.filter(result => result.isPossible);
+
+            if (possibleResults.length === 0) {
+                return {
+                    error: "유효한 결과가 없습니다. 데이터를 확인해주세요."
+                };
+            }
+
+            // 30 이하의 결과와 30 초과의 결과 분리
+            const resultsUnder30 = possibleResults.filter(result => result.karmaExact <= 30);
+            const resultsOver30 = possibleResults.filter(result => result.karmaExact > 30);
+
+            let bestResult;
+
+            // 30 이하의 결과가 있으면 그 중에서 정수에 가장 가까운 값 선택
+            if (resultsUnder30.length > 0) {
+                resultsUnder30.sort((a, b) => a.proximity - b.proximity);
+                bestResult = resultsUnder30[0];
+            }
+            // 30 이하의 결과가 없으면 30 초과 결과 중 정수에 가장 가까운 값을 선택 (30으로 제한)
+            else {
+                resultsOver30.sort((a, b) => a.proximity - b.proximity);
+                bestResult = resultsOver30[0];
+                bestResult.karmaRounded = 30;
+                bestResult.formula += " (최대 30 레벨로 제한됨)";
+            }
+
+            if (bestResult.karmaExact < 0) {
+                bestResult.karmaRounded = 0;
+                bestResult.formula += " (오차 보정: 0으로 처리됨)";
+            }
+            // 모든 가능한 결과 포함해서 반환
+            return {
+                bestResult: {
+                    formula: bestResult.formula,
+                    karmaLevel: bestResult.karmaRounded,
+                    exactValue: bestResult.karmaExact.toFixed(4),
+                    proximity: bestResult.proximity.toFixed(4)
+                },
+                allResults: possibleResults
+            };
+        }
+        const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
+        
+        let evolutionkarmaPoint = result.bestResult.karmaLevel
+        let evolutionkarmaRank = 0
+        if (evolutionkarmaPoint >= 21) {
+            evolutionkarmaRank = 6
+        } else if (evolutionkarmaPoint >= 17) {
+            evolutionkarmaRank = 5
+        } else if (evolutionkarmaPoint >= 13) {
+            evolutionkarmaRank = 4
+        } else if (evolutionkarmaPoint >= 9) {
+            evolutionkarmaRank = 3
+        } else if (evolutionkarmaPoint >= 5) {
+            evolutionkarmaRank = 2
+        } else if (evolutionkarmaPoint >= 1) {
+            evolutionkarmaRank = 1
+        }
+        console.log(evolutionkarmaRank, "랭크", evolutionkarmaPoint, "레벨")
+
+        etcObj.evolutionkarmaRank = evolutionkarmaRank;
+        etcObj.evolutionkarmaPoint = evolutionkarmaPoint;
+
+        let enlightkarmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14)
+        if (enlightkarmaPoint >= 6) {
+            arkObj.weaponAtkPer = 1.021
+        } else if (enlightkarmaPoint >= 5) {
+            arkObj.weaponAtkPer = 1.017
+        } else if (enlightkarmaPoint >= 4) {
+            arkObj.weaponAtkPer = 1.013
+        } else if (enlightkarmaPoint >= 3) {
+            arkObj.weaponAtkPer = 1.009
+        } else if (enlightkarmaPoint >= 2) {
+            arkObj.weaponAtkPer = 1.005
+        } else if (enlightkarmaPoint >= 1) {
+            arkObj.weaponAtkPer = 1.001
+        } else {
+            arkObj.weaponAtkPer = 1
+        }
+    };
+    karmaPointCalc();
 
 
     /* **********************************************************************************************************************

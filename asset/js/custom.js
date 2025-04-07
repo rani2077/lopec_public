@@ -65,7 +65,7 @@ async function mainSearchFunction() {
 
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
     // console.log("data", data);
-    // console.log("오리진obj", extractValue);
+    console.log("오리진obj", extractValue);
     //console.log("specPoint", specPoint);
     // console.log("specPoint", specPoint.completeSpecPoint);
 
@@ -74,7 +74,9 @@ async function mainSearchFunction() {
     * function name		:	
     * description       : 	user정보가 로딩완료 시 scProfile을 재생성함
     *********************************************************************************************************************** */
-    document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue);
+    let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL");
+    document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo);
+    // document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo.characterRanking.RANKING_NUM, userDbInfo.classRanking.CLASS_RANK);
 
     /* **********************************************************************************************************************
     * function name		:	specAreaCreate
@@ -882,14 +884,26 @@ async function mainSearchFunction() {
         }
     }
     engravingAreaCreate();
+
+    /* **********************************************************************************************************************
+    * function name		:	karmaAreaCreate
+    * description       : 	karma-area 상세정보의 내용을 생성함
+    *********************************************************************************************************************** */
+    function karmaAreaCreate() {
+        let element = document.querySelector(".sc-info .group-system .karma-area .karma");
+        let rank = extractValue.etcObj.evolutionkarmaRank;
+        let level = extractValue.etcObj.evolutionkarmaPoint;
+
+        element.innerHTML = `<em style="color:#f00;font-weight:600;">${rank}</em>랭크 <em style="color:#f00;font-weight:600;">${level}</em>레벨`;
+    }
+    karmaAreaCreate();
     /* **********************************************************************************************************************
     * function name		:	detailAreaCreate()
     * description       : 	detail-area 상세정보의 내용을 생성함
     *********************************************************************************************************************** */
     async function detailAreaCreate() {
         let element = document.querySelector(".sc-info .group-info .detail-area");
-        let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL")
-        //console.log(userDbInfo)
+        console.log(userDbInfo)
 
 
         function infoWrap(tag, array) {

@@ -2305,7 +2305,9 @@ export let classGemFilter = [
             { name: "파천섬광", per: 0.122 },
             { name: "진 파공권", per: 0.054 },
             { name: "유성 낙하", per: 0.05 },
+            { name: "청월난무", per: 0.05 },
             { name: "비상격", per: 0.05 },
+            { name: "보정치", per: -0.05 },
             
         ],
     },

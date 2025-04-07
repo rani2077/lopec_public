@@ -546,6 +546,12 @@
                         <img src="/asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                 </div>
+                <div class="karma-area shadow" style="background:#fff;margin-top:20px;padding:15px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+                    <span>진화 카르마 예상 수치</span>
+                    <span>알고리즘 추정치로, 실제 값과 다를 수 있습니다.</span>
+                    <span class="karma"><em style="color:#f00;font-weight:600;">?</em>랭크 <em style="color:#f00;font-weight:600;">?</em>레벨</span>
+                    <a href="https://forms.gle/QYfYAGEmQZQ7oX7n6" target="_blank">카르마 랭크 불일치 제보</a>
+                </div>
 
             </div>
         </section>

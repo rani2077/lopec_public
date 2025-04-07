@@ -62,7 +62,8 @@
 
 .sc-notice .group-notice .name-box .name {
     font-size: 15px;
-`}
+    `
+}
 
 .sc-notice .group-notice .name-box .detail-btn {
     min-width: 20px;
@@ -1370,6 +1371,10 @@
     border-radius: 3px;
 }
 
+.dark-mode .sc-info .karma-area {
+    background: #2f2f2f;
+    color: #fff;
+}
 
 
 /* 원정대 */
