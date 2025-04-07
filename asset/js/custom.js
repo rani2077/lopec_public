@@ -903,7 +903,7 @@ async function mainSearchFunction() {
     *********************************************************************************************************************** */
     async function detailAreaCreate() {
         let element = document.querySelector(".sc-info .group-info .detail-area");
-        console.log(userDbInfo)
+        //console.log(userDbInfo)
 
 
         function infoWrap(tag, array) {

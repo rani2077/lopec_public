@@ -102,7 +102,7 @@ export async function specPointCalc(inputObj) {
     //악세 효율 
     let minusAccValue = ((minusAccAtk) * evolutionDamageResult * minusAccFinal * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.crit + inputObj.defaultObj.haste + inputObj.defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
     let accValue = ((lastFinalValue - minusAccValue) / minusAccValue * 100).toFixed(2)
-    console.log(accValue)
+    //console.log(accValue)
 
     //초월 효율
     let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.crit + inputObj.defaultObj.haste + inputObj.defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
@@ -206,7 +206,7 @@ export async function specPointCalc(inputObj) {
     // 최종 스펙 포인트
     highTierSpecPointObj.dealerlastFinalValue = (lastFinalValue / 2020).toFixed(2) //딜러 스펙포인트
     highTierSpecPointObj.supportSpecPoint = (supportSpecPoint / 10000).toFixed(2) //서폿 스펙포인트
-    console.log(highTierSpecPointObj.supportSpecPoint)
+    //console.log(highTierSpecPointObj.supportSpecPoint)
     // 스펙포인트 db저장 통합
     if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
         highTierSpecPointObj.completeSpecPoint = lastFinalValue / 2020
