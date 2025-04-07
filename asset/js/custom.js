@@ -1018,14 +1018,14 @@ async function mainSearchFunction() {
                 { name: "보석 실질 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%", icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
                 { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%", icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
                 { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%", icon: "gem-solid", question: "보석 평균 쿨감 수치" },
-                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수. 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
             ]
         } else {
             gemInfo = [
                 { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.originGemValue).toFixed(2) + "%", icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
                 { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.gemValue - 1) * 100).toFixed(2) + "%", icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
                 { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%", icon: "gem-solid", question: "보석 평균 쿨감 수치" },
-                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수. 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
             ]
         }
 
