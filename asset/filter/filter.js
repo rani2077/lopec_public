@@ -2272,7 +2272,7 @@ export let classGemFilter = [
             { name: "파천섬광", per: 0.23 },
             { name: "권왕십이식", per: 0.327 },
             { name: "천기심권", per: 0.077 },
-            { name: "유성낙하", per: 0.059 },
+            { name: "유성 낙하", per: 0.059 },
         ],
     },
     {
