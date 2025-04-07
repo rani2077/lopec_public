@@ -1506,6 +1506,8 @@ export async function getCharacterProfile(data) {
 
         if (classCheck("전태") && skillCheck(gemSkillArry, "버스트 캐넌", dmg)) {
             specialClass = "버캐 채용 전태";
+        } else if (classCheck("고기") && !skillCheck(gemSkillArry, "파이어 불릿", dmg)) {
+            specialClass = "5겁 고기";
         } else if (classCheck("세맥") && !skillCheck(gemSkillArry, "환영격", dmg)) {
             specialClass = "5멸 세맥";
         } else if (classCheck("핸건") && skillCheck(gemSkillArry, "데스파이어", dmg)) {

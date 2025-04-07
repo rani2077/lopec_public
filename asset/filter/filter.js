@@ -2072,6 +2072,29 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "5겁 고기",
+        skill: [
+            { name: "버스트 캐넌", per: 0.262 },
+            { name: "차지 스팅거", per: 0.269 },
+            { name: "스피어 샷", per: 0.113 },
+            { name: "대쉬 어퍼 파이어", per: 0.071 },
+            { name: "카운터 스피어", per: 0.051 },
+            
+        ],
+    },
+    {
+        class: "5겁 고기",
+        skill: [
+            { name: "버스트 캐넌", per: 0.257 },
+            { name: "차지 스팅거", per: 0.264 },
+            { name: "스피어 샷", per: 0.108 },
+            { name: "대쉬 어퍼 파이어", per: 0.066 },
+            { name: "파이어 불릿", per: 0.025 },
+            { name: "카운터 스피어", per: 0.046 },
+            
+        ],
+    },
+    {
         class: "심판자",
         skill: [
             { name: "신성검", per: 0.16 },
@@ -2503,7 +2526,8 @@ export let classGemFilter = [
             { name: "숭고한 해일", per: 0.079 },
             { name: "아이스 애로우", per: 0.079 },
             { name: "인페르노", per: 0.056 },
-            { name: "보정치", per: -0.079 },
+            { name: "엘리멘탈 리액트", per: 0.056 },
+            { name: "보정치", per: -0.135 },
             
         ],
     },
