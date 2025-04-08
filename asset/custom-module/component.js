@@ -61,7 +61,7 @@ export async function scProfile(userData, extractValue, rankData) {
     let jobPercent = "";
     console.log(rankData)
     if (rankData) {
-        if (rankData.data.characterRanking) {
+        if (rankData.data.characterRanking &&  rankData.data.classRanking) {
             if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
                 totalRankVariable = "수집중";
                 jobRankVariable = "수집중";
