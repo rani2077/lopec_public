@@ -55,15 +55,31 @@ export async function scProfile(userData, extractValue, rankData) {
     let title = userData.ArmoryProfile.Title;
     let guild = userData.ArmoryProfile.GuildName;
 
-    let jobRankVariable = "-수집중"
-    let totalRankVariable = "-수집중"
+    let jobRankVariable = "수집중"
+    let totalRankVariable = "수집중"
     let totalPercent = "";
     let jobPercent = "";
-    if (rankData) {
-        totalRankVariable = rankData.data.characterRanking.RANKING_NUM + "위";
-        jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
-        totalPercent = rankData.data.percentile.PERCENTILE;
-        jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2);
+    if (rankData && rankData.data.characterBest) {
+        if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
+            totalRankVariable = "수집중";
+            jobRankVariable = "수집중";
+            // totalPercent = "0.00%";
+            // jobPercent = "0.00%";
+        } else {
+            totalRankVariable = rankData.data.characterRanking.RANKING_NUM + "위";
+            jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
+            totalPercent = rankData.data.percentile.PERCENTILE+"%";
+            jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
+        }
+        // if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
+        //     jobRankVariable = "수집중";
+        //     totalPercent = "0.00%";
+        //     jobPercent = "0.00%";
+        // } else if (rankData) {
+        //     jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
+        //     totalPercent = rankData.data.percentile.PERCENTILE+"%";
+        //     jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
+        // }
     }
     setTimeout(() => {
         userBookmarkSave(userName);
@@ -93,8 +109,8 @@ export async function scProfile(userData, extractValue, rankData) {
                     <span class="name">길드 : ${guild ? guild : "없음"}</span>
                 </div>
                 <div class="info-box">
-                <span class="name">전체랭킹 : ${totalRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${totalPercent}%</em></span>
-                    <span class="name">직업랭킹 : ${jobRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${jobPercent}%</em></span>
+                <span class="name">전체랭킹 : ${totalRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${totalPercent}</em></span>
+                    <span class="name">직업랭킹 : ${jobRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${jobPercent}</em></span>
                 </div>
             </div>
         </div>
