@@ -20,9 +20,9 @@ export function getCombinedCharacterData(characterNickname, rankingType = "DEAL"
             return response;
         },
         error: function(request, status, error) {
-            console.log("캐릭터 종합 데이터 조회 실패");
-            console.log("request.status : " + request.status);
-            console.log("오류 상세: " + error);
+            //console.log("캐릭터 종합 데이터 조회 실패");
+            //console.log("request.status : " + request.status);
+            //console.log("오류 상세: " + error);
         }
     });
 }

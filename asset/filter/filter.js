@@ -2632,10 +2632,22 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "슈차 터닝 잔재",
+        skill: [
+            { name: "버스트 스킬", per: 0.17 },
+            { name: "소울 앱소버", per: 0.164 },
+            { name: "터닝 슬래쉬", per: 0.087 },
+            { name: "보이드 스트라이크", per: 0.129 },
+            { name: "블리츠 러시", per: 0.242 },
+            { name: "어스 슬래쉬", per: 0.061 },
+            
+        ],
+    },
+    {
         class: "버스트",
         skill: [
             { name: "버스트 스킬", per: 0.576 },
-            { name: "블리츠 러쉬", per: 0.072 },
+            { name: "블리츠 러시", per: 0.072 },
             { name: "블레이드 댄스", per: 0.058 },
             { name: "보이드 스트라이크", per: 0.058 },
             { name: "터닝 슬래쉬", per: 0.046 },

@@ -895,7 +895,7 @@ async function mainSearchFunction() {
         let rank = extractValue.etcObj.evolutionkarmaRank;
         let level = extractValue.etcObj.evolutionkarmaPoint;
 
-        element.innerHTML = `<em style="color:#f00;font-weight:600;">${rank}</em>랭크 <em style="color:#f00;font-weight:600;">${level}</em>레벨`;
+        element.innerHTML = `<em style="color:#f00;font-weight:600;">${rank}</em>랭크`;
     }
     karmaAreaCreate();
     /* **********************************************************************************************************************
@@ -996,6 +996,60 @@ async function mainSearchFunction() {
         } else if (itemLevel >= 1750) {
             dealerMedianValue = 3209.7;
         }
+
+        let supportMedianValue = 0;
+        // console.log(itemLevel)
+        if (itemLevel >= 1660 && itemLevel < 1665) {
+            supportMedianValue = 459.98;
+        } else if (itemLevel >= 1665 && itemLevel < 1670) {
+            supportMedianValue = 501.64;
+        } else if (itemLevel >= 1670 && itemLevel < 1675) {
+            supportMedianValue = 525.09;
+        } else if (itemLevel >= 1675 && itemLevel < 1680) {
+            supportMedianValue = 531.38;
+        } else if (itemLevel >= 1680 && itemLevel < 1685) {
+            supportMedianValue = 646.38;
+        } else if (itemLevel >= 1685 && itemLevel < 1690) {
+            supportMedianValue = 720.37;
+        } else if (itemLevel >= 1690 && itemLevel < 1695) {
+            supportMedianValue = 731.09;
+        } else if (itemLevel >= 1695 && itemLevel < 1700) {
+            supportMedianValue = 773.57;
+        } else if (itemLevel >= 1700 && itemLevel < 1705) {
+            supportMedianValue = 810.95;
+        } else if (itemLevel >= 1705 && itemLevel < 1710) {
+            supportMedianValue = 888.4;
+        } else if (itemLevel >= 1710 && itemLevel < 1715) {
+            supportMedianValue = 939.47;
+        } else if (itemLevel >= 1715 && itemLevel < 1720) {
+            supportMedianValue = 963.41;
+        } else if (itemLevel >= 1720 && itemLevel < 1725) {
+            supportMedianValue = 1072.64;
+        } else if (itemLevel >= 1725 && itemLevel < 1730) {
+            supportMedianValue = 1231.56;
+        } else if (itemLevel >= 1730 && itemLevel < 1735) {
+            supportMedianValue = 1315.02;
+        } else if (itemLevel >= 1735 && itemLevel < 1740) {
+            supportMedianValue = 1385.11;
+        } else if (itemLevel >= 1740 && itemLevel < 1745) {
+            supportMedianValue = 1446.71;
+        } else if (itemLevel >= 1745 && itemLevel < 1750) {
+            supportMedianValue = 1485.05;
+        } else if (itemLevel >= 1750) {
+            supportMedianValue = 1609.04;
+        }
+
+        let medianDifferencePercent = (specPoint.completeSpecPoint - supportMedianValue) / supportMedianValue * 100;
+        let dealerSupportConversion = 0;
+        // 0보다 낮으면 다른 계산
+        if (medianDifferencePercent > 0) {
+            dealerSupportConversion = dealerMedianValue * (1 + medianDifferencePercent / 100);
+        } else {
+            dealerSupportConversion = dealerMedianValue * (1 + (medianDifferencePercent / 100));
+        }
+        
+
+
         let specPointInfo = [
             { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUM, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: dealerMedianValue, icon: "chart-simple-solid" },
@@ -1032,8 +1086,8 @@ async function mainSearchFunction() {
 
         let supportSpecPointInfo = [
             { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUMSUPPORT, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
-            { name: "현재 레벨 중앙값", value: "수집중", icon: "chart-simple-solid" },
-            { name: "딜러 환산 점수", value: "수집중", icon: "arrows-left-right-to-line-solid" },
+            { name: "현재 레벨 중앙값", value: supportMedianValue, icon: "chart-simple-solid" },
+            { name: "딜러 환산 점수", value: dealerSupportConversion.toFixed(2), icon: "arrows-left-right-to-line-solid" },
             { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.LCHB_ACHIEVE_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
         ]
         let supportBuffInfo = [
