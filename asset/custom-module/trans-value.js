@@ -1579,8 +1579,96 @@ export async function getCharacterProfile(data) {
     }
 
     htmlObj.gemSkillArry = gemSkillArry;
-    // console.log("gemSkillArry",gemSkillArry)
+    //console.log("gemSkillArry",gemSkillArry)
 
+    // 같은 스킬에 멸화/겁화 또는 작열/홍염이 중복되는 경우 처리하는 함수
+    function filterDuplicateGems() {
+
+        // 스킬 이름으로 그룹화
+        const skillGroups = {};
+        
+        // 스킬 이름으로 gemSkillArry 그룹화
+        gemSkillArry.forEach(gem => {
+            if (!skillGroups[gem.skill]) {
+                skillGroups[gem.skill] = [];
+            }
+            skillGroups[gem.skill].push(gem);
+        });
+        
+        // 필터링된 보석 수 추적
+        let filteredCount = 0;
+        
+        // 각 스킬 그룹에서 멸화/겁화 중복 처리
+        Object.keys(skillGroups).forEach(skillName => {
+            const gems = skillGroups[skillName];
+            
+            // 멸화/겁화 보석만 필터링
+            const dmgGems = gems.filter(gem => gem.name === "멸화" || gem.name === "겁화");
+            
+            // 멸화/겁화 보석이 2개 이상인 경우에만 처리
+            if (dmgGems.length >= 2) {
+                //console.log(`중복 보석 발견: ${skillName} - ${dmgGems.length}개`);
+                
+                // 각 보석의 실제 값 계산
+                dmgGems.forEach(gem => {
+                    const gemInfo = gemPerObj.find(info => info.name === gem.name);
+                    if (gemInfo) {
+                        gem.actualValue = gemInfo[`level${gem.level}`];
+                        //console.log(`${gem.skill} - ${gem.name} 레벨 ${gem.level} - 값: ${gem.actualValue} - 현재 skillPer: ${gem.skillPer}`);
+                    } else {
+                        gem.actualValue = 0;
+                    }
+                });
+                
+                // 배열에 담긴 겁멸+레벨의 값이 가장 높은 보석 찾기
+                const maxValueGem = dmgGems.reduce((max, gem) => 
+                    (gem.actualValue > max.actualValue) ? gem : max, dmgGems[0]);
+
+                // 값이 가장 높은 것 외에는 skillPer를 0으로 설정
+                dmgGems.forEach(gem => {
+                    if (gem !== maxValueGem && gem.skillPer !== "none") {
+                        gem.skillPer = 0;
+                        //console.log(`skillPer 0으로 설정: ${gem.skill} - ${gem.name} 레벨 ${gem.level}`);
+                        filteredCount++;
+                    }
+                });
+            }
+            
+            // 작열/홍염 보석 필터링 및 처리
+            const coolGems = gems.filter(gem => gem.name === "작열" || gem.name === "홍염");
+            
+            // 작열/홍염 보석이 2개 이상인 경우 처리
+            if (coolGems.length >= 2) {
+                //console.log(`중복 쿨다운 보석 발견: ${skillName} - ${coolGems.length}개`);
+                
+                // 각 보석의 실제 값 계산
+                coolGems.forEach(gem => {
+                    const gemInfo = gemPerObj.find(info => info.name === gem.name);
+                    if (gemInfo) {
+                        gem.actualValue = gemInfo[`level${gem.level}`];
+                        //console.log(`${gem.skill} - ${gem.name} 레벨 ${gem.level} - 값: ${gem.actualValue} - 현재 skillPer: ${gem.skillPer}`);
+                    } else {
+                        gem.actualValue = 0;
+                    }
+                });
+                
+                // 배열에 담긴 작열/홍염+레벨의 값이 가장 높은 보석 찾기
+                const maxValueGem = coolGems.reduce((max, gem) => 
+                    (gem.actualValue > max.actualValue) ? gem : max, coolGems[0]);
+
+                // 값이 가장 높은 것 외에는 skillPer를 0으로 설정
+                coolGems.forEach(gem => {
+                    if (gem !== maxValueGem && gem.skillPer !== "none") {
+                        gem.skillPer = 0;
+                        //console.log(`skillPer 0으로 설정: ${gem.skill} - ${gem.name} 레벨 ${gem.level}`);
+                        filteredCount++;
+                    }
+                });
+            }
+        });
+        return gemSkillArry;
+    }
+    
 
     if (true) {
 
@@ -1659,19 +1747,27 @@ export async function getCharacterProfile(data) {
         }
     })
 
+    // skillPer가 설정된 후 중복된 멸화/겁화 보석 필터링 적용
+    filterDuplicateGems();
 
     // 직업별 보석 지분율 필터
     let classGemEquip = Modules.originFilter.classGemFilter.filter(function (filterArry) {
         return filterArry.class == specialClass;
     })
     //console.log(classGemEquip)
+    //console.log("gemSkillArry",gemSkillArry)
 
     function gemCheckFnc() {
         try {
             // console.log(classGemEquip)
             let realGemValue = classGemEquip[0].skill.map(skillObj => {
 
-                let matchValue = gemSkillArry.filter(item => item.skill == skillObj.name);
+                // 필터링 결과(skillPer가 0인 보석은 제외)를 realGemValue에 올바르게 반영
+                let matchValue = gemSkillArry.filter(item => 
+                    item.skill == skillObj.name && 
+                    (item.skillPer !== 0 || item.skillPer === "none")
+                );
+                
                 if (!(matchValue.length == 0)) {
                     // console.log(matchValue)
                     return {
