@@ -174,7 +174,7 @@ export async function getCharacterProfile(data) {
 
         //console.log("최대 생명력 보너스 총합:", totalMaxHpBonus);
         totalMaxHpBonus = (totalMaxHpBonus / 100)
-        console.log(totalMaxHpBonus)
+        //console.log(totalMaxHpBonus)
 
 
 
@@ -343,10 +343,10 @@ export async function getCharacterProfile(data) {
         }
     });
 
-    console.log(vitalitySum)
+    //console.log(vitalitySum)
     // 합산된 생명 활성력 값을 사용하여 최종 hpActive 계산
     defaultObj.hpActive = (vitalitySum / 140) / 100 + 1;
-    console.log(defaultObj.hpActive)
+    //console.log(defaultObj.hpActive)
     //defaultObj.hpActive = (defaultObj.hpActive / 100) + 1
 
     // 무기 공격력
@@ -1942,16 +1942,16 @@ export async function getCharacterProfile(data) {
         
         // 체력 계산 관련 추가 로그
         //console.log("==== 체력 계산 기본 정보 ====");
-        console.log("최대 체력(maxHealth):", maxHealth);
-        console.log("기본 체력(baseHealth):", baseHealth, "내역:", {
-        //    defaultHp: defaultObj.statHp,
-        //    elixirHp: elixirObj.statHp,
-        //    accHp: accObj.statHp,
-        //    hyperHp: hyperObj.statHp,
-        //    bangleHp: bangleObj.statHp
-        });
-        console.log("생명 활성력(vitalityRate):", vitalityRate);
-        console.log("직업 체력 계수(healthValue):", healthValue);
+        //console.log("최대 체력(maxHealth):", maxHealth);
+        //console.log("기본 체력(baseHealth):", baseHealth, "내역:", {
+        ////    defaultHp: defaultObj.statHp,
+        ////    elixirHp: elixirObj.statHp,
+        ////    accHp: accObj.statHp,
+        ////    hyperHp: hyperObj.statHp,
+        ////    bangleHp: bangleObj.statHp
+        //});
+        //console.log("생명 활성력(vitalityRate):", vitalityRate);
+        //console.log("직업 체력 계수(healthValue):", healthValue);
 
         // --- 상수 정의 ---
         const KARMA_HP_PER_LEVEL = 400; // 외부로 이동
@@ -2055,13 +2055,13 @@ export async function getCharacterProfile(data) {
             // console.log("Sorted possibleResults (by HP diff, then buffLevelSum):", JSON.stringify(possibleResults.slice(0, 10), null, 2)); // 로그 형식 변경으로 주석 처리
 
             // 각 경우의 수에 대한 체력 계산 결과 비교 로그 추가 (상위 5개만)
-            console.log("==== 상위 5개 경우의 수에 대한 체력 계산 결과 비교 (반올림된 카르마 레벨 기준) ====");
-            possibleResults.slice(0, 5).forEach((result, idx) => {
-                const roundedKarmaHp = result.maxHpUsingRoundedKarma.toFixed(2);
-                const diffWithRounded = Math.abs(maxHealth - result.maxHpUsingRoundedKarma).toFixed(2);
-                console.log(`${idx+1}. ${result.formulaDesc}: 카르마 ${result.karmaRounded} (정확히 ${result.karmaExact.toFixed(4)}) -> 계산된 체력(반올림 기준) ${roundedKarmaHp} (실제 체력: ${maxHealth}, 차이: ${diffWithRounded})`);
-            });
-            console.log("=======================================================================");
+            //console.log("==== 상위 5개 경우의 수에 대한 체력 계산 결과 비교 (반올림된 카르마 레벨 기준) ====");
+            //possibleResults.slice(0, 5).forEach((result, idx) => {
+            //    const roundedKarmaHp = result.maxHpUsingRoundedKarma.toFixed(2);
+            //    const diffWithRounded = Math.abs(maxHealth - result.maxHpUsingRoundedKarma).toFixed(2);
+            //    console.log(`${idx+1}. ${result.formulaDesc}: 카르마 ${result.karmaRounded} (정확히 ${result.karmaExact.toFixed(4)}) -> 계산된 체력(반올림 기준) ${roundedKarmaHp} (실제 체력: ${maxHealth}, 차이: ${diffWithRounded})`);
+            //});
+            //console.log("=======================================================================");
 
             // --- 최적 결과 선택 로직 (단순화: 정렬된 possibleResults의 첫번째 요소 사용) ---
             let bestResult = possibleResults[0];
@@ -2099,8 +2099,8 @@ export async function getCharacterProfile(data) {
         // healthValue 인자 추가하여 함수 호출
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue);
 
-        console.log("카르마 추정 결과:", result.bestResult);
-        console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
+        //console.log("카르마 추정 결과:", result.bestResult);
+        //console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
 
         let evolutionkarmaPoint = result.bestResult.karmaLevel;
         let evolutionkarmaRank = 0
