@@ -59,27 +59,30 @@ export async function scProfile(userData, extractValue, rankData) {
     let totalRankVariable = "수집중"
     let totalPercent = "";
     let jobPercent = "";
-    if (rankData && rankData.data.characterBest) {
-        if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
-            totalRankVariable = "수집중";
-            jobRankVariable = "수집중";
-            // totalPercent = "0.00%";
-            // jobPercent = "0.00%";
-        } else {
-            totalRankVariable = rankData.data.characterRanking.RANKING_NUM + "위";
-            jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
-            totalPercent = rankData.data.percentile.PERCENTILE+"%";
-            jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
+    console.log(rankData)
+    if (rankData) {
+        if (rankData.data.characterRanking) {
+            if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
+                totalRankVariable = "수집중";
+                jobRankVariable = "수집중";
+                // totalPercent = "0.00%";
+                // jobPercent = "0.00%";
+            } else {
+                totalRankVariable = rankData.data.characterRanking.RANKING_NUM + "위";
+                jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
+                totalPercent = rankData.data.percentile.PERCENTILE + "%";
+                jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2) + "%";
+            }
+            // if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
+            //     jobRankVariable = "수집중";
+            //     totalPercent = "0.00%";
+            //     jobPercent = "0.00%";
+            // } else if (rankData) {
+            //     jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
+            //     totalPercent = rankData.data.percentile.PERCENTILE+"%";
+            //     jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
+            // }
         }
-        // if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
-        //     jobRankVariable = "수집중";
-        //     totalPercent = "0.00%";
-        //     jobPercent = "0.00%";
-        // } else if (rankData) {
-        //     jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
-        //     totalPercent = rankData.data.percentile.PERCENTILE+"%";
-        //     jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
-        // }
     }
     setTimeout(() => {
         userBookmarkSave(userName);

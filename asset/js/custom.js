@@ -75,6 +75,7 @@ async function mainSearchFunction() {
     * description       : 	user정보가 로딩완료 시 scProfile을 재생성함
     *********************************************************************************************************************** */
     let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL");
+    console.log(userDbInfo)
     document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo);
     // document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo.characterRanking.RANKING_NUM, userDbInfo.classRanking.CLASS_RANK);
 
@@ -1095,7 +1096,7 @@ async function mainSearchFunction() {
         );
     }
     if (/lopec.kr/.test(window.location.host)) {
-        setTimeout(() => { dataBaseWrite() }, 0);
+        setTimeout(async () => { await dataBaseWrite() }, 0);
     }
 
 }
