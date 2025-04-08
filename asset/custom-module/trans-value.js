@@ -127,6 +127,56 @@ export async function getCharacterProfile(data) {
     }
 
 
+    /* **********************************************************************************************************************
+     * name		              :	 allCardDescriptions[]
+     * version                :   2.0
+     * description            :   카르마 랭크 뻥튀기 방지를 위한 카드 옵션 검사
+     * inUse                  :   사용중
+     *********************************************************************************************************************** */
+
+
+    let allCardDescriptions = []; // 모든 Description을 저장할 배열 초기화
+
+    if (data.ArmoryCard && data.ArmoryCard.Effects && Array.isArray(data.ArmoryCard.Effects)) {
+      // effect를 순회
+      data.ArmoryCard.Effects.forEach(effect => {
+        // 현재 effect 객체와 그 안의 Items가 존재하고 배열인지 확인
+        if (effect && effect.Items && Array.isArray(effect.Items)) {
+          // item 순회
+          effect.Items.forEach(item => {
+            // Description 속성이 존재하는지 확인
+            if (item && item.Description) {
+              // Description 값을 allCardDescriptions 배열에 추가
+              allCardDescriptions.push(item.Description);
+            }
+          });
+        }
+      });
+    }
+
+    let totalMaxHpBonus = 0; // 추출된 최대 생명력 보너스 합계
+
+        // allCardDescriptions 순회
+        allCardDescriptions.forEach(description => {
+          // "최대 생명력"이 포함되어 있는지 확인
+          if (description.includes("최대 생명력")) {
+            // 정규식
+            const regex = /최대 생명력 \+(\d+(?:\.\d+)?)\%/;
+            const match = description.match(regex);
+        
+            // 정규식 매칭에 성공했고, 숫자를 포함한 그룹이 있는지 확인합니다.
+            if (match && match[1]) {
+              // 추출된 숫자 문자열을 부동소수점 숫자로 변환하여 합계에 더합니다.
+              totalMaxHpBonus += parseFloat(match[1]);
+            }
+          }
+        });
+
+        //console.log("최대 생명력 보너스 총합:", totalMaxHpBonus);
+        totalMaxHpBonus = (totalMaxHpBonus / 100)
+        console.log(totalMaxHpBonus)
+
+
 
     /* **********************************************************************************************************************
      * name		              :	  bangleTierFnc{}
@@ -293,9 +343,10 @@ export async function getCharacterProfile(data) {
         }
     });
 
-    //console.log(vitalitySum)
+    console.log(vitalitySum)
     // 합산된 생명 활성력 값을 사용하여 최종 hpActive 계산
     defaultObj.hpActive = (vitalitySum / 140) / 100 + 1;
+    console.log(defaultObj.hpActive)
     //defaultObj.hpActive = (defaultObj.hpActive / 100) + 1
 
     // 무기 공격력
@@ -1883,24 +1934,25 @@ export async function getCharacterProfile(data) {
      *********************************************************************************************************************** */
 
     function karmaPointCalc() {
-        let maxHealth = defaultObj.maxHp;
+        let cardHP = totalMaxHpBonus
+        let maxHealth = defaultObj.maxHp
         let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
         let vitalityRate = defaultObj.hpActive;
         let healthValue = jobObj.healthPer;
         
         // 체력 계산 관련 추가 로그
         //console.log("==== 체력 계산 기본 정보 ====");
-        //console.log("최대 체력(maxHealth):", maxHealth);
-        //console.log("기본 체력(baseHealth):", baseHealth, "내역:", {
+        console.log("최대 체력(maxHealth):", maxHealth);
+        console.log("기본 체력(baseHealth):", baseHealth, "내역:", {
         //    defaultHp: defaultObj.statHp,
         //    elixirHp: elixirObj.statHp,
         //    accHp: accObj.statHp,
         //    hyperHp: hyperObj.statHp,
         //    bangleHp: bangleObj.statHp
-        //});
-        //console.log("생명 활성력(vitalityRate):", vitalityRate);
-        //console.log("직업 체력 계수(healthValue):", healthValue);
-        
+        });
+        console.log("생명 활성력(vitalityRate):", vitalityRate);
+        console.log("직업 체력 계수(healthValue):", healthValue);
+
         // --- 상수 정의 ---
         const KARMA_HP_PER_LEVEL = 400; // 외부로 이동
         
@@ -1925,28 +1977,29 @@ export async function getCharacterProfile(data) {
                             const rangerPercent = RANGER_PERCENTS[rangerIdx];
                             const feastHp = FEAST_HPS[feastIdx];
                             const raidHp = RAID_HPS[raidIdx];
+                            const currentCardPercent = cardHP || 0; // 스코프 내 cardHP 변수 참조 (퍼센트로 가정)
 
-                            // 1. 퍼센트 효과 합계 계산 (펫 + 방범대)
-                            const percentFactor = (1 + petPercent + rangerPercent);
-                            // 2. 고정 체력 보너스 계산
-                            const flatHpBonus = (feastHp + raidHp) * healthValue;
+                            // 1. 퍼센트 효과 합계 계산 (펫 + 방범대 + 카드)
+                            const percentFactor = (1 + petPercent + rangerPercent + currentCardPercent); 
+                            
+                            // 2. 고정 체력 보너스 계산 (만찬 + 레이드만)
+                            const flatHpBonus = (feastHp + raidHp) * healthValue; 
 
                             // 역산 공식 세부 계산
-                            // 카르마 레벨 = [(최대 체력 / (퍼센트 효과 * 생명 활성력)) - 기본 체력 - 고정 체력 보너스] / 카르마당 체력
-                            const step1 = maxHealth / (percentFactor * vitalityRate); // 퍼센트 효과를 제거한 체력 
-                            const step2 = step1 - baseHealth - flatHpBonus; // 기본 체력과 고정 보너스를 제외한 순수 카르마 체력
-                            const estimatedKarma = step2 / KARMA_HP_PER_LEVEL; // 카르마 체력을 카르마당 체력으로 나누어 레벨 산출
-
-                            // 역산된 카르마 레벨 기반 예상 최대 체력 계산
-                            const calculatedMaxHpBasedOnEstimation = ((baseHealth + (estimatedKarma * KARMA_HP_PER_LEVEL)) * vitalityRate * percentFactor) + flatHpBonus;
+                            const step1 = maxHealth / (percentFactor * vitalityRate); 
+                            const step2 = step1 - baseHealth - flatHpBonus; 
+                            const estimatedKarma = step2 / KARMA_HP_PER_LEVEL;
                             
                             // 4. 결과 유효성 검사 및 근사치 계산 (위치 변경)
                             const roundedValue = Math.round(estimatedKarma);
                             const proximity = Math.abs(estimatedKarma - roundedValue);
                             const isPossible = (estimatedKarma >= -0.5 && !isNaN(estimatedKarma));
 
+                            // 역산된 카르마 레벨 기반 예상 최대 체력 계산
+                            const calculatedMaxHpBasedOnEstimation = ((baseHealth + (estimatedKarma * KARMA_HP_PER_LEVEL)) * vitalityRate * percentFactor) + flatHpBonus;
+                            
                             // --- 추가: 반올림된 카르마 레벨 기반 최대 체력 계산 ---
-                            const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL; // estimatedKarma 대신 roundedValue 사용
+                            const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL; 
                             const maxHpUsingRoundedKarma = ((baseHealth + karmaHpForRounded) * vitalityRate * percentFactor) + flatHpBonus;
                             // --- 추가 끝 ---
 
@@ -2002,13 +2055,13 @@ export async function getCharacterProfile(data) {
             // console.log("Sorted possibleResults (by HP diff, then buffLevelSum):", JSON.stringify(possibleResults.slice(0, 10), null, 2)); // 로그 형식 변경으로 주석 처리
 
             // 각 경우의 수에 대한 체력 계산 결과 비교 로그 추가 (상위 5개만)
-            //console.log("==== 상위 5개 경우의 수에 대한 체력 계산 결과 비교 (반올림된 카르마 레벨 기준) ====");
-            //possibleResults.slice(0, 5).forEach((result, idx) => {
-            //    const roundedKarmaHp = result.maxHpUsingRoundedKarma.toFixed(2);
-            //    const diffWithRounded = Math.abs(maxHealth - result.maxHpUsingRoundedKarma).toFixed(2);
-            //    console.log(`${idx+1}. ${result.formulaDesc}: 카르마 ${result.karmaRounded} (정확히 ${result.karmaExact.toFixed(4)}) -> 계산된 체력(반올림 기준) ${roundedKarmaHp} (실제 체력: ${maxHealth}, 차이: ${diffWithRounded})`);
-            //});
-            //console.log("=======================================================================");
+            console.log("==== 상위 5개 경우의 수에 대한 체력 계산 결과 비교 (반올림된 카르마 레벨 기준) ====");
+            possibleResults.slice(0, 5).forEach((result, idx) => {
+                const roundedKarmaHp = result.maxHpUsingRoundedKarma.toFixed(2);
+                const diffWithRounded = Math.abs(maxHealth - result.maxHpUsingRoundedKarma).toFixed(2);
+                console.log(`${idx+1}. ${result.formulaDesc}: 카르마 ${result.karmaRounded} (정확히 ${result.karmaExact.toFixed(4)}) -> 계산된 체력(반올림 기준) ${roundedKarmaHp} (실제 체력: ${maxHealth}, 차이: ${diffWithRounded})`);
+            });
+            console.log("=======================================================================");
 
             // --- 최적 결과 선택 로직 (단순화: 정렬된 possibleResults의 첫번째 요소 사용) ---
             let bestResult = possibleResults[0];
@@ -2046,8 +2099,8 @@ export async function getCharacterProfile(data) {
         // healthValue 인자 추가하여 함수 호출
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue);
 
-        //console.log("카르마 추정 결과:", result.bestResult);
-        //console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
+        console.log("카르마 추정 결과:", result.bestResult);
+        console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
 
         let evolutionkarmaPoint = result.bestResult.karmaLevel;
         let evolutionkarmaRank = 0
