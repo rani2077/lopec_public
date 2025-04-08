@@ -345,9 +345,10 @@ export async function getCharacterProfile(data) {
 
     //console.log(vitalitySum)
     // 합산된 생명 활성력 값을 사용하여 최종 hpActive 계산
-    defaultObj.hpActive = (vitalitySum / 140) / 100 + 1;
+    //defaultObj.hpActive = (vitalitySum / 140) / 100 + 1;
     //console.log(defaultObj.hpActive)
     //defaultObj.hpActive = (defaultObj.hpActive / 100) + 1
+    defaultObj.hpActive = ( 0.000071427 * vitalitySum) + 1
 
     // 무기 공격력
     data.ArmoryEquipment.forEach(function (weapon) {
@@ -1939,6 +1940,7 @@ export async function getCharacterProfile(data) {
         let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
         let vitalityRate = defaultObj.hpActive;
         let healthValue = jobObj.healthPer;
+        const isSupport = etcObj.supportCheck === "서폿"; // isSupport 값 계산
         
         // 체력 계산 관련 추가 로그
         //console.log("==== 체력 계산 기본 정보 ====");
@@ -1957,65 +1959,73 @@ export async function getCharacterProfile(data) {
         const KARMA_HP_PER_LEVEL = 400; // 외부로 이동
         
         // --- calculateKarmaLevel 함수 재작성 시작 ---
-        function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue) {
-            // --- 상수 정의 ---
+        // 함수 정의에 isSupport 파라미터 추가
+        function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport) { 
+            // --- 상수 정의 --- // 함수 내부로 다시 이동 (가독성 및 유지보수)
             const PET_PERCENTS = [0, 0.01, 0.02, 0.03, 0.04, 0.05]; // 펫 효과 (0% ~ 5%)
             const RANGER_PERCENTS = [0, 0.008, 0.014, 0.02];         // 방범대 효과 %
-            const FEAST_HPS = [0, 3200, 5000, 5750, 6000];             // 만찬 HP (사용자 수정 반영)
-            const RAID_HPS = [0];                   // 레이드 HP
-            // const KARMA_HP_PER_LEVEL = 400; // 상수를 외부로 이동
-            const PROXIMITY_THRESHOLD = 0.01;                         // 근사치 비교 허용 오차 (이전 수정 유지)
+            const FEAST_HPS = [0, 0, 0, 0, 0];             // 만찬 HP (baseHealth에 포함됨)
+            const RAID_HPS = [0];                   // 레이드 HP (baseHealth에 포함됨)
+            const PROXIMITY_THRESHOLD = 0.01;         // 근사치 비교 허용 오차 
+            // --- 상수 정의 끝 ---
 
             let allResults = [];
 
-            // --- 모든 경우의 수 순회 (펫 * 방범대 * 만찬 * 레이드) ---
+            // --- 모든 경우의 수 순회 (만찬/레이드 루프 제거) ---
             for (let petIdx = 0; petIdx < PET_PERCENTS.length; petIdx++) {
                 for (let rangerIdx = 0; rangerIdx < RANGER_PERCENTS.length; rangerIdx++) {
-                    for (let feastIdx = 0; feastIdx < FEAST_HPS.length; feastIdx++) {
-                        for (let raidIdx = 0; raidIdx < RAID_HPS.length; raidIdx++) {
+                    // feastIdx, raidIdx 루프 제거
+                    // for (let feastIdx = 0; feastIdx < FEAST_HPS.length; feastIdx++) { 
+                    //     for (let raidIdx = 0; raidIdx < RAID_HPS.length; raidIdx++) { 
                             const petPercent = PET_PERCENTS[petIdx];
                             const rangerPercent = RANGER_PERCENTS[rangerIdx];
-                            const feastHp = FEAST_HPS[feastIdx];
-                            const raidHp = RAID_HPS[raidIdx];
-                            const currentCardPercent = cardHP || 0; // 스코프 내 cardHP 변수 참조 (퍼센트로 가정)
+                            // const feastHp = FEAST_HPS[feastIdx]; // 항상 0
+                            // const raidHp = RAID_HPS[raidIdx];   // 항상 0
+                            const currentCardPercent = cardHP || 0; 
 
-                            // 1. 퍼센트 효과 합계 계산 (펫 + 방범대 + 카드)
+                            // 1. 퍼센트 효과 합계 계산
                             const percentFactor = (1 + petPercent + rangerPercent + currentCardPercent); 
                             
-                            // 2. 고정 체력 보너스 계산 (만찬 + 레이드만)
-                            const flatHpBonus = (feastHp + raidHp) * healthValue; 
+                            // 2. 고정 체력 보너스 계산 (항상 0)
+                            const flatHpBonus = 0; 
 
                             // 역산 공식 세부 계산
                             const step1 = maxHealth / (percentFactor * vitalityRate); 
                             const step2 = step1 - baseHealth - flatHpBonus; 
                             const estimatedKarma = step2 / KARMA_HP_PER_LEVEL;
                             
-                            // 4. 결과 유효성 검사 및 근사치 계산 (위치 변경)
+                            // 4. 결과 유효성 검사 및 근사치 계산 
                             const roundedValue = Math.round(estimatedKarma);
                             const proximity = Math.abs(estimatedKarma - roundedValue);
                             const isPossible = (estimatedKarma >= -0.5 && !isNaN(estimatedKarma));
 
-                            // 역산된 카르마 레벨 기반 예상 최대 체력 계산
-                            const calculatedMaxHpBasedOnEstimation = ((baseHealth + (estimatedKarma * KARMA_HP_PER_LEVEL)) * vitalityRate * percentFactor) + flatHpBonus;
+                            // 중간 반올림 적용된 체력 계산들
+                            const calculatedKarmaHp = estimatedKarma * KARMA_HP_PER_LEVEL;
+                            const sumForEstimation = baseHealth + flatHpBonus + calculatedKarmaHp;
+                            const intermediateEstimation = sumForEstimation * vitalityRate;
+                            const roundedIntermediateEstimation = Math.round(intermediateEstimation); 
+                            const calculatedMaxHpWithExactKarma = roundedIntermediateEstimation * percentFactor;
                             
-                            // --- 추가: 반올림된 카르마 레벨 기반 최대 체력 계산 ---
                             const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL; 
-                            const maxHpUsingRoundedKarma = ((baseHealth + karmaHpForRounded) * vitalityRate * percentFactor) + flatHpBonus;
-                            // --- 추가 끝 ---
-
-                            // 5. 결과 저장 (펫 레벨 정보 추가)
+                            const sumForRounded = baseHealth + flatHpBonus + karmaHpForRounded;
+                            const intermediateRounded = sumForRounded * vitalityRate;
+                            const roundedIntermediateRounded = Math.round(intermediateRounded); 
+                            const maxHpUsingRoundedKarma = roundedIntermediateRounded * percentFactor;
+                           
+                            // 5. 결과 저장 (formulaDesc 및 buffLevelSum 수정)
                             allResults.push({
-                                formulaDesc: `펫${petIdx}|방범대${rangerIdx}|만찬${feastIdx}|레이드${raidIdx}`, // 펫 정보 추가
+                                formulaDesc: `펫${petIdx}|방범대${rangerIdx}`, // 만찬/레이드 제거
+                                rangerIdx: rangerIdx, 
                                 karmaExact: estimatedKarma,
                                 karmaRounded: roundedValue,
                                 proximity: proximity,
                                 isPossible: isPossible,
-                                buffLevelSum: petIdx + rangerIdx + feastIdx + raidIdx, // 펫 인덱스 합계에 추가
-                                calculatedMaxHp: calculatedMaxHpBasedOnEstimation.toFixed(2), // 계산된 최대 체력 추가 (기존)
-                                maxHpUsingRoundedKarma: maxHpUsingRoundedKarma // 반올림된 카르마 기반 체력 추가 (신규)
+                                buffLevelSum: petIdx + rangerIdx, // 만찬/레이드 제거
+                                calculatedMaxHp: calculatedMaxHpWithExactKarma.toFixed(2), 
+                                maxHpUsingRoundedKarma: maxHpUsingRoundedKarma 
                             });
-                        }
-                    }
+                    //     } // raidIdx 루프 닫기
+                    // } // feastIdx 루프 닫기
                 }
             }
 
@@ -2031,59 +2041,87 @@ export async function getCharacterProfile(data) {
             }
             // --- 필터링 및 오류 처리 끝 ---
 
-
-            // 8. 결과 정렬 (possibleResults 대상, 1순위: 실제 체력과 '반올림 카르마 기반 체력'의 차이, 2순위: proximity, 3순위: buffLevelSum)
+            // --- 기존 정렬 로직 (이후 후처리) ---
             possibleResults.sort((a, b) => {
+                // ... (기존 정렬 코드: 체력차이 -> proximity -> buffLevelSum) ...
                 const diffA = Math.abs(maxHealth - a.maxHpUsingRoundedKarma);
                 const diffB = Math.abs(maxHealth - b.maxHpUsingRoundedKarma);
 
-                // 1순위: 실제 체력과의 차이 (작은 값이 우선)
                 if (diffA !== diffB) {
                     return diffA - diffB;
                 }
-
-                // 2순위: 체력 차이가 같을 경우 proximity (작은 값이 우선)
                 if (a.proximity !== b.proximity) {
                     return a.proximity - b.proximity;
                 }
-                
-                // 3순위: 체력 차이와 proximity가 같을 경우 buffLevelSum (작은 값이 우선)
                 return a.buffLevelSum - b.buffLevelSum;
             });
 
-            // --- 정렬 직후 상태 확인 로그 --- 
-            // console.log("Sorted possibleResults (by HP diff, then buffLevelSum):", JSON.stringify(possibleResults.slice(0, 10), null, 2)); // 로그 형식 변경으로 주석 처리
+            // --- 후처리 로직 (방범대 우선순위 적용) ---
+            if (possibleResults.length >= 2) {
+                const firstResult = possibleResults[0];
+                const secondResult = possibleResults[1];
+                const proximityDiff = Math.abs(firstResult.proximity - secondResult.proximity);
+
+                // Proximity 차이가 0.0005 미만일 때만 후처리 실행
+                if (proximityDiff < 0.0008) {
+                    // 서폿일 경우: 1위가 방범대 0이고 2위가 방범대 1 이상이면 순서 변경
+                    if (isSupport && firstResult.rangerIdx === 0 && secondResult.rangerIdx > 0) {
+                        [possibleResults[0], possibleResults[1]] = [secondResult, firstResult]; // 순서 교체
+                        console.log("후처리: 서폿 우선순위 적용됨 (방범대 1+ 우선)");
+                    }
+                    // 딜러일 경우: 1위가 방범대 1 이상이고 2위가 방범대 0이면 순서 변경
+                    else if (!isSupport && firstResult.rangerIdx > 0 && secondResult.rangerIdx === 0) {
+                        [possibleResults[0], possibleResults[1]] = [secondResult, firstResult]; // 순서 교체
+                        console.log("후처리: 딜러 우선순위 적용됨 (방범대 0 우선)");
+                    }
+                }
+            }
+            // --- 후처리 로직 끝 ---
+
+            // --- 추가: 상위 5개 중 가장 proximity가 낮은 결과 선택 --- 
+            let finalBestResult = possibleResults[0]; // 일단 현재 1위를 후보로 설정
+            if (possibleResults.length > 1) {
+                const top5 = possibleResults.slice(0, 5); // 상위 5개 (또는 그 이하)
+                let minProximity = finalBestResult?.proximity ?? Infinity; // 현재 1위의 proximity (없으면 무한대)
+                let minProximityResult = finalBestResult; // 현재 1위를 최소 proximity 결과로 초기화
+
+                // 상위 5개(후보 포함)를 순회하며 가장 낮은 proximity 찾기
+                for (const result of top5) {
+                    if (result.proximity < minProximity) {
+                        minProximity = result.proximity;
+                        minProximityResult = result;
+                    }
+                }
+                // 가장 낮은 proximity를 가진 결과를 최종 선택
+                finalBestResult = minProximityResult;
+                if (finalBestResult !== possibleResults[0]) {
+                     console.log(`최종 조정: Proximity가 가장 낮은 결과(${finalBestResult.formulaDesc}, proximity: ${minProximity.toFixed(4)})를 선택함.`);
+                }
+            }
+            // --- 추가 끝 ---
 
             // 각 경우의 수에 대한 체력 계산 결과 비교 로그 추가 (상위 5개만)
             //console.log("==== 상위 5개 경우의 수에 대한 체력 계산 결과 비교 (반올림된 카르마 레벨 기준) ====");
             //possibleResults.slice(0, 5).forEach((result, idx) => {
-            //    const roundedKarmaHp = result.maxHpUsingRoundedKarma.toFixed(2);
-            //    const diffWithRounded = Math.abs(maxHealth - result.maxHpUsingRoundedKarma).toFixed(2);
-            //    console.log(`${idx+1}. ${result.formulaDesc}: 카르마 ${result.karmaRounded} (정확히 ${result.karmaExact.toFixed(4)}) -> 계산된 체력(반올림 기준) ${roundedKarmaHp} (실제 체력: ${maxHealth}, 차이: ${diffWithRounded})`);
+            //    // ... (기존 로그 코드) ...
+            //     const roundedKarmaHp = result.maxHpUsingRoundedKarma.toFixed(2);
+            //     const diffWithRounded = Math.abs(maxHealth - result.maxHpUsingRoundedKarma).toFixed(2);
+            //     console.log(`${idx+1}. ${result.formulaDesc}: 카르마 ${result.karmaRounded} (정확히 ${result.karmaExact.toFixed(4)}) -> 계산된 체력(반올림 기준) ${roundedKarmaHp} (실제 체력: ${maxHealth}, 차이: ${diffWithRounded})`);
             //});
             //console.log("=======================================================================");
 
-            // --- 최적 결과 선택 로직 (단순화: 정렬된 possibleResults의 첫번째 요소 사용) ---
-            let bestResult = possibleResults[0];
-            //console.log("Best result selected:", bestResult);
-            // --- 최적 결과 선택 로직 끝 ---
+            // --- 최적 결과 선택 로직 (수정: 위에서 결정된 finalBestResult 사용) ---
+            let bestResult = finalBestResult; // finalBestResult를 최종 선택
+            // console.log("Best result selected after proximity check:", bestResult);
 
-
-            // 10. 최종 레벨 결정 및 보정 (0 ~ 30) - 선택된 bestResult 기준
-            let finalKarmaLevel = Math.round(bestResult.karmaExact); // 반올림 적용
-
-            // 반올림된 값이 0 미만이거나 30 초과인 경우 보정
+            // ... (최종 레벨 결정 및 반환) ...
+            let finalKarmaLevel = Math.round(bestResult.karmaExact); 
              if (finalKarmaLevel < 0) {
                  finalKarmaLevel = 0;
                  bestResult.formulaDesc += ` (Rounded: ${finalKarmaLevel}, 음수 보정->0)`;
-            } else if (finalKarmaLevel > 30) {
-                 finalKarmaLevel = 30;
-                 bestResult.formulaDesc += ` (Rounded: ${finalKarmaLevel}, 30 초과 보정->30)`;
-            }
-             finalKarmaLevel = Math.max(0, Math.min(30, finalKarmaLevel));
+            } 
+             finalKarmaLevel = Math.max(0, Math.min(30, finalKarmaLevel)); // 30 초과 보정은 필터링에서 처리됨
 
-
-            // 11. 최종 결과 객체 반환
             return {
                 bestResult: {
                     formulaDesc: bestResult.formulaDesc,
@@ -2091,16 +2129,16 @@ export async function getCharacterProfile(data) {
                     exactValue: bestResult.karmaExact.toFixed(4),
                     proximity: bestResult.proximity.toFixed(4)
                 },
-                allResults: possibleResults // 필터링된 '가능한' 결과 목록 반환
+                allResults: possibleResults 
             };
         }
         // --- calculateKarmaLevel 함수 재작성 끝 ---
 
-        // healthValue 인자 추가하여 함수 호출
-        const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue);
+        // isSupport 인자 추가하여 함수 호출
+        const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
-        //console.log("카르마 추정 결과:", result.bestResult);
-        //console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
+        console.log("카르마 추정 결과:", result.bestResult);
+        console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
 
         let evolutionkarmaPoint = result.bestResult.karmaLevel;
         let evolutionkarmaRank = 0

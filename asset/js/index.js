@@ -337,13 +337,21 @@ let noticeArry = [
 
     },
     {
-        name: `<em style="font-weight:600;font-size:15px;">2025-04-08 핫픽스 안내</em>`,
+        name: `<em style="font-weight:600;font-size:15px;">2025-04-08 14:15 핫픽스 안내</em>`,
         desc:
             `● 검색이 되지 않는 오류 수정
          &nbsp;&nbsp; - 특정 직업군 및 캐릭터가 검색되지 않는 오류를 수정했습니다.
 
          ● 모바일 다크모드 오류 수정
          &nbsp;&nbsp; - 예상 카르마가 모바일 다크모드에서 보이지 않는 오류를 수정했습니다.`
+
+    },
+    {
+        name: `<em style="font-weight:600;font-size:15px;">2025-04-08 19:54 핫픽스 안내</em>`,
+        desc:
+            `● 진화 카르마 알고리즘 수정
+         &nbsp;&nbsp; - 의도적으로 카르마 레벨을 뻥튀기하지 못하도록 조정했습니다.
+         &nbsp;&nbsp; - 더하여, 알고리즘을 강화하여 정확도를 대폭 상승시켰습니다.`
 
     },
 ]
