@@ -13,15 +13,15 @@
 
 
 
-    <link rel="icon" type="image/png" href="/asset/image/lopec-ico.png">
+    <link rel="icon" type="image/png" href="https://cdnlopec.xyz/asset/image/lopec-ico.png">
+    <link rel="stylesheet" href="https://cdnlopec.xyz/asset/css/layout.css">
+    <link rel="stylesheet" href="https://cdnlopec.xyz/asset/css/main.css">
     <!-- <link rel="stylesheet" href="/asset/css/layout.css">
     <link rel="stylesheet" href="/asset/css/main.css"> -->
-    <script>
+    <!-- <script>
         document.write('<link rel="stylesheet" href="/asset/css/layout.css?' + (new Date).getTime() + '">');
         document.write('<link rel="stylesheet" href="/asset/css/main.css?' + (new Date).getTime() + '">');
-    </script>
-    <!-- <link rel="stylesheet" href="https://lopec.kr/asset/css/layout.css">
-    <link rel="stylesheet" href="https://lopec.kr/asset/css/main.css"> -->
+    </script> -->
 
     <title>로펙 : 스펙포인트 및 환산점수</title>
 </head>
@@ -582,10 +582,15 @@
 
     </div>
 
+    <!--
     <script>
         document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
         document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
     </script>
+    -->
+    <script type="module" src="https://cdnlopec.xyz/asset/js/layout.js"></script>
+    <script type="module" src="https://cdnlopec.xyz/asset/js/custom.js"></script>
+
 </body>
 
 

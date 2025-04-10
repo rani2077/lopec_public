@@ -1,13 +1,13 @@
 // import 'https://code.jquery.com/jquery-3.6.0.min.js';
 
-// const baseUrl = "https://lopec.kr/asset"; // CDN 경로 주석 처리
+const baseUrl = "https://cdnlopec.xyz/asset"; // CDN 경로 주석 처리
 async function importModuleManager() {
     let interValTime = 60 * 1000;
     let modules = await Promise.all([
-        // import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
-        // import(`${baseUrl}/filter/simulator-filter.js`),   // CDN 로드 주석 처리
-        import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 타임스탬프 방식 복구
-        import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`), // 기존 타임스탬프 방식 복구
+        import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
+        import(`${baseUrl}/filter/simulator-filter.js`),   // CDN 로드 주석 처리
+        //import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 타임스탬프 방식 복구
+        //import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`), // 기존 타임스탬프 방식 복구
     ])
     let moduleObj = {
         originFilter: modules[0],

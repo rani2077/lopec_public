@@ -2152,8 +2152,8 @@ export let classGemFilter = [
             { name: "오의 : 폭쇄진", per: 0.164 },
             { name: "오의 : 화룡천상", per: 0.178 },
             { name: "오의 : 나선경", per: 0.071 },
-            { name: "오의 : 풍신초래", per: 0.071 },
-            { name: "보정치", per: -0.071 },
+            { name: "오의 : 풍신초래", per: 0.164 },
+            { name: "보정치", per: -0.164 },
         ],
     },
     {

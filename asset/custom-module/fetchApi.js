@@ -1,4 +1,4 @@
-import { localApiKey } from "../../config.js"
+//import { localApiKey } from "../../config.js"
 import { insertLopecCharacters } from '../js/character.js'
 import { insertLopecSearch } from '../js/search.js'
 
@@ -29,7 +29,7 @@ export async function lostarkApiCall(inputName) {
     }
     // alert("api 호출")
     // 캐시가 없거나 만료되었을 경우 API 호출
-    let apiKey = localApiKey;
+    let apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyIsImtpZCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyJ9.eyJpc3MiOiJodHRwczovL2x1ZHkuZ2FtZS5vbnN0b3ZlLmNvbSIsImF1ZCI6Imh0dHBzOi8vbHVkeS5nYW1lLm9uc3RvdmUuY29tL3Jlc291cmNlcyIsImNsaWVudF9pZCI6IjEwMDAwMDAwMDA1NTc2MTkifQ.IZ0KOLE_2fmBS9O11MNjN_9fj5oKuljWpX5w80QiX90zfmx-gDVkPaB1BGRebXRbtQNQ2P4zjpIzJtnfHE0DVfqVwl0fin3A0UXP7bToZ8a10cM9kWWKoh_nNkP672XZDcUWnYvkWOc5t88hY-4CnAull5ra-es0l18PGeeHGQ4T2bXq7tQmomCpyY54cX02dqkUEoAU3HQi7iM6kuYaa9v62ydrh_TOlYj8uRk_1h0Zj-NCzHrH1IrF3p31lBCWvOiWiV0BgNAw1k5Ykl2ZG86kSWkAA4aL9wAeFfmHbXY0JYgnjlrB5EHx2immRnLtiNus43hXsW6crJq7tGL3JQ";
     let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
     if (cloudflareResponse.status !== 403 && /lopec.kr/.test(window.location.host)) {
         const responseData = await cloudflareResponse.json();

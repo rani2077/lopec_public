@@ -4,7 +4,7 @@
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 
-// const baseUrl = "https://lopec.kr/asset"; // CDN 경로 주석 처리
+const baseUrl = "https://cdnlopec.xyz/asset"; // CDN 경로 주석 처리
 
 /* **********************************************************************************************************************
  * function name		:	importModuleManager()
@@ -12,25 +12,23 @@ let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini
  *********************************************************************************************************************** */
 async function importModuleManager() {
     let modules = await Promise.all([
-        // import(`${baseUrl}/custom-module/fetchApi.js`),     // CDN 로드 주석 처리
-        // import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
-        // import(`${baseUrl}/custom-module/trans-value.js`),  // CDN 로드 주석 처리
-        // import(`${baseUrl}/custom-module/calculator.js`),   // CDN 로드 주석 처리
-        // import(`${baseUrl}/custom-module/component.js`),    // CDN 로드 주석 처리
+        import(`${baseUrl}/custom-module/fetchApi.js`),     // CDN 로드 주석 처리
+        import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
+        import(`${baseUrl}/custom-module/trans-value.js`),  // CDN 로드 주석 처리
+        import(`${baseUrl}/custom-module/calculator.js`),   // CDN 로드 주석 처리
+        import(`${baseUrl}/custom-module/component.js`),    // CDN 로드 주석 처리
+        import(`${baseUrl}/js/characterRead2.js`),           // CDN 로드 주석 처리
+        import(`${baseUrl}/js/search.js`),                   // CDN 로드 주석 처리
+        import(`${baseUrl}/js/character.js`),                // CDN 로드 주석 처리
 
-        // import(`${baseUrl}/js/characterRead2.js`),           // CDN 로드 주석 처리
-        // import(`${baseUrl}/js/search.js`),                   // CDN 로드 주석 처리
-        // import(`${baseUrl}/js/character.js`),                // CDN 로드 주석 처리
-
-        import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
-        import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
-        import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구
-        import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 기존 타임스탬프 방식 복구
-        import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 기존 타임스탬프 방식 복구
-
-        import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 기존 타임스탬프 방식 복구
-        import('../js/search.js' + `?${(new Date).getTime()}`),                   // 기존 타임스탬프 방식 복구
-        import('../js/character.js' + `?${(new Date).getTime()}`),                // 기존 타임스탬프 방식 복구
+        //import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
+        //import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
+        //import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구
+        //import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 기존 타임스탬프 방식 복구
+        //import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 기존 타임스탬프 방식 복구
+        //import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 기존 타임스탬프 방식 복구
+        //import('../js/search.js' + `?${(new Date).getTime()}`),                   // 기존 타임스탬프 방식 복구
+        //import('../js/character.js' + `?${(new Date).getTime()}`),                // 기존 타임스탬프 방식 복구
     ])
     let moduleObj = {
         fetchApi: modules[0],
@@ -115,53 +113,53 @@ async function mainSearchFunction() {
         let tierNameEngArray = ['bronze', 'silver', 'gold', 'diamond', 'master', 'esther'];
         if (extractValue.etcObj.supportCheck !== "서폿") {
             if (specPoint.completeSpecPoint >= 3000) {
-                gradeImageSrc = "/asset/image/esther.png";
+                gradeImageSrc = `${baseUrl}/image/esther.png`;
                 nextTierValue = 0;
                 tierIndex = 5;
             } else if (specPoint.completeSpecPoint >= 2400) {
-                gradeImageSrc = "/asset/image/master.png";
+                gradeImageSrc = `${baseUrl}/image/master.png`;
                 nextTierValue = 3000;
                 tierIndex = 4;
             } else if (specPoint.completeSpecPoint >= 1900) {
-                gradeImageSrc = "/asset/image/diamond.png";
+                gradeImageSrc = `${baseUrl}/image/diamond.png`;
                 nextTierValue = 2400;
                 tierIndex = 3;
             } else if (specPoint.completeSpecPoint >= 1600) {
-                gradeImageSrc = "/asset/image/gold.png";
+                gradeImageSrc = `${baseUrl}/image/gold.png`;
                 nextTierValue = 1900;
                 tierIndex = 2;
             } else if (specPoint.completeSpecPoint >= 1400) {
-                gradeImageSrc = "/asset/image/silver.png";
+                gradeImageSrc = `${baseUrl}/image/silver.png`;
                 nextTierValue = 1600;
                 tierIndex = 1;
             } else if (specPoint.completeSpecPoint < 1400) {
-                gradeImageSrc = "/asset/image/bronze.png";
+                gradeImageSrc = `${baseUrl}/image/bronze.png`;
                 nextTierValue = 1400;
                 tierIndex = 0;
             }
         } else {
             if (specPoint.completeSpecPoint >= 1300) {
-                gradeImageSrc = "/asset/image/esther.png";
+                gradeImageSrc = `${baseUrl}/image/esther.png`;
                 nextTierValue = 0;
                 tierIndex = 5;
             } else if (specPoint.completeSpecPoint >= 1000) {
-                gradeImageSrc = "/asset/image/master.png";
+                gradeImageSrc = `${baseUrl}/image/master.png`;
                 nextTierValue = 1300;
                 tierIndex = 4;
             } else if (specPoint.completeSpecPoint >= 800) {
-                gradeImageSrc = "/asset/image/diamond.png";
+                gradeImageSrc = `${baseUrl}/image/diamond.png`;
                 nextTierValue = 1000;
                 tierIndex = 3;
             } else if (specPoint.completeSpecPoint >= 700) {
-                gradeImageSrc = "/asset/image/gold.png";
+                gradeImageSrc = `${baseUrl}/image/gold.png`;
                 nextTierValue = 800;
                 tierIndex = 2;
             } else if (specPoint.completeSpecPoint >= 400) {
-                gradeImageSrc = "/asset/image/silver.png";
+                gradeImageSrc = `${baseUrl}/image/silver.png`;
                 nextTierValue = 700;
                 tierIndex = 1;
             } else if (specPoint.completeSpecPoint < 400) {
-                gradeImageSrc = "/asset/image/bronze.png";
+                gradeImageSrc = `${baseUrl}/image/bronze.png`;
                 nextTierValue = 400;
                 tierIndex = 0;
             }
