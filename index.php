@@ -41,6 +41,8 @@
         document.write('<link rel="stylesheet" href="/asset/css/layout.css?' + (new Date).getTime() + '">');
         document.write('<link rel="stylesheet" href="/asset/css/main.css?' + (new Date).getTime() + '">');
     </script>
+    <!-- <link rel="stylesheet" href="https://lopec.kr/asset/css/layout.css">
+    <link rel="stylesheet" href="https://lopec.kr/asset/css/main.css"> -->
     <!-- <link rel="stylesheet" href="./asset/css/layout.css">
     <link rel="stylesheet" href="./asset/css/main.css"> -->
     <title>로펙 : 스펙포인트 및 환산점수</title>

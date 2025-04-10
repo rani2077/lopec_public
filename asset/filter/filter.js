@@ -2417,8 +2417,8 @@ export let classGemFilter = [
             { name: "아발란체", per: 0.049 },
             { name: "어나힐레이션 모드", per: 0.073 },
             { name: "명령 : 카펫", per: 0.074 },
-            { name: "명령 : 플레어빔", per: 0.074 },
-            { name: "전술사격", per: 0.074 },
+            { name: "명령 : 플레어 빔", per: 0.074 },
+            { name: "전술 사격", per: 0.074 },
             { name: "보정치", per: -0.148 },
             
         ],
@@ -2579,12 +2579,13 @@ export let classGemFilter = [
     {
         class: "사멸 억모닉",
         skill: [
-            { name: "", per: 0. },
-            { name: "", per: 0. },
-            { name: "", per: 0. },
-            { name: "", per: 0. },
-            { name: "", per: 0. },
-            
+            { name: "크루얼 커터", per: 0.135 },
+            { name: "데몰리션", per: 0.114 },
+            { name: "그라인드 체인", per: 0.109 },
+            { name: "스피닝 웨폰", per: 0.109 },
+            { name: "쓰러스트 임팩트", per: 0.058 },
+            { name: "데시메이트", per: 0.053 },
+            { name: "보정치", per: -0.109 },
         ],
     },
     {
@@ -2640,6 +2641,18 @@ export let classGemFilter = [
             { name: "보이드 스트라이크", per: 0.129 },
             { name: "블리츠 러시", per: 0.242 },
             { name: "어스 슬래쉬", per: 0.061 },
+            
+        ],
+    },
+    {
+        class: "슈차 문라 잔재",
+        skill: [
+            { name: "버스트 스킬", per: 0.1672 },
+            { name: "소울 앱소버", per: 0.1612 },
+            { name: "문라이트 소닉", per: 0.0963 },
+            { name: "보이드 스트라이크", per: 0.1312 },
+            { name: "블리츠 러시", per: 0.2392 },
+            { name: "어스 슬래쉬", per: 0.0582 },
             
         ],
     },

@@ -1,11 +1,13 @@
 // import 'https://code.jquery.com/jquery-3.6.0.min.js';
 
-
+// const baseUrl = "https://lopec.kr/asset"; // CDN 경로 주석 처리
 async function importModuleManager() {
     let interValTime = 60 * 1000;
     let modules = await Promise.all([
-        import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 filter.js
-        import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 시뮬레이터 필터
+        // import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
+        // import(`${baseUrl}/filter/simulator-filter.js`),   // CDN 로드 주석 처리
+        import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 타임스탬프 방식 복구
+        import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`), // 기존 타임스탬프 방식 복구
     ])
     let moduleObj = {
         originFilter: modules[0],
@@ -1717,8 +1719,8 @@ export async function getCharacterProfile(data) {
             specialClass = "슈차 터닝 잔재";
         } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "방천격", dmg)) {
             specialClass = "4멸 일격";
-        } else if (classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)) {
-            specialClass = "데이터 없음";
+        } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg)) {
+            specialClass = "사멸 억모닉";
         } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
             specialClass = "데이터 없음";
         } else {
@@ -2141,7 +2143,7 @@ export async function getCharacterProfile(data) {
             const uniquePossibleResults = [];
             const seenPossibleKeys = new Set();
             possibleResults.forEach(result => {
-                const uniqueKey = `${result.karmaRounded}-${result.proximity.toFixed(5)}`;
+                const uniqueKey = `${result.karmaRounded}-${result.proximity.toFixed(6)}`;
                 if (!seenPossibleKeys.has(uniqueKey)) {
                     uniquePossibleResults.push(result);
                     seenPossibleKeys.add(uniqueKey);

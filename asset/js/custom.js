@@ -4,21 +4,33 @@
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 
+// const baseUrl = "https://lopec.kr/asset"; // CDN 경로 주석 처리
+
 /* **********************************************************************************************************************
  * function name		:	importModuleManager()
  * description			: 	사용하는 모든 외부 module파일 import
  *********************************************************************************************************************** */
 async function importModuleManager() {
     let modules = await Promise.all([
-        import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // lostark api호출
-        import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 filter.js
-        import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 유저정보 수치화
-        import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 수치값을 스펙포인트로 계산
-        import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 컴포넌트 모듈
+        // import(`${baseUrl}/custom-module/fetchApi.js`),     // CDN 로드 주석 처리
+        // import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
+        // import(`${baseUrl}/custom-module/trans-value.js`),  // CDN 로드 주석 처리
+        // import(`${baseUrl}/custom-module/calculator.js`),   // CDN 로드 주석 처리
+        // import(`${baseUrl}/custom-module/component.js`),    // CDN 로드 주석 처리
 
-        import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 유저정보 DB읽기 함수
-        import('../js/search.js' + `?${(new Date).getTime()}`),                   // 닉네임을 검색한 사람의 로그를 저장
-        import('../js/character.js' + `?${(new Date).getTime()}`),                // 특정 유저의 상세정보를 저장함
+        // import(`${baseUrl}/js/characterRead2.js`),           // CDN 로드 주석 처리
+        // import(`${baseUrl}/js/search.js`),                   // CDN 로드 주석 처리
+        // import(`${baseUrl}/js/character.js`),                // CDN 로드 주석 처리
+
+        import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
+        import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
+        import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구
+        import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 기존 타임스탬프 방식 복구
+        import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 기존 타임스탬프 방식 복구
+
+        import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 기존 타임스탬프 방식 복구
+        import('../js/search.js' + `?${(new Date).getTime()}`),                   // 기존 타임스탬프 방식 복구
+        import('../js/character.js' + `?${(new Date).getTime()}`),                // 기존 타임스탬프 방식 복구
     ])
     let moduleObj = {
         fetchApi: modules[0],
@@ -1039,13 +1051,13 @@ async function mainSearchFunction() {
             supportMedianValue = 1609.04;
         }
 
-        let medianDifferencePercent = (specPoint.completeSpecPoint - supportMedianValue) / supportMedianValue * 100;
+        let medianDifferencePercent = (specPoint.completeSpecPoint - 459.98) / 459.98 * 100;
         let dealerSupportConversion = 0;
         // 0보다 낮으면 다른 계산
         if (medianDifferencePercent > 0) {
-            dealerSupportConversion = dealerMedianValue * (1 + medianDifferencePercent / 100);
+            dealerSupportConversion = 847.84 * (1 + medianDifferencePercent / 100);
         } else {
-            dealerSupportConversion = dealerMedianValue * (1 + (medianDifferencePercent / 100));
+            dealerSupportConversion = 847.84 * (1 + (medianDifferencePercent / 100));
         }
         
 
