@@ -1712,12 +1712,14 @@ export async function getCharacterProfile(data) {
             specialClass = "크블 포식";
         } else if (classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)) {
             specialClass = "6M 피메";
-        } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
-            specialClass = "슈차 잔재";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
             specialClass = "슈차 터닝 잔재";
+        } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
+            specialClass = "슈차 잔재";
         } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "방천격", dmg)) {
             specialClass = "4멸 일격";
+        } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg) && (skillCheck(gemSkillArry, "그라인드 체인", dmg)||skillCheck(gemSkillArry, "스피닝 웨폰", dmg))) {
+            specialClass = "반사멸 억모닉";
         } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg)) {
             specialClass = "사멸 억모닉";
         } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
@@ -1727,7 +1729,7 @@ export async function getCharacterProfile(data) {
         }
 
     }
-    // console.log("보석전용 직업 : ",specialClass)
+    console.log("보석전용 직업 : ",specialClass)
 
 
     gemSkillArry.forEach(function (gemSkill, idx) {

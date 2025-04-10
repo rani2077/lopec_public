@@ -2577,7 +2577,7 @@ export let classGemFilter = [
         ],
     },
     {
-        class: "사멸 억모닉",
+        class: "반사멸 억모닉",
         skill: [
             { name: "크루얼 커터", per: 0.135 },
             { name: "데몰리션", per: 0.114 },
@@ -2586,6 +2586,17 @@ export let classGemFilter = [
             { name: "쓰러스트 임팩트", per: 0.058 },
             { name: "데시메이트", per: 0.053 },
             { name: "보정치", per: -0.109 },
+        ],
+    },
+    {
+        class: "사멸 억모닉",
+        skill: [
+            { name: "크루얼 커터", per: 0.125 },
+            { name: "데몰리션", per: 0.114 },
+            { name: "쓰러스트 임팩트", per: 0.084 },
+            { name: "샤펀 컷", per: 0.063 },
+            { name: "데시메이트", per: 0.058 },
+            { name: "라이징 클로", per: 0.025 },
         ],
     },
     {
