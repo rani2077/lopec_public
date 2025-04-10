@@ -11,12 +11,15 @@
     <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보, 환산점수">
 
 
-    <link rel="icon" type="image/png" href="/asset/image/lopec-ico.png">
-    <!-- <link rel="stylesheet" href="/asset/css/m-layout.css">
-    <link rel="stylesheet" href="/asset/css/m-main.css"> -->
+    <link rel="icon" type="image/png" href="https://cdnlopec.xyz/asset/image/lopec-ico.png">
     <script>
-        document.write('<link rel="stylesheet" href="/asset/css/m-layout.css?' + (new Date).getTime() + '">');
-        document.write('<link rel="stylesheet" href="/asset/css/m-main.css?' + (new Date).getTime() + '">');
+        let baseUrl = "https://cdnlopec.xyz/asset";
+        let interValTime = 60 * 1000 * 10;
+        if (!window.location.href.includes("lopec.kr")) {
+            baseUrl = "/asset"
+        }
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-layout.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-main.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
     </script>
     <title>로펙 : 스펙포인트 및 환산점수</title>
 </head>
@@ -559,10 +562,9 @@
     </div>
 
     <script>
-        document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
-        document.write('<script type="module" src="/asset/js/custom.js?' + (new Date).getTime() + '"><\/script>');
+        document.write('<script type="module" src="' + baseUrl + '/js/layout.js?' + Math.floor((new Date).getTime() / interValTime) + '"><\/script>');
+        document.write('<script type="module" src="' + baseUrl + '/js/custom.js?' + Math.floor((new Date).getTime() / interValTime) + '"><\/script>');
     </script>
-
 
 </body>
 

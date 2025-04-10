@@ -36,15 +36,19 @@
 
 
 
-    <link rel="icon" type="image/png" href="./asset/image/lopec-ico.png">
-    <!-- <script>
-        document.write('<link rel="stylesheet" href="/asset/css/layout.css?' + (new Date).getTime() + '">');
-        document.write('<link rel="stylesheet" href="/asset/css/main.css?' + (new Date).getTime() + '">');
-    </script> -->
-    <link rel="stylesheet" href="https://cdnlopec.xyz/asset/css/layout.css">
-    <link rel="stylesheet" href="https://cdnlopec.xyz/asset/css/main.css">
-    <!-- <link rel="stylesheet" href="./asset/css/layout.css">
-    <link rel="stylesheet" href="./asset/css/main.css"> -->
+    <link rel="icon" type="image/png" href="https://cdnlopec.xyz/asset/image/lopec-ico.png">
+    <script>
+        let baseUrl = "https://cdnlopec.xyz/asset";
+        let interValTime = 60 * 1000 * 10;
+        if (!window.location.href.includes("lopec.kr")) {
+            baseUrl = "/asset"
+        }
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/layout.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/main.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+    </script>
+    <?php
+
+    ?>
     <title>로펙 : 스펙포인트 및 환산점수</title>
 </head>
 
@@ -161,14 +165,11 @@
         </div>
     </div>
 
-    <!--
+
     <script>
-        document.write('<script type="module" src="/asset/js/layout.js?' + (new Date).getTime() + '"><\/script>');
-        document.write('<script type="module" src="/asset/js/index.js?' + (new Date).getTime() + '"><\/script>');
+        document.write('<script type="module" src="' + baseUrl + '/js/layout.js?' + Math.floor((new Date).getTime() / interValTime) + '"><\/script>');
+        document.write('<script type="module" src="' + baseUrl + '/js/index.js?' + Math.floor((new Date).getTime() / interValTime) + '"><\/script>');
     </script>
-    -->
-    <script type="module" src="https://cdnlopec.xyz/asset/js/layout.js"></script>
-    <script type="module" src="https://cdnlopec.xyz/asset/js/index.js"></script>
 
 </body>
 

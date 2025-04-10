@@ -1,11 +1,10 @@
 // import 'https://code.jquery.com/jquery-3.6.0.min.js';
 
-const baseUrl = "https://cdnlopec.xyz/asset"; // CDN 경로 주석 처리
 async function importModuleManager() {
     let interValTime = 60 * 1000;
     let modules = await Promise.all([
-        import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
-        import(`${baseUrl}/filter/simulator-filter.js`),   // CDN 로드 주석 처리
+        import(`../filter/filter.js?${Math.floor((new Date).getTime() / interValTime)}`),              // CDN 로드 주석 처리
+        import(`../filter/simulator-filter.js?${Math.floor((new Date).getTime() / interValTime)}`),   // CDN 로드 주석 처리
         //import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 타임스탬프 방식 복구
         //import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`), // 기존 타임스탬프 방식 복구
     ])
@@ -140,43 +139,43 @@ export async function getCharacterProfile(data) {
     let allCardDescriptions = []; // 모든 Description을 저장할 배열 초기화
 
     if (data.ArmoryCard && data.ArmoryCard.Effects && Array.isArray(data.ArmoryCard.Effects)) {
-      // effect를 순회
-      data.ArmoryCard.Effects.forEach(effect => {
-        // 현재 effect 객체와 그 안의 Items가 존재하고 배열인지 확인
-        if (effect && effect.Items && Array.isArray(effect.Items)) {
-          // item 순회
-          effect.Items.forEach(item => {
-            // Description 속성이 존재하는지 확인
-            if (item && item.Description) {
-              // Description 값을 allCardDescriptions 배열에 추가
-              allCardDescriptions.push(item.Description);
+        // effect를 순회
+        data.ArmoryCard.Effects.forEach(effect => {
+            // 현재 effect 객체와 그 안의 Items가 존재하고 배열인지 확인
+            if (effect && effect.Items && Array.isArray(effect.Items)) {
+                // item 순회
+                effect.Items.forEach(item => {
+                    // Description 속성이 존재하는지 확인
+                    if (item && item.Description) {
+                        // Description 값을 allCardDescriptions 배열에 추가
+                        allCardDescriptions.push(item.Description);
+                    }
+                });
             }
-          });
-        }
-      });
+        });
     }
 
     let totalMaxHpBonus = 0; // 추출된 최대 생명력 보너스 합계
 
-        // allCardDescriptions 순회
-        allCardDescriptions.forEach(description => {
-          // "최대 생명력"이 포함되어 있는지 확인
-          if (description.includes("최대 생명력")) {
+    // allCardDescriptions 순회
+    allCardDescriptions.forEach(description => {
+        // "최대 생명력"이 포함되어 있는지 확인
+        if (description.includes("최대 생명력")) {
             // 정규식
             const regex = /최대 생명력 \+(\d+(?:\.\d+)?)\%/;
             const match = description.match(regex);
-        
+
             // 정규식 매칭에 성공했고, 숫자를 포함한 그룹이 있는지 확인합니다.
             if (match && match[1]) {
-              // 추출된 숫자 문자열을 부동소수점 숫자로 변환하여 합계에 더합니다.
-              totalMaxHpBonus += parseFloat(match[1]);
+                // 추출된 숫자 문자열을 부동소수점 숫자로 변환하여 합계에 더합니다.
+                totalMaxHpBonus += parseFloat(match[1]);
             }
-          }
-        });
+        }
+    });
 
-        //console.log("최대 생명력 보너스 총합:", totalMaxHpBonus);
-        totalMaxHpBonus = (totalMaxHpBonus / 100)
-        //console.log(totalMaxHpBonus)
+    //console.log("최대 생명력 보너스 총합:", totalMaxHpBonus);
+    totalMaxHpBonus = (totalMaxHpBonus / 100)
+    //console.log(totalMaxHpBonus)
 
 
 
@@ -303,7 +302,7 @@ export async function getCharacterProfile(data) {
             //console.log(defaultObj.hpActive)
         }
     })
-    
+
     let vitalitySum = 0; // 툴팁에서 추출한 생명 활성력 합계를 위한 변수
     data.ArmoryEquipment.forEach(function (equip) {
         if (equip.Type == "무기") {
@@ -318,7 +317,7 @@ export async function getCharacterProfile(data) {
                 // Element_006.value.Element_001 확인
                 let vitalityStringFrom006 = tooltipJson?.Element_006?.value?.Element_001;
                 if (vitalityStringFrom006 && vitalityStringFrom006.startsWith("생명 활성력")) {
-                    const match = vitalityStringFrom006.match(/\d+/); 
+                    const match = vitalityStringFrom006.match(/\d+/);
                     if (match) {
                         vitalityValue = Number(match[0]);
                         foundVitality = true; // 006에서 찾음
@@ -329,14 +328,14 @@ export async function getCharacterProfile(data) {
                 if (!foundVitality) { // 006에서 못 찾았을 경우에만 007 확인
                     let vitalityStringFrom007 = tooltipJson?.Element_007?.value?.Element_001;
                     if (vitalityStringFrom007 && vitalityStringFrom007.startsWith("생명 활성력")) {
-                        const match = vitalityStringFrom007.match(/\d+/); 
+                        const match = vitalityStringFrom007.match(/\d+/);
                         if (match) {
                             vitalityValue = Number(match[0]);
                             // foundVitality 플래그는 여기서 설정할 필요 없음 (마지막 확인이므로)
                         }
                     }
                 }
-                
+
                 vitalitySum += vitalityValue; // 해당 장비에서 찾은 값을 합계에 더함 (못 찾으면 0)
 
             } catch (e) {
@@ -350,7 +349,7 @@ export async function getCharacterProfile(data) {
     //defaultObj.hpActive = (vitalitySum / 140) / 100 + 1;
     //console.log(defaultObj.hpActive)
     //defaultObj.hpActive = (defaultObj.hpActive / 100) + 1
-    defaultObj.hpActive = ( 0.000071427 * vitalitySum) + 1
+    defaultObj.hpActive = (0.000071427 * vitalitySum) + 1
 
     // 무기 공격력
     data.ArmoryEquipment.forEach(function (weapon) {
@@ -1588,7 +1587,7 @@ export async function getCharacterProfile(data) {
 
         // 스킬 이름으로 그룹화
         const skillGroups = {};
-        
+
         // 스킬 이름으로 gemSkillArry 그룹화
         gemSkillArry.forEach(gem => {
             if (!skillGroups[gem.skill]) {
@@ -1596,21 +1595,21 @@ export async function getCharacterProfile(data) {
             }
             skillGroups[gem.skill].push(gem);
         });
-        
+
         // 필터링된 보석 수 추적
         let filteredCount = 0;
-        
+
         // 각 스킬 그룹에서 멸화/겁화 중복 처리
         Object.keys(skillGroups).forEach(skillName => {
             const gems = skillGroups[skillName];
-            
+
             // 멸화/겁화 보석만 필터링
             const dmgGems = gems.filter(gem => gem.name === "멸화" || gem.name === "겁화");
-            
+
             // 멸화/겁화 보석이 2개 이상인 경우에만 처리
             if (dmgGems.length >= 2) {
                 //console.log(`중복 보석 발견: ${skillName} - ${dmgGems.length}개`);
-                
+
                 // 각 보석의 실제 값 계산
                 dmgGems.forEach(gem => {
                     const gemInfo = gemPerObj.find(info => info.name === gem.name);
@@ -1621,9 +1620,9 @@ export async function getCharacterProfile(data) {
                         gem.actualValue = 0;
                     }
                 });
-                
+
                 // 배열에 담긴 겁멸+레벨의 값이 가장 높은 보석 찾기
-                const maxValueGem = dmgGems.reduce((max, gem) => 
+                const maxValueGem = dmgGems.reduce((max, gem) =>
                     (gem.actualValue > max.actualValue) ? gem : max, dmgGems[0]);
 
                 // 값이 가장 높은 것 외에는 skillPer를 0으로 설정
@@ -1635,14 +1634,14 @@ export async function getCharacterProfile(data) {
                     }
                 });
             }
-            
+
             // 작열/홍염 보석 필터링 및 처리
             const coolGems = gems.filter(gem => gem.name === "작열" || gem.name === "홍염");
-            
+
             // 작열/홍염 보석이 2개 이상인 경우 처리
             if (coolGems.length >= 2) {
                 //console.log(`중복 쿨다운 보석 발견: ${skillName} - ${coolGems.length}개`);
-                
+
                 // 각 보석의 실제 값 계산
                 coolGems.forEach(gem => {
                     const gemInfo = gemPerObj.find(info => info.name === gem.name);
@@ -1653,9 +1652,9 @@ export async function getCharacterProfile(data) {
                         gem.actualValue = 0;
                     }
                 });
-                
+
                 // 배열에 담긴 작열/홍염+레벨의 값이 가장 높은 보석 찾기
-                const maxValueGem = coolGems.reduce((max, gem) => 
+                const maxValueGem = coolGems.reduce((max, gem) =>
                     (gem.actualValue > max.actualValue) ? gem : max, coolGems[0]);
 
                 // 값이 가장 높은 것 외에는 skillPer를 0으로 설정
@@ -1670,7 +1669,7 @@ export async function getCharacterProfile(data) {
         });
         return gemSkillArry;
     }
-    
+
 
     if (true) {
 
@@ -1765,11 +1764,11 @@ export async function getCharacterProfile(data) {
             let realGemValue = classGemEquip[0].skill.map(skillObj => {
 
                 // 필터링 결과(skillPer가 0인 보석은 제외)를 realGemValue에 올바르게 반영
-                let matchValue = gemSkillArry.filter(item => 
-                    item.skill == skillObj.name && 
+                let matchValue = gemSkillArry.filter(item =>
+                    item.skill == skillObj.name &&
                     (item.skillPer !== 0 || item.skillPer === "none")
                 );
-                
+
                 if (!(matchValue.length == 0)) {
                     // console.log(matchValue)
                     return {
@@ -2069,68 +2068,68 @@ export async function getCharacterProfile(data) {
                     // feastIdx, raidIdx 루프 제거
                     // for (let feastIdx = 0; feastIdx < FEAST_HPS.length; feastIdx++) {
                     //     for (let raidIdx = 0; raidIdx < RAID_HPS.length; raidIdx++) {
-                            const petPercent = PET_PERCENTS[petIdx];
-                            const rangerPercent = RANGER_PERCENTS[rangerIdx];
-                            // const feastHp = FEAST_HPS[feastIdx]; // 항상 0
-                            // const raidHp = RAID_HPS[raidIdx];   // 항상 0
-                            const currentCardPercent = cardHP || 0;
+                    const petPercent = PET_PERCENTS[petIdx];
+                    const rangerPercent = RANGER_PERCENTS[rangerIdx];
+                    // const feastHp = FEAST_HPS[feastIdx]; // 항상 0
+                    // const raidHp = RAID_HPS[raidIdx];   // 항상 0
+                    const currentCardPercent = cardHP || 0;
 
-                            // 1. 퍼센트 효과 합계 계산
-                            const percentFactor = (1 + petPercent + rangerPercent + currentCardPercent);
+                    // 1. 퍼센트 효과 합계 계산
+                    const percentFactor = (1 + petPercent + rangerPercent + currentCardPercent);
 
-                            // 2. 고정 체력 보너스 계산 (항상 0)
-                            const flatHpBonus = 0;
+                    // 2. 고정 체력 보너스 계산 (항상 0)
+                    const flatHpBonus = 0;
 
-                            // 역산 공식 세부 계산
-                            const step1 = maxHealth / (percentFactor * vitalityRate);
-                            const step2 = step1 - baseHealth - flatHpBonus;
-                            const estimatedKarma = step2 / KARMA_HP_PER_LEVEL;
+                    // 역산 공식 세부 계산
+                    const step1 = maxHealth / (percentFactor * vitalityRate);
+                    const step2 = step1 - baseHealth - flatHpBonus;
+                    const estimatedKarma = step2 / KARMA_HP_PER_LEVEL;
 
-                            // 4. 결과 유효성 검사 및 근사치 계산
-                            const roundedValue = Math.round(estimatedKarma);
-                            const proximity = Math.abs(estimatedKarma - roundedValue);
-                            const isPossible = (estimatedKarma >= -0.5 && !isNaN(estimatedKarma));
+                    // 4. 결과 유효성 검사 및 근사치 계산
+                    const roundedValue = Math.round(estimatedKarma);
+                    const proximity = Math.abs(estimatedKarma - roundedValue);
+                    const isPossible = (estimatedKarma >= -0.5 && !isNaN(estimatedKarma));
 
-                            // 중간 반올림 적용된 체력 계산들
-                            const calculatedKarmaHp = estimatedKarma * KARMA_HP_PER_LEVEL;
-                            const sumForEstimation = baseHealth + flatHpBonus + calculatedKarmaHp;
-                            const intermediateEstimation = sumForEstimation * vitalityRate;
-                            const roundedIntermediateEstimation = Math.round(intermediateEstimation);
-                            const calculatedMaxHpWithExactKarma = roundedIntermediateEstimation * percentFactor;
+                    // 중간 반올림 적용된 체력 계산들
+                    const calculatedKarmaHp = estimatedKarma * KARMA_HP_PER_LEVEL;
+                    const sumForEstimation = baseHealth + flatHpBonus + calculatedKarmaHp;
+                    const intermediateEstimation = sumForEstimation * vitalityRate;
+                    const roundedIntermediateEstimation = Math.round(intermediateEstimation);
+                    const calculatedMaxHpWithExactKarma = roundedIntermediateEstimation * percentFactor;
 
-                            const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL;
-                            const sumForRounded = baseHealth + flatHpBonus + karmaHpForRounded;
-                            const intermediateRounded = sumForRounded * vitalityRate;
-                            const roundedIntermediateRounded = Math.round(intermediateRounded);
-                            const maxHpUsingRoundedKarma = roundedIntermediateRounded * percentFactor;
+                    const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL;
+                    const sumForRounded = baseHealth + flatHpBonus + karmaHpForRounded;
+                    const intermediateRounded = sumForRounded * vitalityRate;
+                    const roundedIntermediateRounded = Math.round(intermediateRounded);
+                    const maxHpUsingRoundedKarma = roundedIntermediateRounded * percentFactor;
 
-                            // 5. 결과 저장 (formulaDesc 및 buffLevelSum 수정)
-                            // --- formulaDesc 통일 로직 시작 ---
-                            // const petPercent = PET_PERCENTS[petIdx]; // 중복 선언 제거 (이미 위에서 선언됨)
-                            // const rangerPercent = RANGER_PERCENTS[rangerIdx]; // 중복 선언 제거 (이미 위에서 선언됨)
-                            const totalPercentBonus = petPercent + rangerPercent; // 총 퍼센트 보너스 합계 (위에서 선언된 petPercent, rangerPercent 사용)
-                            let unifiedDesc = `펫${petIdx}|방범대${rangerIdx}`; // 기본 설명 유지
+                    // 5. 결과 저장 (formulaDesc 및 buffLevelSum 수정)
+                    // --- formulaDesc 통일 로직 시작 ---
+                    // const petPercent = PET_PERCENTS[petIdx]; // 중복 선언 제거 (이미 위에서 선언됨)
+                    // const rangerPercent = RANGER_PERCENTS[rangerIdx]; // 중복 선언 제거 (이미 위에서 선언됨)
+                    const totalPercentBonus = petPercent + rangerPercent; // 총 퍼센트 보너스 합계 (위에서 선언된 petPercent, rangerPercent 사용)
+                    let unifiedDesc = `펫${petIdx}|방범대${rangerIdx}`; // 기본 설명 유지
 
-                            // 부동 소수점 오차를 고려하여 비교 (0.001 정도의 허용 오차)
-                            if (Math.abs(totalPercentBonus - 0.02) < 0.001) { // 펫2(0.02) 또는 방범대3(0.02) -> 총합 2%
-                                unifiedDesc = `효과(2%)`; 
-                            } else if (Math.abs(totalPercentBonus - 0.05) < 0.001) { // 펫3(0.03)+방범대3(0.02) 또는 펫5(0.05) -> 총합 5%
-                                unifiedDesc = `효과(5%)`; 
-                            }
-                            // 다른 조합은 기본 설명(펫X|방범대Y) 유지
-                            // --- formulaDesc 통일 로직 끝 ---
+                    // 부동 소수점 오차를 고려하여 비교 (0.001 정도의 허용 오차)
+                    if (Math.abs(totalPercentBonus - 0.02) < 0.001) { // 펫2(0.02) 또는 방범대3(0.02) -> 총합 2%
+                        unifiedDesc = `효과(2%)`;
+                    } else if (Math.abs(totalPercentBonus - 0.05) < 0.001) { // 펫3(0.03)+방범대3(0.02) 또는 펫5(0.05) -> 총합 5%
+                        unifiedDesc = `효과(5%)`;
+                    }
+                    // 다른 조합은 기본 설명(펫X|방범대Y) 유지
+                    // --- formulaDesc 통일 로직 끝 ---
 
-                            allResults.push({
-                                formulaDesc: unifiedDesc, // 수정된 통일 설명 사용
-                                rangerIdx: rangerIdx, // 기존 정보 유지 (Tie-breaking 등에 사용 가능)
-                                karmaExact: estimatedKarma,
-                                karmaRounded: roundedValue,
-                                proximity: proximity,
-                                isPossible: isPossible,
-                                buffLevelSum: petIdx + rangerIdx, // 기존 정보 유지 (Tie-breaking 등에 사용 가능)
-                                calculatedMaxHp: calculatedMaxHpWithExactKarma.toFixed(2),
-                                maxHpUsingRoundedKarma: maxHpUsingRoundedKarma
-                            });
+                    allResults.push({
+                        formulaDesc: unifiedDesc, // 수정된 통일 설명 사용
+                        rangerIdx: rangerIdx, // 기존 정보 유지 (Tie-breaking 등에 사용 가능)
+                        karmaExact: estimatedKarma,
+                        karmaRounded: roundedValue,
+                        proximity: proximity,
+                        isPossible: isPossible,
+                        buffLevelSum: petIdx + rangerIdx, // 기존 정보 유지 (Tie-breaking 등에 사용 가능)
+                        calculatedMaxHp: calculatedMaxHpWithExactKarma.toFixed(2),
+                        maxHpUsingRoundedKarma: maxHpUsingRoundedKarma
+                    });
                     //     } // raidIdx 루프 닫기
                     // } // feastIdx 루프 닫기
                 }
@@ -2177,7 +2176,7 @@ export async function getCharacterProfile(data) {
             } else {
                 //console.log(`프록시미티 필터: ${possibleResults.length}개 중 ${filteredByProximity.length}개의 결과가 프록시미티 0.1 이하 조건을 만족합니다.`);
             }
-            
+
             // 필터링된 결과가 있으면 사용, 없으면 원본 사용
             const workingResults = filteredByProximity.length > 0 ? filteredByProximity : possibleResults;
             // --- proximity 필터링 끝 ---
@@ -2204,7 +2203,7 @@ export async function getCharacterProfile(data) {
 
             // --- 중복 결과 제거 로직 끝 ---
             let currentWorkingResults = uniqueResults; // 처리할 배열 변수 이름 변경
-                    
+
             // --- 추가된 로그: Proximity 기준 정렬된 초기 후보 결과 ---
             //const sortedInitialCandidates = [...uniqueResults].sort((a, b) => a.proximity - b.proximity);
             //console.log("정렬된 초기 후보 결과 (Proximity 기준):");
@@ -2217,16 +2216,16 @@ export async function getCharacterProfile(data) {
             //    maxHpUsingRoundedKarma: r.maxHpUsingRoundedKarma.toFixed(2)
             //})));
             // --- 로그 추가 끝 ---
-                    
+
             // --- 새로운 로직: Proximity < 0.005 그룹만 남기기 ---
             let finalBestResult; // 최종 결과 변수 
-                    
+
             const lowProximityMatches = currentWorkingResults.filter(result => result.proximity < 0.005);
-                    
+
             if (lowProximityMatches.length > 0) {
                 //console.log(`후처리 (Low Proximity 그룹 사용): Proximity < 0.005 인 ${lowProximityMatches.length}개 결과만 대상으로 이후 로직을 진행합니다.`);
                 // 이후 처리는 lowProximityMatches 배열만 사용하도록 변경
-                currentWorkingResults = lowProximityMatches; 
+                currentWorkingResults = lowProximityMatches;
             } else {
                 //console.log(`후처리 (Low Proximity 그룹 없음): Proximity < 0.005 인 결과가 없어 기존 결과 전체를 대상으로 로직을 진행합니다.`);
                 // lowProximityMatches가 없으면 원래 배열(uniqueResults) 그대로 사용
@@ -2243,16 +2242,16 @@ export async function getCharacterProfile(data) {
                 };
             }
             // --- 빈 배열 체크 끝 ---
-            
-            
+
+
             // --- 이후 모든 로직은 currentWorkingResults 배열을 사용 ---
-            
+
             // --- 기존 로직 시작: 정확한 체력 일치 우선 확인 ---
             // 변수 선언은 이미 위에서 했으므로 여기서는 값을 할당하거나 사용합니다.
             const exactMatches = currentWorkingResults.filter(result => Math.abs(maxHealth - result.calculatedMaxHp) < EXACT_HP_TOLERANCE); // 여기 선언은 유지
             let exactMatchFound = false; // const -> let 으로 변경, 여기서 선언 유지
 
-                            // --- 새로운 비교 로직 함수 정의 ---
+            // --- 새로운 비교 로직 함수 정의 ---
             function compareCandidates(a, b, maxHealth) {
                 const proxA = a.proximity;
                 const proxB = b.proximity;
@@ -2327,28 +2326,28 @@ export async function getCharacterProfile(data) {
                     standaloneEffect5Matches.sort((a, b) => compareCandidates(a, b, maxHealth));
                     finalBestResult = standaloneEffect5Matches[0];
                     //console.log(` -> 단독 효과(5%) 중 최적 후보 선택: ${finalBestResult.formulaDesc} (Proximity: ${finalBestResult.proximity.toFixed(5)})`);
-                
+
                 } else if (regularPet5Matches.length > 0) {
                     // 2순위: 펫5 (비단독)
                     //console.log("후처리 (정확한 체력): 펫5 (비단독) 우선 적용 시도.");
                     regularPet5Matches.sort((a, b) => compareCandidates(a, b, maxHealth));
                     finalBestResult = regularPet5Matches[0];
                     //console.log(` -> 펫5(비단독) 중 최적 후보 선택: ${finalBestResult.formulaDesc} (Proximity: ${finalBestResult.proximity.toFixed(5)})`);
-                
+
                 } else if (nonEffectPet0Matches.length > 0) {
                     // 3순위: 펫0 (효과 제외)
                     //console.log("후처리 (정확한 체력): 펫0 (효과 제외) 우선 적용 시도.");
                     nonEffectPet0Matches.sort((a, b) => compareCandidates(a, b, maxHealth));
                     finalBestResult = nonEffectPet0Matches[0];
                     //console.log(` -> 펫0(효과 제외) 중 최적 후보 선택: ${finalBestResult.formulaDesc} (Proximity: ${finalBestResult.proximity.toFixed(5)})`);
-                
+
                 } else if (allPet0Matches.length > 0) {
-                     // 4순위: Fallback 펫0 (설명 무관)
+                    // 4순위: Fallback 펫0 (설명 무관)
                     //console.log("후처리 (정확한 체력): 1차/2차/3차 우선순위 후보 없음. Fallback 펫0 검사 시도.");
                     allPet0Matches.sort((a, b) => compareCandidates(a, b, maxHealth));
                     finalBestResult = allPet0Matches[0];
-                   //console.log(` -> Fallback: 설명 무관 펫0 중 최적 후보 선택: ${finalBestResult.formulaDesc} (Proximity: ${finalBestResult.proximity.toFixed(5)})`);
-               
+                    //console.log(` -> Fallback: 설명 무관 펫0 중 최적 후보 선택: ${finalBestResult.formulaDesc} (Proximity: ${finalBestResult.proximity.toFixed(5)})`);
+
                 } else {
                     // 5순위: 최종 정렬 (단, 단독 펫1 후보 제외)
                     //console.log("후처리 (정확한 체력): 모든 우선순위 후보 없음. 최종 규칙 적용 (단독 펫1 제외).");
@@ -2367,7 +2366,7 @@ export async function getCharacterProfile(data) {
                     }
 
                     let finalCandidatesToConsider;
-                    if (filteredMatches.length > 0) {   
+                    if (filteredMatches.length > 0) {
                         // 제외 후 후보가 남아있으면 그 후보들을 사용
                         finalCandidatesToConsider = filteredMatches;
                     } else {
@@ -2390,26 +2389,26 @@ export async function getCharacterProfile(data) {
                     }
                 }
                 // --- 결정 로직 끝 ---
-                
-                 /* --- 기존 로직 제거 ---
-                // --- 수정된 규칙: (펫5 또는 효과5%) 우선, 이후 (펫0) 차선, 나머지는 Proximity ---
-                // for (const match of exactMatches) { ... } // 루프 제거됨
 
-                // 3. 최종 결과 결정
-                // if (bestPet5Match) { ... } else if (bestPet0Match) { ... } else { ... Fallback ... } // 결정 로직 제거됨
-                // --- 수정된 규칙 끝 ---
-                */
+                /* --- 기존 로직 제거 ---
+               // --- 수정된 규칙: (펫5 또는 효과5%) 우선, 이후 (펫0) 차선, 나머지는 Proximity ---
+               // for (const match of exactMatches) { ... } // 루프 제거됨
+
+               // 3. 최종 결과 결정
+               // if (bestPet5Match) { ... } else if (bestPet0Match) { ... } else { ... Fallback ... } // 결정 로직 제거됨
+               // --- 수정된 규칙 끝 ---
+               */
             }
 
             // --- 정확한 체력 일치가 없을 경우에만 기존 정렬 및 후처리 실행 ---
             if (!exactMatchFound) {
                 //console.log("후처리: 정확한 체력 일치 결과 없음. 기존 정렬(Rounded 기준) 및 후처리 로직 실행.");
-            
+
                 // --- 1차 정렬: 체력 차이 (Rounded 기준) -> proximity -> buffLevelSum ---
                 currentWorkingResults.sort((a, b) => {
                     const diffA = Math.abs(maxHealth - a.maxHpUsingRoundedKarma);
                     const diffB = Math.abs(maxHealth - b.maxHpUsingRoundedKarma);
-                
+
                     if (diffA !== diffB) {
                         return diffA - diffB; // (1) Rounded 기준 체력 차이가 가장 적은 순서
                     }
@@ -2417,12 +2416,12 @@ export async function getCharacterProfile(data) {
                         return a.proximity - b.proximity; // (2) Proximity가 낮은 순서
                     }
                     // buffLevelSum 비교는 제거되었으므로 여기서는 순서 영향 없음
-                    return 0; 
+                    return 0;
                 });
-            
-                finalBestResult = currentWorkingResults[0]; 
-                let dealerPriorityApplied = false; 
-            
+
+                finalBestResult = currentWorkingResults[0];
+                let dealerPriorityApplied = false;
+
                 // --- 후처리 로직 시작 (기존 규칙 5, 6, 7) ---
                 // workingResults 대신 currentWorkingResults 사용하도록 수정 필요
                 // 예: if (!isSupport && currentWorkingResults.length >= 2) { ... }
@@ -2467,8 +2466,8 @@ export async function getCharacterProfile(data) {
         // isSupport 인자 추가하여 함수 호출
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
-         //console.log("카르마 추정 결과:", result.bestResult);
-         //console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
+        //console.log("카르마 추정 결과:", result.bestResult);
+        //console.log("모든 가능성:", result.allResults); // 상세 결과 확인 필요 시 주석 해제
 
         let evolutionkarmaPoint = result.bestResult.karmaLevel;
         let evolutionkarmaRank = 0

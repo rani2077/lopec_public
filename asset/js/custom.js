@@ -3,27 +3,25 @@
 * description       : 	현재 접속한 디바이스 기기가 모바일, 태블릿일 경우 true를 반환
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
-
-const baseUrl = "https://cdnlopec.xyz/asset"; // CDN 경로 주석 처리
-
 /* **********************************************************************************************************************
  * function name		:	importModuleManager()
  * description			: 	사용하는 모든 외부 module파일 import
  *********************************************************************************************************************** */
 async function importModuleManager() {
+    let interValTime = 60 * 1000 * 10;
     let modules = await Promise.all([
-        import(`${baseUrl}/custom-module/fetchApi.js`),     // CDN 로드 주석 처리
-        import(`${baseUrl}/filter/filter.js`),              // CDN 로드 주석 처리
-        import(`${baseUrl}/custom-module/trans-value.js`),  // CDN 로드 주석 처리
-        import(`${baseUrl}/custom-module/calculator.js`),   // CDN 로드 주석 처리
-        import(`${baseUrl}/custom-module/component.js`),    // CDN 로드 주석 처리
-        import(`${baseUrl}/js/characterRead2.js`),           // CDN 로드 주석 처리
-        import(`${baseUrl}/js/search.js`),                   // CDN 로드 주석 처리
-        import(`${baseUrl}/js/character.js`),                // CDN 로드 주석 처리
+        import(`../custom-module/fetchApi.js?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark API 호출
+        import(`../filter/filter.js?${Math.floor((new Date).getTime() / interValTime)}`),              // 필터 호출
+        import(`../custom-module/trans-value.js?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
+        import(`../custom-module/calculator.js?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+        import(`../custom-module/component.js?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 모듈
+        import(`../js/characterRead2.js?${Math.floor((new Date).getTime() / interValTime)}`),          // 유저정보 DB읽기 함수 
+        import(`../js/search.js?${Math.floor((new Date).getTime() / interValTime)}`),                  // 닉네임을 검색한 사람의 로그
+        import(`../js/character.js?${Math.floor((new Date).getTime() / interValTime)}`),               // 특정 유저의 상세정보를 저장
 
         //import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
         //import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
-        //import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구
+        //import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구 
         //import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 기존 타임스탬프 방식 복구
         //import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 기존 타임스탬프 방식 복구
         //import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 기존 타임스탬프 방식 복구
@@ -1140,6 +1138,7 @@ async function mainSearchFunction() {
     * description       : 	유저정보를 db로 보내 저장하게 함
     * useDevice         :   모두사용
     *********************************************************************************************************************** */
+    //console.log(specPoint.totalStatus)
     async function dataBaseWrite() {
         await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
         await Modules.userDataWriteDetailInfo.insertLopecCharacters(

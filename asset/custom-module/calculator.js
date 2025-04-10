@@ -53,6 +53,8 @@ export async function specPointCalc(inputObj) {
     //팔찌 딜증율
     //let bangleEff = ((((bangleFinalValue - finalValue) / finalValue) + 1) * (inputObj.bangleObj.finalDamagePerEff) * bangleStatValue * 1.03).toFixed(4)
 
+    let totalStatus = 0
+
     let attackBonus = ((inputObj.etcObj.gemAttackBonus + inputObj.etcObj.abilityAttackBonus) / 100) + 1 // 기본 공격력 증가(보석, 어빌리티 스톤)
     let evolutionDamageResult = (inputObj.arkObj.evolutionDamage) //진화형 피해
     let enlightResult = inputObj.arkObj.enlightenmentDamage // 깨달음 딜증
@@ -210,8 +212,10 @@ export async function specPointCalc(inputObj) {
     // 스펙포인트 db저장 통합
     if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
         highTierSpecPointObj.completeSpecPoint = lastFinalValue / 2020
+        totalStatus = highTierSpecPointObj.dealerTotalStatus
     } else if (inputObj.etcObj.supportCheck == "서폿") {
         highTierSpecPointObj.completeSpecPoint = supportSpecPoint / 10000
+        totalStatus = highTierSpecPointObj.supportTotalStatus
     }
     highTierSpecPointObj.supportSpecPoint = isNaN(highTierSpecPointObj.supportSpecPoint) ? 0 : highTierSpecPointObj.supportSpecPoint;
 

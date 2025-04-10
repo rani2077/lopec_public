@@ -23,12 +23,6 @@ async function importModuleManager() {
         component: modules[6],
     }
 
-    // let data = await moduleObj.fetchApi.lostarkApiCall("청염각")
-    // // console.log(data)
-    // let extract = await moduleObj.transValue.getCharacterProfile(data)
-    // let calcValue = await moduleObj.calcValue.specPointCalc(extract)
-
-    // console.log(calcValue)
 
     return moduleObj
 }

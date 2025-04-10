@@ -1,7 +1,3 @@
-//import { localApiKey } from "../../config.js"
-import { insertLopecCharacters } from '../js/character.js'
-import { insertLopecSearch } from '../js/search.js'
-
 /* **********************************************************************************************************************
 * name		             :	 lostarkApiCall
 * version                :   2.0
@@ -9,48 +5,98 @@ import { insertLopecSearch } from '../js/search.js'
 * USE_TN                 :   사용
 *********************************************************************************************************************** */
 export async function lostarkApiCall(inputName) {
-    const cacheKey = `lostarkApiData_${inputName}`;
-    const cachedData = sessionStorage.getItem(cacheKey);
+    const MAIN_CACHE_KEY = 'lostarkApiData'; // 단일 키 사용
+    const MAX_CACHE_ENTRIES = 3; // 최대 저장 개수
+    const oneMinute = 60 * 1000; // 1분 (밀리초)
+    const now = Date.now();
 
-    if (cachedData) {
-        const { data, timestamp } = JSON.parse(cachedData);
-        const now = Date.now();
-        const oneMinute = 60 * 1000; // 1분 (밀리초)
-
-        // 캐시가 1분 이내에 생성되었으면 캐시된 데이터 반환
-        if (now - timestamp < oneMinute) {
-            // alert("캐싱데이터 반환")
-            return data;
-        } else {
-            // 캐시 만료: 세션 스토리지에서 제거하고 API 호출
-            // alert("캐싱데이터 만료")
-            sessionStorage.removeItem(cacheKey);
+    // 1. 메인 캐시 객체 가져오기
+    let allCachedData = {};
+    const rawCachedData = sessionStorage.getItem(MAIN_CACHE_KEY);
+    if (rawCachedData) {
+        try {
+            allCachedData = JSON.parse(rawCachedData);
+            // Ensure it's an object
+            if (typeof allCachedData !== 'object' || allCachedData === null) {
+                allCachedData = {};
+            }
+        } catch (e) {
+            console.error("Error parsing cached data, resetting cache.", e);
+            allCachedData = {}; // 파싱 오류 시 초기화
         }
     }
-    // alert("api 호출")
-    // 캐시가 없거나 만료되었을 경우 API 호출
-    let apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyIsImtpZCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyJ9.eyJpc3MiOiJodHRwczovL2x1ZHkuZ2FtZS5vbnN0b3ZlLmNvbSIsImF1ZCI6Imh0dHBzOi8vbHVkeS5nYW1lLm9uc3RvdmUuY29tL3Jlc291cmNlcyIsImNsaWVudF9pZCI6IjEwMDAwMDAwMDA1NTc2MTkifQ.IZ0KOLE_2fmBS9O11MNjN_9fj5oKuljWpX5w80QiX90zfmx-gDVkPaB1BGRebXRbtQNQ2P4zjpIzJtnfHE0DVfqVwl0fin3A0UXP7bToZ8a10cM9kWWKoh_nNkP672XZDcUWnYvkWOc5t88hY-4CnAull5ra-es0l18PGeeHGQ4T2bXq7tQmomCpyY54cX02dqkUEoAU3HQi7iM6kuYaa9v62ydrh_TOlYj8uRk_1h0Zj-NCzHrH1IrF3p31lBCWvOiWiV0BgNAw1k5Ykl2ZG86kSWkAA4aL9wAeFfmHbXY0JYgnjlrB5EHx2immRnLtiNus43hXsW6crJq7tGL3JQ";
-    let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
-    if (cloudflareResponse.status !== 403 && /lopec.kr/.test(window.location.host)) {
-        const responseData = await cloudflareResponse.json();
-        apiKey = responseData.apiKey;
+
+    // 2. 특정 inputName에 대한 캐시 확인 및 유효성 검사
+    if (allCachedData[inputName]) {
+        const { data, timestamp } = allCachedData[inputName];
+        if (now - timestamp < oneMinute) {
+            // alert("캐싱데이터 반환 (개별)");
+            return data; // 캐시 유효하면 반환
+        } else {
+            // alert("캐싱데이터 만료 (개별)");
+            delete allCachedData[inputName]; // 만료된 특정 캐릭터 데이터만 삭제
+            // 전체 캐시를 다시 저장해야 하므로 여기서 바로 저장하지 않음
+        }
+    }
+
+    // alert("api 호출");
+    // 3. 캐시 없거나 만료 시 API 호출
+    // let apiKey = localApiKey;
+    let apiKey;
+    try { // Cloudflare 호출 에러 핸들링 추가
+        let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
+        if (cloudflareResponse.ok) { // .ok 로 상태 확인, 호스트 체크 추가
+            const responseData = await cloudflareResponse.json();
+            apiKey = responseData.apiKey;
+        } else if (!cloudflareResponse.ok && cloudflareResponse.status !== 403) {
+            // 403 외의 에러 로깅
+            console.warn(`Cloudflare worker fetch failed with status: ${cloudflareResponse.status}`);
+        }
+    } catch (error) {
+        console.error("Error fetching API key from Cloudflare worker:", error);
+        // apiKey는 localApiKey로 계속 진행
     }
     const options = {
         method: 'GET',
         headers: {
             'accept': 'application/json',
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json', // GET 요청에는 보통 Content-Type 불필요
             'Authorization': `bearer ${apiKey}`,
         },
     };
 
-    const response = await fetch(`https://developer-lostark.game.onstove.com/armories/characters/${inputName}`, options);
-    const data = await response.json();
+    let data;
+    try { // Lost Ark API 호출 에러 핸들링 추가
+        const response = await fetch(`https://developer-lostark.game.onstove.com/armories/characters/${inputName}`, options);
+        if (!response.ok) {
+            // API 호출 실패 시 에러 처리
+            console.error(`Lost Ark API call failed for ${inputName} with status: ${response.status}`);
+            // 실패 시 null 또는 적절한 에러 객체를 반환하거나 throw 할 수 있습니다.
+            // 여기서는 null을 반환하여 호출 측에서 처리하도록 합니다.
+            return null;
+        }
+        data = await response.json();
 
-    // API 응답을 세션 스토리지에 캐싱 (1분 만료)
-    sessionStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: Date.now() }));
+        // 4. 새 데이터 캐시에 추가 및 관리
+        allCachedData[inputName] = { data, timestamp: now };
 
-    return data;
+        // 5. 캐시 크기 제한 (FIFO)
+        const keys = Object.keys(allCachedData);
+        if (keys.length > MAX_CACHE_ENTRIES) {
+            // alert(`캐시 초과: ${keys[0]} 삭제`);
+            delete allCachedData[keys[0]]; // 가장 오래된 항목 (배열의 첫 번째 키) 삭제
+        }
+
+        // 6. 업데이트된 전체 캐시 객체를 세션 스토리지에 저장
+        sessionStorage.setItem(MAIN_CACHE_KEY, JSON.stringify(allCachedData));
+
+    } catch (error) {
+        console.error(`Error during Lost Ark API call or caching for ${inputName}:`, error);
+        // 네트워크 오류 등 발생 시 null 반환
+        return null;
+    }
+
+    return data; // 새 데이터 반환
 }
 
 /* **********************************************************************************************************************
@@ -82,7 +128,7 @@ export async function clearLostarkApiCache(inputName, element) {
 *********************************************************************************************************************** */
 export async function expeditionApiCall(inputName) {
     let cloudflareResponse = await fetch('https://lucky-sea-34dd.tassardar6-c0f.workers.dev/');
-    let apiKey = localApiKey;
+    let apiKey;
     if (cloudflareResponse.status !== 403) {
         apiKey = await cloudflareResponse.json();
         apiKey = apiKey.apiKey;
