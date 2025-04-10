@@ -69,8 +69,6 @@
             </script>
         </div>
 
-
-
         <section class="sc-container main-page on" id="container">
             <div class="group-logo">
                 <a href="/" class="link-logo">
@@ -151,6 +149,23 @@
                 </div>
             </section>
         </div>
+        <section class="sc-lopec-click">
+            <div class="group-category">
+                <span class="category">로펙딸깍</span>
+            </div>
+            <div class="group-simple">
+                <div class="search-area">
+                    <input type="text" placeholder="캐릭터 검색">
+                </div>
+                <div class="result-area">
+                    <div class="result-item">
+                        <span class="name">청염각</span>
+                        <span class="point">1111.11</span>
+                    </div>
+                </div>
+            </div>
+            <div class="group-auto"></div>
+        </section>
         <div class="sc-ads" style="width:1120px;height:120px;max-height:200px;margin:0 auto;margin-top:40px;">
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
                 crossorigin="anonymous"></script>

@@ -106,6 +106,7 @@ async function mainSearchFunction() {
 
         let gradeImageSrc = "";
         let nextTierValue = 0;
+        let nowTierValue = 0;
         let tierIndex = 0;
         let tierNameArray = ['브론즈', '실버', '골드', '다이아몬드', '마스터', '에스더'];
         let tierNameEngArray = ['bronze', 'silver', 'gold', 'diamond', 'master', 'esther'];
@@ -113,56 +114,69 @@ async function mainSearchFunction() {
             if (specPoint.completeSpecPoint >= 3000) {
                 gradeImageSrc = `${baseUrl}/image/esther.png`;
                 nextTierValue = 0;
+                nowTierValue = 0;
                 tierIndex = 5;
             } else if (specPoint.completeSpecPoint >= 2400) {
                 gradeImageSrc = `${baseUrl}/image/master.png`;
                 nextTierValue = 3000;
+                nowTierValue = 2400;
                 tierIndex = 4;
             } else if (specPoint.completeSpecPoint >= 1900) {
                 gradeImageSrc = `${baseUrl}/image/diamond.png`;
                 nextTierValue = 2400;
+                nowTierValue = 1900;
                 tierIndex = 3;
             } else if (specPoint.completeSpecPoint >= 1600) {
                 gradeImageSrc = `${baseUrl}/image/gold.png`;
                 nextTierValue = 1900;
+                nowTierValue = 1600;
                 tierIndex = 2;
             } else if (specPoint.completeSpecPoint >= 1400) {
                 gradeImageSrc = `${baseUrl}/image/silver.png`;
                 nextTierValue = 1600;
+                nowTierValue = 1400;
                 tierIndex = 1;
             } else if (specPoint.completeSpecPoint < 1400) {
                 gradeImageSrc = `${baseUrl}/image/bronze.png`;
                 nextTierValue = 1400;
+                nowTierValue = 1;
                 tierIndex = 0;
             }
         } else {
             if (specPoint.completeSpecPoint >= 1300) {
                 gradeImageSrc = `${baseUrl}/image/esther.png`;
                 nextTierValue = 0;
+                nowTierValue = 0;
                 tierIndex = 5;
             } else if (specPoint.completeSpecPoint >= 1000) {
                 gradeImageSrc = `${baseUrl}/image/master.png`;
                 nextTierValue = 1300;
+                nowTierValue = 1000;
                 tierIndex = 4;
             } else if (specPoint.completeSpecPoint >= 800) {
                 gradeImageSrc = `${baseUrl}/image/diamond.png`;
                 nextTierValue = 1000;
+                nowTierValue = 800;
                 tierIndex = 3;
             } else if (specPoint.completeSpecPoint >= 700) {
                 gradeImageSrc = `${baseUrl}/image/gold.png`;
                 nextTierValue = 800;
+                nowTierValue = 700;
                 tierIndex = 2;
             } else if (specPoint.completeSpecPoint >= 400) {
                 gradeImageSrc = `${baseUrl}/image/silver.png`;
                 nextTierValue = 700;
+                nowTierValue = 400;
                 tierIndex = 1;
             } else if (specPoint.completeSpecPoint < 400) {
                 gradeImageSrc = `${baseUrl}/image/bronze.png`;
                 nextTierValue = 400;
+                nowTierValue = 1;
                 tierIndex = 0;
             }
         }
-        let gaugePercent = specPoint.completeSpecPoint / nextTierValue * 100;
+        // let gaugePercent = specPoint.completeSpecPoint / nextTierValue * 100;
+        let gaugePercent = (specPoint.completeSpecPoint-nowTierValue) / (nextTierValue - nowTierValue ) * 100;
         let gauge = "";
         if (tierIndex !== 5) {
             gauge = `
@@ -226,11 +240,17 @@ async function mainSearchFunction() {
                 } else if (grade === "영웅") {
                     gradeClassName = "hero-background";
                 }
+                let gemDealInfo = "";
+                if (/홍염|작열/.test(gemItem.name)) {
+                    gemDealInfo = gemItem.skill;
+                } else {
+                    gemDealInfo = `${gemItem.skill} <br> 딜 지분 : ${gemItem.skillPer !== "none" ? `${(gemItem.skillPer * 100).toFixed(1)}%` : "데이터 없음"}`;
+                };
                 gemBox += `
                 <div class="gem-box radius ${gradeClassName}">
                     <img src="${data.ArmoryGem.Gems[idx].Icon}" alt="" style="border-radius:3px;">
                     <span class="level">${gemItem.level}</span>
-                    <span class="detail">${gemItem.skill} <br> 딜 지분 : ${gemItem.skillPer !== "none" ? `${(gemItem.skillPer * 100).toFixed(1)}%` : "데이터 없음"}</span>
+                    <span class="detail">${gemDealInfo}</span>
                     <i style="display:none;">${sortTag}</i>
                 </div>`
             })
@@ -1055,7 +1075,7 @@ async function mainSearchFunction() {
         } else {
             dealerSupportConversion = 847.84 * (1 + (medianDifferencePercent / 100));
         }
-        
+
 
 
         let specPointInfo = [
@@ -1138,14 +1158,20 @@ async function mainSearchFunction() {
     * description       : 	유저정보를 db로 보내 저장하게 함
     * useDevice         :   모두사용
     *********************************************************************************************************************** */
-    //console.log(specPoint.totalStatus)
     async function dataBaseWrite() {
+        let totalStatus = 0
+        if (extractValue.etcObj.supportCheck === "서폿") {
+            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special)
+        } else {
+            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit)
+        }
+        (extractValue.defaultObj.crit + extractValue.defaultObj.haste + extractValue.defaultObj.special)
         await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
         await Modules.userDataWriteDetailInfo.insertLopecCharacters(
             nameParam,                                                                      // 닉네임 
             data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
             extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
-            "IMGURL",                                                                       // 프로필 이미지 
+            totalStatus,                                                                    // 프로필 이미지 
             data.ArmoryProfile.ServerName,                                                  // 서버 
             parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
             data.ArmoryProfile.GuildName,                                                   // 길드 

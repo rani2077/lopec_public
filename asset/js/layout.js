@@ -458,6 +458,23 @@ if (mobileCheck) {
     widthSetFnc()
     window.addEventListener("resize", widthSetFnc)
 }
+
+/* **********************************************************************************************************************
+* variable name		:	scLopecClickCreate
+* description       : 	
+* useDevice         : 	데스크탑
+*********************************************************************************************************************** */
+function scLopecClickCreate() {
+    let clickElement = "";
+    if (mobileCheck) {
+        clickElement = ``
+    } else {
+        clickElement = ``;
+    }
+    document.body.insertAdjacentHTML('beforeend', clickElement);
+}
+scLopecClickCreate()
+
 /* **********************************************************************************************************************
 * variable name		:	simpleLogSave()
 * description       : 	단순 로그 저장함수
