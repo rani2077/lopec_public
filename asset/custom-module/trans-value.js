@@ -1217,9 +1217,15 @@ export async function getCharacterProfile(data) {
                 gemsCoolCount += 1
             } else if (arry.Name.includes("2레벨 작열") || arry.Name.includes("4레벨 홍염")) {
                 gemsCool += 8
-                gesmCoolCount += 1
+                gemsCoolCount += 1
             } else if (arry.Name.includes("1레벨 작열") || arry.Name.includes("3레벨 홍염")) {
                 gemsCool += 6
+                gemsCoolCount += 1
+            } else if (arry.Name.includes("2레벨 홍염")) {
+                gemsCool += 4
+                gemsCoolCount += 1
+            } else if (arry.Name.includes("1레벨 홍염")) {
+                gemsCool += 2
                 gemsCoolCount += 1
             }
         })
@@ -1729,7 +1735,7 @@ export async function getCharacterProfile(data) {
         }
 
     }
-    console.log("보석전용 직업 : ",specialClass)
+    //console.log("보석전용 직업 : ",specialClass)
 
 
     gemSkillArry.forEach(function (gemSkill, idx) {

@@ -3702,7 +3702,7 @@ async function calculateGemData(data) {
     } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
         specialClass = "데이터 없음";
     } else {
-        specialClass = supportCheck();
+        specialClass = supportCheck;
     }
 
     // console.log("보석전용 직업 : ", specialClass)

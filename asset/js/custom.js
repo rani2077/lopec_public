@@ -185,7 +185,7 @@ async function mainSearchFunction() {
                 totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
             }
 
-            if (userDbInfo.data.characterBest.LCHB_TOTALSTATUS > totalStatus) {
+            if (userDbInfo.data.characterBest.LCHB_TOTALSTATUS > totalStatus && (userDbInfo.data.characterBest.LCHB_TOTALSUM > ((specPoint.completeSpecPoint).toFixed(2)))) {
                 nowSpecElement.style.color = "#f00";
                 specAreaElement.classList.add("alert");
                 document.querySelector(".sc-info .group-info .tier-box").addEventListener("click", () => {
@@ -194,7 +194,6 @@ async function mainSearchFunction() {
             }
 
         }
-        console.log(userDbInfo.data.characterBest)
 
 
 
