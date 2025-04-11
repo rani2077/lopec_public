@@ -108,13 +108,50 @@ export async function lostarkApiCall(inputName) {
 * description            :   element에 해당하는 요소를 클릭시 캐싱데이터가 아닌 새로 데이터를 호출
 * USE_TN                 :   사용
 *********************************************************************************************************************** */
+/* **********************************************************************************************************************
+* name		             :	 clearLostarkApiCache
+* variable
+* inputName              :   유저 닉네임
+* element                :   초기화 버튼 html 요소
+* version                :   2.0
+* description            :   element에 해당하는 요소를 클릭시 캐싱데이터가 아닌 새로 데이터를 호출
+* USE_TN                 :   사용
+*********************************************************************************************************************** */
 export async function clearLostarkApiCache(inputName, element) {
-    const cacheKey = `lostarkApiData_${inputName}`;
+    const cacheKey = `lostarkApiData`; // 메인 캐시 키
     element.addEventListener("click", () => { clearCache() })
+
     function clearCache() {
-        let alertText = `접속을 종료해야 API가 갱신됩니다.\n캐릭터 선택창으로 이동 후 갱신 버튼을 눌러주세요.`
-        alert(alertText);
-        sessionStorage.removeItem(cacheKey);
+        let alertText = `접속을 종료해야 api가 갱신됩니다.\n캐릭터 선택창으로 이동 후 갱신버튼을 눌러주세요`
+        alert(alertText); // 필요하다면 주석 해제
+
+        // 1. 세션 스토리지에서 전체 캐시 객체 가져오기
+        const rawCachedData = sessionStorage.getItem(cacheKey);
+        if (rawCachedData) {
+            try {
+                let allCachedData = JSON.parse(rawCachedData);
+
+                // 2. 객체이고 inputName 키가 있는지 확인
+                if (typeof allCachedData === 'object' && allCachedData !== null && allCachedData.hasOwnProperty(inputName)) {
+                    // 3. 해당 inputName 키 삭제
+                    delete allCachedData[inputName];
+                    // console.log(`캐시에서 '${inputName}' 항목 삭제됨.`);
+
+                    // 4. 수정된 객체를 다시 세션 스토리지에 저장
+                    sessionStorage.setItem(cacheKey, JSON.stringify(allCachedData));
+                } else {
+                    // console.log(`캐시에 '${inputName}' 항목이 없거나 캐시 형식이 올바르지 않습니다.`);
+                }
+            } catch (e) {
+                // console.error("캐시 데이터 처리 중 오류 발생:", e);
+                // 오류 발생 시 전체 캐시를 제거하는 것을 고려할 수 있습니다.
+                // sessionStorage.removeItem(cacheKey);
+            }
+        } else {
+            // console.log("세션 스토리지에 캐시 데이터가 없습니다.");
+        }
+
+        // 페이지 새로고침은 필요에 따라 주석 해제
         location.reload();
     }
 }

@@ -968,29 +968,138 @@ i.shield-halved-solid {
     left: 25px;
     bottom: 25px;
     z-index: 4;
-    background: #f00;
-    border-radius: 5px;
-    height: 30px;
-    width: 30px;
+    /* background: #f00; */
+    border-radius: 30px;
+    width: 60px;
+    height: 60px;
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 20px;
+    transition: height 300ms, width 300ms, border-radius 600ms;
 }
 
 .sc-lopec-click.on {
-    height: 350px;
-    width: 230px;
+    height: 400px;
+    width: 350px;
+    border-radius: 5px;
+}
 
+.sc-lopec-click:before {
+    z-index: 2;
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background: url("/asset/image/magnifying-glass-solid.svg") center center / contain no-repeat;
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.sc-lopec-click.on:before {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.sc-lopec-click:after {
+    z-index: 1;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 92%;
+    height: 92%;
+    background-color: #acebff;
+    /* Old browsers */
+    background-image: linear-gradient(top, #87e0fd 0%, #008eed 100%);
+    /* Fallback for IE6-9 (vertical gradient) */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#87e0fd', endColorstr='#008eed', GradientType=0);
+    border-radius: 50%;
+    /* Keep this for the inner circle's roundness */
+    opacity: 1;
+    transition-delay: 300ms;
+    transition-property: border-radius;
+}
+
+.sc-lopec-click.on:after {
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+    transition: border-radius 300ms;
+}
+
+.sc-lopec-click .blob {
+    width: 82.5%;
+    /* 30% of 80% of 200px = 48px */
+    height: 82.5%;
+    /* 30% of 80% of 200px = 48px */
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #80EAF3;
+    opacity: 0.5;
+    border-radius: 15px;
+    /* 30% of 50px */
+    transform-origin: 50% 50%;
+    /* Default transform origin */
+}
+
+.sc-lopec-click.on .blob {
+    display: none;
+}
+
+.sc-lopec-click .blob1 {
+    animation: rotato 4s 0.5s linear infinite;
+    -webkit-animation: rotato 10s 0.5s linear infinite;
+    transform-origin: 50% 52%;
+    -webkit-transform-origin: 50% 52%;
+}
+
+.sc-lopec-click .blob2 {
+    animation: rotato 5s 0.2s linear infinite;
+    -webkit-animation: rotato 8s 0.2s linear infinite;
+    transform-origin: 49% 49%;
+    -webkit-transform-origin: 49% 49%;
+}
+
+.sc-lopec-click .blob3 {
+    animation: rotato 6s linear infinite reverse;
+    -webkit-animation: rotato 9s linear infinite reverse;
+    transform-origin: 48% 52%;
+    -webkit-transform-origin: 48% 52%;
+}
+
+@keyframes rotato {
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+@-webkit-keyframes rotato {
+    to {
+        -webkit-transform: rotate(359deg);
+    }
 }
 
 
 .sc-lopec-click .group-category {}
 
 .sc-lopec-click.on .group-category {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
-.sc-lopec-click .group-category .category {}
+.sc-lopec-click .group-category .category {
+    font-size: 16px;
+    font-weight: 600;
+}
 
 .sc-lopec-click .group-simple {
     width: 100%;
@@ -1001,16 +1110,62 @@ i.shield-halved-solid {
 
 .sc-lopec-click .group-simple .search-area {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .sc-lopec-click .group-simple .search-area input {
-    width: 100%;
-    padding: 5px;
-    border-radius: 3px;
+    width: 70%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid rgba(3, 125, 255, 0);
+    transition: border 200ms;
+}
+
+.sc-lopec-click .group-simple .search-area input:focus {
+    border: 1px solid #037dff;
+}
+
+.sc-lopec-click .group-simple .search-area .btn {
+    border: 1px solid #037dff;
+    background: #fff;
+    width: 15%;
+    display: flex;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 .sc-lopec-click .group-simple .result-area {
-    margin-top: 10px;
+    margin-top: 15px;
+    background: #fff;
+    border-radius: 5px;
+    overflow-y: scroll;
+    height: 270px;
+}
+
+.sc-lopec-click .group-simple .result-item {
+    display: flex;
+    width: 100%;
+    padding: 12px 10px;
+    border-bottom: 1px solid #e8eff5;
+    transition: background 300ms;
+}
+
+.sc-lopec-click .group-simple .result-item:first-child {
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.sc-lopec-click .group-simple .result-item:hover:not(:first-child) {
+    background: #e1e1e1;
+}
+
+.sc-lopec-click .group-simple .result-item .result {
+    width: 25%;
+    text-align: left;
+    font-weight: inherit;
 }
 
 .sc-lopec-click .group-auto {
@@ -1023,8 +1178,21 @@ i.shield-halved-solid {
     display: none;
 }
 
+.sc-lopec-click .hint {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    opacity: 0.3;
+    font-size: 11px;
+}
+
+.sc-lopec-click.on .hint {
+    display: block;
+}
+
 .sc-lopec-click.on .group-category,
 .sc-lopec-click.on .group-simple,
 .sc-lopec-click.on .group-auto {
-    display: block;
+    display: flex;
 }

@@ -20,6 +20,7 @@ export async function specPointCalc(inputObj) {
         supportCarePowerResult: 0, // 케어력
         supportBangleResult: 0, // 팔찌효율
 
+        
         supportSpecPoint: 0,     // 서폿 최종 스펙포인트
         dealerlastFinalValue: 0, // 딜러 최종 스펙포인트
         completeSpecPoint: 0, // 통합된 최종 스펙포인트
@@ -212,10 +213,8 @@ export async function specPointCalc(inputObj) {
     // 스펙포인트 db저장 통합
     if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
         highTierSpecPointObj.completeSpecPoint = lastFinalValue / 2020
-        totalStatus = highTierSpecPointObj.dealerTotalStatus
     } else if (inputObj.etcObj.supportCheck == "서폿") {
         highTierSpecPointObj.completeSpecPoint = supportSpecPoint / 10000
-        totalStatus = highTierSpecPointObj.supportTotalStatus
     }
     highTierSpecPointObj.supportSpecPoint = isNaN(highTierSpecPointObj.supportSpecPoint) ? 0 : highTierSpecPointObj.supportSpecPoint;
 

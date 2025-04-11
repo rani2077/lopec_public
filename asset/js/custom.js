@@ -175,8 +175,30 @@ async function mainSearchFunction() {
                 tierIndex = 0;
             }
         }
-        // let gaugePercent = specPoint.completeSpecPoint / nextTierValue * 100;
-        let gaugePercent = (specPoint.completeSpecPoint-nowTierValue) / (nextTierValue - nowTierValue ) * 100;
+        let totalStatus = 0;
+        // nowSpecElement
+        if (userDbInfo.data.characterBest) {
+            userDbInfo.data.characterBest.LCHB_TOTALSTATUS
+            if (extractValue.etcObj.supportCheck === "서폿") {
+                totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
+            } else {
+                totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
+            }
+
+            if (userDbInfo.data.characterBest.LCHB_TOTALSTATUS > totalStatus) {
+                nowSpecElement.style.color = "#f00";
+                specAreaElement.classList.add("alert");
+                document.querySelector(".sc-info .group-info .tier-box").addEventListener("click", () => {
+                    window.open('https://cool-kiss-ec2.notion.site/1d2758f0e8da8040bc4dd0fe3a48f9f7?pvs=4', '_blank');
+                })
+            }
+
+        }
+        console.log(userDbInfo.data.characterBest)
+
+
+
+        let gaugePercent = (specPoint.completeSpecPoint - nowTierValue) / (nextTierValue - nowTierValue) * 100;
         let gauge = "";
         if (tierIndex !== 5) {
             gauge = `
@@ -934,7 +956,6 @@ async function mainSearchFunction() {
         let element = document.querySelector(".sc-info .group-info .detail-area");
         //console.log(userDbInfo)
 
-
         function infoWrap(tag, array) {
             let mobilePos = "";
             if (mobileCheck) {
@@ -1077,7 +1098,6 @@ async function mainSearchFunction() {
         }
 
 
-
         let specPointInfo = [
             { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUM, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: dealerMedianValue, icon: "chart-simple-solid" },
@@ -1159,13 +1179,14 @@ async function mainSearchFunction() {
     * useDevice         :   모두사용
     *********************************************************************************************************************** */
     async function dataBaseWrite() {
+        // console.log(extractValue.defaultObj.haste)
         let totalStatus = 0
         if (extractValue.etcObj.supportCheck === "서폿") {
-            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special)
+            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
         } else {
-            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit)
+            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
         }
-        (extractValue.defaultObj.crit + extractValue.defaultObj.haste + extractValue.defaultObj.special)
+        console.log(totalStatus)
         await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
         await Modules.userDataWriteDetailInfo.insertLopecCharacters(
             nameParam,                                                                      // 닉네임 

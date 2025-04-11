@@ -2237,8 +2237,10 @@ export let classGemFilter = [
             { name: "파쇄격", per: 0.149 },
             { name: "풍신권", per: 0.138 },
             { name: "진 용출권", per: 0.1 },
+            { name: "연환파신권", per: 0.1 },
             { name: "초신성 폭발", per: 0.117 },
             { name: "심판", per: 0.064 },
+            { name: "보정치", per: -0.1 },
             
         ],
     },
@@ -2252,7 +2254,8 @@ export let classGemFilter = [
             { name: "일망 타진", per: 0.042 },
             { name: "죽음의 선고", per: 0.032 },
             { name: "파쇄격", per: 0.032 },
-            { name: "보정치", per: -0.032 },
+            { name: "진 용출권", per: 0.032 },
+            { name: "보정치", per: -0.064 },
             
         ],
     },
@@ -2733,9 +2736,11 @@ export let classGemFilter = [
             { name: "몰아치기", per: 0.086 },
             { name: "싹쓸바람", per: 0.05 },
             { name: "소용돌이", per: 0.05 },
+            { name: "마주바람", per: 0.05 },
+            { name: "뙤약볕", per: 0.05 },
             { name: "회오리 걸음", per: 0.054 },
             { name: "여우비 스킬", per: 0.041 },
-            { name: "보정치", per: -0.05 },
+            { name: "보정치", per: -0.15 },
             
         ],
     },

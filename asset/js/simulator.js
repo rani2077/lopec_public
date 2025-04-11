@@ -3669,21 +3669,14 @@ async function calculateGemData(data) {
 
     if (classCheck("전태") && skillCheck(gemSkillArry, "버스트 캐넌", dmg)) {
         specialClass = "버캐 채용 전태";
+    } else if (classCheck("고기") && !skillCheck(gemSkillArry, "파이어 불릿", dmg)) {
+        specialClass = "5겁 고기";
     } else if (classCheck("세맥") && !skillCheck(gemSkillArry, "환영격", dmg)) {
         specialClass = "5멸 세맥";
     } else if (classCheck("핸건") && skillCheck(gemSkillArry, "데스파이어", dmg)) {
         specialClass = "7멸 핸건";
     } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)) {
         specialClass = "에필 포강";
-    } else if (classCheck("환류") &&
-        skillCheck(gemSkillArry, "리버스 그래비티", dmg) &&
-        skillCheck(gemSkillArry, "아이스 애로우", dmg) &&
-        skillCheck(gemSkillArry, "앨리멘탈 리액트", dmg) &&
-        skillCheck(gemSkillArry, "인페르노", dmg) &&
-        skillCheck(gemSkillArry, "숭고한 해일", dmg) &&
-        (skillCheck(gemSkillArry, "천벌", dmg) || skillCheck(gemSkillArry, "혹한의 부름", dmg))
-        && skillCheck(gemSkillArry, "블레이즈", dmg)) {
-        specialClass = "7딜 환류";
     } else if (classCheck("질풍") && !skillCheck(gemSkillArry, "여우비 스킬", dmg)) {
         specialClass = "5멸 질풍";
     } else if (classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)) {
@@ -3696,14 +3689,20 @@ async function calculateGemData(data) {
         specialClass = "크블 포식";
     } else if (classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)) {
         specialClass = "6M 피메";
+    } else if (classCheck("잔재") && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
+        specialClass = "슈차 터닝 잔재";
     } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
         specialClass = "슈차 잔재";
-    } else if (classCheck("억제") && !skillCheck(gemSkillArry, "피어스 쏜", dmg)) {
-        specialClass = "데이터 없음";
-    } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀")) {
+    } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "방천격", dmg)) {
+        specialClass = "4멸 일격";
+    } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg) && (skillCheck(gemSkillArry, "그라인드 체인", dmg)||skillCheck(gemSkillArry, "스피닝 웨폰", dmg))) {
+        specialClass = "반사멸 억모닉";
+    } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg)) {
+        specialClass = "사멸 억모닉";
+    } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
         specialClass = "데이터 없음";
     } else {
-        specialClass = supportCheck;
+        specialClass = supportCheck();
     }
 
     // console.log("보석전용 직업 : ", specialClass)

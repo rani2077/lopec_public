@@ -613,6 +613,18 @@
     padding: 20px 0 10px;
 }
 
+.sc-info .group-info .spec-area.alert .tier-box:after {
+    content: "점수가 빨간색일 경우 클릭하세요";
+    color: #f00;
+    width: 200px;
+    position: absolute;
+    left: 50%;
+    bottom: -3px;
+    line-height: initial;
+    transform: translate(-50%, 0);
+    font-size: 11px;
+}
+
 .sc-info .spec-area .tier-box:hover .tier-info {
     display: block;
 }
