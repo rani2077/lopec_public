@@ -4,15 +4,6 @@ select {
     overflow: hidden;
 }
 
-.tooltip {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 5px;
-    white-space: nowrap;
-    font-size: inherit;
-}
-
 input[type=number] {
     width: 100%;
     background-color: #f0f3f5;

@@ -3476,7 +3476,7 @@ async function selectCreate(data, Modules) {
     leafPointToKarmaSelect()
     showLeafInfo()
     userLevelAndArmorToEvolution()
-    createTooltip() // 툴팁 텍스트 생성
+    // createTooltip() // 툴팁 텍스트 생성
 
 
     /* **********************************************************************************************************************
@@ -4154,71 +4154,71 @@ function simulatorReset() {
 }
 simulatorReset()
 /* **********************************************************************************************************************
- * function name		:	createTooltip()
+ * function name		:	createTooltip() <== layout.js로 이전함
  * description			: 	.tooltip-text 클래스를 가진 요소에 마우스 오버 시 툴팁을 생성하고, select 요소의 경우 선택된 option의 텍스트를 표시합니다.
  *********************************************************************************************************************** */
-function createTooltip() {
-    const hoverElements = document.querySelectorAll('.tooltip-text');
-    let tooltip = null;
+// function createTooltip() {
+//     const hoverElements = document.querySelectorAll('.tooltip-text');
+//     let tooltip = null;
 
-    hoverElements.forEach(element => {
-        element.addEventListener('mouseover', (event) => {
-            // 툴팁 생성
-            tooltip = document.createElement('div');
-            tooltip.classList.add('tooltip');
-            document.body.appendChild(tooltip);
+//     hoverElements.forEach(element => {
+//         element.addEventListener('mouseover', (event) => {
+//             // 툴팁 생성
+//             tooltip = document.createElement('div');
+//             tooltip.classList.add('tooltip');
+//             document.body.appendChild(tooltip);
 
-            // 툴팁 내용 설정
-            if (element.tagName === 'SELECT') {
-                tooltip.textContent = element.options[element.selectedIndex].textContent;
-            } else {
-                tooltip.textContent = element.textContent;
-            }
+//             // 툴팁 내용 설정
+//             if (element.tagName === 'SELECT') {
+//                 tooltip.textContent = element.options[element.selectedIndex].textContent;
+//             } else {
+//                 tooltip.textContent = element.textContent;
+//             }
 
-            // 툴팁 위치 설정
-            updateTooltipPosition(event);
-        });
+//             // 툴팁 위치 설정
+//             updateTooltipPosition(event);
+//         });
 
-        element.addEventListener('mousemove', (event) => {
-            // 툴팁 위치 업데이트
-            updateTooltipPosition(event);
-        });
+//         element.addEventListener('mousemove', (event) => {
+//             // 툴팁 위치 업데이트
+//             updateTooltipPosition(event);
+//         });
 
-        element.addEventListener('mouseout', () => {
-            // 툴팁 제거
-            if (tooltip) {
-                tooltip.remove();
-                tooltip = null;
-            }
-        });
-    });
+//         element.addEventListener('mouseout', () => {
+//             // 툴팁 제거
+//             if (tooltip) {
+//                 tooltip.remove();
+//                 tooltip = null;
+//             }
+//         });
+//     });
 
-    function updateTooltipPosition(event) {
-        if (tooltip) {
-            const mouseX = event.clientX;
-            const mouseY = event.clientY;
-            const tooltipWidth = tooltip.offsetWidth;
-            const tooltipHeight = tooltip.offsetHeight;
+//     function updateTooltipPosition(event) {
+//         if (tooltip) {
+//             const mouseX = event.clientX;
+//             const mouseY = event.clientY;
+//             const tooltipWidth = tooltip.offsetWidth;
+//             const tooltipHeight = tooltip.offsetHeight;
 
-            // 툴팁이 화면을 벗어나지 않도록 조정
-            let tooltipX = mouseX + 10; // 마우스 오른쪽으로 10px 이동
-            let tooltipY = mouseY + 10; // 마우스 아래로 10px 이동
+//             // 툴팁이 화면을 벗어나지 않도록 조정
+//             let tooltipX = mouseX + 10; // 마우스 오른쪽으로 10px 이동
+//             let tooltipY = mouseY + 10; // 마우스 아래로 10px 이동
 
-            // 스크롤 위치를 고려하여 툴팁 위치 조정
-            tooltipX += window.scrollX;
-            tooltipY += window.scrollY;
+//             // 스크롤 위치를 고려하여 툴팁 위치 조정
+//             tooltipX += window.scrollX;
+//             tooltipY += window.scrollY;
 
-            if (tooltipX + tooltipWidth > window.innerWidth + window.scrollX) {
-                tooltipX = mouseX - tooltipWidth - 10 + window.scrollX; // 마우스 왼쪽으로 이동
-            }
+//             if (tooltipX + tooltipWidth > window.innerWidth + window.scrollX) {
+//                 tooltipX = mouseX - tooltipWidth - 10 + window.scrollX; // 마우스 왼쪽으로 이동
+//             }
 
-            if (tooltipY + tooltipHeight > window.innerHeight + window.scrollY) {
-                tooltipY = mouseY - tooltipHeight - 10 + window.scrollY; // 마우스 위쪽으로 이동
-            }
+//             if (tooltipY + tooltipHeight > window.innerHeight + window.scrollY) {
+//                 tooltipY = mouseY - tooltipHeight - 10 + window.scrollY; // 마우스 위쪽으로 이동
+//             }
 
-            tooltip.style.left = `${tooltipX}px`;
-            tooltip.style.top = `${tooltipY}px`;
-        }
-    }
-}
-window.addEventListener("load", createTooltip);
+//             tooltip.style.left = `${tooltipX}px`;
+//             tooltip.style.top = `${tooltipY}px`;
+//         }
+//     }
+// }
+// window.addEventListener("load", createTooltip);

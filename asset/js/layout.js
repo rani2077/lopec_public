@@ -3,6 +3,27 @@
 * description       : 	현재 접속한 디바이스 기기가 모바일, 태블릿일 경우 true를 반환
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
+
+/* **********************************************************************************************************************
+ * function name		:	importModuleManager()
+ * description			: 	사용하는 모든 외부 module파일 import
+ *********************************************************************************************************************** */
+async function importModuleManager() {
+    let interValTime = 60 * 1000;
+    let modules = await Promise.all([
+        import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // lostark api호출
+        import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
+        import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+    ])
+    let moduleObj = {
+        fetchApi: modules[0],
+        transValue: modules[1],
+        calcValue: modules[2],
+    }
+
+    return moduleObj
+}
+
 /* **********************************************************************************************************************
 * variable name		:	userDeviceToRedirection
 * description       : 	사용자의 접속 기기를 확인하여 모바일과 pc페이지로 리디렉션시켜줌
@@ -516,8 +537,9 @@ if (/lopec.kr/.test(window.location.host)) {
 * useDevice         : 	데스크탑
 *********************************************************************************************************************** */
 async function scLopecClickCreate() {
+
     const clickElementHtml = `
-        <section class="sc-lopec-click" title="드래그 하여 옮길 수 있습니다.">
+        <section class="sc-lopec-click">
             <div class="blob blob1"></div>
             <div class="blob blob2"></div>
             <div class="blob blob3"></div>
@@ -531,7 +553,7 @@ async function scLopecClickCreate() {
                     <span class="auto btn">딸깍</span>
                 </div>
                 <div class="result-area scrollbar">
-                    <div class="result-item">
+                    <div class="result-item sort">
                         <span class="name result">닉네임</span>
                         <span class="job result">직업</span>
                         <span class="point result">점수</span>
@@ -549,6 +571,7 @@ async function scLopecClickCreate() {
 
     document.body.insertAdjacentHTML('beforeend', clickElementHtml);
 
+
     const lopecClickElement = document.querySelector(".sc-lopec-click");
     const storageKey = 'lopecClickPosition';
 
@@ -557,27 +580,256 @@ async function scLopecClickCreate() {
         return;
     }
 
+    // --- groupUserDataElement 생성 및 참조 ---
+    // applyPosition 함수보다 먼저 생성되도록 위치 조정
+    const groupUserDataHtml = `
+    <div class="group-user-data shadow">
+        <div class="name-area">
+            <span class="name">로딩중 <em style="color:#adadaa;font-weight:600;">--</em></span>
+        </div>
+        <div class="etc-area">
+            <div class="etc-list">
+                <div class="etc-item elxir">
+                    <span class="elxir etc">엘릭서: </span>
+                    <span class="value">회심 46</span>
+                </div>
+                <div class="etc-item hyper">
+                    <span class="hyper etc">초월합: </span>
+                    <span class="value">126</span>
+                </div>
+            </div>
+            <div class="ark-list">
+                <div class="ark-item">
+                    <span class="name">진화</span>
+                    <span class="value">120</span>
+                </div>
+                <div class="ark-item">
+                    <span class="name">깨달음</span>
+                    <span class="value">101</span>
+                </div>
+                <div class="ark-item">
+                    <span class="name">도약</span>
+                    <span class="value">62</span>
+                </div>
+            </div>
+        </div>
+        <div class="armory-area">
+            <div class="armory-list armory">
+                <div class="armory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <span class="normale-upgrade">+17</span>
+                    <span class="parts-name">투구</span>
+                    <span class="advanced-upgrade">X21</span>
+                </div>
+                <div class="armory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <span class="normale-upgrade">+17</span>
+                    <span class="parts-name">견갑</span>
+                    <span class="advanced-upgrade">X21</span>
+                </div>
+                <div class="armory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <span class="normale-upgrade">+17</span>
+                    <span class="parts-name">상의</span>
+                    <span class="advanced-upgrade">X21</span>
+                </div>
+                <div class="armory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <span class="normale-upgrade">+17</span>
+                    <span class="parts-name">하의</span>
+                    <span class="advanced-upgrade">X21</span>
+                </div>
+                <div class="armory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <span class="normale-upgrade">+17</span>
+                    <span class="parts-name">장갑</span>
+                    <span class="advanced-upgrade">X21</span>
+                </div>
+                <div class="armory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <span class="normale-upgrade">+17</span>
+                    <span class="parts-name">무기</span>
+                    <span class="advanced-upgrade">X21</span>
+                </div>
+            </div>
+            <div class="armory-list accessory">
+                <div class="accessory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <div class="accessory">
+                        <span class="option tooltip-text">하:전투회복전투회복전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                    </div>
+                </div>
+                <div class="accessory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <div class="accessory">
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                    </div>
+                </div>
+                <div class="accessory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <div class="accessory">
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                    </div>
+                </div>
+                <div class="accessory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <div class="accessory">
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                    </div>
+                </div>
+                <div class="accessory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <div class="accessory">
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:전투회복</span>
+                    </div>
+                </div>
+                <div class="accessory-item">
+                    <img src="/asset/image/skeleton-img.png" alt="">
+                    <div class="accessory">
+                        <span class="option">13.44%</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="gem-area">
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+            <div class="gem-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">8겁</span>
+            </div>
+        </div>
+        <div class="engraving-area">
+            <div class="engraving-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">유물0</span>
+            </div>
+            <div class="engraving-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">유물0</span>
+            </div>
+            <div class="engraving-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">유물0</span>
+            </div>
+            <div class="engraving-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">유물0</span>
+            </div>
+            <div class="engraving-item">
+                <img src="/asset/image/skeleton-img.png" alt="">
+                <span class="name">유물0</span>
+            </div>
+        </div>
+    </div>`;
+
+
+    lopecClickElement.insertAdjacentHTML('beforeend', groupUserDataHtml);
+    const groupUserDataElement = lopecClickElement.querySelector(".group-user-data");
+
+    // ---------------------------------------
+
+
     // --- 위치 관련 함수 (loadPosition, applyPosition, savePosition) ---
     function loadPosition() {
         const savedPosition = localStorage.getItem(storageKey);
         if (savedPosition) {
             try {
                 const pos = JSON.parse(savedPosition);
-                applyPosition(pos);
+                applyPosition(pos); // 부모와 자식 위치 동시 적용
             } catch (e) {
                 console.error("저장된 위치 데이터 파싱 오류:", e);
                 localStorage.removeItem(storageKey);
+                // 기본 위치 적용 (선택 사항)
+                // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
             }
+        } else {
+            // 저장된 위치 없을 때 기본 위치 적용 (선택 사항)
+            // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
         }
     }
 
     function applyPosition(pos) {
         if (!pos) return;
+
+        // 1. 부모(lopecClickElement) 위치 적용
         lopecClickElement.style.transform = '';
         lopecClickElement.style.left = pos.left ?? 'auto';
         lopecClickElement.style.top = pos.top ?? 'auto';
         lopecClickElement.style.right = pos.right ?? 'auto';
         lopecClickElement.style.bottom = pos.bottom ?? 'auto';
+
+        // 2. 자식(groupUserDataElement) 위치 적용
+        if (groupUserDataElement) {
+            // 기존 위치 속성 초기화
+            groupUserDataElement.style.left = 'auto';
+            groupUserDataElement.style.right = 'auto';
+            groupUserDataElement.style.top = 'auto';
+            groupUserDataElement.style.bottom = 'auto';
+
+            // 가로 위치 설정
+            if (pos.left !== 'auto') { // 부모가 왼쪽에 있을 때
+                groupUserDataElement.style.left = '100%';
+            } else if (pos.right !== 'auto') { // 부모가 오른쪽에 있을 때
+                groupUserDataElement.style.right = '100%';
+            }
+
+            // 세로 위치 설정
+            if (pos.top !== 'auto') { // 부모가 위쪽에 있을 때
+                groupUserDataElement.style.top = '0';
+            } else if (pos.bottom !== 'auto') { // 부모가 아래쪽에 있을 때
+                groupUserDataElement.style.bottom = '0';
+            }
+        }
     }
 
     function savePosition(pos) {
@@ -602,12 +854,11 @@ async function scLopecClickCreate() {
     lopecClickElement.addEventListener("mousedown", (e) => {
         // 1. 'on' 클래스가 있으면 드래그 시작 안 함
         if (lopecClickElement.classList.contains('on')) {
-            console.log("'.on' 클래스가 있어 드래그를 시작하지 않습니다.");
             return;
         }
 
         // 2. 특정 자식 요소 클릭 시 드래그 시작 방지
-        if (e.target.closest('input, button, .btn, a')) {
+        if (e.target.closest('input, button, .btn, a, .group-user-data')) { // group-user-data 내부 클릭 시에도 드래그 방지 추가
             return;
         }
 
@@ -622,7 +873,7 @@ async function scLopecClickCreate() {
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mouseup", handleMouseUp);
 
-        // 5. 기본 커서 설정 (아직 grabbing 아님)
+        // 5. 기본 커서 설정 (아직 grabbing 아님) - 'on' 클래스가 없을 때만 grab으로 설정
         lopecClickElement.style.cursor = 'grab';
     });
 
@@ -643,15 +894,13 @@ async function scLopecClickCreate() {
                 wasDragging = true; // 드래그 발생 기록
 
                 // 드래그 스타일 적용
-                lopecClickElement.style.cursor = 'grabbing';
+                lopecClickElement.style.cursor = 'grabbing'; // 드래그 중에는 grabbing
                 lopecClickElement.style.userSelect = 'none';
 
                 // 현재 위치 기준으로 오프셋 계산 (드래그 시작 시점)
                 const rect = lopecClickElement.getBoundingClientRect();
                 offsetX = e.clientX - rect.left;
                 offsetY = e.clientY - rect.top;
-
-                console.log("드래그 시작됨");
             }
         }
 
@@ -681,7 +930,7 @@ async function scLopecClickCreate() {
                 newPosition.top = `${constrainedTop}px`;
             }
 
-            applyPosition(newPosition);
+            applyPosition(newPosition); // 부모와 자식 위치 동시 적용
         }
     }
 
@@ -691,7 +940,6 @@ async function scLopecClickCreate() {
         if (!potentialDrag && !isDragging) return;
 
         if (isDragging) {
-            console.log("드래그 종료됨, 위치 저장");
             // 실제 드래그가 발생했을 경우에만 최종 위치 계산 및 저장
             const finalRect = lopecClickElement.getBoundingClientRect();
             const finalLeft = finalRect.left;
@@ -714,17 +962,16 @@ async function scLopecClickCreate() {
             }
 
             savePosition(finalPosition);
+            // applyPosition은 mousemove에서 이미 호출되었으므로 여기서 중복 호출 불필요
         } else {
-            // isDragging이 false이면 단순 클릭으로 간주 (별도 처리 없음, click 이벤트가 처리)
-            console.log("단순 클릭으로 간주됨 (mouseup)");
+            // isDragging이 false이면 단순 클릭으로 간주
         }
 
         // 상태 초기화 및 리스너 제거
         potentialDrag = false;
         isDragging = false;
-        // wasDragging은 click 핸들러에서 초기화
 
-        lopecClickElement.style.cursor = 'grab';
+        lopecClickElement.style.cursor = lopecClickElement.classList.contains('on') ? 'auto' : 'grab';
         lopecClickElement.style.removeProperty('user-select');
 
         window.removeEventListener("mousemove", handleMouseMove);
@@ -733,48 +980,238 @@ async function scLopecClickCreate() {
 
     // --- 외부 클릭 시 'on' 클래스 제거 / 내부 클릭 시 'on' 클래스 추가 로직 ---
     window.addEventListener("click", (e) => {
-        // 직전에 드래그가 있었다면 클릭 이벤트 무시
         if (wasDragging) {
-            wasDragging = false; // 플래그 초기화
-            console.log("드래그 후 클릭 이벤트 무시됨");
+            wasDragging = false;
             return;
         }
 
-        // '.on' 클래스가 없고, 클릭된 요소가 lopecClickElement 내부에 있다면 'on' 추가
+        // groupUserDataElement 내부 클릭 시 'on' 클래스 유지 (제거 로직 방지)
+        if (groupUserDataElement && groupUserDataElement.contains(e.target)) {
+            return;
+        }
+
         if (!lopecClickElement.classList.contains('on') && lopecClickElement.contains(e.target)) {
             lopecClickElement.classList.add("on");
-            console.log("내부 클릭: 'on' 클래스 추가");
+            lopecClickElement.querySelector(".search-area input").focus();
+            lopecClickElement.style.cursor = 'auto';
         }
-        // 클릭된 요소가 lopecClickElement 외부에 있다면 'on' 제거
-        else if (!lopecClickElement.contains(e.target)) {
+        else if (lopecClickElement.classList.contains('on') && !lopecClickElement.contains(e.target)) {
             lopecClickElement.classList.remove("on");
-            console.log("외부 클릭: 'on' 클래스 제거");
+            lopecClickElement.style.cursor = 'grab';
         }
-        // (내부 클릭인데 이미 'on'이 있는 경우는 아무것도 안 함)
     });
 
     // --- 탭 간 동기화 (storage 이벤트) ---
     window.addEventListener('storage', (e) => {
         if (e.key === storageKey) {
-            console.log("Storage event detected for", storageKey);
             if (e.newValue) {
                 try {
                     const newPos = JSON.parse(e.newValue);
-                    applyPosition(newPos);
+                    applyPosition(newPos); // 부모와 자식 위치 동시 적용
                 } catch (err) {
                     console.error("Error parsing storage event data:", err);
                 }
             } else {
-                console.log("Position data removed from localStorage.");
+                // 위치 데이터가 삭제되었을 때의 처리 (예: 기본 위치로 리셋)
+                // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
             }
         }
     });
 
     // --- 초기화 ---
-    loadPosition();
+    loadPosition(); // 여기서 applyPosition 호출되어 초기 위치 설정됨
     lopecClickElement.style.position = 'fixed';
-    lopecClickElement.style.cursor = 'grab';
+    lopecClickElement.style.cursor = lopecClickElement.classList.contains('on') ? 'auto' : 'grab';
+
+    // groupUserDataElement 생성 코드는 위로 이동함
 }
 
 // 함수 실행
 scLopecClickCreate();
+
+
+/* **********************************************************************************************************************
+* variable name		:	lopecClickSearch
+* description       : 	로펙딸깍 검색기능
+* useDevice         : 	데스크탑
+*********************************************************************************************************************** */
+async function lopecClickSearch() {
+    if (mobileCheck) {
+        return;
+    }
+    const lopecClickElement = document.querySelector(".sc-lopec-click");
+    let Modules = await importModuleManager();
+
+    let inputElement = lopecClickElement.querySelector(".group-simple input");
+    lopecClickElement.addEventListener("keydown", async (key) => {
+        // 한글 입력 이벤트 더블링 처리 <== 젠장 한글 또 너야
+        if (key.code === `Enter` && !key.isComposing) { simpleSearch() }
+    })
+
+    let searchElement = lopecClickElement.querySelector(".group-simple .search");
+    searchElement.addEventListener("click", () => { simpleSearch() })
+
+    let resultItem = `
+        <div class="result-item sort">
+            <span class="name result">닉네임</span>
+            <span class="job result">직업</span>
+            <span class="point result">점수</span>
+            <span class="change result">딜러환산</span>
+        </div>`;
+    async function simpleSearch() {
+        let inputName = inputElement.value;
+        let data = await Modules.fetchApi.lostarkApiCall(inputName);
+        let extractValue = await Modules.transValue.getCharacterProfile(data);
+        let calcValue = await Modules.calcValue.specPointCalc(extractValue);
+
+        let dealerMedianValue = extractValue.htmlObj.medianInfo.dealerMedianValue;
+        let supportMedianValue = extractValue.htmlObj.medianInfo.supportMedianValue;
+        let supportMinMedianValue = extractValue.htmlObj.medianInfo.supportMinMedianValue;
+        let dealerMinMedianValue = extractValue.htmlObj.medianInfo.dealerMinMedianValue;
+        let medianDifferencePercent = (calcValue.completeSpecPoint - supportMinMedianValue) / supportMinMedianValue * 100;
+        let dealerSupportConversion = 0;
+        // 0보다 낮으면 다른 계산 <== 이거 의미없는거 아님?
+        if (medianDifferencePercent > 0) {
+            dealerSupportConversion = dealerMinMedianValue * (1 + medianDifferencePercent / 100);
+        } else {
+            dealerSupportConversion = dealerMinMedianValue * (1 + (medianDifferencePercent / 100));
+        }
+
+        let convertValue;
+        if (extractValue.etcObj.supportCheck === "서폿") {
+            convertValue = dealerSupportConversion.toFixed(2);
+        } else {
+            convertValue = "-"
+        }
+        resultItem += `
+            <div class="result-item" title="${inputName}의 상세정보 확인하기">
+                <span class="name result">${inputName}</span>
+                <span class="job result">${extractValue.etcObj.supportCheck}</span>
+                <span class="point result">${calcValue.completeSpecPoint.toFixed(2)}</span>
+                <span class="change result">${convertValue}</span>
+            </div>`;
+        let resultArea = lopecClickElement.querySelector('.result-area');
+        resultArea.innerHTML = resultItem;
+        inputElement.value = "";
+    }
+    let resultArea = lopecClickElement.querySelector('.result-area');
+    resultArea.addEventListener("click", async (e) => {
+        let resultItem = e.target.closest(".result-item");
+        if (!resultItem) {
+            return;
+        }
+        if (!resultItem.classList.contains('sort')) {
+            let inputName = resultItem.querySelector(".name").textContent;
+            await groupUserDataSet(inputName);
+        }
+    })
+    let nowName = "";
+    async function groupUserDataSet(inputName) {
+        let groupUserDataElement = document.querySelector(".group-user-data");
+        if (nowName === inputName) {
+            groupUserDataElement.classList.remove("on");
+            nowName = "";
+            return;
+        } else {
+            groupUserDataElement.classList.add("on");
+        }
+        // let inputName = resultItem.querySelector(".name").textContent;  <== 삭제예정
+        let data = await Modules.fetchApi.lostarkApiCall(inputName);
+        let extractValue = await Modules.transValue.getCharacterProfile(data);
+        // let calcValue = await Modules.calcValue.specPointCalc(extractValue); <== 삭제예정
+
+        // 유저닉네임 및 직업 설정
+        let nameArea = lopecClickElement.querySelector(".name-area");
+        nameArea.innerHTML = `<span class="name">${inputName} <em style="color:#adadaa;font-weight:600;">${extractValue.etcObj.supportCheck} ${data.ArmoryProfile.CharacterClassName}</em></span>`
+
+        // 엘릭서 설정
+        let elxirValueElement = lopecClickElement.querySelector(".etc-item.elxir .value");
+        elxirValueElement.textContent = extractValue.htmlObj.elxirInfo.name === "" ? "없음" : extractValue.htmlObj.elxirInfo.name + " " + extractValue.htmlObj.elxirInfo.sumValue;
+        // 초월 설정
+        let hyperValueElement = lopecClickElement.querySelector(".etc-item.hyper .value");
+        hyperValueElement.textContent = extractValue.htmlObj.hyperInfo.sumValue;
+
+        // 진/깨/도 포인트 설정
+        let arkItems = lopecClickElement.querySelectorAll(".ark-list .ark-item");
+        let evloutionValueElement = arkItems[0].querySelector(".value");
+        let enlightValueElement = arkItems[1].querySelector(".value");
+        let leapValueElement = arkItems[2].querySelector(".value");
+        evloutionValueElement.textContent = data.ArkPassive.Points[0].Value
+        enlightValueElement.textContent = data.ArkPassive.Points[1].Value
+        leapValueElement.textContent = data.ArkPassive.Points[2].Value
+        // group-user-data의 토글을 위한 이전 이름 기록 저장
+        nowName = inputName;
+    }
+}
+lopecClickSearch()
+
+
+/* **********************************************************************************************************************
+ * function name		:	createTooltip()
+ * description			: 	.tooltip-text 클래스를 가진 요소에 마우스 오버 시 툴팁을 생성하고, select 요소의 경우 선택된 option의 텍스트를 표시합니다.
+ *********************************************************************************************************************** */
+function createTooltip() {
+    const hoverElements = document.querySelectorAll('.tooltip-text');
+    let tooltip = null;
+    hoverElements.forEach(element => {
+        element.addEventListener('mouseover', (event) => {
+            // 툴팁 생성 및 설정
+            tooltip = document.createElement('div');
+            tooltip.classList.add('tooltip');
+            tooltip.style.zIndex = "9";
+            document.body.appendChild(tooltip);
+
+            // 툴팁 내용 설정
+            if (element.tagName === 'SELECT') {
+                tooltip.textContent = element.options[element.selectedIndex].textContent;
+            } else {
+                tooltip.textContent = element.textContent;
+            }
+
+            // 툴팁 위치 설정
+            updateTooltipPosition(event);
+        });
+
+        element.addEventListener('mousemove', (event) => {
+            // 툴팁 위치 업데이트
+            updateTooltipPosition(event);
+        });
+
+        element.addEventListener('mouseout', () => {
+            // 툴팁 제거
+            if (tooltip) {
+                tooltip.remove();
+                tooltip = null;
+            }
+        });
+    });
+
+    function updateTooltipPosition(event) {
+        if (tooltip) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+            const tooltipWidth = tooltip.offsetWidth;
+            const tooltipHeight = tooltip.offsetHeight;
+
+            // 툴팁이 화면을 벗어나지 않도록 조정
+            let tooltipX = mouseX + 10; // 마우스 오른쪽으로 10px 이동
+            let tooltipY = mouseY + 10; // 마우스 아래로 10px 이동
+
+            // 스크롤 위치를 고려하여 툴팁 위치 조정
+            tooltipX += window.scrollX;
+            tooltipY += window.scrollY;
+
+            if (tooltipX + tooltipWidth > window.innerWidth + window.scrollX) {
+                tooltipX = mouseX - tooltipWidth - 10 + window.scrollX; // 마우스 왼쪽으로 이동
+            }
+
+            if (tooltipY + tooltipHeight > window.innerHeight + window.scrollY) {
+                tooltipY = mouseY - tooltipHeight - 10 + window.scrollY; // 마우스 위쪽으로 이동
+            }
+
+            tooltip.style.left = `${tooltipX}px`;
+            tooltip.style.top = `${tooltipY}px`;
+        }
+    }
+}
+window.addEventListener("load", createTooltip);

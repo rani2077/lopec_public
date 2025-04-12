@@ -1002,98 +1002,18 @@ async function mainSearchFunction() {
             // 'YY.MM.DD' 형식의 문자열을 생성합니다.
             return `${year}.${month}.${day}`;
         }
-        let itemLevel = Number(data.ArmoryProfile.ItemAvgLevel.replace(",", ""));
-        let dealerMedianValue = 0;
-        // console.log(itemLevel)
-        if (itemLevel >= 1660 && itemLevel < 1665) {
-            dealerMedianValue = 847.84;
-        } else if (itemLevel >= 1665 && itemLevel < 1670) {
-            dealerMedianValue = 926.64;
-        } else if (itemLevel >= 1670 && itemLevel < 1675) {
-            dealerMedianValue = 965.69;
-        } else if (itemLevel >= 1675 && itemLevel < 1680) {
-            dealerMedianValue = 985.01;
-        } else if (itemLevel >= 1680 && itemLevel < 1685) {
-            dealerMedianValue = 1307.2;
-        } else if (itemLevel >= 1685 && itemLevel < 1690) {
-            dealerMedianValue = 1511.65;
-        } else if (itemLevel >= 1690 && itemLevel < 1695) {
-            dealerMedianValue = 1575.72;
-        } else if (itemLevel >= 1695 && itemLevel < 1700) {
-            dealerMedianValue = 1644.27;
-        } else if (itemLevel >= 1700 && itemLevel < 1705) {
-            dealerMedianValue = 1745.77;
-        } else if (itemLevel >= 1705 && itemLevel < 1710) {
-            dealerMedianValue = 1882.61;
-        } else if (itemLevel >= 1710 && itemLevel < 1715) {
-            dealerMedianValue = 1966.17;
-        } else if (itemLevel >= 1715 && itemLevel < 1720) {
-            dealerMedianValue = 2028.52;
-        } else if (itemLevel >= 1720 && itemLevel < 1725) {
-            dealerMedianValue = 2177.96;
-        } else if (itemLevel >= 1725 && itemLevel < 1730) {
-            dealerMedianValue = 2297.06;
-        } else if (itemLevel >= 1730 && itemLevel < 1735) {
-            dealerMedianValue = 2420.02;
-        } else if (itemLevel >= 1735 && itemLevel < 1740) {
-            dealerMedianValue = 2557.86;
-        } else if (itemLevel >= 1740 && itemLevel < 1745) {
-            dealerMedianValue = 2734.59;
-        } else if (itemLevel >= 1745 && itemLevel < 1750) {
-            dealerMedianValue = 2864.79;
-        } else if (itemLevel >= 1750) {
-            dealerMedianValue = 3209.7;
-        }
 
-        let supportMedianValue = 0;
-        // console.log(itemLevel)
-        if (itemLevel >= 1660 && itemLevel < 1665) {
-            supportMedianValue = 459.98;
-        } else if (itemLevel >= 1665 && itemLevel < 1670) {
-            supportMedianValue = 501.64;
-        } else if (itemLevel >= 1670 && itemLevel < 1675) {
-            supportMedianValue = 525.09;
-        } else if (itemLevel >= 1675 && itemLevel < 1680) {
-            supportMedianValue = 531.38;
-        } else if (itemLevel >= 1680 && itemLevel < 1685) {
-            supportMedianValue = 646.38;
-        } else if (itemLevel >= 1685 && itemLevel < 1690) {
-            supportMedianValue = 720.37;
-        } else if (itemLevel >= 1690 && itemLevel < 1695) {
-            supportMedianValue = 731.09;
-        } else if (itemLevel >= 1695 && itemLevel < 1700) {
-            supportMedianValue = 773.57;
-        } else if (itemLevel >= 1700 && itemLevel < 1705) {
-            supportMedianValue = 810.95;
-        } else if (itemLevel >= 1705 && itemLevel < 1710) {
-            supportMedianValue = 888.4;
-        } else if (itemLevel >= 1710 && itemLevel < 1715) {
-            supportMedianValue = 939.47;
-        } else if (itemLevel >= 1715 && itemLevel < 1720) {
-            supportMedianValue = 963.41;
-        } else if (itemLevel >= 1720 && itemLevel < 1725) {
-            supportMedianValue = 1072.64;
-        } else if (itemLevel >= 1725 && itemLevel < 1730) {
-            supportMedianValue = 1231.56;
-        } else if (itemLevel >= 1730 && itemLevel < 1735) {
-            supportMedianValue = 1315.02;
-        } else if (itemLevel >= 1735 && itemLevel < 1740) {
-            supportMedianValue = 1385.11;
-        } else if (itemLevel >= 1740 && itemLevel < 1745) {
-            supportMedianValue = 1446.71;
-        } else if (itemLevel >= 1745 && itemLevel < 1750) {
-            supportMedianValue = 1485.05;
-        } else if (itemLevel >= 1750) {
-            supportMedianValue = 1609.04;
-        }
-
-        let medianDifferencePercent = (specPoint.completeSpecPoint - 459.98) / 459.98 * 100;
+        let dealerMedianValue = extractValue.htmlObj.medianInfo.dealerMedianValue;
+        let supportMedianValue = extractValue.htmlObj.medianInfo.supportMedianValue;
+        let supportMinMedianValue = extractValue.htmlObj.medianInfo.supportMinMedianValue;
+        let dealerMinMedianValue = extractValue.htmlObj.medianInfo.dealerMinMedianValue;
+        let medianDifferencePercent = (specPoint.completeSpecPoint - supportMinMedianValue) / supportMinMedianValue * 100;
         let dealerSupportConversion = 0;
         // 0보다 낮으면 다른 계산
         if (medianDifferencePercent > 0) {
-            dealerSupportConversion = 847.84 * (1 + medianDifferencePercent / 100);
+            dealerSupportConversion = dealerMinMedianValue * (1 + medianDifferencePercent / 100);
         } else {
-            dealerSupportConversion = 847.84 * (1 + (medianDifferencePercent / 100));
+            dealerSupportConversion = dealerMinMedianValue * (1 + (medianDifferencePercent / 100));
         }
 
 

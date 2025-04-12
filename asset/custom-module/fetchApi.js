@@ -6,8 +6,8 @@
 *********************************************************************************************************************** */
 export async function lostarkApiCall(inputName) {
     const MAIN_CACHE_KEY = 'lostarkApiData'; // 단일 키 사용
-    const MAX_CACHE_ENTRIES = 3; // 최대 저장 개수
-    const oneMinute = 60 * 1000; // 1분 (밀리초)
+    const MAX_CACHE_ENTRIES = 7; // 최대 저장 개수
+    const oneMinute = 60 * 1000 * 99999; // 1분 (밀리초)
     const now = Date.now();
 
     // 1. 메인 캐시 객체 가져오기
@@ -68,6 +68,12 @@ export async function lostarkApiCall(inputName) {
     let data;
     try { // Lost Ark API 호출 에러 핸들링 추가
         const response = await fetch(`https://developer-lostark.game.onstove.com/armories/characters/${inputName}`, options);
+        const rateLimitHeaders = [
+            response.headers.get('X-RateLimit-Limit'),
+            response.headers.get('X-RateLimit-Remaining'),
+            response.headers.get('X-RateLimit-Reset'),
+        ]
+        console.log(rateLimitHeaders);
         if (!response.ok) {
             // API 호출 실패 시 에러 처리
             console.error(`Lost Ark API call failed for ${inputName} with status: ${response.status}`);

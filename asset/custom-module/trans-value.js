@@ -1724,7 +1724,7 @@ export async function getCharacterProfile(data) {
             specialClass = "슈차 잔재";
         } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "방천격", dmg)) {
             specialClass = "4멸 일격";
-        } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg) && (skillCheck(gemSkillArry, "그라인드 체인", dmg)||skillCheck(gemSkillArry, "스피닝 웨폰", dmg))) {
+        } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg) && (skillCheck(gemSkillArry, "그라인드 체인", dmg) || skillCheck(gemSkillArry, "스피닝 웨폰", dmg))) {
             specialClass = "반사멸 억모닉";
         } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg)) {
             specialClass = "사멸 억모닉";
@@ -2798,7 +2798,183 @@ export async function getCharacterProfile(data) {
     }
     htmlObj.engravingInfo = engravingInfoExtract();
 
+    /* **********************************************************************************************************************
+     * name		              :	  medianInfoExtract
+     * version                :   2.0
+     * description            :   현재 유저통계 중앙값 정보를 반환
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function medianInfoExtract() {
+        let result = {
+            dealerMedianValue: 0,
+            supportMedianValue: 0,
+            supportMinMedianValue: 459.98,
+            dealerMinMedianValue: 847.84,
 
+        };
+        let itemLevel = Number(data.ArmoryProfile.ItemAvgLevel.replace(",", ""));
+        if (itemLevel >= 1660 && itemLevel < 1665) {
+            result.dealerMedianValue = 847.84;
+        } else if (itemLevel >= 1665 && itemLevel < 1670) {
+            result.dealerMedianValue = 926.64;
+        } else if (itemLevel >= 1670 && itemLevel < 1675) {
+            result.dealerMedianValue = 965.69;
+        } else if (itemLevel >= 1675 && itemLevel < 1680) {
+            result.dealerMedianValue = 985.01;
+        } else if (itemLevel >= 1680 && itemLevel < 1685) {
+            result.dealerMedianValue = 1307.2;
+        } else if (itemLevel >= 1685 && itemLevel < 1690) {
+            result.dealerMedianValue = 1511.65;
+        } else if (itemLevel >= 1690 && itemLevel < 1695) {
+            result.dealerMedianValue = 1575.72;
+        } else if (itemLevel >= 1695 && itemLevel < 1700) {
+            result.dealerMedianValue = 1644.27;
+        } else if (itemLevel >= 1700 && itemLevel < 1705) {
+            result.dealerMedianValue = 1745.77;
+        } else if (itemLevel >= 1705 && itemLevel < 1710) {
+            result.dealerMedianValue = 1882.61;
+        } else if (itemLevel >= 1710 && itemLevel < 1715) {
+            result.dealerMedianValue = 1966.17;
+        } else if (itemLevel >= 1715 && itemLevel < 1720) {
+            result.dealerMedianValue = 2028.52;
+        } else if (itemLevel >= 1720 && itemLevel < 1725) {
+            result.dealerMedianValue = 2177.96;
+        } else if (itemLevel >= 1725 && itemLevel < 1730) {
+            result.dealerMedianValue = 2297.06;
+        } else if (itemLevel >= 1730 && itemLevel < 1735) {
+            result.dealerMedianValue = 2420.02;
+        } else if (itemLevel >= 1735 && itemLevel < 1740) {
+            result.dealerMedianValue = 2557.86;
+        } else if (itemLevel >= 1740 && itemLevel < 1745) {
+            result.dealerMedianValue = 2734.59;
+        } else if (itemLevel >= 1745 && itemLevel < 1750) {
+            result.dealerMedianValue = 2864.79;
+        } else if (itemLevel >= 1750) {
+            result.dealerMedianValue = 3209.7;
+        }
+
+        // console.log(itemLevel)
+        if (itemLevel >= 1660 && itemLevel < 1665) {
+            result.supportMedianValue = 459.98;
+        } else if (itemLevel >= 1665 && itemLevel < 1670) {
+            result.supportMedianValue = 501.64;
+        } else if (itemLevel >= 1670 && itemLevel < 1675) {
+            result.supportMedianValue = 525.09;
+        } else if (itemLevel >= 1675 && itemLevel < 1680) {
+            result.supportMedianValue = 531.38;
+        } else if (itemLevel >= 1680 && itemLevel < 1685) {
+            result.supportMedianValue = 646.38;
+        } else if (itemLevel >= 1685 && itemLevel < 1690) {
+            result.supportMedianValue = 720.37;
+        } else if (itemLevel >= 1690 && itemLevel < 1695) {
+            result.supportMedianValue = 731.09;
+        } else if (itemLevel >= 1695 && itemLevel < 1700) {
+            result.supportMedianValue = 773.57;
+        } else if (itemLevel >= 1700 && itemLevel < 1705) {
+            result.supportMedianValue = 810.95;
+        } else if (itemLevel >= 1705 && itemLevel < 1710) {
+            result.supportMedianValue = 888.4;
+        } else if (itemLevel >= 1710 && itemLevel < 1715) {
+            result.supportMedianValue = 939.47;
+        } else if (itemLevel >= 1715 && itemLevel < 1720) {
+            result.supportMedianValue = 963.41;
+        } else if (itemLevel >= 1720 && itemLevel < 1725) {
+            result.supportMedianValue = 1072.64;
+        } else if (itemLevel >= 1725 && itemLevel < 1730) {
+            result.supportMedianValue = 1231.56;
+        } else if (itemLevel >= 1730 && itemLevel < 1735) {
+            result.supportMedianValue = 1315.02;
+        } else if (itemLevel >= 1735 && itemLevel < 1740) {
+            result.supportMedianValue = 1385.11;
+        } else if (itemLevel >= 1740 && itemLevel < 1745) {
+            result.supportMedianValue = 1446.71;
+        } else if (itemLevel >= 1745 && itemLevel < 1750) {
+            result.supportMedianValue = 1485.05;
+        } else if (itemLevel >= 1750) {
+            result.supportMedianValue = 1609.04;
+        }
+
+        return result;
+    }
+    htmlObj.medianInfo = medianInfoExtract();
+    /* **********************************************************************************************************************
+     * name		              :	  elxirInfoExtract
+     * version                :   2.0
+     * description            :   중복된 유효 엘릭서 여부를 확인하여 유효 중복엘릭서와 총 레벨값을 반환함
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function elxirInfoExtract() {
+        let result = {};
+        let elixirDouble = ["회심", "달인 (", "강맹", "칼날방패", "선봉대", "행운", "선각자", "진군", "신념"]
+        // extractValue.htmlObj.armoryInfo[i].elixir[i]
+        let allElixirData = [];
+        htmlObj.armoryInfo.forEach(item => {
+            if (item.elixir && Array.isArray(item.elixir)) {
+                allElixirData = allElixirData.concat(item.elixir);
+            }
+        });
+        let specialElixir = allElixirData.filter(elixir => elixirDouble.find(double => elixir.name.includes(double)));
+        specialElixir = specialElixir.map(elixir => elixir.name.replace(/\([^)]*\)/g, '').trim())
+        function countDuplicates(arr) {
+            const counts = {};
+            for (const item of arr) {
+                counts[item] = (counts[item] || 0) + 1;
+            }
+            let mostFrequent = null;
+            let maxCount = 0;
+            for (const item in counts) {
+                if (counts[item] > 1) { // 중복된 값만 고려
+                    if (counts[item] > maxCount) {
+                        maxCount = counts[item];
+                        mostFrequent = { name: item, count: counts[item] };
+                    }
+                }
+            }
+            return mostFrequent;
+        }
+
+        function elixirLevelSum(array) {
+            let sumValue = 0;
+            array.forEach(item => {
+                let value = Number(item.level.match(/Lv\.(\d+)/)[1]);
+                sumValue += value;
+            })
+            return sumValue
+        }
+        // console.log(countDuplicates(specialElixir))
+        // console.log(elixirLevelSum(allElixirData))
+        result.count = countDuplicates(specialElixir) ? countDuplicates(specialElixir).count : 0;
+        result.name = countDuplicates(specialElixir) ? countDuplicates(specialElixir).name : "";
+        result.sumValue = elixirLevelSum(allElixirData);
+        return result;
+    }
+    htmlObj.elxirInfo = elxirInfoExtract();
+
+    /* **********************************************************************************************************************
+     * name		              :	  hyperInfoExtract
+     * version                :   2.0
+     * description            :   초월의 총합을 반환
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function hyperInfoExtract() {
+        let reulst = {};
+        let hyperStarArray = htmlObj.armoryInfo.map(item => item.hyperStar);
+        function hyperAvgValue(array) {
+            let sumValue = 0;
+            let obj = {};
+            array.forEach(item => {
+                sumValue += Number(item);
+            })
+            obj.avgValue = sumValue / array.length;
+            obj.sumValue = sumValue;
+
+            return obj;
+        }
+        reulst.sumValue = hyperAvgValue(hyperStarArray).sumValue;
+        reulst.avgValue = hyperAvgValue(hyperStarArray).avgValue;
+        return reulst;
+    }
+    htmlObj.hyperInfo = hyperInfoExtract();
     /* **********************************************************************************************************************
      * name		              :	  
      * version                :   2.0

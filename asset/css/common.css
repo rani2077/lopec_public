@@ -3,6 +3,15 @@ body {
     min-width: 1300px;
 }
 
+/* 툴팁 */
+.tooltip {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    white-space: nowrap;
+    font-size: inherit;
+}
 
 /* 그림자 */
 .shadow {
@@ -982,6 +991,7 @@ i.shield-halved-solid {
     height: 400px;
     width: 350px;
     border-radius: 5px;
+    overflow: visible;
 }
 
 .sc-lopec-click:before {
@@ -1029,7 +1039,7 @@ i.shield-halved-solid {
     z-index: -1;
     width: 100%;
     height: 100%;
-    border-radius: 0px;
+    border-radius: 5px;
     transition: border-radius 300ms;
 }
 
@@ -1162,11 +1172,23 @@ i.shield-halved-solid {
     background: #e1e1e1;
 }
 
+.sc-lopec-click .group-simple .result-item:not(:first-child) {
+    cursor: pointer;
+}
+
 .sc-lopec-click .group-simple .result-item .result {
     width: 25%;
     text-align: left;
     font-weight: inherit;
 }
+
+.sc-lopec-click .group-simple .result-item .name {}
+
+.sc-lopec-click .group-simple .result-item .job {}
+
+.sc-lopec-click .group-simple .result-item .point {}
+
+.sc-lopec-click .group-simple .result-item .change {}
 
 .sc-lopec-click .group-auto {
     display: none;
@@ -1195,4 +1217,236 @@ i.shield-halved-solid {
 .sc-lopec-click.on .group-simple,
 .sc-lopec-click.on .group-auto {
     display: flex;
+}
+
+/* **********************************************************************************************************************
+* description	    : 	로펙딸깍 유저의 정보 간단하게 보기
+*********************************************************************************************************************** */
+.sc-lopec-click .group-user-data {
+    display: none;
+    position: absolute;
+    left: 100%;
+    bottom: 0;
+    background: #fff;
+    border-radius: 8px;
+    align-content: flex-start;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sc-lopec-click .group-user-data.on {
+    display: flex;
+}
+
+.group-user-data .name-area {
+    margin-bottom: 15px;
+}
+
+.group-user-data .name-area .name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.group-user-data .etc-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.group-user-data .etc-list,
+.group-user-data .ark-list {
+    display: flex;
+    gap: 20px;
+}
+
+.group-user-data .etc-item,
+.group-user-data .ark-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.group-user-data .etc-item .etc,
+.group-user-data .ark-item .name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #666;
+}
+
+.group-user-data .etc-item .value,
+.group-user-data .ark-item .value {
+    font-size: 14px;
+}
+
+.group-user-data .armory-area {
+    margin-bottom: 15px;
+}
+
+.group-user-data .armory-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.group-user-data .armory-item,
+.group-user-data .accessory-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    /* Adjust item width as needed */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.group-user-data .armory-item img,
+.group-user-data .accessory-item img {
+    width: 40px;
+    /* Adjust image size */
+    height: 40px;
+    background-color: #eee;
+    /* Placeholder for image */
+    margin-bottom: 5px;
+}
+
+.group-user-data .armory-item .normale-upgrade {
+    font-size: 12px;
+    color: #007bff;
+    /* Example color */
+}
+
+.group-user-data .armory-item .parts-name {
+    font-size: 12px;
+}
+
+.group-user-data .armory-item .advanced-upgrade {
+    font-size: 12px;
+    color: #dc3545;
+    /* Example color */
+}
+
+.group-user-data .accessory-item .accessory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.group-user-data .accessory-item .option {
+    font-size: 11px;
+    text-wrap: nowrap;
+}
+
+.group-user-data .gem-area {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.group-user-data .gem-item {
+    background-color: #f8f8f8;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.group-user-data .gem-item img {
+    width: 30px;
+    /* Adjust image size */
+    height: 30px;
+    background-color: #ddd;
+    /* Placeholder for image */
+    margin-bottom: 5px;
+}
+
+.group-user-data .gem-item .name {
+    font-size: 12px;
+}
+
+.group-user-data .engraving-area {
+    display: flex;
+    gap: 9px;
+}
+
+.group-user-data .engraving-item {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    width: 40px;
+    /* Adjust size */
+    height: 55px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 10px;
+}
+
+.group-user-data .engraving-item img {
+    width: 20px;
+    /* Adjust image size */
+    height: 20px;
+    background-color: #ccc;
+    /* Placeholder */
+    border-radius: 50%;
+}
+
+.group-user-data .engraving-item .name {}
+
+/* Specific adjustments to match the image more closely */
+.group-user-data .etc-list {
+    gap: 50px;
+    /* Adjust spacing between 엘릭서 and 초월 */
+}
+
+.group-user-data .ark-list {
+    gap: 40px;
+    /* Adjust spacing between Ark items */
+}
+
+.group-user-data .armory-list.armory {
+    grid-template-columns: repeat(6, 1fr);
+    /* Use grid for even spacing */
+    display: grid;
+}
+
+.group-user-data .armory-list.accessory {
+    grid-template-columns: repeat(6, 1fr);
+    display: grid;
+}
+
+.group-user-data .armory-list.accessory .accessory-item:last-child .accessory {
+    align-items: center;
+}
+
+
+.group-user-data .accessory-item .accessory {
+    align-items: flex-start;
+    width: 100%;
+    overflow: hidden;
+}
+
+.group-user-data .gem-area {
+    justify-content: space-between;
+    /* Align gems to the left */
+}
+
+.group-user-data .engraving-area {
+    justify-content: flex-start;
+    /* Align engravings to the left */
 }
