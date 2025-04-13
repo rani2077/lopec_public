@@ -536,8 +536,8 @@ if (/lopec.kr/.test(window.location.host)) {
 * description       : 	sc-lopec-click를 생성하고 드래그 가능하게 하며, 위치를 저장/동기화하는 함수 (on 클래스 시 드래그 방지, 클릭/드래그 구분)
 * useDevice         : 	데스크탑
 *********************************************************************************************************************** */
+let simpleNameFlag = "";
 async function scLopecClickCreate() {
-
     const clickElementHtml = `
         <section class="sc-lopec-click">
             <div class="blob blob1"></div>
@@ -591,25 +591,25 @@ async function scLopecClickCreate() {
             <div class="etc-list">
                 <div class="etc-item elxir">
                     <span class="elxir etc">엘릭서: </span>
-                    <span class="value">회심 46</span>
+                    <span class="value">-</span>
                 </div>
                 <div class="etc-item hyper">
                     <span class="hyper etc">초월합: </span>
-                    <span class="value">126</span>
+                    <span class="value">-</span>
                 </div>
             </div>
             <div class="ark-list">
                 <div class="ark-item">
                     <span class="name">진화</span>
-                    <span class="value">120</span>
+                    <span class="value">-</span>
                 </div>
                 <div class="ark-item">
                     <span class="name">깨달음</span>
-                    <span class="value">101</span>
+                    <span class="value">-</span>
                 </div>
                 <div class="ark-item">
                     <span class="name">도약</span>
-                    <span class="value">62</span>
+                    <span class="value">-</span>
                 </div>
             </div>
         </div>
@@ -617,86 +617,86 @@ async function scLopecClickCreate() {
             <div class="armory-list armory">
                 <div class="armory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
-                    <span class="normale-upgrade">+17</span>
+                    <span class="normale-upgrade">+-</span>
                     <span class="parts-name">투구</span>
-                    <span class="advanced-upgrade">X21</span>
+                    <span class="advanced-upgrade">X-</span>
                 </div>
                 <div class="armory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
-                    <span class="normale-upgrade">+17</span>
+                    <span class="normale-upgrade">+-</span>
                     <span class="parts-name">견갑</span>
-                    <span class="advanced-upgrade">X21</span>
+                    <span class="advanced-upgrade">X-</span>
                 </div>
                 <div class="armory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
-                    <span class="normale-upgrade">+17</span>
+                    <span class="normale-upgrade">+-</span>
                     <span class="parts-name">상의</span>
-                    <span class="advanced-upgrade">X21</span>
+                    <span class="advanced-upgrade">X-</span>
                 </div>
                 <div class="armory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
-                    <span class="normale-upgrade">+17</span>
+                    <span class="normale-upgrade">+-</span>
                     <span class="parts-name">하의</span>
-                    <span class="advanced-upgrade">X21</span>
+                    <span class="advanced-upgrade">X-</span>
                 </div>
                 <div class="armory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
-                    <span class="normale-upgrade">+17</span>
+                    <span class="normale-upgrade">+-</span>
                     <span class="parts-name">장갑</span>
-                    <span class="advanced-upgrade">X21</span>
+                    <span class="advanced-upgrade">X-</span>
                 </div>
                 <div class="armory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
-                    <span class="normale-upgrade">+17</span>
+                    <span class="normale-upgrade">+-</span>
                     <span class="parts-name">무기</span>
-                    <span class="advanced-upgrade">X21</span>
+                    <span class="advanced-upgrade">X-</span>
                 </div>
             </div>
             <div class="armory-list accessory">
                 <div class="accessory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
                     <div class="accessory">
-                        <span class="option tooltip-text">하:전투회복전투회복전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
                     </div>
                 </div>
                 <div class="accessory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
                     <div class="accessory">
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
                     </div>
                 </div>
                 <div class="accessory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
                     <div class="accessory">
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
                     </div>
                 </div>
                 <div class="accessory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
                     <div class="accessory">
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
                     </div>
                 </div>
                 <div class="accessory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
                     <div class="accessory">
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
-                        <span class="option tooltip-text">하:전투회복</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
+                        <span class="option tooltip-text">하:-</span>
                     </div>
                 </div>
                 <div class="accessory-item">
                     <img src="/asset/image/skeleton-img.png" alt="">
                     <div class="accessory">
-                        <span class="option">13.44%</span>
+                        <span class="option">-</span>
                     </div>
                 </div>
 
@@ -705,69 +705,69 @@ async function scLopecClickCreate() {
         <div class="gem-area">
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
             <div class="gem-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">8겁</span>
+                <span class="name">-</span>
             </div>
         </div>
         <div class="engraving-area">
             <div class="engraving-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">유물0</span>
+                <span class="name">-</span>
             </div>
             <div class="engraving-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">유물0</span>
+                <span class="name">-</span>
             </div>
             <div class="engraving-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">유물0</span>
+                <span class="name">-</span>
             </div>
             <div class="engraving-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">유물0</span>
+                <span class="name">-</span>
             </div>
             <div class="engraving-item">
                 <img src="/asset/image/skeleton-img.png" alt="">
-                <span class="name">유물0</span>
+                <span class="name">-</span>
             </div>
         </div>
     </div>`;
@@ -775,7 +775,7 @@ async function scLopecClickCreate() {
 
     lopecClickElement.insertAdjacentHTML('beforeend', groupUserDataHtml);
     const groupUserDataElement = lopecClickElement.querySelector(".group-user-data");
-
+    const groupUserDataElementSkeleton = groupUserDataElement.innerHTML;
     // ---------------------------------------
 
 
@@ -815,14 +815,12 @@ async function scLopecClickCreate() {
             groupUserDataElement.style.right = 'auto';
             groupUserDataElement.style.top = 'auto';
             groupUserDataElement.style.bottom = 'auto';
-
             // 가로 위치 설정
             if (pos.left !== 'auto') { // 부모가 왼쪽에 있을 때
                 groupUserDataElement.style.left = '100%';
             } else if (pos.right !== 'auto') { // 부모가 오른쪽에 있을 때
                 groupUserDataElement.style.right = '100%';
             }
-
             // 세로 위치 설정
             if (pos.top !== 'auto') { // 부모가 위쪽에 있을 때
                 groupUserDataElement.style.top = '0';
@@ -989,14 +987,15 @@ async function scLopecClickCreate() {
         if (groupUserDataElement && groupUserDataElement.contains(e.target)) {
             return;
         }
-
         if (!lopecClickElement.classList.contains('on') && lopecClickElement.contains(e.target)) {
             lopecClickElement.classList.add("on");
             lopecClickElement.querySelector(".search-area input").focus();
             lopecClickElement.style.cursor = 'auto';
-        }
-        else if (lopecClickElement.classList.contains('on') && !lopecClickElement.contains(e.target)) {
+        } else if (lopecClickElement.classList.contains('on') && !lopecClickElement.contains(e.target)) {
             lopecClickElement.classList.remove("on");
+            groupUserDataElement.innerHTML = groupUserDataElementSkeleton;
+            groupUserDataElement.classList.remove("on");
+            simpleNameFlag = "";
             lopecClickElement.style.cursor = 'grab';
         }
     });
@@ -1023,7 +1022,6 @@ async function scLopecClickCreate() {
     lopecClickElement.style.position = 'fixed';
     lopecClickElement.style.cursor = lopecClickElement.classList.contains('on') ? 'auto' : 'grab';
 
-    // groupUserDataElement 생성 코드는 위로 이동함
 }
 
 // 함수 실행
@@ -1050,7 +1048,7 @@ async function lopecClickSearch() {
 
     let searchElement = lopecClickElement.querySelector(".group-simple .search");
     searchElement.addEventListener("click", () => { simpleSearch() })
-
+    const groupUserDataSkeletonElement = lopecClickElement.querySelector(".group-user-data").innerHTML;
     let resultItem = `
         <div class="result-item sort">
             <span class="name result">닉네임</span>
@@ -1060,6 +1058,12 @@ async function lopecClickSearch() {
         </div>`;
     async function simpleSearch() {
         let inputName = inputElement.value;
+        let nameElements = lopecClickElement.querySelectorAll(".result-area .result-item.not-sort .name");
+        let nameLogArray = Array.from(nameElements).map(name => name.textContent);
+        if (nameLogArray.includes(inputName)) {
+            return;
+        }
+        searchElement.textContent = "검색중";
         let data = await Modules.fetchApi.lostarkApiCall(inputName);
         let extractValue = await Modules.transValue.getCharacterProfile(data);
         let calcValue = await Modules.calcValue.specPointCalc(extractValue);
@@ -1084,7 +1088,7 @@ async function lopecClickSearch() {
             convertValue = "-"
         }
         resultItem += `
-            <div class="result-item" title="${inputName}의 상세정보 확인하기">
+            <div class="result-item not-sort" title="${inputName}의 상세정보 확인하기">
                 <span class="name result">${inputName}</span>
                 <span class="job result">${extractValue.etcObj.supportCheck}</span>
                 <span class="point result">${calcValue.completeSpecPoint.toFixed(2)}</span>
@@ -1093,6 +1097,7 @@ async function lopecClickSearch() {
         let resultArea = lopecClickElement.querySelector('.result-area');
         resultArea.innerHTML = resultItem;
         inputElement.value = "";
+        searchElement.textContent = "검색";
     }
     let resultArea = lopecClickElement.querySelector('.result-area');
     resultArea.addEventListener("click", async (e) => {
@@ -1105,20 +1110,22 @@ async function lopecClickSearch() {
             await groupUserDataSet(inputName);
         }
     })
-    let nowName = "";
+    // let simpleNameFlag = "";
+    console.log(simpleNameFlag)
     async function groupUserDataSet(inputName) {
         let groupUserDataElement = document.querySelector(".group-user-data");
-        if (nowName === inputName) {
+        if (simpleNameFlag === inputName) {
             groupUserDataElement.classList.remove("on");
-            nowName = "";
+            simpleNameFlag = "";
             return;
         } else {
             groupUserDataElement.classList.add("on");
+            groupUserDataElement.innerHTML = groupUserDataSkeletonElement;
         }
         // let inputName = resultItem.querySelector(".name").textContent;  <== 삭제예정
         let data = await Modules.fetchApi.lostarkApiCall(inputName);
         let extractValue = await Modules.transValue.getCharacterProfile(data);
-        // let calcValue = await Modules.calcValue.specPointCalc(extractValue); <== 삭제예정
+        let calcValue = await Modules.calcValue.specPointCalc(extractValue);
 
         // 유저닉네임 및 직업 설정
         let nameArea = lopecClickElement.querySelector(".name-area");
@@ -1139,8 +1146,163 @@ async function lopecClickSearch() {
         evloutionValueElement.textContent = data.ArkPassive.Points[0].Value
         enlightValueElement.textContent = data.ArkPassive.Points[1].Value
         leapValueElement.textContent = data.ArkPassive.Points[2].Value
+
+        // 장비 설정
+        let armoryElements = lopecClickElement.querySelectorAll(".armory-list.armory .armory-item");
+        let helmetElement = armoryElements[0];
+        let shoulderElement = armoryElements[1];
+        let armorElement = armoryElements[2];
+        let pantsElement = armoryElements[3];
+        let gloveElement = armoryElements[4];
+        let weaponElement = armoryElements[5];
+        armoryElementSet(helmetElement, "투구");
+        armoryElementSet(shoulderElement, "어깨");
+        armoryElementSet(armorElement, "상의");
+        armoryElementSet(pantsElement, "하의");
+        armoryElementSet(gloveElement, "장갑");
+        armoryElementSet(weaponElement, "무기");
+        function armoryElementSet(element, typeName) {
+            let armoryData = extractValue.htmlObj.armoryInfo.find(armory => armory.type === typeName);
+            if (!armoryData) {
+                return;
+            }
+            let icon = armoryData.icon;
+            let normalValue = armoryData.name.match(/\+(\d+)/)[0];
+            let advancedValue = armoryData.advancedLevel;
+            if (isNaN(Number(advancedValue))) {
+                advancedValue = "0";
+            }
+
+            let imgElement = element.querySelector("img");
+            let upgradeElement = element.querySelector(".normale-upgrade");
+            let advancedUpgradeElement = element.querySelector(".advanced-upgrade");
+            imgElement.src = armoryData.icon;
+            upgradeElement.textContent = `${normalValue}`;
+            advancedUpgradeElement.textContent = `X${advancedValue}`;
+
+        }
+        function accessoryElementSet() {
+            let accessoryElements = lopecClickElement.querySelectorAll(".armory-list.accessory .accessory-item");
+            let necklaceElement = accessoryElements[0];
+            let earRingElement1 = accessoryElements[1];
+            let earRingElement2 = accessoryElements[2];
+            let ringElement1 = accessoryElements[3];
+            let ringElement2 = accessoryElements[4];
+            let earRingCount = 0;
+            let ringCount = 0;
+
+            extractValue.htmlObj.accessoryInfo.forEach(item => {
+                if (item.type === "목걸이") {
+                    necklaceElement.querySelector("img").src = item.icon;
+                    necklaceElement.querySelector(".accessory").innerHTML = optionElementsCreate();
+                } else if (item.type === "귀걸이") {
+                    if (earRingCount === 0) {
+                        earRingElement1.querySelector("img").src = item.icon;
+                        earRingElement1.querySelector(".accessory").innerHTML = optionElementsCreate();
+                        earRingCount++;
+                    } else {
+                        earRingElement2.querySelector("img").src = item.icon;
+                        earRingElement2.querySelector(".accessory").innerHTML = optionElementsCreate();
+                    }
+                } else if (item.type === "반지") {
+                    if (ringCount === 0) {
+                        ringElement1.querySelector("img").src = item.icon;
+                        ringElement1.querySelector(".accessory").innerHTML = optionElementsCreate();
+                        ringCount++;
+                    } else {
+                        ringElement2.querySelector("img").src = item.icon;
+                        ringElement2.querySelector(".accessory").innerHTML = optionElementsCreate();
+                    }
+
+                }
+                function optionElementsCreate() {
+                    let optionHtml = ``;
+                    item.accessory.forEach(option => {
+                        let name = option.split(":")[0];
+                        let grade = option.split(":")[1];
+                        let gradeColor = "";
+                        if (grade === "low") {
+                            grade = `<em style="color:#4671ff;font-size:11px;">하</em>`;
+                        } else if (grade === "middle") {
+                            grade = `<em style="color:#7a13be;font-size:11px;">중</em>`;
+                        } else if (grade === "high") {
+                            grade = `<em style="color:#ecc515;font-size:11px;">하</em>`;
+                        }
+                        optionHtml += `<span class="option tooltip-text">${grade}:${name}</span>`;
+                    });
+                    return optionHtml;
+                }
+            })
+
+            // 팔찌 설정
+            let bangleElement = accessoryElements[5];
+            bangleElement.querySelector("img").src = extractValue.htmlObj.bangleInfo.icon;
+            bangleElement.querySelector(".option").textContent = calcValue.dealerBangleResult + "%";
+        };
+        accessoryElementSet();
+
+        // 보석 설정
+        let gemAreaElement = lopecClickElement.querySelector(".gem-area");
+        let gemItemHtml = "";
+        if (data.ArmoryGem.Gems) {
+
+            data.ArmoryGem.Gems.forEach(gem => {
+                let gemSort = gem.Name.match(/(겁화|멸화|작열|홍염)/)[0];
+                let gemIndex = 0;
+                if (/겁화|멸화/.test(gemSort)) {
+                    gemIndex = 0;
+                } else if (/작열|홍염/.test(gemSort)) {
+                    gemIndex = 1;
+                } else {
+                    gemIndex = 2;
+                }
+                gemItemHtml += `
+                    <div class="gem-item" data-sort="${gemIndex}">
+                        <img src="${gem.Icon}" alt="">
+                        <span class="name">${gem.Level}${gemSort}</span>
+                    </div>`;
+            });
+            gemAreaElement.innerHTML = gemItemHtml;
+            let gemItemArray = Array.from(gemAreaElement.querySelectorAll(".gem-item"));
+            function sortByDataSort(a, b) {
+                const sortValueA = parseInt(a.dataset.sort);
+                const sortValueB = parseInt(b.dataset.sort);
+                if (sortValueA < sortValueB) {
+                    return -1;
+                }
+                if (sortValueA > sortValueB) {
+                    return 1;
+                }
+                return 0;
+            }
+            // gemItems 배열을 정렬
+            gemItemArray.sort(sortByDataSort);
+            // 기존의 gem-item들을 gem-area에서 모두 제거
+            gemAreaElement.innerHTML = '';
+
+            // 정렬된 gemItems를 gem-area에 다시 추가
+            gemItemArray.forEach(item => {
+                gemAreaElement.appendChild(item);
+            });
+
+        }
+
+        // 각인 설정
+        let engravingAreaElement = lopecClickElement.querySelector(".engraving-area");
+        let engravingItemHtml = "";
+        extractValue.htmlObj.engravingInfo.forEach(engraving => {
+            engravingItemHtml += `
+                <div class="engraving-item">
+                    <img src="${engraving.icon}" alt="">
+                    <span class="grade">${engraving.grade + engraving.level}</span>
+                    <span class="name">${engraving.name}</span>
+                </div>`;
+        })
+        engravingAreaElement.innerHTML = engravingItemHtml;
+
+        createTooltip();
         // group-user-data의 토글을 위한 이전 이름 기록 저장
-        nowName = inputName;
+        simpleNameFlag = inputName;
     }
 }
 lopecClickSearch()

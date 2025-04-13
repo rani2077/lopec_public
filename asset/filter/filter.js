@@ -2266,7 +2266,15 @@ export let classGemFilter = [
             { name: "방천격", per: 0.024 },
             { name: "오의 : 호왕출현", per: 0.134 },
             { name: "오의 : 풍신초래", per: 0.134 },
-            { name: "보정치", per: -0.134},
+            { name: "보정치", per: -0.134 },
+        ],
+    },
+    {
+        class: "풍신 일격",
+        skill: [
+            { name: "오의 : 풍신초래", per: 0.193 },
+            { name: "방천격", per: 0.024 },
+            { name: "오의 : 호왕출현", per: 0.134 },
         ],
     },
     {

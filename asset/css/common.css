@@ -1161,6 +1161,7 @@ i.shield-halved-solid {
     padding: 12px 10px;
     border-bottom: 1px solid #e8eff5;
     transition: background 300ms;
+    gap: 5px;
 }
 
 .sc-lopec-click .group-simple .result-item:first-child {
@@ -1177,18 +1178,26 @@ i.shield-halved-solid {
 }
 
 .sc-lopec-click .group-simple .result-item .result {
-    width: 25%;
+    /* width: 25%; */
     text-align: left;
     font-weight: inherit;
 }
 
-.sc-lopec-click .group-simple .result-item .name {}
+.sc-lopec-click .group-simple .result-item .name {
+    width: 40%;
+}
 
-.sc-lopec-click .group-simple .result-item .job {}
+.sc-lopec-click .group-simple .result-item .job {
+    width: 15%;
+}
 
-.sc-lopec-click .group-simple .result-item .point {}
+.sc-lopec-click .group-simple .result-item .point {
+    width: 22.5%;
+}
 
-.sc-lopec-click .group-simple .result-item .change {}
+.sc-lopec-click .group-simple .result-item .change {
+    width: 22.5%;
+}
 
 .sc-lopec-click .group-auto {
     display: none;
@@ -1373,7 +1382,8 @@ i.shield-halved-solid {
 }
 
 .group-user-data .gem-item .name {
-    font-size: 12px;
+    font-size: 11px;
+    letter-spacing: -0.2px;
 }
 
 .group-user-data .engraving-area {
@@ -1385,7 +1395,7 @@ i.shield-halved-solid {
     background-color: #f9f9f9;
     border: 1px solid #eee;
     border-radius: 4px;
-    width: 40px;
+    width: 80px;
     /* Adjust size */
     height: 55px;
     display: flex;
@@ -1406,7 +1416,13 @@ i.shield-halved-solid {
     border-radius: 50%;
 }
 
-.group-user-data .engraving-item .name {}
+.group-user-data .engraving-item .grade {
+    font-size: 12px;
+}
+
+.group-user-data .engraving-item .name {
+    font-size: 12px;
+}
 
 /* Specific adjustments to match the image more closely */
 .group-user-data .etc-list {
@@ -1438,6 +1454,7 @@ i.shield-halved-solid {
 .group-user-data .accessory-item .accessory {
     align-items: flex-start;
     width: 100%;
+    height: 33px;
     overflow: hidden;
 }
 
