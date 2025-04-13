@@ -1039,6 +1039,8 @@ async function lopecClickSearch() {
     }
     const lopecClickElement = document.querySelector(".sc-lopec-click");
     let Modules = await importModuleManager();
+    // accessoryAbbreviationMap import 추가
+    const { accessoryAbbreviationMap } = await import("../filter/filter.js"  + `?${Math.floor((new Date).getTime() / interValTime)}`);
 
     let inputElement = lopecClickElement.querySelector(".group-simple input");
     lopecClickElement.addEventListener("keydown", async (key) => {
@@ -1220,15 +1222,18 @@ async function lopecClickSearch() {
                     item.accessory.forEach(option => {
                         let name = option.split(":")[0];
                         let grade = option.split(":")[1];
-                        let gradeColor = "";
+                        
+                        // filter.js에서 가져온 매핑 사용
+                        let abbreviatedName = accessoryAbbreviationMap[name] || name;
+                        
                         if (grade === "low") {
                             grade = `<em style="color:#4671ff;font-size:11px;">하</em>`;
                         } else if (grade === "middle") {
                             grade = `<em style="color:#7a13be;font-size:11px;">중</em>`;
                         } else if (grade === "high") {
-                            grade = `<em style="color:#ecc515;font-size:11px;">하</em>`;
+                            grade = `<em style="color:#ecc515;font-size:11px;">상</em>`;
                         }
-                        optionHtml += `<span class="option tooltip-text">${grade}:${name}</span>`;
+                        optionHtml += `<span class="option tooltip-text">${grade}:${abbreviatedName}</span>`;
                     });
                     return optionHtml;
                 }
