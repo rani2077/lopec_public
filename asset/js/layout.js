@@ -11,14 +11,18 @@ let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini
 async function importModuleManager() {
     let interValTime = 60 * 1000;
     let modules = await Promise.all([
-        import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // lostark api호출
+        import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark api호출
         import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
         import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+
+        import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
     ])
     let moduleObj = {
         fetchApi: modules[0],
         transValue: modules[1],
         calcValue: modules[2],
+
+        ocrModule: modules[2],
     }
 
     return moduleObj
@@ -1040,16 +1044,16 @@ async function lopecClickSearch() {
     const lopecClickElement = document.querySelector(".sc-lopec-click");
     let Modules = await importModuleManager();
     // accessoryAbbreviationMap import 추가
-    const { accessoryAbbreviationMap } = await import("../filter/filter.js"  + `?${Math.floor((new Date).getTime() / interValTime)}`);
+    const { accessoryAbbreviationMap } = await import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`);
 
     let inputElement = lopecClickElement.querySelector(".group-simple input");
     lopecClickElement.addEventListener("keydown", async (key) => {
         // 한글 입력 이벤트 더블링 처리 <== 젠장 한글 또 너야
-        if (key.code === `Enter` && !key.isComposing) { simpleSearch() }
+        if (key.code === `Enter` && !key.isComposing) { simpleSearch(inputElement.value) }
     })
 
     let searchElement = lopecClickElement.querySelector(".group-simple .search");
-    searchElement.addEventListener("click", () => { simpleSearch() })
+    searchElement.addEventListener("click", () => { simpleSearch(inputElement.value) })
     const groupUserDataSkeletonElement = lopecClickElement.querySelector(".group-user-data").innerHTML;
     let resultItem = `
         <div class="result-item sort">
@@ -1058,8 +1062,7 @@ async function lopecClickSearch() {
             <span class="point result">점수</span>
             <span class="change result">딜러환산</span>
         </div>`;
-    async function simpleSearch() {
-        let inputName = inputElement.value;
+    async function simpleSearch(inputName) {
         let nameElements = lopecClickElement.querySelectorAll(".result-area .result-item.not-sort .name");
         let nameLogArray = Array.from(nameElements).map(name => name.textContent);
         if (nameLogArray.includes(inputName)) {
@@ -1067,6 +1070,14 @@ async function lopecClickSearch() {
         }
         searchElement.textContent = "검색중";
         let data = await Modules.fetchApi.lostarkApiCall(inputName);
+        // data가 null일 경우 처리 (API 호출 실패 등)
+        if (!data) {
+            console.error(`${inputName}의 데이터를 가져오지 못했습니다.`);
+            searchElement.textContent = "검색"; // 버튼 텍스트 복구
+            // 사용자에게 오류 알림 (선택 사항)
+            // alert(`${inputName} 캐릭터 정보를 조회하는데 실패했습니다.`);
+            return; // 함수 종료
+        }
         let extractValue = await Modules.transValue.getCharacterProfile(data);
         let calcValue = await Modules.calcValue.specPointCalc(extractValue);
 
@@ -1076,7 +1087,7 @@ async function lopecClickSearch() {
         let dealerMinMedianValue = extractValue.htmlObj.medianInfo.dealerMinMedianValue;
         let medianDifferencePercent = (calcValue.completeSpecPoint - supportMinMedianValue) / supportMinMedianValue * 100;
         let dealerSupportConversion = 0;
-        // 0보다 낮으면 다른 계산 <== 이거 의미없는거 아님?
+
         if (medianDifferencePercent > 0) {
             dealerSupportConversion = dealerMinMedianValue * (1 + medianDifferencePercent / 100);
         } else {
@@ -1087,19 +1098,48 @@ async function lopecClickSearch() {
         if (extractValue.etcObj.supportCheck === "서폿") {
             convertValue = dealerSupportConversion.toFixed(2);
         } else {
-            convertValue = "-"
+            convertValue = "-";
         }
-        resultItem += `
-            <div class="result-item not-sort" title="${inputName}의 상세정보 확인하기">
-                <span class="name result">${inputName}</span>
-                <span class="job result">${extractValue.etcObj.supportCheck}</span>
-                <span class="point result">${calcValue.completeSpecPoint.toFixed(2)}</span>
-                <span class="change result">${convertValue}</span>
-            </div>`;
+
+        // 1. 새로 추가할 아이템의 HTML 문자열만 생성
+        const newResultItemHtml = `
+        <div class="result-item not-sort" title="${inputName}의 상세정보 확인하기">
+            <span class="name result">${inputName}</span>
+            <span class="job result">${extractValue.etcObj.supportCheck}</span>
+            <span class="point result">${calcValue.completeSpecPoint.toFixed(2)}</span>
+            <span class="change result">${convertValue}</span>
+        </div>`;
+
         let resultArea = lopecClickElement.querySelector('.result-area');
-        resultArea.innerHTML = resultItem;
+
+        // 2. 새 아이템 HTML을 resultArea의 맨 끝에 삽입 (기존 내용 유지)
+        resultArea.insertAdjacentHTML('beforeend', newResultItemHtml);
+
         inputElement.value = "";
         searchElement.textContent = "검색";
+
+        // 3. DOM에서 .not-sort 요소들의 순서를 뒤집는 함수
+        function resultItemsReverseDOM() {
+            // a. 부모 요소 가져오기
+            const parent = resultArea; // 이미 resultArea 변수가 있음
+
+            // b. 뒤집을 대상 요소들(.not-sort) 가져오기 (NodeList)
+            const itemsToReverse = parent.querySelectorAll(".result-item.not-sort");
+
+            // c. NodeList를 실제 배열로 변환하고 순서 뒤집기
+            const reversedItemsArray = Array.from(itemsToReverse).reverse();
+
+            // d. 기존의 .not-sort 요소들을 DOM에서 제거
+            itemsToReverse.forEach(item => item.remove());
+
+            // e. 뒤집힌 배열 순서대로 요소들을 다시 부모 요소에 추가 (appendChild는 맨 뒤에 추가함)
+            reversedItemsArray.forEach(item => {
+                parent.appendChild(item);
+            });
+        }
+        // 4. 순서 뒤집는 함수 호출
+        resultItemsReverseDOM();
+
     }
     let resultArea = lopecClickElement.querySelector('.result-area');
     resultArea.addEventListener("click", async (e) => {
@@ -1113,7 +1153,6 @@ async function lopecClickSearch() {
         }
     })
     // let simpleNameFlag = "";
-    console.log(simpleNameFlag)
     async function groupUserDataSet(inputName) {
         let groupUserDataElement = document.querySelector(".group-user-data");
         if (simpleNameFlag === inputName) {
@@ -1222,10 +1261,10 @@ async function lopecClickSearch() {
                     item.accessory.forEach(option => {
                         let name = option.split(":")[0];
                         let grade = option.split(":")[1];
-                        
+
                         // filter.js에서 가져온 매핑 사용
                         let abbreviatedName = accessoryAbbreviationMap[name] || name;
-                        
+
                         if (grade === "low") {
                             grade = `<em style="color:#4671ff;font-size:11px;">하</em>`;
                         } else if (grade === "middle") {
@@ -1306,12 +1345,47 @@ async function lopecClickSearch() {
         engravingAreaElement.innerHTML = engravingItemHtml;
 
         createTooltip();
+
         // group-user-data의 토글을 위한 이전 이름 기록 저장
         simpleNameFlag = inputName;
     }
+
+
+    /* **********************************************************************************************************************
+    * function name		:	
+    * description		: 	ocr모듈 호출 <== 베타 후 제거 예정
+    *********************************************************************************************************************** */
+    let btnElement = document.querySelector(".sc-lopec-click .auto.btn");
+    await LopecOCR.loadDefaultTemplates();
+    btnElement.addEventListener("click", async () => {
+        try {
+            // OCR 실행 (API 키 'free', 버전 'auto')
+            const nicknames = await LopecOCR.extractCharactersFromClipboard('free', 'auto', {
+                onStatusUpdate: (message) => {
+                    // statusElement.textContent = message; // 진행 상태 업데이트
+                },
+                onError: (error) => {
+                    // 사소한 오류는 여기서 처리 가능 (예: OCR API 자체 오류)
+                    // errorElement.textContent = `처리 중 오류: ${error.message}`;
+                    console.warn('OCR 처리 중 오류 발생:', error);
+                }
+            });
+            console.warn(nicknames)
+            if (nicknames.length > 0) {
+                nicknames.forEach(name => {
+                    simpleSearch(name)
+                })
+            }
+        } catch (error) {
+            // 치명적인 오류 처리 (예: 클립보드 접근 불가, 유효하지 않은 이미지 등)
+            // statusElement.textContent = 'OCR 실패';
+            // errorElement.textContent = `오류: ${error.message}`;
+            console.error('OCR 실행 중 심각한 오류 발생:', error);
+        }
+    })
+
 }
 lopecClickSearch()
-
 
 /* **********************************************************************************************************************
  * function name		:	createTooltip()

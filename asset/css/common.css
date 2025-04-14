@@ -316,7 +316,10 @@ font {
     box-shadow: none;
 }
 
-.dark-mode header {
+.dark-mode header,
+.dark-mode .sc-lopec-click:after,
+.dark-mode .sc-lopec-click .group-user-data,
+.dark-mode .sc-lopec-click .blob {
     background: #1d1e1f;
     color: #fff;
 }
@@ -339,9 +342,28 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode footer,
 .dark-mode .group-recent,
 .dark-mode .group-recent .name-area .sort.on,
-.dark-mode .sc-expedition .group-server {
+.dark-mode .sc-expedition .group-server,
+.dark-mode .sc-lopec-click .group-simple .result-area,
+.dark-mode .sc-lopec-click .search-area input,
+.dark-mode .sc-lopec-click .search-area span.btn,
+.dark-mode .group-user-data .armory-item,
+.dark-mode .group-user-data .accessory-item,
+.dark-mode .group-user-data .gem-item,
+.dark-mode .group-user-data .engraving-item {
     background: #2f2f2f;
     color: #fff;
+}
+
+.dark-mode .sc-lopec-click .group-simple .search-area input:focus,
+.dark-mode .sc-lopec-click .search-area span.btn,
+.dark-mode .group-user-data .armory-item,
+.dark-mode .group-user-data .accessory-item,
+.dark-mode .group-user-data .gem-item,
+.dark-mode .group-user-data .engraving-item {
+    border: 1px solid #404040;
+}
+.dark-mode .sc-lopec-click .group-simple .result-item{
+    border-bottom:1px solid #404040;
 }
 
 .dark-mode .group-recent .name-area .sort,
@@ -356,13 +378,15 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .notice,
 .dark-mode .temp-text,
 .dark-mode .sc-profile,
-.dark-mode .sc-nav {
+.dark-mode .sc-nav,
+.dark-mode .sc-lopec-click .category {
     color: #fff;
 }
 
 .dark-mode .sc-expedition .expedition-area .expedition-list .info-box .character-level,
 .dark-mode .group-recent .memo .name-box .del:before,
-.dark-mode .group-recent .memo .name-box .del:after {
+.dark-mode .group-recent .memo .name-box .del:after,
+.dark-mode .sc-lopec-click .hint {
     color: #bfbfbf;
 }
 
@@ -371,7 +395,8 @@ html.dark-mode .sc-info .tag-list,
 }
 
 .dark-mode .sc-info .text-box .elixir-wrap .elixir,
-.dark-mode .group-recent .memo .name-box:hover {
+.dark-mode .group-recent .memo .name-box:hover,
+.dark-mode .sc-lopec-click .group-simple .result-item:hover:not(.sort) {
     background: #15181d;
 }
 
@@ -393,7 +418,6 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .sc-container .group-logo .link-logo {
     background: url("../image/dark-mode-logo.png") center center / contain no-repeat;
 }
-
 
 
 /* .dark-mode .sc-info .group-info .spec-area .question{
@@ -1023,7 +1047,7 @@ i.shield-halved-solid {
     transform: translate(-50%, -50%);
     width: 92%;
     height: 92%;
-    background-color: #acebff;
+    background-color: #ebf7fc;
     /* Old browsers */
     background-image: linear-gradient(top, #87e0fd 0%, #008eed 100%);
     /* Fallback for IE6-9 (vertical gradient) */
@@ -1054,7 +1078,7 @@ i.shield-halved-solid {
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #80EAF3;
+    background-color: #ebf7fc;
     opacity: 0.5;
     border-radius: 15px;
     /* 30% of 50px */
@@ -1165,7 +1189,8 @@ i.shield-halved-solid {
 }
 
 .sc-lopec-click .group-simple .result-item:first-child {
-    color: #0056b3;
+    /* color: #0056b3; */
+    color: #59a6e6;
     font-weight: 600;
 }
 

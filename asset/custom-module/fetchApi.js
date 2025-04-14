@@ -7,7 +7,7 @@
 export async function lostarkApiCall(inputName) {
     const MAIN_CACHE_KEY = 'lostarkApiData'; // 단일 키 사용
     const MAX_CACHE_ENTRIES = 7; // 최대 저장 개수
-    const oneMinute = 60 * 1000 * 99999; // 1분 (밀리초)
+    const oneMinute = 60 * 1000 * 2; // 1분 (밀리초)
     const now = Date.now();
 
     // 1. 메인 캐시 객체 가져오기
@@ -73,7 +73,7 @@ export async function lostarkApiCall(inputName) {
             response.headers.get('X-RateLimit-Remaining'),
             response.headers.get('X-RateLimit-Reset'),
         ]
-        console.log(rateLimitHeaders);
+        // console.log(rateLimitHeaders);
         if (!response.ok) {
             // API 호출 실패 시 에러 처리
             console.error(`Lost Ark API call failed for ${inputName} with status: ${response.status}`);

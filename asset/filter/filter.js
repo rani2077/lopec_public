@@ -2857,6 +2857,18 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "슈차 7멸 잔재",
+        skill: [
+            { name: "버스트 스킬", per: 0.1552 },
+            { name: "소울 앱소버", per: 0.1492 },
+            { name: "데스 센텐스", per: 0.0972 },
+            { name: "보이드 스트라이크", per: 0.1192 },
+            { name: "블리츠 러시", per: 0.2272 },
+            { name: "어스 슬래쉬", per: 0.056 },
+            { name: "터닝 슬래쉬", per: 0.049 },
+        ],
+    },
+    {
         class: "버스트",
         skill: [
             { name: "버스트 스킬", per: 0.576 },

@@ -1719,6 +1719,8 @@ export async function getCharacterProfile(data) {
             specialClass = "크블 포식";
         } else if (classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)) {
             specialClass = "6M 피메";
+        } else if (classCheck("잔재") && skillCheck(gemSkillArry, "데스 센텐스", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg) && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg)) {
+            specialClass = "슈차 7멸 잔재";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
             specialClass = "슈차 터닝 잔재";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {

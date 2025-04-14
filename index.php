@@ -162,7 +162,7 @@
         </div>
     </div>
 
-
+    <!-- <script src="/asset/custom-module/lopec-ocr.js"></script> -->
     <script>
         document.write('<script type="module" src="' + baseUrl + '/js/layout.js?' + Math.floor((new Date).getTime() / interValTime) + '"><\/script>');
         document.write('<script type="module" src="' + baseUrl + '/js/index.js?' + Math.floor((new Date).getTime() / interValTime) + '"><\/script>');
