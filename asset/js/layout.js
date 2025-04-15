@@ -1210,6 +1210,12 @@ async function lopecClickSearch() {
             let icon = armoryData.icon;
             let normalValue = armoryData.name.match(/\+(\d+)/)[0];
             let advancedValue = armoryData.advancedLevel;
+            let backgroundClassName = "none";
+            if (armoryData.grade === "고대") {
+                backgroundClassName = "ultra-background";
+            } else if (armoryData.grade === "유물") {
+                backgroundClassName = "rare-background";
+            }
             if (isNaN(Number(advancedValue))) {
                 advancedValue = "0";
             }
@@ -1218,6 +1224,7 @@ async function lopecClickSearch() {
             let upgradeElement = element.querySelector(".normale-upgrade");
             let advancedUpgradeElement = element.querySelector(".advanced-upgrade");
             imgElement.src = armoryData.icon;
+            imgElement.classList.add(backgroundClassName);
             upgradeElement.textContent = `${normalValue}`;
             advancedUpgradeElement.textContent = `X${advancedValue}`;
 
@@ -1233,24 +1240,35 @@ async function lopecClickSearch() {
             let ringCount = 0;
 
             extractValue.htmlObj.accessoryInfo.forEach(item => {
+                let backgroundClassName = "none";
+                if (item.grade === "고대") {
+                    backgroundClassName = "ultra-background"
+                } else if (item.grade === "유물") {
+                    backgroundClassName = "rare-background"
+                }
                 if (item.type === "목걸이") {
+                    necklaceElement.querySelector("img").classList.add(backgroundClassName);
                     necklaceElement.querySelector("img").src = item.icon;
                     necklaceElement.querySelector(".accessory").innerHTML = optionElementsCreate();
                 } else if (item.type === "귀걸이") {
                     if (earRingCount === 0) {
+                        earRingElement1.querySelector("img").classList.add(backgroundClassName);
                         earRingElement1.querySelector("img").src = item.icon;
                         earRingElement1.querySelector(".accessory").innerHTML = optionElementsCreate();
                         earRingCount++;
                     } else {
+                        earRingElement2.querySelector("img").classList.add(backgroundClassName);
                         earRingElement2.querySelector("img").src = item.icon;
                         earRingElement2.querySelector(".accessory").innerHTML = optionElementsCreate();
                     }
                 } else if (item.type === "반지") {
                     if (ringCount === 0) {
+                        ringElement1.querySelector("img").classList.add(backgroundClassName);
                         ringElement1.querySelector("img").src = item.icon;
                         ringElement1.querySelector(".accessory").innerHTML = optionElementsCreate();
                         ringCount++;
                     } else {
+                        ringElement2.querySelector("img").classList.add(backgroundClassName);
                         ringElement2.querySelector("img").src = item.icon;
                         ringElement2.querySelector(".accessory").innerHTML = optionElementsCreate();
                     }
@@ -1280,8 +1298,17 @@ async function lopecClickSearch() {
 
             // 팔찌 설정
             let bangleElement = accessoryElements[5];
+            if (extractValue.htmlObj.bangleInfo.grade === "고대") {
+                bangleElement.querySelector("img").classList.add("ultra-background");
+            } else if (extractValue.htmlObj.bangleInfo.grade === "유물") {
+                bangleElement.querySelector("img").classList.add("rare-background");
+            }
+            if (extractValue.etcObj.supportCheck !== "서폿") {
+                bangleElement.querySelector(".option").textContent = calcValue.dealerBangleResult + "%";
+            } else if (extractValue.etcObj.supportCheck === "서폿") {
+                bangleElement.querySelector(".option").textContent = calcValue.supportBangleResult.toFixed(2) + "%";
+            }
             bangleElement.querySelector("img").src = extractValue.htmlObj.bangleInfo.icon;
-            bangleElement.querySelector(".option").textContent = calcValue.dealerBangleResult + "%";
         };
         accessoryElementSet();
 
@@ -1351,6 +1378,7 @@ async function lopecClickSearch() {
     }
 
 
+
     /* **********************************************************************************************************************
     * function name		:	
     * description		: 	ocr모듈 호출 <== 베타 후 제거 예정
@@ -1386,6 +1414,20 @@ async function lopecClickSearch() {
 
 }
 lopecClickSearch()
+
+/* **********************************************************************************************************************
+* function name		:	
+* description		: 	
+*********************************************************************************************************************** */
+async function autoAppear() {
+    let element = document.querySelector(".auto.btn");
+    document.body.addEventListener("keypress", (key) => {
+        if (key.code === "KeyQ") {
+            element.classList.add("on");
+        }
+    })
+}
+autoAppear()
 
 /* **********************************************************************************************************************
  * function name		:	createTooltip()
