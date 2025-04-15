@@ -1118,28 +1118,6 @@ async function lopecClickSearch() {
         inputElement.value = "";
         searchElement.textContent = "검색";
 
-        // 3. DOM에서 .not-sort 요소들의 순서를 뒤집는 함수
-        function resultItemsReverseDOM() {
-            // a. 부모 요소 가져오기
-            const parent = resultArea; // 이미 resultArea 변수가 있음
-
-            // b. 뒤집을 대상 요소들(.not-sort) 가져오기 (NodeList)
-            const itemsToReverse = parent.querySelectorAll(".result-item.not-sort");
-
-            // c. NodeList를 실제 배열로 변환하고 순서 뒤집기
-            const reversedItemsArray = Array.from(itemsToReverse).reverse();
-
-            // d. 기존의 .not-sort 요소들을 DOM에서 제거
-            itemsToReverse.forEach(item => item.remove());
-
-            // e. 뒤집힌 배열 순서대로 요소들을 다시 부모 요소에 추가 (appendChild는 맨 뒤에 추가함)
-            reversedItemsArray.forEach(item => {
-                parent.appendChild(item);
-            });
-        }
-        // 4. 순서 뒤집는 함수 호출
-        resultItemsReverseDOM();
-
     }
     let resultArea = lopecClickElement.querySelector('.result-area');
     resultArea.addEventListener("click", async (e) => {
