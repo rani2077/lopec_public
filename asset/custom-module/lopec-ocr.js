@@ -19,8 +19,11 @@ const LopecOCR = (function () {
     // 설정 및 상수 정의
     // ===========================================================================================
 
+    // 마지막 처리된 크롭 이미지 해시 저장 변수
+    let lastProcessedCroppedImageHash = null;
+
     // OCR API 엔드포인트
-    const API_URL = 'https://api.upstage.ai/v1/document-ai/ocr';
+    const API_URL = 'https://api.upstage.ai/v1/document-digitization';
 
     // 프록시 서버 API 키 엔드포인트
     const API_KEY_PROXY_URL = 'https://restless-art-6037.tassardar6-c0f.workers.dev'; // 프록시 서버의 API 키 제공 엔드포인트 주소
@@ -50,6 +53,28 @@ const LopecOCR = (function () {
         { path: '/asset/templates/Img_65.bmp', name: '공통_기준템플릿', threshold: 0.7 }
         // 첫 번째 템플릿은 유효성 검사 및 크롭 기준점으로 사용
     ];
+
+    // ===========================================================================================
+    // 유틸리티 함수 (해시 계산 등)
+    // ===========================================================================================
+    /**
+     * ArrayBuffer 데이터로부터 SHA-256 해시 값을 계산하는 비동기 함수
+     * @param {ArrayBuffer} buffer - 해시할 데이터 버퍼
+     * @returns {Promise<string>} 계산된 해시의 16진수 문자열
+     */
+    async function calculateImageHash(buffer) {
+        try {
+            const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+            // ArrayBuffer를 16진수 문자열로 변환
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        } catch (error) {
+            console.error("이미지 해시 계산 중 오류:", error);
+            // 해시 계산 실패 시 고유성을 보장하기 위해 현재 시간을 사용 (중복 방지 목적)
+            return `hash_error_${Date.now()}`;
+        }
+    }
 
     // ===========================================================================================
     // 프록시 서버에서 API 키 가져오기
@@ -1267,6 +1292,31 @@ const LopecOCR = (function () {
             const croppedBlob = await imageDataToBlob(croppedImageData);
             endTimer('이미지 변환 (ImageData → Blob)');
 
+            // 새로 추가: 크롭된 이미지 해시 계산
+            startTimer('이미지 해시 계산');
+            const currentCroppedImageHash = await calculateImageHash(croppedImageData.data.buffer);
+            endTimer('이미지 해시 계산');
+            addDebug(`계산된 이미지 해시: ${currentCroppedImageHash.substring(0, 10)}...`);
+
+            // 새로 추가: 해시 비교 및 중복 검사
+            if (currentCroppedImageHash === lastProcessedCroppedImageHash) {
+                // 해시값이 같으면 중복 이미지!
+                updateStatus('중복된 이미지 요청입니다. 이전 결과를 사용하세요.');
+                addDebug('이전 이미지와 동일한 해시값 감지. OCR API 호출 건너뜁니다.');
+
+                // 중복 시 처리: 에러를 발생시켜 호출 측에서 알 수 있도록 함
+                throw new Error('DUPLICATE_IMAGE'); // 이 에러를 메인 JS에서 catch하여 처리 필요
+            } else {
+                 // 해시값이 다르면 새로운 이미지!
+                 addDebug('새로운 이미지 해시값 확인. OCR API 호출 진행.');
+
+                 // 중요: OCR API를 호출하기 직전에 마지막 해시값을 현재 값으로 업데이트
+                 lastProcessedCroppedImageHash = currentCroppedImageHash;
+
+                 // 기존 OCR API 호출 로직 계속 진행
+                 // updateStatus('OCR API 호출 중...'); // 이전에 상태 업데이트 위치 조정 제안했지만, 여기서는 유지
+            }
+
             // 6. OCR API 호출
             // Base64 변환 시간 측정
             startTimer('Base64 변환');
@@ -1277,7 +1327,8 @@ const LopecOCR = (function () {
             const formData = new FormData();
             formData.append('document', croppedBlob, 'image.png');
             formData.append('model', 'ocr');
-            formData.append('options', JSON.stringify({ language: "ko" }));
+            // 아래 라인을 주석 처리 또는 삭제
+            // formData.append('options', JSON.stringify({ language: "ko" })); 
             const requestOptions = {
                 method: 'POST',
                 headers: {

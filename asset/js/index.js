@@ -399,6 +399,14 @@ let noticeArry = [
 
     },
     {
+        name: `<em style="font-weight:600;font-size:15px;">25년 4월 3주차 중앙값 통계</em>`,
+        desc:
+            `4월 3주차 중앙값 통계입니다.
+            
+            <img src="/asset/image/median-20250415.png">`
+
+    },
+    {
         name: `<em style="font-weight:600;font-size:15px;">2025-04-12 업데이트 안내</em>`,
         desc:
             `● 점수가 간헐적으로 하락하는 이슈
