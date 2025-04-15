@@ -398,16 +398,16 @@ let noticeArry = [
             <img src="/asset/image/median-20250408.png">`
 
     },
+    //{
+    //    name: `<em style="font-weight:600;font-size:15px;">25년 4월 3주차 중앙값 통계</em>`,
+    //    desc:
+    //        `4월 3주차 중앙값 통계입니다.
+    //        
+    //        <img src="/asset/image/median-20250415.png">`
+//
+    //},
     {
-        name: `<em style="font-weight:600;font-size:15px;">25년 4월 3주차 중앙값 통계</em>`,
-        desc:
-            `4월 3주차 중앙값 통계입니다.
-            
-            <img src="/asset/image/median-20250415.png">`
-
-    },
-    {
-        name: `<em style="font-weight:600;font-size:15px;">2025-04-12 업데이트 안내</em>`,
+        name: `2025-04-12 업데이트 안내`,
         desc:
             `● 점수가 간헐적으로 하락하는 이슈
             &nbsp;&nbsp; - 해당 이슈는 항해 및 섬에 입장시 특성합이 낮아져 발생하는 이슈입니다.
@@ -417,6 +417,19 @@ let noticeArry = [
             &nbsp;&nbsp; 면 매우 감사하겠습니다.
             
             ● 일부 직업군 메인 화면과 시뮬레이터의 점수가 다른 오류 수정`
+
+    },
+    {
+        name: `<em style="font-weight:700;font-size:16px;">2025-04-15 라이브 방송 LOPEC-ON 안내</em>`,
+        desc:
+            `안녕하세요, 로펙 개발자 청염각입니다.
+            금일 오후 8시에 라이브 방송을 진행해볼 예정입니다.
+            그동안 많이 보내주셨던 질문들에 대해 상세히 설명드리는 시간도 갖고
+            로펙 신기능 소개도 예정되어 있습니다.
+            많관부!
+
+            <a href="https://chzzk.naver.com/addbdedc025f2cffeb2c4855c43a65e9" target="_blink" style="color:blue;text-decoration:underline;"> 방송 링크는 여기를 클릭!</a>
+            `
 
     },
 
