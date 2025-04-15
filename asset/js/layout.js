@@ -552,9 +552,9 @@ async function scLopecClickCreate() {
             </div>
             <div class="group-simple">
                 <div class="search-area">
-                    <input type="text no-recent" placeholder="/ 검색 . 자동검색">
+                    <input type="text no-recent" placeholder="캐릭터 검색">
                     <span class="search btn">검색</span>
-                    <span class="auto btn">딸깍</span>
+                    <span class="auto btn" style="opacity:0.2" onClick="alert('해당 기능은 현재 준비중입니다 빠른 시일내 준비할 수 있도록 노력하겠습니다.')">딸깍</span>
                 </div>
                 <div class="result-area scrollbar">
                     <div class="result-item sort">
@@ -1049,11 +1049,17 @@ async function lopecClickSearch() {
     let inputElement = lopecClickElement.querySelector(".group-simple input");
     lopecClickElement.addEventListener("keydown", async (key) => {
         // 한글 입력 이벤트 더블링 처리 <== 젠장 한글 또 너야
-        if (key.code === `Enter` && !key.isComposing) { simpleSearch(inputElement.value) }
+        if (key.code === `Enter` && !key.isComposing) {
+            await simpleSearch(inputElement.value);
+            await resultItemsReverse();
+        }
     })
 
     let searchElement = lopecClickElement.querySelector(".group-simple .search");
-    searchElement.addEventListener("click", () => { simpleSearch(inputElement.value) })
+    searchElement.addEventListener("click", async () => {
+        await simpleSearch(inputElement.value);
+        await resultItemsReverse();
+    })
     const groupUserDataSkeletonElement = lopecClickElement.querySelector(".group-user-data").innerHTML;
     let resultItem = `
         <div class="result-item sort">
@@ -1117,7 +1123,33 @@ async function lopecClickSearch() {
 
         inputElement.value = "";
         searchElement.textContent = "검색";
+    }
+    async function resultItemsReverse() {
+        // 1. 부모 컨테이너 요소 가져오기
+        let resultArea = document.querySelector(".sc-lopec-click .result-area");
+        if (!resultArea) {
+            console.error("부모 요소 '.sc-lopec-click .result-area'를 찾을 수 없습니다.");
+            return; // 컨테이너가 없으면 종료
+        }
 
+        // 2. 순서를 뒤집을 특정 자식 요소들 가져오기
+        //    querySelectorAll은 NodeList를 반환하며, 이는 실시간이지만 reverse() 메소드가 없음
+        let itemsToReverse = resultArea.querySelectorAll(".result-item.not-sort");
+        if (itemsToReverse.length === 0) {
+            // console.log("뒤집을 '.result-item.not-sort' 요소를 찾을 수 없습니다."); // 선택사항: 아이템이 없을 경우 로그 기록
+            return; // 뒤집을 항목 없음
+        }
+
+        // 3. NodeList를 배열로 변환하여 reverse() 메소드 사용 가능하게 함
+        let itemsArray = Array.from(itemsToReverse);
+        itemsArray.reverse(); // 배열 내 요소들의 순서를 뒤집음
+
+        // 4. 요소들을 새로운 (뒤집힌) 순서로 부모에 다시 추가
+        //    appendChild는 기존 요소를 부모의 자식 요소들 중 맨 끝으로 자동으로 이동시킴
+        //    뒤집힌 배열 순서대로 추가함으로써, 최종적으로 원하는 뒤집힌 순서가 됨
+        itemsArray.forEach(item => {
+            resultArea.appendChild(item);
+        });
     }
     let resultArea = lopecClickElement.querySelector('.result-area');
     resultArea.addEventListener("click", async (e) => {
@@ -1361,34 +1393,34 @@ async function lopecClickSearch() {
     * function name		:	
     * description		: 	ocr모듈 호출 <== 베타 후 제거 예정
     *********************************************************************************************************************** */
-    let btnElement = document.querySelector(".sc-lopec-click .auto.btn");
-    await LopecOCR.loadDefaultTemplates();
-    btnElement.addEventListener("click", async () => {
-        try {
-            // OCR 실행 (API 키 'free', 버전 'auto')
-            const nicknames = await LopecOCR.extractCharactersFromClipboard('free', 'auto', {
-                onStatusUpdate: (message) => {
-                    // statusElement.textContent = message; // 진행 상태 업데이트
-                },
-                onError: (error) => {
-                    // 사소한 오류는 여기서 처리 가능 (예: OCR API 자체 오류)
-                    // errorElement.textContent = `처리 중 오류: ${error.message}`;
-                    console.warn('OCR 처리 중 오류 발생:', error);
-                }
-            });
-            console.warn(nicknames)
-            if (nicknames.length > 0) {
-                nicknames.forEach(name => {
-                    simpleSearch(name)
-                })
-            }
-        } catch (error) {
-            // 치명적인 오류 처리 (예: 클립보드 접근 불가, 유효하지 않은 이미지 등)
-            // statusElement.textContent = 'OCR 실패';
-            // errorElement.textContent = `오류: ${error.message}`;
-            console.error('OCR 실행 중 심각한 오류 발생:', error);
-        }
-    })
+    // let btnElement = document.querySelector(".sc-lopec-click .auto.btn");
+    // await LopecOCR.loadDefaultTemplates();
+    // btnElement.addEventListener("click", async () => {
+    //     try {
+    //         // OCR 실행 (API 키 'free', 버전 'auto')
+    //         const nicknames = await LopecOCR.extractCharactersFromClipboard('free', 'auto', {
+    //             onStatusUpdate: (message) => {
+    //                 // statusElement.textContent = message; // 진행 상태 업데이트
+    //             },
+    //             onError: (error) => {
+    //                 // 사소한 오류는 여기서 처리 가능 (예: OCR API 자체 오류)
+    //                 // errorElement.textContent = `처리 중 오류: ${error.message}`;
+    //                 console.warn('OCR 처리 중 오류 발생:', error);
+    //             }
+    //         });
+    //         console.warn(nicknames)
+    //         if (nicknames.length > 0) {
+    //             nicknames.forEach(name => {
+    //                 simpleSearch(name)
+    //             })
+    //         }
+    //     } catch (error) {
+    //         // 치명적인 오류 처리 (예: 클립보드 접근 불가, 유효하지 않은 이미지 등)
+    //         // statusElement.textContent = 'OCR 실패';
+    //         // errorElement.textContent = `오류: ${error.message}`;
+    //         console.error('OCR 실행 중 심각한 오류 발생:', error);
+    //     }
+    // })
 
 }
 lopecClickSearch()

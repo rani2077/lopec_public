@@ -74,7 +74,7 @@ async function mainSearchFunction() {
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
     // console.log("data", data);
     console.log("오리진obj", extractValue);
-    //console.log("specPoint", specPoint);
+    // console.log("specPoint", specPoint);
     // console.log("specPoint", specPoint.completeSpecPoint);
 
 

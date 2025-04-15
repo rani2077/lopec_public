@@ -20,7 +20,7 @@ export async function specPointCalc(inputObj) {
         supportCarePowerResult: 0, // 케어력
         supportBangleResult: 0, // 팔찌효율
 
-        
+
         supportSpecPoint: 0,     // 서폿 최종 스펙포인트
         dealerlastFinalValue: 0, // 딜러 최종 스펙포인트
         completeSpecPoint: 0, // 통합된 최종 스펙포인트
@@ -72,10 +72,10 @@ export async function specPointCalc(inputObj) {
     let bangleFinalDamageResult = (inputObj.engObj.finalDamagePer * inputObj.accObj.finalDamagePer * inputObj.hyperObj.finalDamagePer * bangleAddDamageResult * inputObj.bangleObj.finalDamagePer * inputObj.elixirObj.finalDamagePer) // 적에게 주는 피해
     // console.log("악세",inputObj.accObj.finalDamagePer)
 
-    let minusAccStat =  (inputObj.etcObj.armorStatus + inputObj.etcObj.expeditionStats + inputObj.hyperObj.str + inputObj.elixirObj.str + inputObj.elixirObj.dex + inputObj.elixirObj.int + inputObj.bangleObj.str + inputObj.bangleObj.dex + inputObj.bangleObj.int - 67930 ) * inputObj.etcObj.avatarStats
+    let minusAccStat = (inputObj.etcObj.armorStatus + inputObj.etcObj.expeditionStats + inputObj.hyperObj.str + inputObj.elixirObj.str + inputObj.elixirObj.dex + inputObj.elixirObj.int + inputObj.bangleObj.str + inputObj.bangleObj.dex + inputObj.bangleObj.int - 67930) * inputObj.etcObj.avatarStats
     let minusAccWeaponAtk = ((inputObj.defaultObj.weaponAtk + inputObj.hyperObj.weaponAtkPlus + inputObj.elixirObj.weaponAtkPlus + inputObj.bangleObj.weaponAtkPlus) * (inputObj.arkObj.weaponAtkPer))
     let minusAccAtk = ((Math.sqrt((minusAccStat * minusAccWeaponAtk) / 6)) + (inputObj.elixirObj.atkPlus + inputObj.hyperObj.atkPlus)) * (((inputObj.elixirObj.atkPer) === 0 ? 1 : (inputObj.elixirObj.atkPer)) / 100 + 1) * attackBonus
-    let minusAccFinal = (inputObj.engObj.finalDamagePer * inputObj.hyperObj.finalDamagePer * ((inputObj.defaultObj.addDamagePer / 100) + 1 ) * inputObj.bangleObj.finalDamagePer * inputObj.elixirObj.finalDamagePer)
+    let minusAccFinal = (inputObj.engObj.finalDamagePer * inputObj.hyperObj.finalDamagePer * ((inputObj.defaultObj.addDamagePer / 100) + 1) * inputObj.bangleObj.finalDamagePer * inputObj.elixirObj.finalDamagePer)
 
     let minusHyperStat = (inputObj.etcObj.armorStatus + inputObj.etcObj.expeditionStats + inputObj.elixirObj.str + inputObj.elixirObj.dex + inputObj.elixirObj.int + inputObj.bangleObj.str + inputObj.bangleObj.dex + inputObj.bangleObj.int) * inputObj.etcObj.avatarStats
     let minusHyperWeaponAtk = ((inputObj.defaultObj.weaponAtk + inputObj.elixirObj.weaponAtkPlus + inputObj.accObj.weaponAtkPlus + inputObj.bangleObj.weaponAtkPlus) * (inputObj.arkObj.weaponAtkPer + (inputObj.accObj.weaponAtkPer / 100)))
@@ -133,12 +133,12 @@ export async function specPointCalc(inputObj) {
     let statDamageBuff = ((inputObj.defaultObj.special + inputObj.defaultObj.haste) * 0.015) / 100 + 1 // 특화 신속
     let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
-    
+
     //((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.crit + inputObj.defaultObj.haste + inputObj.defaultObj.special) / 100 * 2) / 100 + 1 + 0.3))
     let beforeBuff = (111000) * 1.45 * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174
     //let afterBuff = ((((150000 + finalAtkBuff) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.4 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035 * (inputObj.bangleObj.atkBuffPlus / 100 + 1)
-    let afterBuff = (111000 + finalAtkBuff) * (1.45+evolutionBuff) * (4 * (inputObj.bangleObj.atkBuffPlus)) * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035
-    let afterFullBuff = (111000 + finalAtkBuff) * (1.45+evolutionBuff) * (4 * (inputObj.bangleObj.atkBuffPlus)) * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuff * hyperBuff
+    let afterBuff = (111000 + finalAtkBuff) * (1.45 + evolutionBuff) * (4 * (inputObj.bangleObj.atkBuffPlus)) * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035
+    let afterFullBuff = (111000 + finalAtkBuff) * (1.45 + evolutionBuff) * (4 * (inputObj.bangleObj.atkBuffPlus)) * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuff * hyperBuff
 
     let allTimeBuffPower = ((afterBuff - beforeBuff) / beforeBuff) * 100
     let fullBuffPower = ((afterFullBuff - beforeBuff) / beforeBuff) * 100
@@ -168,8 +168,8 @@ export async function specPointCalc(inputObj) {
     //팔찌 효율 계산
     //let afterBuffMinusBangle = ((((150000 + finalAtkBuffMinusBangle) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035
     //let afterFullBuffMinusBangle = ((((150000 + finalAtkBuffMinusBangle) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuffMinusBangle * hyperBuffMinusBangle
-    let afterBuffMinusBangle = (111000 + finalAtkBuffMinusBangle) * (1.45+evolutionBuff) * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035
-    let afterFullBuffMinusBangle = (111000 + finalAtkBuffMinusBangle) * (1.45+evolutionBuff) * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuffMinusBangle * hyperBuffMinusBangle
+    let afterBuffMinusBangle = (111000 + finalAtkBuffMinusBangle) * (1.45 + evolutionBuff) * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035
+    let afterFullBuffMinusBangle = (111000 + finalAtkBuffMinusBangle) * (1.45 + evolutionBuff) * 4 * 1.42 * 1.15 * 1.36 * 1.25 * 1.8174 * (finalStigmaPer / 100 + 1) * 1.035 * finalDamageBuffMinusBangle * hyperBuffMinusBangle
 
     let allTimeBuffPowerMinusBangle = ((afterBuffMinusBangle - beforeBuff) / beforeBuff) * 100
     let fullBuffPowerMinusBangle = ((afterFullBuffMinusBangle - beforeBuff) / beforeBuff) * 100
@@ -180,6 +180,88 @@ export async function specPointCalc(inputObj) {
 
     let carePower = (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1)
     let finalCarePower = (inputObj.defaultObj.maxHp * 0.3) * (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1)
+
+
+    /* **********************************************************************************************************************
+     * name		              :	  스펙포인트 값 저장
+     * version                :   2.0
+     * description            :   db저장 및 외부 반환을 위한 값 저장
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+    function tierName() {
+        let gradeImageSrc = "";
+        let nextTierValue = 0;
+        let nowTierValue = 0;
+        let tierIndex = 0;
+        let tierNameArray = ['브론즈', '실버', '골드', '다이아몬드', '마스터', '에스더'];
+        let tierNameEngArray = ['bronze', 'silver', 'gold', 'diamond', 'master', 'esther'];
+        if (inputObj.etcObj.supportCheck !== "서폿") {
+            if ((lastFinalValue / 2020) >= 3000) {
+                gradeImageSrc = `${baseUrl}/image/esther.png`;
+                nextTierValue = 0;
+                nowTierValue = 0;
+                tierIndex = 5;
+            } else if ((lastFinalValue / 2020) >= 2400) {
+                gradeImageSrc = `${baseUrl}/image/master.png`;
+                nextTierValue = 3000;
+                nowTierValue = 2400;
+                tierIndex = 4;
+            } else if ((lastFinalValue / 2020) >= 1900) {
+                gradeImageSrc = `${baseUrl}/image/diamond.png`;
+                nextTierValue = 2400;
+                nowTierValue = 1900;
+                tierIndex = 3;
+            } else if ((lastFinalValue / 2020) >= 1600) {
+                gradeImageSrc = `${baseUrl}/image/gold.png`;
+                nextTierValue = 1900;
+                nowTierValue = 1600;
+                tierIndex = 2;
+            } else if ((lastFinalValue / 2020) >= 1400) {
+                gradeImageSrc = `${baseUrl}/image/silver.png`;
+                nextTierValue = 1600;
+                nowTierValue = 1400;
+                tierIndex = 1;
+            } else if ((lastFinalValue / 2020) < 1400) {
+                gradeImageSrc = `${baseUrl}/image/bronze.png`;
+                nextTierValue = 1400;
+                nowTierValue = 1;
+                tierIndex = 0;
+            }
+        } else {
+            if (supportSpecPoint / 10000 >= 1300) {
+                gradeImageSrc = `${baseUrl}/image/esther.png`;
+                nextTierValue = 0;
+                nowTierValue = 0;
+                tierIndex = 5;
+            } else if (supportSpecPoint / 10000 >= 1000) {
+                gradeImageSrc = `${baseUrl}/image/master.png`;
+                nextTierValue = 1300;
+                nowTierValue = 1000;
+                tierIndex = 4;
+            } else if (supportSpecPoint / 10000 >= 800) {
+                gradeImageSrc = `${baseUrl}/image/diamond.png`;
+                nextTierValue = 1000;
+                nowTierValue = 800;
+                tierIndex = 3;
+            } else if (supportSpecPoint / 10000 >= 700) {
+                gradeImageSrc = `${baseUrl}/image/gold.png`;
+                nextTierValue = 800;
+                nowTierValue = 700;
+                tierIndex = 2;
+            } else if (supportSpecPoint / 10000 >= 400) {
+                gradeImageSrc = `${baseUrl}/image/silver.png`;
+                nextTierValue = 700;
+                nowTierValue = 400;
+                tierIndex = 1;
+            } else if (supportSpecPoint / 10000 < 400) {
+                gradeImageSrc = `${baseUrl}/image/bronze.png`;
+                nextTierValue = 400;
+                nowTierValue = 1;
+                tierIndex = 0;
+            }
+        }
+        return tierNameEngArray[tierIndex];
+    }
 
     /* **********************************************************************************************************************
      * name		              :	  스펙포인트 값 저장
@@ -217,7 +299,8 @@ export async function specPointCalc(inputObj) {
         highTierSpecPointObj.completeSpecPoint = supportSpecPoint / 10000
     }
     highTierSpecPointObj.supportSpecPoint = isNaN(highTierSpecPointObj.supportSpecPoint) ? 0 : highTierSpecPointObj.supportSpecPoint;
-
+    
+    highTierSpecPointObj.tierName = tierName();
 
     return highTierSpecPointObj
 }

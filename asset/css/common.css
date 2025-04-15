@@ -1161,16 +1161,6 @@ i.shield-halved-solid {
     border: 1px solid #037dff;
 }
 
-.sc-lopec-click .group-simple .search-area .auto.btn {
-    /* <== 이벤트 준비 css */
-    opacity: 0;
-    transition: 10000ms;
-}
-
-.sc-lopec-click .group-simple .search-area .auto.btn.on {
-    opacity: 1;
-
-}
 
 .sc-lopec-click .group-simple .search-area .btn {
     border: 1px solid #037dff;
