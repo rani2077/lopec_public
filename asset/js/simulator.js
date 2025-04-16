@@ -3673,6 +3673,8 @@ async function calculateGemData(data) {
         specialClass = "5겁 고기";
     } else if (classCheck("세맥") && !skillCheck(gemSkillArry, "환영격", dmg)) {
         specialClass = "5멸 세맥";
+    } else if (classCheck("역천") && !skillCheck(gemSkillArry, "벽력장", dmg)) {
+        specialClass = "5겁 역천";
     } else if (classCheck("핸건") && skillCheck(gemSkillArry, "데스파이어", dmg)) {
         specialClass = "7멸 핸건";
     } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)) {

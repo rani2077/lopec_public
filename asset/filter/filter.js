@@ -2385,6 +2385,18 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "5겁 역천",
+        skill: [
+            { name: "난화격", per: 0.1564 },
+            { name: "여래신장", per: 0.1164 },
+            { name: "기공장", per: 0.1094 },
+            { name: "섬열파", per: 0.1094 },
+            { name: "풍뢰일광포", per: 0.1134 },
+            { name: "환영격", per: 0.0864 },
+            { name: "보정치", per: -0.1094 },
+        ],
+    },
+    {
         class: "절정",
         skill: [
             { name: "적룡포", per: 0.19 },
