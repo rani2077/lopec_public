@@ -2404,7 +2404,10 @@ export let classGemFilter = [
             { name: "선풍참혼", per: 0.096 },
             { name: "청룡출수", per: 0.08 },
             { name: "열공참", per: 0.045 },
+            { name: "회선창", per: 0.045 },
+            { name: "일섬각", per: 0.045 },
             { name: "맹룡열파", per: 0.07 },
+            { name: "보정치", per: -0.09 },
             
         ],
     },
@@ -2494,6 +2497,15 @@ export let classGemFilter = [
             { name: "비상격", per: 0.05 },
             { name: "보정치", per: -0.05 },
             
+        ],
+    },
+    {
+        class: "4겁 수라",
+        skill: [
+            { name: "수라결 기본 공격", per: 0.483 },
+            { name: "파천섬광", per: 0.132 },
+            { name: "진 파공권", per: 0.064 },
+            { name: "비상격", per: 0.06 },
         ],
     },
     {
