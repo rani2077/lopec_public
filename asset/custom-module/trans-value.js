@@ -2050,15 +2050,15 @@ export async function getCharacterProfile(data) {
 
         // 체력 계산 관련 추가 로그
         //console.log("==== 체력 계산 기본 정보 ====");
-        console.log("최대 체력(maxHealth):", maxHealth);
-        console.log("기본 체력(baseHealth):", baseHealth, "내역:", {
-            defaultHp: defaultObj.statHp,
-            elixirHp: elixirObj.statHp,
-            accHp: accObj.statHp,
-            hyperHp: hyperObj.statHp,
-            bangleHp: bangleObj.statHp
-        });
-        console.log("생명 활성력(vitalityRate):", vitalityRate);
+        //console.log("최대 체력(maxHealth):", maxHealth);
+        //console.log("기본 체력(baseHealth):", baseHealth, "내역:", {
+        //    defaultHp: defaultObj.statHp,
+        //    elixirHp: elixirObj.statHp,
+        //    accHp: accObj.statHp,
+        //    hyperHp: hyperObj.statHp,
+        //    bangleHp: bangleObj.statHp
+        //});
+        //console.log("생명 활성력(vitalityRate):", vitalityRate);
         //console.log("직업 체력 계수(healthValue):", healthValue);
 
         // --- 상수 정의 ---
@@ -2082,7 +2082,7 @@ export async function getCharacterProfile(data) {
                     const percentFactor = (1 + petPercent + rangerPercent + currentCardPercent);
                     const flatHpBonus = 0;
 
-                    const estimatedKarma = ( (maxHealth / (percentFactor * vitalityRate)) - baseHealth - flatHpBonus ) / KARMA_HP_PER_LEVEL;
+                    const estimatedKarma = ((maxHealth / (percentFactor * vitalityRate)) - baseHealth - flatHpBonus) / KARMA_HP_PER_LEVEL;
                     const roundedValue = Math.round(estimatedKarma);
                     const proximity = Math.abs(estimatedKarma - roundedValue);
                     const isPossible = !isNaN(estimatedKarma) && estimatedKarma >= -0.5 && roundedValue <= 30;
@@ -2129,7 +2129,7 @@ export async function getCharacterProfile(data) {
             if (lowProximityMatches.length > 0) currentWorkingResults = lowProximityMatches;
 
             if (currentWorkingResults.length === 0) {
-                 console.error("Karma Calc Error: No candidates after filtering");
+                console.error("Karma Calc Error: No candidates after filtering");
                 return { bestResult: { formulaDesc: "오류: 유효 후보 없음", karmaLevel: 0, exactValue: NaN, proximity: Infinity }, allResults: [] };
             }
 
@@ -2192,8 +2192,8 @@ export async function getCharacterProfile(data) {
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
         // 결과 로깅 (필요시 주석 해제)
-        console.log("카르마 추정 결과:", result.bestResult);
-        console.log("모든 가능성:", result.allResults);
+        //console.log("카르마 추정 결과:", result.bestResult);
+        //console.log("모든 가능성:", result.allResults);
 
         etcObj.evolutionkarmaRank = 0; // 기본값 설정
         etcObj.evolutionkarmaPoint = result.bestResult.karmaLevel;
@@ -2288,7 +2288,8 @@ export async function getCharacterProfile(data) {
                 let betweenText = accessoryObj.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(0, -1)) || [];
                 let gradeMatch = betweenText[2].match(/(고대|유물)/g);
                 let grade = gradeMatch ? gradeMatch[0] : "없음";
-
+                let strStats = betweenText.find(item => /힘 \+(\d+)/.test(item));
+                strStats = Number(strStats.match(/힘 \+(\d+)/)[1]);
                 let tierMatch = betweenText[6].match(/\d+/);
                 let tier = tierMatch ? tierMatch[0] : null;
                 let accessoryTooltip = accessoryObj.Tooltip.replace(/<[^>]*>/g, '')
@@ -2312,6 +2313,7 @@ export async function getCharacterProfile(data) {
                 obj.type = accessoryObj.Type;
                 obj.name = accessoryObj.Name;
                 obj.icon = accessoryObj.Icon;
+                obj.stats = strStats;
                 return obj;
             } else {
                 return null;
@@ -2320,6 +2322,10 @@ export async function getCharacterProfile(data) {
         return result;
     }
     htmlObj.accessoryInfo = accessoryInfoExtract();
+
+    etcObj.sumStats = htmlObj.accessoryInfo.reduce((acc, item) => {
+        return acc + (item.stats || 0);
+    }, 0);
 
     /* **********************************************************************************************************************
      * name		              :	  stoneInfoExtract
@@ -2389,8 +2395,7 @@ export async function getCharacterProfile(data) {
                         // console.log(filter.fullName)
                         replaceText = replaceText.replace(filter.fullName, "")
                         return true;
-                    }
-
+                    };
                 });
                 let specialStats = betweenText.filter(text => /(치명|특화|신속)\s*\+(\d+)/g.test(text.trim()));
                 let normalStats = betweenText.filter(text => /(힘|민첩|지능|체력)\s*\+(\d+)/g.test(text.trim()));
@@ -2415,7 +2420,7 @@ export async function getCharacterProfile(data) {
      * name		                   :   DB READ
      * version                     :   2.0
      * description                 :   DB 조회용 코드
-     * USE_TN                      :   사용
+     * USE_TN                      :   layout.js로 이전됨
      * getCombinedCharacterData    :   단일 요청으로 캐릭터 종합 데이터 조회
      *********************************************************************************************************************** */
     // getCombinedCharacterData(

@@ -4,6 +4,9 @@
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 
+if (window.location.pathname !== "/") {
+    // location.href = "/"
+}
 /* **********************************************************************************************************************
  * function name		:	importModuleManager()
  * description			: 	사용하는 모든 외부 module파일 import
@@ -15,14 +18,14 @@ async function importModuleManager() {
         import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
         import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
 
-        import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+        //import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
     ])
     let moduleObj = {
         fetchApi: modules[0],
         transValue: modules[1],
         calcValue: modules[2],
 
-        ocrModule: modules[2],
+        //ocrModule: modules[2],
     }
 
     return moduleObj
@@ -485,55 +488,55 @@ if (mobileCheck) {
 }
 
 /* **********************************************************************************************************************
-* variable name		:	simpleLogSave()
+* variable name		:	simpleLogSave() <== 삭제예정
 * description       : 	단순 로그 저장함수
-* useDevice         : 	모두 사용
+* useDevice         : 	서버이전하여 사용하지 않음
 *********************************************************************************************************************** */
 
-async function simpleLogSave() {
-    await import('https://code.jquery.com/jquery-3.7.1.min.js');
-    $(document).ready(function () {
-        insertLopecLog();
-    });
+// async function simpleLogSave() {
+//     await import('https://code.jquery.com/jquery-3.7.1.min.js');
+//     $(document).ready(function () {
+//         insertLopecLog();
+//     });
 
-    var insertLopecLog = function () {
-        var atMode = "insertlog";
-        var llogUrl = document.URL;
-        var saveDatas = {
-            atMode: atMode,
-            llogUrl: llogUrl
-        }
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url: "/applications/process/lopecLog/",
-            data: saveDatas,
-            success: function (msg) {
-                // console.log("msg : " + msg);
-                // console.log("msg.result : " + msg.result);
-                if (msg.result == "S") {
-                    // console.log("log insert result : LOPEC_LOG 저장 성공");
-                } else if (msg.result == "F") {
-                    // console.log("log insert result : LOPEC_LOG 저장 실패");
-                } else if (msg.result == "E") {
-                    // console.log("log insert result : LOPEC_LOG 저장 Exception");
-                }
-            },
-            error: function (request, status, error) {
-                // console.log("log insert result : LOPEC_LOG 저장 Error");
-                // console.log("request.status : " + request.status);
-                // console.log("request.responseText : " + request.responseText);
-                // console.log("request.error : " + request.error);
-            }
-        });
-    }
+//     var insertLopecLog = function () {
+//         var atMode = "insertlog";
+//         var llogUrl = document.URL;
+//         var saveDatas = {
+//             atMode: atMode,
+//             llogUrl: llogUrl
+//         }
+//         $.ajax({
+//             dataType: "json",
+//             type: "POST",
+//             url: "/applications/process/lopecLog/",
+//             data: saveDatas,
+//             success: function (msg) {
+//                 // console.log("msg : " + msg);
+//                 // console.log("msg.result : " + msg.result);
+//                 if (msg.result == "S") {
+//                     // console.log("log insert result : LOPEC_LOG 저장 성공");
+//                 } else if (msg.result == "F") {
+//                     // console.log("log insert result : LOPEC_LOG 저장 실패");
+//                 } else if (msg.result == "E") {
+//                     // console.log("log insert result : LOPEC_LOG 저장 Exception");
+//                 }
+//             },
+//             error: function (request, status, error) {
+//                 // console.log("log insert result : LOPEC_LOG 저장 Error");
+//                 // console.log("request.status : " + request.status);
+//                 // console.log("request.responseText : " + request.responseText);
+//                 // console.log("request.error : " + request.error);
+//             }
+//         });
+//     }
 
-}
-if (/lopec.kr/.test(window.location.host)) {
-    simpleLogSave()
-} else {
-    await import('https://code.jquery.com/jquery-3.7.1.min.js');
-}
+// }
+// if (/lopec.kr/.test(window.location.host)) {
+//     simpleLogSave()
+// } else {
+// }
+await import('https://code.jquery.com/jquery-3.7.1.min.js');
 
 /* **********************************************************************************************************************
 * variable name		:	scLopecClickCreate

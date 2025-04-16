@@ -44,6 +44,8 @@
             baseUrl = "/asset"
         }
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/layout.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/common.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/reset.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/main.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
     </script>
     <?php

@@ -67,6 +67,7 @@ font {
 .progress {
     background: #888888;
 }
+
 .common-progressbar {
     background: #a80000
 }
@@ -859,3 +860,37 @@ i.shield-halved-solid {
     background-image: url("/asset/image/shield-halved-solid.svg");
 }
 
+/* **********************************************************************************************************************
+* description	    : 	후원자 전용 뱃지
+*********************************************************************************************************************** */
+
+i.badge {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 24px;
+    height: 24px;
+    margin: 0 2px;
+}
+
+i.lopec_badge_01 {
+    background-image: url("/asset/image/lopec_badge_01.png");
+}
+
+i.lopec_badge_03 {
+    background-image: url("/asset/image/lopec_badge_03.png");
+}
+
+i.lopec_badge_04 {
+    background-image: url("/asset/image/lopec_badge_04.png");
+}
+
+i.lopec_badge_05 {
+    background-image: url("/asset/image/lopec_badge_05.png");
+}
+
+i.lopec_badge_06 {
+    background-image: url("/asset/image/lopec_badge_06.png");
+}

@@ -21,6 +21,8 @@
             baseUrl = "/asset"
         }
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/layout.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/common.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/reset.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/main.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
     </script>
 
@@ -84,11 +86,15 @@
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="book-solid icon"></i>각인</span>
+                            <span class="text"><i class="circle-notch-solid icon"></i>악세</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
                             <span class="text"><i class="ring-solid icon"></i>팔찌</span>
+                            <span class="text">로딩중</span>
+                        </div>
+                        <div class="info-box">
+                            <span class="text"><i class="book-solid icon"></i>각인</span>
                             <span class="text">로딩중</span>
                         </div>
                     </div>

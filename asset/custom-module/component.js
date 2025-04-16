@@ -44,8 +44,9 @@ export async function scProfileSkeleton() {
 * function name		:	scProfile
 * description       : 	유저 프로필 정보
 *********************************************************************************************************************** */
-export async function scProfile(userData, extractValue, rankData) {
-    // export async function scProfile(imageSrc, jobName, serverName, level, name, totalLevel, jobRank, totalRank) {
+export async function scProfile(userData, extractValue, response) {
+    // let response = await dataBaseWrite(userData, extractValue, specPoint);
+    // console.log(response)
     let imageSrc = userData.ArmoryProfile.CharacterImage;
     let jobName = extractValue.etcObj.supportCheck + " " + userData.ArmoryProfile.CharacterClassName;
     let serverName = userData.ArmoryProfile.ServerName;
@@ -59,35 +60,36 @@ export async function scProfile(userData, extractValue, rankData) {
     let totalRankVariable = "수집중"
     let totalPercent = "";
     let jobPercent = "";
-    console.log(rankData)
-    if (rankData) {
-        if (rankData.data.characterRanking &&  rankData.data.classRanking) {
-            if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
-                totalRankVariable = "수집중";
-                jobRankVariable = "수집중";
-                // totalPercent = "0.00%";
-                // jobPercent = "0.00%";
-            } else {
-                totalRankVariable = rankData.data.characterRanking.RANKING_NUM + "위";
-                jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
-                totalPercent = rankData.data.percentile.PERCENTILE + "%";
-                jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2) + "%";
-            }
-            // if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
-            //     jobRankVariable = "수집중";
-            //     totalPercent = "0.00%";
-            //     jobPercent = "0.00%";
-            // } else if (rankData) {
-            //     jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
-            //     totalPercent = rankData.data.percentile.PERCENTILE+"%";
-            //     jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
-            // }
-        }
-    }
+    //console.log(rankData)
+    //if (rankData) {
+    //    if (rankData.data.characterRanking && rankData.data.classRanking) {
+    //        if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
+    //            totalRankVariable = "수집중";
+    //            jobRankVariable = "수집중";
+    //            // totalPercent = "0.00%";
+    //            // jobPercent = "0.00%";
+    //        } else {
+    //            totalRankVariable = rankData.data.characterRanking.RANKING_NUM + "위";
+    //            jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
+    //            totalPercent = rankData.data.percentile.PERCENTILE + "%";
+    //            jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2) + "%";
+    //        }
+    //        // if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
+    //        //     jobRankVariable = "수집중";
+    //        //     totalPercent = "0.00%";
+    //        //     jobPercent = "0.00%";
+    //        // } else if (rankData) {
+    //        //     jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
+    //        //     totalPercent = rankData.data.percentile.PERCENTILE+"%";
+    //        //     jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
+    //        // }
+    //    }
+    //}
     setTimeout(() => {
         userBookmarkSave(userName);
         // profileImagePosUserSetting(userName)
     }, 0)
+    // <i class="badge lopec_badge_01"></i>
     return `
     <section class="sc-profile">
         <div class="group-img">
@@ -95,7 +97,7 @@ export async function scProfile(userData, extractValue, rankData) {
         </div>
         <div class="group-profile">
             <div class="name-area">
-                <span class="name">LV.${characterLevel} ${userName} <i class="job">#${jobName}</i></span>
+                <span class="name">LV.${characterLevel} ${userName}<i class="job">#${jobName}</i></span>
                 <button class="favorite-button">
                     <div class="icon">
                         <div class="star"></div>
@@ -112,12 +114,54 @@ export async function scProfile(userData, extractValue, rankData) {
                     <span class="name">길드 : ${guild ? guild : "없음"}</span>
                 </div>
                 <div class="info-box">
-                <span class="name">전체랭킹 : ${totalRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${totalPercent}</em></span>
-                    <span class="name">직업랭킹 : ${jobRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${jobPercent}</em></span>
+                <span class="name">전체랭킹 : 점검중 </em></span>
+                    <span class="name">직업랭킹 : 점검중</span>
                 </div>
             </div>
         </div>
     </section>`;
+}
+
+
+//<span class="name">전체랭킹 : ${totalRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${totalPercent}</em></span>
+//<span class="name">직업랭킹 : ${jobRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${jobPercent}</em></span>
+
+
+/* **********************************************************************************************************************
+* function name		:	
+* description       : 	
+*********************************************************************************************************************** */
+export async function dataBaseWrite(data, extractValue, specPoint) {
+    let Module = await import("../js/character.js");
+    // console.log(Module);
+    // console.log(extractValue);
+    // console.log(extractValue.etcObj.supportCheck)
+    let totalStatus = 0;
+    if (extractValue.etcObj.supportCheck === "서폿") {
+        totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
+    } else {
+        totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
+    }
+    // await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam); <== 삭제예정
+    // console.log(totalStatus)
+    let result = await Module.insertLopecCharacters(
+        data.ArmoryProfile.CharacterName,                                               // 닉네임 
+        data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
+        extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
+        totalStatus,                                                                    // 프로필 이미지 
+        data.ArmoryProfile.ServerName,                                                  // 서버 
+        parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
+        data.ArmoryProfile.GuildName,                                                   // 길드 
+        data.ArmoryProfile.Title,                                                       // 칭호 
+        specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
+        specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
+        specPoint.supportAllTimeBuff,                                                   // 상시버프 
+        specPoint.supportFullBuff,                                                      // 풀버프 
+        null,                                                                           // 진화 카르마 랭크                  
+        "2.0"                                                                           // 현재 버전 
+    );
+    // console.log(result)
+    return result;
 }
 
 /* **********************************************************************************************************************

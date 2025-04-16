@@ -15,9 +15,9 @@ async function importModuleManager() {
         import(`../custom-module/trans-value.js?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
         import(`../custom-module/calculator.js?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
         import(`../custom-module/component.js?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 모듈
-        import(`../js/characterRead2.js?${Math.floor((new Date).getTime() / interValTime)}`),          // 유저정보 DB읽기 함수 
         import(`../js/search.js?${Math.floor((new Date).getTime() / interValTime)}`),                  // 닉네임을 검색한 사람의 로그
         import(`../js/character.js?${Math.floor((new Date).getTime() / interValTime)}`),               // 특정 유저의 상세정보를 저장
+        //import(`../js/characterRead2.js?${Math.floor((new Date).getTime() / interValTime)}`),          // 유저정보 DB읽기 함수 
 
         //import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
         //import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
@@ -82,9 +82,11 @@ async function mainSearchFunction() {
     * function name		:	
     * description       : 	user정보가 로딩완료 시 scProfile을 재생성함
     *********************************************************************************************************************** */
-    let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL");
-    //console.log(userDbInfo)
-    document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo);
+    // let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL");
+    // let userDbInfo = await dataBaseWrite()
+    let Response = await component.dataBaseWrite(data, extractValue, specPoint);
+    //console.log(Response)
+    document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, Response);
     // document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo.characterRanking.RANKING_NUM, userDbInfo.classRanking.CLASS_RANK);
 
     /* **********************************************************************************************************************
@@ -177,23 +179,23 @@ async function mainSearchFunction() {
         }
         let totalStatus = 0;
         // nowSpecElement
-        if (userDbInfo.data.characterBest) {
-            userDbInfo.data.characterBest.LCHB_TOTALSTATUS
-            if (extractValue.etcObj.supportCheck === "서폿") {
-                totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
-            } else {
-                totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
-            }
+        // if (userDbInfo.data.characterBest) {
+        //     userDbInfo.data.characterBest.LCHB_TOTALSTATUS
+        //     if (extractValue.etcObj.supportCheck === "서폿") {
+        //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
+        //     } else {
+        //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
+        //     }
 
-            if (userDbInfo.data.characterBest.LCHB_TOTALSTATUS > totalStatus && (userDbInfo.data.characterBest.LCHB_TOTALSUM > ((specPoint.completeSpecPoint).toFixed(2)))) {
-                nowSpecElement.style.color = "#f00";
-                specAreaElement.classList.add("alert");
-                document.querySelector(".sc-info .group-info .tier-box").addEventListener("click", () => {
-                    window.open('https://cool-kiss-ec2.notion.site/1d2758f0e8da8040bc4dd0fe3a48f9f7?pvs=4', '_blank');
-                })
-            }
+        //     if (userDbInfo.data.characterBest.LCHB_TOTALSTATUS > totalStatus && (userDbInfo.data.characterBest.LCHB_TOTALSUM > ((specPoint.completeSpecPoint).toFixed(2)))) {
+        //         nowSpecElement.style.color = "#f00";
+        //         specAreaElement.classList.add("alert");
+        //         document.querySelector(".sc-info .group-info .tier-box").addEventListener("click", () => {
+        //             window.open('https://cool-kiss-ec2.notion.site/1d2758f0e8da8040bc4dd0fe3a48f9f7?pvs=4', '_blank');
+        //         })
+        //     }
 
-        }
+        // }
 
 
 
@@ -548,18 +550,32 @@ async function mainSearchFunction() {
                     </div>`;
                 });
             }
+
+            let statsPercent = 0;
+            if (accessory.type === "목걸이") {
+                statsPercent = (accessory.stats - 15178) / (17857 - 15178) * 100
+            } else if (accessory.type === "귀걸이") {
+                if (earringCount === 0) {
+                    statsPercent = (accessory.stats - 11806) / (13889 - 11806) * 100
+                } else {
+                    statsPercent = (accessory.stats - 11806) / (13889 - 11806) * 100
+                }
+            } else if (accessory.type === "반지") {
+                if (ringCount === 0) {
+                    statsPercent = (accessory.stats - 10962) / (12897 - 10962) * 100
+                } else {
+                    statsPercent = (accessory.stats - 10962) / (12897 - 10962) * 100
+                }
+            }
+            //console.log(statsPercent)
+
+
             let progressClassName = "";
-            if (accessory.quality < 10) {
-                progressClassName = "common";
-            } else if (accessory.quality < 30) {
-                progressClassName = "uncommon";
-            } else if (accessory.quality < 70) {
-                progressClassName = "rare";
-            } else if (accessory.quality < 90) {
+            if (statsPercent < 50) {
                 progressClassName = "epic";
-            } else if (accessory.quality < 100) {
+            } else if (statsPercent < 90) {
                 progressClassName = "legendary";
-            } else if (accessory.quality === '100') {
+            } else if (statsPercent < 101) {
                 progressClassName = "mythic";
             }
 
@@ -572,11 +588,14 @@ async function mainSearchFunction() {
                 backgroundClassName = "hero";
             }
 
+
+
+
             let accessoryItem = `
                 <div class="img-box radius ${backgroundClassName}-background">
                     <img src="${accessory.icon}" alt="">
                     <span class="tier">T${accessory.tier}</span>
-                    <span class="progress ${progressClassName}-progressbar">${accessory.quality}</span>
+                    <span class="progress ${progressClassName}-progressbar">${statsPercent.toFixed(1)}%</span>
                 </div>
                 <div class="option-box">
                     <div class="text-box">
@@ -1016,18 +1035,18 @@ async function mainSearchFunction() {
             dealerSupportConversion = dealerMinMedianValue * (1 + (medianDifferencePercent / 100));
         }
 
-
         let specPointInfo = [
-            { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUM, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
+            { name: "달성 최고 점수", value: Response.totalSum, icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: dealerMedianValue, icon: "chart-simple-solid" },
-            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.LCHB_ACHIEVE_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
+            { name: "최고 점수 달성일", value: formatDate(Response.achieveDate), icon: "calendar-check-solid" },
         ]
         let armorInfo = [
             { name: "공격력", value: Number(specPoint.dealerAttackPowResult).toFixed(0), icon: "bolt-solid" },
             { name: "엘릭서", value: Number(specPoint.dealerExlixirValue).toFixed(2) + "%", icon: "flask-solid" },
             { name: "초월", value: Number(specPoint.dealerHyperValue).toFixed(2) + "%", icon: "star-solid" },
-            { name: "각인", value: Number(specPoint.dealerEngResult).toFixed(2) + "%", icon: "book-solid" },
+            { name: "악세", value: Number(specPoint.dealerAccValue).toFixed(2) + "%", icon: "circle-notch-solid" },
             { name: "팔찌", value: Number(specPoint.dealerBangleResult).toFixed(2) + "%", icon: "ring-solid" },
+            { name: "각인", value: Number(specPoint.dealerEngResult).toFixed(2) + "%", icon: "book-solid" },
         ]
         let arkPassiveInfo = [
             { name: "진화", value: Number(specPoint.dealerEvloutionResult).toFixed(0) + "%", icon: "fire-solid" },
@@ -1052,10 +1071,10 @@ async function mainSearchFunction() {
         }
 
         let supportSpecPointInfo = [
-            { name: "달성 최고 점수", value: userDbInfo.data.characterBest ? Math.max(userDbInfo.data.characterBest.LCHB_TOTALSUMSUPPORT, specPoint.completeSpecPoint).toFixed(2) : specPoint.completeSpecPoint.toFixed(2), icon: "medal-solid" },
+            { name: "달성 최고 점수", value: Response.totalSumSupport, icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: supportMedianValue, icon: "chart-simple-solid" },
             { name: "딜러 환산 점수", value: dealerSupportConversion.toFixed(2), icon: "arrows-left-right-to-line-solid" },
-            { name: "최고 점수 달성일", value: userDbInfo.data.characterBest ? formatDate(userDbInfo.data.characterBest.LCHB_ACHIEVE_DATE) : todayFormattedDate(), icon: "calendar-check-solid" },
+            { name: "최고 점수 달성일", value: formatDate(Response.achieveDate), icon: "calendar-check-solid" },
         ]
         let supportBuffInfo = [
             { name: "상시버프", value: Number(specPoint.supportAllTimeBuff).toFixed(2) + "%", icon: "arrows-rotate-solid" },
@@ -1095,38 +1114,40 @@ async function mainSearchFunction() {
     /* **********************************************************************************************************************
     * function name		:	dataBaseWrite
     * description       : 	유저정보를 db로 보내 저장하게 함
-    * useDevice         :   모두사용
+    * useDevice         :   component.js로 리팩토링을 하여 미사용
     *********************************************************************************************************************** */
-    async function dataBaseWrite() {
-        // console.log(extractValue.defaultObj.haste)
-        let totalStatus = 0
-        if (extractValue.etcObj.supportCheck === "서폿") {
-            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
-        } else {
-            totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
-        }
-        console.log(totalStatus)
-        await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
-        await Modules.userDataWriteDetailInfo.insertLopecCharacters(
-            nameParam,                                                                      // 닉네임 
-            data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
-            extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
-            totalStatus,                                                                    // 프로필 이미지 
-            data.ArmoryProfile.ServerName,                                                  // 서버 
-            parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
-            data.ArmoryProfile.GuildName,                                                   // 길드 
-            data.ArmoryProfile.Title,                                                       // 칭호 
-            specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
-            specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
-            specPoint.supportAllTimeBuff,                                                   // 상시버프 
-            specPoint.supportFullBuff,                                                      // 풀버프 
-            null,                                                                           // 진화 카르마 랭크                  
-            "2.0"                                                                           // 현재 버전 
-        );
-    }
-    if (/lopec.kr/.test(window.location.host)) {
-        setTimeout(async () => { await dataBaseWrite() }, 0);
-    }
+    // async function dataBaseWrite() {
+    //     // console.log(extractValue.defaultObj.haste)
+    //     let totalStatus = 0
+    //     if (extractValue.etcObj.supportCheck === "서폿") {
+    //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
+    //     } else {
+    //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
+    //     }
+    //     //console.log(totalStatus)
+    //     await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
+    //     let result = await Modules.userDataWriteDetailInfo.insertLopecCharacters(
+    //         nameParam,                                                                      // 닉네임 
+    //         data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
+    //         extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
+    //         totalStatus,                                                                    // 프로필 이미지 
+    //         data.ArmoryProfile.ServerName,                                                  // 서버 
+    //         parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
+    //         data.ArmoryProfile.GuildName,                                                   // 길드 
+    //         data.ArmoryProfile.Title,                                                       // 칭호 
+    //         specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
+    //         specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
+    //         specPoint.supportAllTimeBuff,                                                   // 상시버프 
+    //         specPoint.supportFullBuff,                                                      // 풀버프 
+    //         null,                                                                           // 진화 카르마 랭크                  
+    //         "2.0"                                                                           // 현재 버전 
+    //     );
+    //     // console.log(result)
+    //     return result;
+    // }
+    // if (/lopec.kr/.test(window.location.host)) {
+    // }
+    // setTimeout(async () => { await dataBaseWrite() }, 0);
 
 }
 mainSearchFunction()

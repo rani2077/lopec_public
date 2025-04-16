@@ -432,19 +432,19 @@ let noticeArry = [
             <img src="/asset/image/median-20250415.png">`
 
     },
-    //{
-    //    name: `<em style="font-weight:700;font-size:16px;">2025-04-16 업데이트 안내</em>`,
-    //    desc:
-    //        `● 로펙의 신기능 "로펙 딸깍"이 추가되었습니다.
-    //      &nbsp;&nbsp; 공대장님들을 위한 속도 이슈 없는 초간단 간이 검색기 입니다.
-    //      &nbsp;&nbsp; 사이트 내에 떠다니는 돋보기 아이콘을 통해 이용 가능합니다.
-    //      &nbsp;&nbsp; 로펙딸깍을 켜지 않고 아이콘인 상태에서 자유롭게 이동 가능합니다.
-    //      &nbsp;&nbsp; 자동 검색인 "딸깍"의 베타서비스는 빠른 시일내로 선보이도록 하겠습니다.
+    {
+        name: `<em style="font-weight:700;font-size:16px;">2025-04-16 업데이트 안내</em>`,
+        desc:
+            `● 로펙의 신기능 "로펙 딸깍"이 추가되었습니다.
+          &nbsp;&nbsp; 공대장님들을 위한 속도 이슈 없는 초간단 간이 검색기 입니다.
+          &nbsp;&nbsp; 사이트 내에 떠다니는 돋보기 아이콘을 통해 이용 가능합니다.
+          &nbsp;&nbsp; 로펙딸깍을 켜지 않고 아이콘인 상태에서 자유롭게 이동 가능합니다.
+          &nbsp;&nbsp; 자동 검색인 "딸깍"의 베타서비스는 빠른 시일내로 선보이도록 하겠습니다.
 
-    //      &nbsp;&nbsp; <a href="https://www.inven.co.kr/board/lostark/6271/1747273?my=chuchu" target="_blink" style="color:blue;text-decoration:underline;">딸깍 기능 시연 영상</a>
-    //    `
+          &nbsp;&nbsp; <a href="https://www.inven.co.kr/board/lostark/6271/1747273?my=chuchu" target="_blink" style="color:blue;text-decoration:underline;">딸깍 기능 시연 영상</a>
+        `
 
-    //},
+    },
 
 ]
 
