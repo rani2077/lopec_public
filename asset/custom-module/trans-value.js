@@ -40,7 +40,7 @@ async function importModuleManager() {
 
 
 
-export async function getCharacterProfile(data) {
+export async function getCharacterProfile(data, dataBase) {
     let Modules = await importModuleManager();
     // console.log(Modules.originFilter)
     // console.log(Modules.simulatorFilter.bangleOptionData.t4MythicData)
@@ -278,7 +278,6 @@ export async function getCharacterProfile(data) {
         statHp: 0,
         hpActive: 0,
     }
-
     data.ArmoryProfile.Stats.forEach(function (statsArry) {
         if (statsArry.Type == "공격력") {
             defaultObj.attackPow = Number(statsArry.Value)
@@ -302,6 +301,7 @@ export async function getCharacterProfile(data) {
             //console.log(defaultObj.hpActive)
         }
     })
+
 
     let vitalitySum = 0; // 툴팁에서 추출한 생명 활성력 합계를 위한 변수
     data.ArmoryEquipment.forEach(function (equip) {
@@ -624,6 +624,13 @@ export async function getCharacterProfile(data) {
             bangleObj.str = 0;
             bangleObj.dex = 0;
         }
+        if (supportCheck() === "서폿") {
+            defaultObj.totalStatus = (defaultObj.haste + defaultObj.special - bangleObj.haste - bangleObj.special)
+        } else {
+            defaultObj.totalStatus = (defaultObj.haste + defaultObj.special + defaultObj.crit - bangleObj.haste - bangleObj.crit - bangleObj.special)
+        }
+        // console.log(dataBase)
+    
     };
     bangleBlockStats();
 
@@ -1731,6 +1738,8 @@ export async function getCharacterProfile(data) {
             specialClass = "4멸 일격";
         } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
             specialClass = "풍신 일격";
+        } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && !skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "오의 : 폭쇄진", dmg)) {
+            specialClass = "호왕 폭쇄 일격";
         } else if (classCheck("수라") && !skillCheck(gemSkillArry, "청월난무", dmg) && !skillCheck(gemSkillArry, "유성 낙하", dmg)) {
             specialClass = "4겁 수라";
         } else if (classCheck("수라") && skillCheck(gemSkillArry, "수라결 기본 공격", dmg) && skillCheck(gemSkillArry, "파천섬광", dmg) && skillCheck(gemSkillArry, "진 파공권", dmg) && skillCheck(gemSkillArry, "유성 낙하", dmg) && skillCheck(gemSkillArry, "청월난무", dmg) && skillCheck(gemSkillArry, "비상격", dmg)) {
@@ -1739,6 +1748,8 @@ export async function getCharacterProfile(data) {
             specialClass = "반사멸 억모닉";
         } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg)) {
             specialClass = "사멸 억모닉";
+        } else if (classCheck("이슬비") && skillCheck(gemSkillArry, "뙤약볕", dmg) && skillCheck(gemSkillArry, "싹쓸바람", dmg) && skillCheck(gemSkillArry, "소용돌이", dmg) && skillCheck(gemSkillArry, "여우비 스킬", dmg) && skillCheck(gemSkillArry, "소나기", dmg) && skillCheck(gemSkillArry, "날아가기", dmg) && skillCheck(gemSkillArry, "센바람", dmg)) {
+            specialClass = "7겁 이슬비";
         } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
             specialClass = "데이터 없음";
         } else {
@@ -1871,9 +1882,9 @@ export async function getCharacterProfile(data) {
                 return result;
             }
             let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
-                // console.log("gemResultValue" + gemResultValue)
-                // console.log("finalGemValue.per" + finalGemValue.per)
-                // console.log("finalGemValue.skillper" + finalGemValue.skillPer)
+                 //console.log("gemResultValue" + gemResultValue)
+                 //console.log("finalGemValue.per" + finalGemValue.per)
+                 //console.log("finalGemValue.skillper" + finalGemValue.skillPer)
                 return gemResultValue + finalGemValue.per * finalGemValue.skillPer
             }, 0)
 

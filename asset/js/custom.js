@@ -15,9 +15,7 @@ async function importModuleManager() {
         import(`../custom-module/trans-value.js?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
         import(`../custom-module/calculator.js?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
         import(`../custom-module/component.js?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 모듈
-        import(`../js/search.js?${Math.floor((new Date).getTime() / interValTime)}`),                  // 닉네임을 검색한 사람의 로그
         import(`../js/character.js?${Math.floor((new Date).getTime() / interValTime)}`),               // 특정 유저의 상세정보를 저장
-        //import(`../js/characterRead2.js?${Math.floor((new Date).getTime() / interValTime)}`),          // 유저정보 DB읽기 함수 
 
         //import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
         //import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
@@ -35,9 +33,7 @@ async function importModuleManager() {
         calcValue: modules[3],
         component: modules[4],
 
-        userDataRead: modules[5],
-        userDataWriteDeviceLog: modules[6],
-        userDataWriteDetailInfo: modules[7],
+        userDataWriteDeviceLog: modules[5],
     }
 
     return moduleObj
@@ -68,24 +64,22 @@ async function mainSearchFunction() {
     let data = await Modules.fetchApi.lostarkApiCall(nameParam);
     console.log(data)
     let extractValue = await Modules.transValue.getCharacterProfile(data);
-    await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
-
-
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
-    // console.log("data", data);
+    let Response = await component.dataBaseWrite(data, extractValue, specPoint);
+    if(Response.totalStatus !== 0 ){
+        extractValue.defaultObj.totalStatus = Response.totalStatus;
+        specPoint = await Modules.calcValue.specPointCalc(extractValue)
+    }
+    // console.log(Response)
+    // console.log(specPoint)
     console.log("오리진obj", extractValue);
-    // console.log("specPoint", specPoint);
-    // console.log("specPoint", specPoint.completeSpecPoint);
 
+    await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
 
     /* **********************************************************************************************************************
     * function name		:	
     * description       : 	user정보가 로딩완료 시 scProfile을 재생성함
     *********************************************************************************************************************** */
-    // let userDbInfo = await Modules.userDataRead.getCombinedCharacterData(nameParam, extractValue.etcObj.supportCheck === "서폿" ? "SUP" : "DEAL");
-    // let userDbInfo = await dataBaseWrite()
-    let Response = await component.dataBaseWrite(data, extractValue, specPoint);
-    //console.log(Response)
     document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, Response);
     // document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo.characterRanking.RANKING_NUM, userDbInfo.classRanking.CLASS_RANK);
 

@@ -2471,6 +2471,14 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "호왕 폭쇄 일격",
+        skill: [
+            { name: "오의 : 호왕출현", per: 0.193 },
+            { name: "방천격", per: 0.024 },
+            { name: "오의 : 폭쇄진", per: 0.134 },
+        ],
+    },
+    {
         class: "4멸 일격",
         skill: [
             { name: "오의 : 뇌호격", per: 0.193 },
@@ -2960,6 +2968,18 @@ export let classGemFilter = [
             { name: "센바람", per: 0.055 },
             { name: "보정치", per: -0.055 },
             
+        ],
+    },
+    {
+        class: "7겁 이슬비",
+        skill: [
+            { name: "뙤약볕", per: 0.113 },
+            { name: "싹쓸바람", per: 0.104 },
+            { name: "소용돌이", per: 0.077 },
+            { name: "여우비 스킬", per: 0.062 },
+            { name: "소나기", per: 0.064 },
+            { name: "날아가기", per: 0.047 },
+            { name: "센바람", per: 0.047 },
         ],
     },
     {

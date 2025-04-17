@@ -50,6 +50,8 @@ async function simulatorInputCalc() {
      * function name		:	
      * description			: 	유저 JSON데이터 호출 및 캐싱처리
      *********************************************************************************************************************** */
+    let extractValue;
+    let Response;
     if (!cachedData) {
         Modules = await importModuleManager();
         // console.log(Modules)
@@ -59,11 +61,19 @@ async function simulatorInputCalc() {
         document.querySelector(".wrapper").style.display = "block";
 
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
+        extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+        let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+        Response = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
+        if (Response.totalStatus !== 0) {
+            extractValue.defaultObj.totalStatus = Response.totalStatus;
+            originSpecPoint = await Modules.calcValue.specPointCalc(extractValue)
+        }
+        let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
         console.log(cachedData);
 
 
         // await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset")); // 캐싱없이 api갱신
-        await originSpecPointToHtml();
+        await originSpecPointToHtml(specPoint);
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         const isFirefox = /firefox/i.test(navigator.userAgent);
         if (isSafari || isFirefox) {
@@ -72,16 +82,18 @@ async function simulatorInputCalc() {
             setTimeout(() => { document.body.dispatchEvent(new Event("change")) }, 500);
         }
     }
-
+    console.log(Response)
     /* **********************************************************************************************************************
      * function name		:	originSpecPointToHtml
      * description			: 	사용자의 기본 스펙포인트를 표시해줌
      *********************************************************************************************************************** */
-    async function originSpecPointToHtml() {
-        let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+    async function originSpecPointToHtml(specPoint) {
+        // let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+        console.log(originSpecPoint)
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
-        let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
+
+
         document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue);
         element.textContent = `기존 스펙포인트 - ${specPoint}`;
         element.setAttribute("data-spec-point", specPoint);
@@ -96,7 +108,7 @@ async function simulatorInputCalc() {
     let supportCheck = await secondClassCheck(cachedData);
     gemInfoChangeToJson()
 
-    let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+    // let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
     //console.log("오리진OBJ", extractValue)
 
 
@@ -442,7 +454,7 @@ async function simulatorInputCalc() {
             maxHp: 0,
             statHp: 0,
             hpActive: 0,
-
+            totalStatus: Response.totalStatus,
         }
         return result
     }
@@ -3705,10 +3717,12 @@ async function calculateGemData(data) {
         specialClass = "4겁 수라";
     } else if (classCheck("수라") && skillCheck(gemSkillArry, "수라결 기본 공격", dmg) && skillCheck(gemSkillArry, "파천섬광", dmg) && skillCheck(gemSkillArry, "진 파공권", dmg) && skillCheck(gemSkillArry, "유성 낙하", dmg) && skillCheck(gemSkillArry, "청월난무", dmg) && skillCheck(gemSkillArry, "비상격", dmg)) {
         specialClass = "6겁 수라";
-    } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg) && (skillCheck(gemSkillArry, "그라인드 체인", dmg)||skillCheck(gemSkillArry, "스피닝 웨폰", dmg))) {
+    } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg) && (skillCheck(gemSkillArry, "그라인드 체인", dmg) || skillCheck(gemSkillArry, "스피닝 웨폰", dmg))) {
         specialClass = "반사멸 억모닉";
     } else if (classCheck("억제") && skillCheck(gemSkillArry, "데몰리션", dmg)) {
         specialClass = "사멸 억모닉";
+    } else if (classCheck("이슬비") && skillCheck(gemSkillArry, "뙤약볕", dmg) && skillCheck(gemSkillArry, "싹쓸바람", dmg) && skillCheck(gemSkillArry, "소용돌이", dmg) && skillCheck(gemSkillArry, "여우비 스킬", dmg) && skillCheck(gemSkillArry, "소나기", dmg) && skillCheck(gemSkillArry, "날아가기", dmg) && skillCheck(gemSkillArry, "센바람", dmg)) {
+        specialClass = "7겁 이슬비";
     } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
         specialClass = "데이터 없음";
     } else {

@@ -1061,7 +1061,8 @@ i.lopec_badge_06 {
 }
 
 .sc-lopec-click.on {
-    height: 400px;
+    /* height: 400px; */
+    height: 481px;
     width: 350px;
     border-radius: 5px;
     overflow: visible;
@@ -1233,7 +1234,8 @@ i.lopec_badge_06 {
     background: #fff;
     border-radius: 5px;
     overflow-y: scroll;
-    height: 270px;
+    /* height: 270px; */
+    height: 351px;
 }
 
 .sc-lopec-click .group-simple .result-item {
@@ -1243,9 +1245,14 @@ i.lopec_badge_06 {
     border-bottom: 1px solid #e8eff5;
     transition: background 300ms;
     gap: 5px;
+
 }
 
-.sc-lopec-click .group-simple .result-item:first-child {
+.sc-lopec-click .group-simple .result-box .result-item {
+    cursor: pointer;
+}
+
+.sc-lopec-click .group-simple .sort-box .result-item {
     /* color: #0056b3; */
     color: #59a6e6;
     font-weight: 600;
@@ -1255,14 +1262,13 @@ i.lopec_badge_06 {
     background: #e1e1e1;
 }
 
-.sc-lopec-click .group-simple .result-item:not(:first-child) {
-    cursor: pointer;
-}
-
 .sc-lopec-click .group-simple .result-item .result {
     /* width: 25%; */
     text-align: left;
     font-weight: inherit;
+}
+.sc-lopec-click .group-simple .result-item:nth-child(4n)  {
+    border-bottom:1px solid #1e1e1e;
 }
 
 .sc-lopec-click .group-simple .result-item .name {
