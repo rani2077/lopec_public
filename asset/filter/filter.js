@@ -2507,7 +2507,7 @@ export let classGemFilter = [
             { name: "유성 낙하", per: 0.05 },
             { name: "청월난무", per: 0.05 },
             { name: "비상격", per: 0.05 },
-            { name: "보정치", per: -0.05 },
+            { name: "보정치", per: -0.05},
             
         ],
     },
@@ -2518,6 +2518,17 @@ export let classGemFilter = [
             { name: "파천섬광", per: 0.132 },
             { name: "진 파공권", per: 0.064 },
             { name: "비상격", per: 0.06 },
+        ],
+    },
+    {
+        class: "6겁 수라",
+        skill: [
+            { name: "수라결 기본 공격", per: 0.473 },
+            { name: "파천섬광", per: 0.122 },
+            { name: "진 파공권", per: 0.054 },
+            { name: "유성 낙하", per: 0.05 },
+            { name: "청월난무", per: 0.05 },
+            { name: "비상격", per: 0.05 },
         ],
     },
     {

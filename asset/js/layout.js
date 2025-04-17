@@ -5,7 +5,7 @@
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 
 if (window.location.pathname !== "/") {
-    // location.href = "/"
+    //location.href = "/"
 }
 /* **********************************************************************************************************************
  * function name		:	importModuleManager()

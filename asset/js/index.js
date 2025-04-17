@@ -433,7 +433,7 @@ let noticeArry = [
 
     },
     {
-        name: `<em style="font-weight:700;font-size:16px;">2025-04-16 업데이트 안내</em>`,
+        name: `2025-04-16 업데이트 안내`,
         desc:
             `● 로펙의 신기능 "로펙 딸깍"이 추가되었습니다.
           &nbsp;&nbsp; 공대장님들을 위한 속도 이슈 없는 초간단 간이 검색기 입니다.
@@ -444,6 +444,26 @@ let noticeArry = [
           &nbsp;&nbsp; <a href="https://www.inven.co.kr/board/lostark/6271/1747273?my=chuchu" target="_blink" style="color:blue;text-decoration:underline;">딸깍 기능 시연 영상</a>
         `
 
+    },
+    {
+        name: `<em style="font-weight:700;font-size:16px;">2025-04-17 업데이트 안내</em>`,
+        desc:
+            `● DB서버 이전 작업을 진행하였습니다.
+          &nbsp;&nbsp; 기본 검색 속도가 더욱 쾌적해집니다. 
+          &nbsp;&nbsp; 이제 피크시간에도 이전보다 훨씬 빠른 검색 속도를 제공합니다.
+          &nbsp;&nbsp; 랭킹 정보는 약 3-5일간 제공이 되지 않을 예정입니다. 양해바랍니다.
+
+          ● 악세서리에 관한 정보를 추가 및 개편하였습니다.
+          &nbsp;&nbsp; 상세정보에 악세로 얻은 딜증 수치를 제공합니다.
+          &nbsp;&nbsp; 해당 항목은 악세로 얻은 힘민지+특옵이 전부 포함된 전체 딜증 수치입니다.
+          &nbsp;&nbsp; 악세서리 라벨을 품질 대신 힘민지 퍼센티지를 표기하도록 수정했습니다.
+          &nbsp;&nbsp; 힘민지 퍼센티지 라벨은 T4 악세 및 3연마 기준으로 제공합니다.  
+          
+          ● 작일 잠수함 패치로 인한 점수 뻥튀기 현상을 수정하였습니다.
+          &nbsp;&nbsp; 일부 "수라" 직업군의 보석 딜증이 과도하게 적용되는 오류를 수정하였습니다.
+          &nbsp;&nbsp; 이로 인해 달성 최고 점수가 과도하게 높아지신 경우, 문의를 주시면 즉각 처리해드리겠습니다.
+          &nbsp;&nbsp; 불편을 끼쳐드려 매우 죄송합니다.
+        `
     },
 
 ]

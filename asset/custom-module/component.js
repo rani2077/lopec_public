@@ -97,7 +97,7 @@ export async function scProfile(userData, extractValue, response) {
         </div>
         <div class="group-profile">
             <div class="name-area">
-                <span class="name">LV.${characterLevel} ${userName}<i class="job">#${jobName}</i></span>
+                <span class="name">LV.${characterLevel} ${userName}<i class="job" style="margin-left:6px">#${jobName}</i></span>
                 <button class="favorite-button">
                     <div class="icon">
                         <div class="star"></div>
