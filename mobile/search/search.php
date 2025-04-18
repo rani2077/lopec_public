@@ -18,9 +18,9 @@
         if (!window.location.href.includes("lopec.kr")) {
             baseUrl = "/asset"
         }
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/reset.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-layout.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-common.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
-        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/reset.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-main.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
     </script>
     <title>로펙 : 스펙포인트 및 환산점수</title>
