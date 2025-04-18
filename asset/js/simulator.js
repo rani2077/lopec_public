@@ -32,9 +32,8 @@ async function importModuleManager() {
 
 
 let cachedData = null;
-let dataBaseResponse;
 let Modules;
-let extractValue;
+let dataBase;
 async function simulatorInputCalc() {
 
     /* ************~**********************************************************************************************************
@@ -61,19 +60,11 @@ async function simulatorInputCalc() {
         document.querySelector(".wrapper").style.display = "block";
 
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
-        extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-        let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
-        if (dataBaseResponse.totalStatus !== 0) {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-            originSpecPoint = await Modules.calcValue.specPointCalc(extractValue)
-        }
-        let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
         console.log(cachedData);
 
 
         // await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset")); // 캐싱없이 api갱신
-        await originSpecPointToHtml(specPoint);
+        await originSpecPointToHtml();
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         const isFirefox = /firefox/i.test(navigator.userAgent);
         if (isSafari || isFirefox) {
@@ -82,18 +73,19 @@ async function simulatorInputCalc() {
             setTimeout(() => { document.body.dispatchEvent(new Event("change")) }, 500);
         }
     }
-    //console.log(dataBaseResponse)
+
     /* **********************************************************************************************************************
      * function name		:	originSpecPointToHtml
      * description			: 	사용자의 기본 스펙포인트를 표시해줌
      *********************************************************************************************************************** */
-    async function originSpecPointToHtml(specPoint) {
-        // let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+    async function originSpecPointToHtml() {
+        let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        //console.log(originSpecPoint)
+        dataBase = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
+        extractValue.defaultObj.totalStatus = dataBase.totalStatus;
+        originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
-
-
+        let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
         document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue);
         element.textContent = `기존 스펙포인트 - ${specPoint}`;
         element.setAttribute("data-spec-point", specPoint);
@@ -108,7 +100,9 @@ async function simulatorInputCalc() {
     let supportCheck = await secondClassCheck(cachedData);
     gemInfoChangeToJson()
 
-    // let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+    let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+    console.log(dataBase.totalStatus)
+    // extractValue.defaultObj.totalStatus = dataBase.totalStatus;
     //console.log("오리진OBJ", extractValue)
 
 
@@ -454,7 +448,7 @@ async function simulatorInputCalc() {
             maxHp: 0,
             statHp: 0,
             hpActive: 0,
-            totalStatus: dataBaseResponse.totalStatus,
+            totalStatus:dataBase.totalStatus,
         }
         return result
     }
@@ -792,8 +786,6 @@ async function simulatorInputCalc() {
             "damageBuff": 0,
             "enlightPoint": 0,
             "carePower": 1,
-            // "totalStatus": dataBaseResponse.totalStatus
-
         };
 
         result = objKeyValueSum(arr, defaultObj); // defaultObj 추가
@@ -805,9 +797,6 @@ async function simulatorInputCalc() {
         // console.log("적주피", result.finalDamagePer)
         // console.log("치적 적용", result.finalDamagePer)
         // console.log("치피 적용", result.finalDamagePer)
-        //console.log(dataBaseResponse)
-        //console.log(arr)
-        //console.log(result)
         return result;
     }
     // accessoryValueToObj()
@@ -3718,6 +3707,8 @@ async function calculateGemData(data) {
         specialClass = "4멸 일격";
     } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
         specialClass = "풍신 일격";
+    } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && !skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "오의 : 폭쇄진", dmg)) {
+        specialClass = "호왕 폭쇄 일격";
     } else if (classCheck("수라") && !skillCheck(gemSkillArry, "청월난무", dmg) && !skillCheck(gemSkillArry, "유성 낙하", dmg)) {
         specialClass = "4겁 수라";
     } else if (classCheck("수라") && skillCheck(gemSkillArry, "수라결 기본 공격", dmg) && skillCheck(gemSkillArry, "파천섬광", dmg) && skillCheck(gemSkillArry, "진 파공권", dmg) && skillCheck(gemSkillArry, "유성 낙하", dmg) && skillCheck(gemSkillArry, "청월난무", dmg) && skillCheck(gemSkillArry, "비상격", dmg)) {
