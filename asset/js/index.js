@@ -458,15 +458,7 @@ let noticeArry = [
         `
     },
     {
-        name: `<em style="font-weight:700;font-size:16px;">25년 4월 3주차 중앙값 통계</em>`,
-        desc:
-            `4월 3주차 중앙값 통계입니다.
-            
-            <img src="/asset/image/median-20250415.png">`
-
-    },
-    {
-        name: `<em style="font-weight:700;font-size:16px;">2025-04-18 업데이트 안내</em>`,
+        name: `2025-04-18 업데이트 안내`,
         desc:
             `● 간헐적으로 점수가 하락하던 이슈를 해결하였습니다.
           &nbsp;&nbsp; 최고 점수일 때의 특성합 값을 DB에 저장하고, 해당 값을 불러와 계산합니다.
@@ -477,6 +469,25 @@ let noticeArry = [
           &nbsp;&nbsp; 이슬비 직업군의 특정 세팅에 보석 점수가 과도하게 적용되던 오류를 수정하였습니다.
           &nbsp;&nbsp; 오류의 정상화지만, 점수가 떨어지신 점에 대해 깊히 사과드립니다.
           &nbsp;&nbsp; 달성 최고 점수 초기화는 문의 주시면 곧바로 처리해드리도록 하겠습니다.
+        `
+    },
+    {
+        name: `<em style="font-weight:700;font-size:16px;">25년 4월 3주차 중앙값 통계</em>`,
+        desc:
+            `4월 3주차 중앙값 통계입니다.
+            
+            <img src="/asset/image/median-20250415.png">`
+
+    },
+    {
+        name: `<em style="font-weight:700;font-size:16px;">2025-04-19 업데이트 안내</em>`,
+        desc:
+            `● 진화 카르마 알고리즘 4차 고도화
+          &nbsp;&nbsp; 알고리즘 고도화를 진행했습니다.
+
+          ● 서폿의 딜러 환산 점수 로직 수정
+          &nbsp;&nbsp; 서폿 직업군의 딜러 환산 점수 로직을 수정하였습니다.
+          &nbsp;&nbsp; 대개편을 진행하기 전, 조금 더 원활한 사용성을 위해 개선하였습니다.
         `
     },
 
