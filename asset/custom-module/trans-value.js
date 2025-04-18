@@ -2102,9 +2102,15 @@ export async function getCharacterProfile(data, dataBase) {
 
                     const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL;
                     const sumForRounded = baseHealth + flatHpBonus + karmaHpForRounded;
-                    const intermediateRounded = sumForRounded * vitalityRate;
-                    const roundedIntermediateRounded = Math.round(intermediateRounded);
-                    const maxHpUsingRoundedKarma = roundedIntermediateRounded * percentFactor;
+                    // Original calculation:
+                    // const intermediateRounded = sumForRounded * vitalityRate;
+                    // const maxHpUsingRoundedKarma = intermediateRounded * percentFactor;
+
+                    // New calculation with two-step flooring:
+                    const step1_unfloored = sumForRounded * vitalityRate;
+                    const step1_floored = Math.floor(step1_unfloored); // Step 1: Floor after applying vitalityRate
+                    const step2_unfloored = step1_floored * percentFactor;
+                    const maxHpUsingRoundedKarma = Math.floor(step2_unfloored); // Step 2: Floor after applying percentage bonuses
 
                     const totalPercentBonus = petPercent + rangerPercent;
                     let unifiedDesc = `펫${petIdx}|방범대${rangerIdx}`;
@@ -2151,7 +2157,8 @@ export async function getCharacterProfile(data, dataBase) {
                 Math.abs(maxHealth - r.maxHpUsingRoundedKarma) < EXACT_HP_TOLERANCE
             );
             let exactMatchFound = exactMatches.length > 0;
-            let finalBestResult;
+            let initialBestResult; // 먼저 정렬된 결과 중 최상위를 찾음
+            let candidates = []; // <--- Declare candidates here
 
             // --- 후보 비교 함수 ---
             function compareCandidates(a, b) {
@@ -2172,18 +2179,47 @@ export async function getCharacterProfile(data, dataBase) {
                     const petIdx = match.buffLevelSum - match.rangerIdx;
                     return !(petIdx === 1 && match.rangerIdx === 0);
                 });
-                let candidates = filteredMatches.length > 0 ? filteredMatches : exactMatches;
+                // Assign to the 'candidates' declared outside
+                candidates = filteredMatches.length > 0 ? filteredMatches : exactMatches;
 
                 if (candidates.length === 1) {
-                    finalBestResult = candidates[0];
+                    initialBestResult = candidates[0];
                 } else {
                     candidates.sort(compareCandidates);
-                    finalBestResult = candidates[0];
+                    initialBestResult = candidates[0];
                 }
             } else { // 정확한 일치 없을 경우
                 currentWorkingResults.sort(compareCandidates); // Rounded HP diff -> proximity 정렬
-                finalBestResult = currentWorkingResults[0];
+                initialBestResult = currentWorkingResults[0];
             }
+
+            // --- 서포터 방범대 0 우선 로직 추가 ---
+            let finalBestResult = initialBestResult; // 기본값은 정렬 최상위 결과
+            if (!isSupport) { 
+                const relevantSortedCandidates = exactMatchFound ? candidates : currentWorkingResults;
+
+                // 정렬된 리스트에서 rangerIdx === 0 인 가장 높은 순위의 후보 찾기
+                if (relevantSortedCandidates.length > 0) {
+                    const supportPreferredResult = relevantSortedCandidates.find(
+                        candidate => candidate.rangerIdx === 0 || candidate.formulaDesc === "효과(5%)"
+                    );
+
+                    // 방범대0 후보가 있고, 그게 현재 최선이 아니고, 두 후보의 maxHpUsingRoundedKarma 차이가 1 미만일 때만 진입
+                    if (supportPreferredResult && supportPreferredResult !== initialBestResult) {
+                        const diffSupport = Math.abs(maxHealth - supportPreferredResult.maxHpUsingRoundedKarma);
+                        if (diffSupport <= 1.0) {
+                            // const SUPPORT_PRIORITY_TOLERANCE = 1.0; // 허용 오차 (실제 maxHealth와의 차이 비교 기준)
+
+                            // 방범대0 후보의 체력 오차가 (원래 최선 후보의 오차 + 허용 오차) 이하일 경우에만 우선 적용
+                            finalBestResult = supportPreferredResult;
+                            // console.log("Support Priority Applied (Diff <= 1): Switched to Ranger 0 or Effect(5%) candidate."); // 디버깅 로그
+                            // }
+                        }
+                    }
+                }
+            }
+            // --- 서포터 우선 로직 끝 ---
+
 
             // 5. 최종 결과 반환 (범위 보정 포함)
             let finalKarmaLevel = Math.round(finalBestResult.karmaExact);
