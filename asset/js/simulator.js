@@ -32,7 +32,9 @@ async function importModuleManager() {
 
 
 let cachedData = null;
+let dataBaseResponse;
 let Modules;
+let extractValue;
 async function simulatorInputCalc() {
 
     /* ************~**********************************************************************************************************
@@ -50,8 +52,6 @@ async function simulatorInputCalc() {
      * function name		:	
      * description			: 	유저 JSON데이터 호출 및 캐싱처리
      *********************************************************************************************************************** */
-    let extractValue;
-    let Response;
     if (!cachedData) {
         Modules = await importModuleManager();
         // console.log(Modules)
@@ -63,9 +63,9 @@ async function simulatorInputCalc() {
         cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
         extractValue = await Modules.transValue.getCharacterProfile(cachedData);
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        Response = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
-        if (Response.totalStatus !== 0) {
-            extractValue.defaultObj.totalStatus = Response.totalStatus;
+        dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
+        if (dataBaseResponse.totalStatus !== 0) {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
             originSpecPoint = await Modules.calcValue.specPointCalc(extractValue)
         }
         let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
@@ -82,7 +82,7 @@ async function simulatorInputCalc() {
             setTimeout(() => { document.body.dispatchEvent(new Event("change")) }, 500);
         }
     }
-    console.log(Response)
+    console.log(dataBaseResponse)
     /* **********************************************************************************************************************
      * function name		:	originSpecPointToHtml
      * description			: 	사용자의 기본 스펙포인트를 표시해줌
@@ -454,7 +454,7 @@ async function simulatorInputCalc() {
             maxHp: 0,
             statHp: 0,
             hpActive: 0,
-            totalStatus: Response.totalStatus,
+            totalStatus: dataBaseResponse.totalStatus,
         }
         return result
     }
@@ -792,6 +792,8 @@ async function simulatorInputCalc() {
             "damageBuff": 0,
             "enlightPoint": 0,
             "carePower": 1,
+            // "totalStatus": dataBaseResponse.totalStatus
+
         };
 
         result = objKeyValueSum(arr, defaultObj); // defaultObj 추가
@@ -803,6 +805,9 @@ async function simulatorInputCalc() {
         // console.log("적주피", result.finalDamagePer)
         // console.log("치적 적용", result.finalDamagePer)
         // console.log("치피 적용", result.finalDamagePer)
+        console.log(dataBaseResponse)
+        console.log(arr)
+        console.log(result)
         return result;
     }
     // accessoryValueToObj()
@@ -3523,7 +3528,7 @@ async function selectCreate(data, Modules) {
         showLeafInfo();
         enlightValueChange();
         avgLevelKarmaYN();
-        createTooltip(); // 툴팁생성
+        // createTooltip(); // 툴팁생성
     })
 }
 

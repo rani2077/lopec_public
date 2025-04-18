@@ -17,6 +17,7 @@ async function importModuleManager() {
         import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark api호출
         import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
         import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+        import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 함수
 
         //import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
     ])
@@ -24,6 +25,7 @@ async function importModuleManager() {
         fetchApi: modules[0],
         transValue: modules[1],
         calcValue: modules[2],
+        dataBase: modules[3],
 
         //ocrModule: modules[2],
     }
@@ -1090,7 +1092,11 @@ async function lopecClickSearch() {
             return; // 함수 종료
         }
         let extractValue = await Modules.transValue.getCharacterProfile(data);
+        
         let calcValue = await Modules.calcValue.specPointCalc(extractValue);
+        let dataBaseResponse = await Modules.dataBase.dataBaseWrite(data, extractValue, calcValue);
+        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        calcValue = await Modules.calcValue.specPointCalc(extractValue);
 
         let dealerMedianValue = extractValue.htmlObj.medianInfo.dealerMedianValue;
         let supportMedianValue = extractValue.htmlObj.medianInfo.supportMedianValue;
@@ -1488,3 +1494,4 @@ function createTooltip() {
     }
 }
 window.addEventListener("load", createTooltip);
+// window.body.addEventListener("change", createTooltip);
