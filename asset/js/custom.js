@@ -1019,15 +1019,26 @@ async function mainSearchFunction() {
         let dealerMedianValue = extractValue.htmlObj.medianInfo.dealerMedianValue;
         let supportMedianValue = extractValue.htmlObj.medianInfo.supportMedianValue;
         let supportMinMedianValue = extractValue.htmlObj.medianInfo.supportMinMedianValue;
+        let supportMaxMedianValue = extractValue.htmlObj.medianInfo.supportMaxMedianValue;
         let dealerMinMedianValue = extractValue.htmlObj.medianInfo.dealerMinMedianValue;
-        let medianDifferencePercent = (specPoint.completeSpecPoint - supportMinMedianValue) / supportMinMedianValue * 100;
-        let dealerSupportConversion = 0;
-        // 0보다 낮으면 다른 계산
-        if (medianDifferencePercent > 0) {
-            dealerSupportConversion = dealerMinMedianValue * (1 + medianDifferencePercent / 100);
-        } else {
-            dealerSupportConversion = dealerMinMedianValue * (1 + (medianDifferencePercent / 100));
+        let dealerMaxMedianValue = extractValue.htmlObj.medianInfo.dealerMaxMedianValue;
+        let currentSupportScore = specPoint.completeSpecPoint;
+        let supportRange = supportMaxMedianValue - supportMinMedianValue;
+        let supportPosition = currentSupportScore - supportMinMedianValue;
+
+        // 3. 서포터 위치 정규화 (0 이상 값으로, 상한 제한 없음)
+        let normalizedSupport = 0; // 기본값 0
+        if (supportRange > 0) { // 0으로 나누는 경우 방지
+            normalizedSupport = supportPosition / supportRange;
         }
+        // 최소 0으로만 제한 (음수 점수는 없다고 가정)
+        normalizedSupport = Math.max(0, normalizedSupport);
+
+        // 4. 딜러 점수 범위 계산
+        let dealerRange = dealerMaxMedianValue - dealerMinMedianValue;
+
+        // 5. 최종 딜러 환산 점수 계산
+        let dealerSupportConversion = dealerMinMedianValue + (normalizedSupport * dealerRange);
 
         let specPointInfo = [
             { name: "달성 최고 점수", value: Response.totalSum, icon: "medal-solid" },

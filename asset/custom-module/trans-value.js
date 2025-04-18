@@ -2566,7 +2566,9 @@ export async function getCharacterProfile(data, dataBase) {
             dealerMedianValue: 0,
             supportMedianValue: 0,
             supportMinMedianValue: 467.7,
+            supportMaxMedianValue: 1621.35,
             dealerMinMedianValue: 850.76,
+            dealerMaxMedianValue: 3265.48,
 
         };
         let itemLevel = Number(data.ArmoryProfile.ItemAvgLevel.replace(",", ""));
