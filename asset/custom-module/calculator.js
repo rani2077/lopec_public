@@ -168,7 +168,7 @@ export async function specPointCalc(inputObj) {
     let damageBuffMinusBangle = (inputObj.accObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1
     let hyperBuffMinusBangle = (10 * ((inputObj.accObj.damageBuff) / 100 + 1)) / 100 + 1
     //팔찌 제외 스탯&피증
-    let statDamageBuffMinusBangle = ((inputObj.defaultObj.totalStaus) * 0.015) / 100 + 1 // 팔찌 제외 스탯
+    let statDamageBuffMinusBangle = ((inputObj.defaultObj.totalStatus) * 0.015) / 100 + 1 // 팔찌 제외 스탯
     let finalDamageBuffMinusBangle = (13 * damageBuffMinusBangle * statDamageBuffMinusBangle) / 100 + 1 // 팔찌 제외 최종 피증
     //팔찌 효율 계산
     //let afterBuffMinusBangle = ((((150000 + finalAtkBuffMinusBangle) * 1.06) ** 1.095) * (1.7 + evolutionBuff) * (5.275243 ** 1.01) * 1.36 * 1.1 * 1.80978) * (finalStigmaPer / 100 + 1) * 1.035
