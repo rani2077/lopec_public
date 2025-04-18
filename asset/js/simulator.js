@@ -42,6 +42,7 @@ async function simulatorInputCalc() {
     *********************************************************************************************************************** */
     const urlParams = new URLSearchParams(window.location.search);
     const nameParam = urlParams.get('headerCharacterName');
+    document.title = `로펙 : ${nameParam}님의 시뮬레이터`
     /* **********************************************************************************************************************
     * function name		:	Modules
     * description		: 	모든 외부모듈 정의
