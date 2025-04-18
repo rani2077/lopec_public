@@ -82,7 +82,7 @@ async function simulatorInputCalc() {
             setTimeout(() => { document.body.dispatchEvent(new Event("change")) }, 500);
         }
     }
-    console.log(dataBaseResponse)
+    //console.log(dataBaseResponse)
     /* **********************************************************************************************************************
      * function name		:	originSpecPointToHtml
      * description			: 	사용자의 기본 스펙포인트를 표시해줌
@@ -90,7 +90,7 @@ async function simulatorInputCalc() {
     async function originSpecPointToHtml(specPoint) {
         // let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        console.log(originSpecPoint)
+        //console.log(originSpecPoint)
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
 
 
@@ -805,9 +805,9 @@ async function simulatorInputCalc() {
         // console.log("적주피", result.finalDamagePer)
         // console.log("치적 적용", result.finalDamagePer)
         // console.log("치피 적용", result.finalDamagePer)
-        console.log(dataBaseResponse)
-        console.log(arr)
-        console.log(result)
+        //console.log(dataBaseResponse)
+        //console.log(arr)
+        //console.log(result)
         return result;
     }
     // accessoryValueToObj()
