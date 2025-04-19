@@ -2169,23 +2169,15 @@ export async function getCharacterProfile(data, dataBase) {
 
             // --- 후보 비교 함수 ---
             function compareCandidates(a, b) {
-                console.log(`--- Comparing Candidates ---`);
-                console.log(`  A: Rounded=${a.karmaRounded}, RoundedHP=${a.maxHpUsingRoundedKarma}, ExactHP=${a.calculatedMaxHpExact?.toFixed(4)}, Proximity=${a.proximity?.toFixed(6)}`);
-                console.log(`  B: Rounded=${b.karmaRounded}, RoundedHP=${b.maxHpUsingRoundedKarma}, ExactHP=${b.calculatedMaxHpExact?.toFixed(4)}, Proximity=${b.proximity?.toFixed(6)}`);
-                console.log(`  maxHealth: ${maxHealth}`);
-
                 const diffA_rounded = Math.abs(maxHealth - a.maxHpUsingRoundedKarma);
                 const diffB_rounded = Math.abs(maxHealth - b.maxHpUsingRoundedKarma);
                 const TIE_THRESHOLD_ROUNDED = 0.1; // 1단계 동점 처리 임계값
-                console.log(`  Step 1: RoundedHP Diff A=${diffA_rounded.toFixed(4)}, B=${diffB_rounded.toFixed(4)}`);
 
                 // 1단계: maxHpUsingRoundedKarma 차이 비교
                 if (Math.abs(diffA_rounded - diffB_rounded) >= TIE_THRESHOLD_ROUNDED) {
                     const result = diffA_rounded - diffB_rounded;
-                    console.log(`  Step 1 Result: Difference >= ${TIE_THRESHOLD_ROUNDED}. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(4)})`);
                     return result; // 차이가 크면 바로 결정
                 }
-                console.log(`  Step 1 Result: Difference < ${TIE_THRESHOLD_ROUNDED}. Proceeding to Step 2.`);
 
                 // 2단계: calculatedMaxHpExact 차이 비교 (1단계에서 동점 시)
                 // calculatedMaxHpExact가 없을 경우 대비 (nullish coalescing)
@@ -2193,32 +2185,24 @@ export async function getCharacterProfile(data, dataBase) {
                 const exactHpB = b.calculatedMaxHpExact ?? Infinity;
                 const diffA_exact = Math.abs(maxHealth - exactHpA);
                 const diffB_exact = Math.abs(maxHealth - exactHpB);
-                console.log(`  Step 2: ExactHP Diff A=${diffA_exact.toFixed(4)}, B=${diffB_exact.toFixed(4)}`);
 
                 if (diffA_exact !== diffB_exact) { // 정확히 같지 않으면 비교
                     const result = diffA_exact - diffB_exact;
-                    console.log(`  Step 2 Result: ExactHP Diffs are different. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(4)})`);
                     return result;
                 }
-                console.log(`  Step 2 Result: ExactHP Diffs are identical. Proceeding to Step 3.`);
 
 
                 // 3단계: proximity 비교 (1, 2단계 모두 동점 시)
-                console.log(`  Step 3: Proximity A=${a.proximity?.toFixed(6)}, B=${b.proximity?.toFixed(6)}`);
                 if (a.proximity === 0 && b.proximity === 0) {
-                    console.log(`  Step 3 Result: Both proximities are 0. Returning 0 (tie).`);
                     return 0;
                 }
                 if (a.proximity === 0) {
-                    console.log(`  Step 3 Result: Proximity A is 0. Returning -1 (A wins).`);
                     return -1;
                 }
                 if (b.proximity === 0) {
-                    console.log(`  Step 3 Result: Proximity B is 0. Returning 1 (B wins).`);
                     return 1;
                 }
                 const result = a.proximity - b.proximity;
-                console.log(`  Step 3 Result: Comparing proximities. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(6)})`);
                 return result;
             }
             // --- 비교 함수 끝 ---
@@ -2236,7 +2220,7 @@ export async function getCharacterProfile(data, dataBase) {
                 // Proximity 필터링 (0.0005 미만 제외) 및 fallback
                 candidates.sort(compareCandidates); // 우선 순위 결정을 위해 먼저 정렬
                 // const proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0005); // const 제거, 외부 변수에 할당
-                proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0005);
+                proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0003);
                 const effectiveCandidates = proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates; // 필터링 결과 없으면 원본 사용
 
                 // 필터링된 리스트에서 최상위 후보 선택
@@ -2247,7 +2231,7 @@ export async function getCharacterProfile(data, dataBase) {
 
                 // Proximity 필터링 (0.0005 미만 제외) 및 fallback
                 // const proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0005); // const 제거, 외부 변수에 할당
-                proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0005);
+                proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0003);
                 const effectiveWorkingResults = proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults; // 필터링 결과 없으면 원본 사용
 
                 // 필터링된 리스트에서 최상위 후보 선택
@@ -2263,7 +2247,6 @@ export async function getCharacterProfile(data, dataBase) {
                 const relevantSortedCandidates = exactMatchFound
                     ? (proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates)
                     : (proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults);
-
 
                 // 정렬된 리스트에서 rangerIdx === 0 인 가장 높은 순위의 후보 찾기
                 if (relevantSortedCandidates.length > 0) {
