@@ -67,8 +67,6 @@ async function mainSearchFunction() {
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
     let dataBaseResponse = await component.dataBaseWrite(data, extractValue, specPoint);
     if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
-        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-        specPoint = await Modules.calcValue.specPointCalc(extractValue);
         if (extractValue.etcObj.supportCheck !== "서폿") {
             extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
         } else {
