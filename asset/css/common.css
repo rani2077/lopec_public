@@ -1244,6 +1244,7 @@ i.lopec_badge_06 {
 
 .sc-lopec-click .group-simple .result-item {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     padding: 12px 10px;
     border-bottom: 1px solid #e8eff5;
@@ -1267,7 +1268,6 @@ i.lopec_badge_06 {
 }
 
 .sc-lopec-click .group-simple .result-item .result {
-    /* width: 25%; */
     text-align: left;
     font-weight: inherit;
 }
@@ -1277,19 +1277,24 @@ i.lopec_badge_06 {
 }
 
 .sc-lopec-click .group-simple .result-item .name {
-    width: 40%;
+    width: 87px;
 }
 
 .sc-lopec-click .group-simple .result-item .job {
-    width: 15%;
+    width: 38px;
 }
 
 .sc-lopec-click .group-simple .result-item .point {
-    width: 22.5%;
+    width: 54px
 }
 
 .sc-lopec-click .group-simple .result-item .change {
-    width: 22.5%;
+    width: 54px;
+}
+
+.sc-lopec-click .group-simple .result-item .del {
+    text-decoration: underline;
+    width: 25px;
 }
 
 .sc-lopec-click .group-auto {

@@ -594,6 +594,7 @@ async function scLopecClickCreate() {
                             <span class="job result">직업</span>
                             <span class="point result">점수</span>
                             <span class="change result">딜러환산</span>
+                            <span class="del result"></span>
                         </div>
                     </div>
                     <div class="result-box">
@@ -1026,6 +1027,9 @@ async function scLopecClickCreate() {
         if (groupUserDataElement && groupUserDataElement.contains(e.target)) {
             return;
         }
+        if (e.target.classList.contains("del")) { // 삭제버튼 클릭시 on 유지
+            return;
+        }
         if (!lopecClickElement.classList.contains('on') && lopecClickElement.contains(e.target)) {
             lopecClickElement.classList.add("on");
             lopecClickElement.querySelector(".search-area input").focus();
@@ -1064,7 +1068,7 @@ async function scLopecClickCreate() {
 }
 
 // 함수 실행
-scLopecClickCreate();
+await scLopecClickCreate();
 
 
 /* **********************************************************************************************************************
@@ -1086,12 +1090,14 @@ async function lopecClickSearch() {
         // 한글 입력 이벤트 더블링 처리 <== 젠장 한글 또 너야
         if (key.code === `Enter` && !key.isComposing) {
             await simpleSearch(inputElement.value);
+            await groupUserDataSet(inputElement.value);
         }
     })
 
     let searchElement = lopecClickElement.querySelector(".group-simple .search");
     searchElement.addEventListener("click", async () => {
         await simpleSearch(inputElement.value);
+        await groupUserDataSet(inputElement.value);
     })
     const groupUserDataSkeletonElement = lopecClickElement.querySelector(".group-user-data").innerHTML;
     // let resultItem = ` <== 삭제예정
@@ -1163,7 +1169,8 @@ async function lopecClickSearch() {
             <span class="name result">${inputName}</span>
             <span class="job result">${extractValue.etcObj.supportCheck}</span>
             <span class="point result">${calcValue.completeSpecPoint.toFixed(2)}</span>
-            <span class="change result">${convertValue}</span>
+            <span class="change result" style="text-align:${convertValue == "-" ? "center" : "auto"}">${convertValue}</span>
+            <span class="del result">삭제</span>
         </div>`;
 
         let resultBox = lopecClickElement.querySelector('.result-area .result-box');
@@ -1183,8 +1190,12 @@ async function lopecClickSearch() {
             return;
         }
         if (!resultItem.classList.contains('sort')) {
-            let inputName = resultItem.querySelector(".name").textContent;
-            await groupUserDataSet(inputName);
+            if (e.target.classList.contains('del')) {
+                resultItem.remove();
+            } else {
+                // let inputName = resultItem.querySelector(".name").textContent;
+                // await groupUserDataSet(inputName);
+            }
         }
     })
     // let simpleNameFlag = "";
@@ -1472,21 +1483,7 @@ async function lopecClickSearch() {
     // })
 
 }
-lopecClickSearch()
-
-/* **********************************************************************************************************************
-* function name		:	
-* description		: 	
-*********************************************************************************************************************** */
-async function autoAppear() {
-    let element = document.querySelector(".auto.btn");
-    document.body.addEventListener("keypress", (key) => {
-        if (key.code === "KeyQ") {
-            element.classList.add("on");
-        }
-    })
-}
-autoAppear()
+await lopecClickSearch()
 
 /* **********************************************************************************************************************
  * function name		:	createTooltip()
