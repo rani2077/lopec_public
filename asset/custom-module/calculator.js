@@ -136,7 +136,6 @@ export async function specPointCalc(inputObj) {
     let damageBuff = (inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 아피강
     let hyperBuff = (10 * ((inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
     let statDamageBuff = ((inputObj.defaultObj.totalStatus + inputObj.bangleObj.haste + inputObj.bangleObj.special) * 0.015) / 100 + 1 // 특화 신속
-    console.log(inputObj.defaultObj.totalStatus)
     let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
 
