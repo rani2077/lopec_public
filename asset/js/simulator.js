@@ -83,12 +83,10 @@ async function simulatorInputCalc() {
         let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
         dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
-        if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
-            if (extractValue.etcObj.supportCheck !== "서폿") {
-                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-            } else {
-                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-            }
+        if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        } else if (dataBaseResponse.totalStatusSupport !== 0) {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
         }
         originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");

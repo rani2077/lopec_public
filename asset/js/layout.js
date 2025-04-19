@@ -1121,12 +1121,10 @@ async function lopecClickSearch() {
 
         let calcValue = await Modules.calcValue.specPointCalc(extractValue);
         let dataBaseResponse = await Modules.dataBase.dataBaseWrite(data, extractValue, calcValue);
-        if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
-            if (extractValue.etcObj.supportCheck !== "서폿") {
-                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-            } else {
-                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-            }
+        if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        } else if (dataBaseResponse.totalStatusSupport !== 0) {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
         }
         calcValue = await Modules.calcValue.specPointCalc(extractValue);
 

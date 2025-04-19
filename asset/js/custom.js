@@ -66,12 +66,10 @@ async function mainSearchFunction() {
     let extractValue = await Modules.transValue.getCharacterProfile(data);
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
     let dataBaseResponse = await component.dataBaseWrite(data, extractValue, specPoint);
-    if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
-        if (extractValue.etcObj.supportCheck !== "서폿") {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-        } else {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-        }
+    if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
+        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+    } else if (dataBaseResponse.totalStatusSupport !== 0) {
+        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
     }
     specPoint = await Modules.calcValue.specPointCalc(extractValue);
     // console.log(specPoint)
