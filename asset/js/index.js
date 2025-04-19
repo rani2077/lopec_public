@@ -472,15 +472,7 @@ let noticeArry = [
         `
     },
     {
-        name: `<em style="font-weight:700;font-size:16px;">25년 4월 3주차 중앙값 통계</em>`,
-        desc:
-            `4월 3주차 중앙값 통계입니다.
-            
-            <img src="/asset/image/median-20250415.png">`
-
-    },
-    {
-        name: `<em style="font-weight:700;font-size:16px;">2025-04-19 업데이트 안내</em>`,
+        name: `2025-04-19 업데이트 안내`,
         desc:
             `● 진화 카르마 알고리즘 4차 고도화
           &nbsp;&nbsp; 알고리즘 고도화를 진행했습니다.
@@ -498,6 +490,31 @@ let noticeArry = [
           &nbsp;&nbsp; 정말 죄송하지만 원활한 사용을 위해 화이트리스트 등록 혹은 잠시 꺼주시길 
           &nbsp;&nbsp; 부탁드립니다.
           &nbsp;&nbsp; 더불어, 현재 다른 광고 차단 프로그램과는 충돌이 없는 것으로 확인되었습니다.
+        `
+    },
+    {
+        name: `<em style="font-weight:700;font-size:16px;">25년 4월 3주차 중앙값 통계</em>`,
+        desc:
+            `4월 3주차 중앙값 통계입니다.
+            
+            <img src="/asset/image/median-20250415.png">`
+
+    },
+    {
+        name: `<em style="font-weight:700;font-size:16px;">2025-04-19 업데이트 안내 - 2</em>`,
+        desc:
+            `● 진화 카르마 알고리즘 5차 고도화
+          &nbsp;&nbsp; 알고리즘 고도화를 진행했습니다.
+          &nbsp;&nbsp; 슬슬 마무리단계로 예상되오며, 추정치 오류시 즉시 문의주시면 감사하겠습니다.
+
+          ● 랭킹 정보 추가
+          &nbsp;&nbsp; DB 서버 정리 작업이 순조롭게 진행되고 있어, 랭킹 정보를 다시 추가하였습니다.
+        
+          ● 서폿 직업군 최고 점수 미갱신 이슈 수정
+          &nbsp;&nbsp; 최고 점수를 갱신했음에도 상세정보에 제대로 표기되지 않는 오류를 수정하였습니다.
+
+          ● 네비게이션 바에 중앙값 항목을 추가
+          &nbsp;&nbsp; 이제 공지사항을 보지 않더라도 구간 별 중앙값을 간편하게 확인하실 수 있습니다.
         `
     },
 

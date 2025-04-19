@@ -65,12 +65,17 @@ async function mainSearchFunction() {
     console.log(data)
     let extractValue = await Modules.transValue.getCharacterProfile(data);
     let specPoint = await Modules.calcValue.specPointCalc(extractValue);
-    let Response = await component.dataBaseWrite(data, extractValue, specPoint);
-    if(Response.totalStatus !== 0 ){
-        extractValue.defaultObj.totalStatus = Response.totalStatus;
-        specPoint = await Modules.calcValue.specPointCalc(extractValue)
+    let dataBaseResponse = await component.dataBaseWrite(data, extractValue, specPoint);
+    if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
+        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        specPoint = await Modules.calcValue.specPointCalc(extractValue);
+        if (extractValue.etcObj.supportCheck !== "서폿") {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        } else {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+        }
     }
-    // console.log(Response)
+    specPoint = await Modules.calcValue.specPointCalc(extractValue);
     // console.log(specPoint)
     console.log("오리진obj", extractValue);
 
@@ -80,7 +85,7 @@ async function mainSearchFunction() {
     * function name		:	
     * description       : 	user정보가 로딩완료 시 scProfile을 재생성함
     *********************************************************************************************************************** */
-    document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, Response);
+    document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, dataBaseResponse);
     // document.querySelector(".sc-profile").outerHTML = await component.scProfile(data, extractValue, userDbInfo.characterRanking.RANKING_NUM, userDbInfo.classRanking.CLASS_RANK);
 
     /* **********************************************************************************************************************
@@ -957,7 +962,7 @@ async function mainSearchFunction() {
         let rank = extractValue.etcObj.evolutionkarmaRank;
         let level = extractValue.etcObj.evolutionkarmaPoint;
 
-        element.innerHTML = `<em style="color:#f00;font-weight:600;">${rank}</em>랭크`;
+        element.innerHTML = `<em style="color:#f00;font-weight:600;">${rank}</em>랭크` + " " + `<em style="color:#f00;font-weight:600;">${level}</em>레벨`;
     }
     karmaAreaCreate();
     /* **********************************************************************************************************************
@@ -1041,9 +1046,9 @@ async function mainSearchFunction() {
         let dealerSupportConversion = dealerMinMedianValue + (normalizedSupport * dealerRange);
 
         let specPointInfo = [
-            { name: "달성 최고 점수", value: Response.totalSum, icon: "medal-solid" },
+            { name: "달성 최고 점수", value: dataBaseResponse.totalSum, icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: dealerMedianValue, icon: "chart-simple-solid" },
-            { name: "최고 점수 달성일", value: formatDate(Response.achieveDate), icon: "calendar-check-solid" },
+            { name: "최고 점수 달성일", value: formatDate(dataBaseResponse.achieveDate), icon: "calendar-check-solid" },
         ]
         let armorInfo = [
             { name: "공격력", value: Number(specPoint.dealerAttackPowResult).toFixed(0), icon: "bolt-solid" },
@@ -1076,10 +1081,10 @@ async function mainSearchFunction() {
         }
 
         let supportSpecPointInfo = [
-            { name: "달성 최고 점수", value: Response.totalSumSupport, icon: "medal-solid" },
+            { name: "달성 최고 점수", value: dataBaseResponse.totalSumSupport, icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: supportMedianValue, icon: "chart-simple-solid" },
             { name: "딜러 환산 점수", value: dealerSupportConversion.toFixed(2), icon: "arrows-left-right-to-line-solid" },
-            { name: "최고 점수 달성일", value: formatDate(Response.achieveDate), icon: "calendar-check-solid" },
+            { name: "최고 점수 달성일", value: formatDate(dataBaseResponse.achieveDate), icon: "calendar-check-solid" },
         ]
         let supportBuffInfo = [
             { name: "상시버프", value: Number(specPoint.supportAllTimeBuff).toFixed(2) + "%", icon: "arrows-rotate-solid" },

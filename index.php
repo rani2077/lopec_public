@@ -77,7 +77,6 @@
                     <span class="blind">로펙 바로가기</span>
                 </a>
             </div>
-
         </section>
         <div class="notice-wrapper">
             <section class="sc-notice shadow">

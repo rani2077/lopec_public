@@ -33,7 +33,7 @@ async function importModuleManager() {
 
 let cachedData = null;
 let Modules;
-let dataBase;
+let dataBaseResponse;
 async function simulatorInputCalc() {
 
     /* ************~**********************************************************************************************************
@@ -82,12 +82,20 @@ async function simulatorInputCalc() {
     async function originSpecPointToHtml() {
         let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        dataBase = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
-        extractValue.defaultObj.totalStatus = dataBase.totalStatus;
+        dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
+        if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+            originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+            if (dataBaseResponse.totalStatus !== 0 && dataBaseResponse.totalStatusSupport !== 0) {
+                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+            } else {
+                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+            }
+        }
         originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
         let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
-        document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue);
+        document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue, dataBaseResponse);
         element.textContent = `기존 스펙포인트 - ${specPoint}`;
         element.setAttribute("data-spec-point", specPoint);
         await selectCreate(cachedData, Modules);
@@ -102,7 +110,7 @@ async function simulatorInputCalc() {
     gemInfoChangeToJson()
 
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-    console.log(dataBase.totalStatus)
+    console.log(dataBaseResponse.totalStatus)
     // extractValue.defaultObj.totalStatus = dataBase.totalStatus;
     //console.log("오리진OBJ", extractValue)
 
@@ -449,7 +457,7 @@ async function simulatorInputCalc() {
             maxHp: 0,
             statHp: 0,
             hpActive: 0,
-            totalStatus:dataBase.totalStatus,
+            totalStatus: extractValue.etcObj.supportCheck === "서폿" ? dataBaseResponse.totalStatusSupport : dataBaseResponse.totalStatus,
         }
         return result
     }

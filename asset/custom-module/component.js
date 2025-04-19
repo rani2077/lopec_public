@@ -56,10 +56,10 @@ export async function scProfile(userData, extractValue, response) {
     let title = userData.ArmoryProfile.Title;
     let guild = userData.ArmoryProfile.GuildName;
 
-    let jobRankVariable = "수집중"
-    let totalRankVariable = "수집중"
-    let totalPercent = "";
-    let jobPercent = "";
+    let jobRankVariable = response.classRank.rank;
+    let totalRankVariable = response.totalRank.rank;
+    let jobPercent = response.classRank.percentage;
+    let totalPercent = response.totalRank.percentage;
     //console.log(rankData)
     //if (rankData) {
     //    if (rankData.data.characterRanking && rankData.data.classRanking) {
@@ -114,8 +114,8 @@ export async function scProfile(userData, extractValue, response) {
                     <span class="name">길드 : ${guild ? guild : "없음"}</span>
                 </div>
                 <div class="info-box">
-                <span class="name">전체랭킹 : 점검중 </em></span>
-                    <span class="name">직업랭킹 : 점검중</span>
+                <span class="name">전체랭킹 : ${totalRankVariable.toLocaleString()}위<em style="margin-left:2px;font-size:11px;opacity:0.8;">${totalPercent}%</em></span>
+                    <span class="name">직업랭킹 : ${jobRankVariable.toLocaleString()}위<em style="margin-left:2px;font-size:11px;opacity:0.8;">${jobPercent}%</em></span>
                 </div>
             </div>
         </div>
@@ -433,6 +433,7 @@ export async function scNav(userName) {
         <a href="${mobilePath}/search/search.php?headerCharacterName=${name}" class="link ${searchClassName} search" data-page="sc-info" >메인</a>
         <a href="" class="link expedition" data-page="sc-expedition">원정대</a>
         <a href="${mobilePath}/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
+        <a href="https://cool-kiss-ec2.notion.site/1da758f0e8da8058a37bd1b7c6f49cd3?pvs=4" target="_blink" class="link" data-page="">중앙값</a>
     </nav>`
 }
 

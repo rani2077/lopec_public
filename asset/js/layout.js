@@ -19,7 +19,7 @@ async function importModuleManager() {
         import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
         import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 함수
 
-        //import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+        // import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
     ])
     let moduleObj = {
         fetchApi: modules[0],
@@ -29,6 +29,29 @@ async function importModuleManager() {
 
         //ocrModule: modules[2],
     }
+    // let modules = await Promise.all([
+    //     import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),      // lostark API 호출
+    //     import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 유저정보 수치화
+    //     import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 수치값을 스펙포인트로 계산
+    //     import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 컴포넌트 모듈
+    //     import("../js/character.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),                // 특정 유저의 상세정보를 저장
+    //     import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),               // 필터 호출 (기존 filter.js)
+    //     import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 시뮬레이터 필터
+    //     import("../filter/simulator-data.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),       // 장비레벨 스텟 정보
+    //     import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 수치값을 스펙포인트로 계산(어차피 기본적으로 전역변수가 됨)
+    // ])
+    // let Modules = {
+    //     fetchApi: modules[0],
+    //     transValue: modules[1],
+    //     calcValue: modules[2],
+    //     component: modules[3],
+    //     dataBase: modules[4],
+    //     originFilter: modules[5],
+    //     simulatorFilter: modules[6],
+    //     simulatorData: modules[7],
+    // }
+    globalThis.moduleObj = moduleObj;
+
 
     return moduleObj
 }
@@ -546,6 +569,8 @@ if (mobileCheck) {
 * useDevice         : 	데스크탑
 *********************************************************************************************************************** */
 let simpleNameFlag = "";
+{/* <span class="auto btn">딸깍</span> */ }
+
 async function scLopecClickCreate() {
     const clickElementHtml = `
         <section class="sc-lopec-click">
@@ -1092,24 +1117,42 @@ async function lopecClickSearch() {
             return; // 함수 종료
         }
         let extractValue = await Modules.transValue.getCharacterProfile(data);
-        
+
         let calcValue = await Modules.calcValue.specPointCalc(extractValue);
         let dataBaseResponse = await Modules.dataBase.dataBaseWrite(data, extractValue, calcValue);
-        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
+            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+            // specPoint = await Modules.calcValue.specPointCalc(extractValue);
+            if (extractValue.etcObj.supportCheck !== "서폿") {
+                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+            } else {
+                extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+            }
+
+        }
         calcValue = await Modules.calcValue.specPointCalc(extractValue);
 
-        let dealerMedianValue = extractValue.htmlObj.medianInfo.dealerMedianValue;
-        let supportMedianValue = extractValue.htmlObj.medianInfo.supportMedianValue;
         let supportMinMedianValue = extractValue.htmlObj.medianInfo.supportMinMedianValue;
+        let supportMaxMedianValue = extractValue.htmlObj.medianInfo.supportMaxMedianValue;
         let dealerMinMedianValue = extractValue.htmlObj.medianInfo.dealerMinMedianValue;
-        let medianDifferencePercent = (calcValue.completeSpecPoint - supportMinMedianValue) / supportMinMedianValue * 100;
-        let dealerSupportConversion = 0;
+        let dealerMaxMedianValue = extractValue.htmlObj.medianInfo.dealerMaxMedianValue;
+        let currentSupportScore = calcValue.completeSpecPoint;
+        let supportRange = supportMaxMedianValue - supportMinMedianValue;
+        let supportPosition = currentSupportScore - supportMinMedianValue;
 
-        if (medianDifferencePercent > 0) {
-            dealerSupportConversion = dealerMinMedianValue * (1 + medianDifferencePercent / 100);
-        } else {
-            dealerSupportConversion = dealerMinMedianValue * (1 + (medianDifferencePercent / 100));
+        // 3. 서포터 위치 정규화 (0 이상 값으로, 상한 제한 없음)
+        let normalizedSupport = 0; // 기본값 0
+        if (supportRange > 0) { // 0으로 나누는 경우 방지
+            normalizedSupport = supportPosition / supportRange;
         }
+        // 최소 0으로만 제한 (음수 점수는 없다고 가정)
+        normalizedSupport = Math.max(0, normalizedSupport);
+
+        // 4. 딜러 점수 범위 계산
+        let dealerRange = dealerMaxMedianValue - dealerMinMedianValue;
+
+        // 5. 최종 딜러 환산 점수 계산
+        let dealerSupportConversion = dealerMinMedianValue + (normalizedSupport * dealerRange);
 
         let convertValue;
         if (extractValue.etcObj.supportCheck === "서폿") {
@@ -1381,14 +1424,33 @@ async function lopecClickSearch() {
     *********************************************************************************************************************** */
     // let btnElement = document.querySelector(".sc-lopec-click .auto.btn");
     // await LopecOCR.loadDefaultTemplates();
-    // btnElement.addEventListener("click", async () => {
+    // btnElement.addEventListener("click", async (e) => {
+    //     let searchBtnElement = e.target.closest(".search-area").querySelector(".search.btn");
+    //     let timerCountDown
     //     try {
     //         // OCR 실행 (API 키 'free', 버전 'auto')
+    //         let leftTimeCount = 3;
+    //         searchBtnElement.textContent = "검색중";
+    //         btnElement.style.pointerEvents = "none";
+    //         btnElement.style.opacity = "0.2";
+    //         timerCountDown = setInterval(() => {
+    //             if (leftTimeCount >= 0) {
+    //                 btnElement.textContent = `딸깍(${leftTimeCount})`;
+    //                 leftTimeCount--;
+    //             } else {
+    //                 btnElement.style.pointerEvents = "auto";
+    //                 btnElement.style.opacity = "1";
+    //                 btnElement.textContent = `딸깍`;
+    //                 clearInterval(timerCountDown);
+    //             }
+    //         }, 1000)
     //         const nicknames = await LopecOCR.extractCharactersFromClipboard('free', 'auto', {
     //             onStatusUpdate: (message) => {
     //                 // statusElement.textContent = message; // 진행 상태 업데이트
     //             },
     //             onError: (error) => {
+    //                 clearInterval(timerCountDown);
+
     //                 // 사소한 오류는 여기서 처리 가능 (예: OCR API 자체 오류)
     //                 // errorElement.textContent = `처리 중 오류: ${error.message}`;
     //                 console.warn('OCR 처리 중 오류 발생:', error);
@@ -1397,10 +1459,15 @@ async function lopecClickSearch() {
     //         console.warn(nicknames)
     //         if (nicknames.length > 0) {
     //             nicknames.forEach(name => {
-    //                 simpleSearch(name)
+    //                 simpleSearch(name);
     //             })
     //         }
     //     } catch (error) {
+    //         btnElement.style.pointerEvents = "auto";
+    //         btnElement.style.opacity = "1";
+    //         searchBtnElement.textContent = "검색";
+    //         clearInterval(timerCountDown);
+    //         alert("이미지가 감지되지 않았습니다.\n파티 입장 후 alt + Printscreen키를 누른 뒤 사용해주세요!")
     //         // 치명적인 오류 처리 (예: 클립보드 접근 불가, 유효하지 않은 이미지 등)
     //         // statusElement.textContent = 'OCR 실패';
     //         // errorElement.textContent = `오류: ${error.message}`;

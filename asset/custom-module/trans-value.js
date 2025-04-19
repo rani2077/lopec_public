@@ -39,7 +39,6 @@ async function importModuleManager() {
 // import * as SimulatorFilter from "../filter/simulator-filter.js";
 
 
-
 export async function getCharacterProfile(data, dataBase) {
     let Modules = await importModuleManager();
     // console.log(Modules.originFilter)
@@ -2117,11 +2116,17 @@ export async function getCharacterProfile(data, dataBase) {
                     if (Math.abs(totalPercentBonus - 0.02) < 0.001) unifiedDesc = `효과(2%)`;
                     else if (Math.abs(totalPercentBonus - 0.05) < 0.001) unifiedDesc = `효과(5%)`;
 
+                    // --- maxHpUsingRoundedKarma 계산 (이중 버림 유지) ---
+                    const sumBasedOnExactKarma = baseHealth + flatHpBonus + (estimatedKarma * KARMA_HP_PER_LEVEL);
+                    const intermediateExact = sumBasedOnExactKarma * vitalityRate;
+                    const calculatedMaxHpExact = intermediateExact * percentFactor;
+
                     allResults.push({
                         formulaDesc: unifiedDesc, rangerIdx: rangerIdx,
                         karmaExact: estimatedKarma, karmaRounded: roundedValue, proximity: proximity,
                         isPossible: isPossible, buffLevelSum: petIdx + rangerIdx,
-                        maxHpUsingRoundedKarma: maxHpUsingRoundedKarma
+                        maxHpUsingRoundedKarma: maxHpUsingRoundedKarma,
+                        calculatedMaxHpExact: calculatedMaxHpExact // << 이게 포함되었는지 확인
                     });
                 }
             }
@@ -2159,44 +2164,106 @@ export async function getCharacterProfile(data, dataBase) {
             let exactMatchFound = exactMatches.length > 0;
             let initialBestResult; // 먼저 정렬된 결과 중 최상위를 찾음
             let candidates = []; // <--- Declare candidates here
+            let proximityFilteredCandidates = []; // 스코프 문제 해결을 위해 외부 선언
+            let proximityFilteredWorkingResults = []; // 스코프 문제 해결을 위해 외부 선언
 
             // --- 후보 비교 함수 ---
             function compareCandidates(a, b) {
-                const diffA = Math.abs(maxHealth - a.maxHpUsingRoundedKarma);
-                const diffB = Math.abs(maxHealth - b.maxHpUsingRoundedKarma);
-                if (diffA !== diffB) return diffA - diffB;
-                if (a.proximity === 0 && b.proximity === 0) return 0;
-                if (a.proximity === 0) return -1;
-                if (b.proximity === 0) return 1;
-                return a.proximity - b.proximity;
+                console.log(`--- Comparing Candidates ---`);
+                console.log(`  A: Rounded=${a.karmaRounded}, RoundedHP=${a.maxHpUsingRoundedKarma}, ExactHP=${a.calculatedMaxHpExact?.toFixed(4)}, Proximity=${a.proximity?.toFixed(6)}`);
+                console.log(`  B: Rounded=${b.karmaRounded}, RoundedHP=${b.maxHpUsingRoundedKarma}, ExactHP=${b.calculatedMaxHpExact?.toFixed(4)}, Proximity=${b.proximity?.toFixed(6)}`);
+                console.log(`  maxHealth: ${maxHealth}`);
+
+                const diffA_rounded = Math.abs(maxHealth - a.maxHpUsingRoundedKarma);
+                const diffB_rounded = Math.abs(maxHealth - b.maxHpUsingRoundedKarma);
+                const TIE_THRESHOLD_ROUNDED = 0.1; // 1단계 동점 처리 임계값
+                console.log(`  Step 1: RoundedHP Diff A=${diffA_rounded.toFixed(4)}, B=${diffB_rounded.toFixed(4)}`);
+
+                // 1단계: maxHpUsingRoundedKarma 차이 비교
+                if (Math.abs(diffA_rounded - diffB_rounded) >= TIE_THRESHOLD_ROUNDED) {
+                    const result = diffA_rounded - diffB_rounded;
+                    console.log(`  Step 1 Result: Difference >= ${TIE_THRESHOLD_ROUNDED}. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(4)})`);
+                    return result; // 차이가 크면 바로 결정
+                }
+                console.log(`  Step 1 Result: Difference < ${TIE_THRESHOLD_ROUNDED}. Proceeding to Step 2.`);
+
+                // 2단계: calculatedMaxHpExact 차이 비교 (1단계에서 동점 시)
+                // calculatedMaxHpExact가 없을 경우 대비 (nullish coalescing)
+                const exactHpA = a.calculatedMaxHpExact ?? Infinity;
+                const exactHpB = b.calculatedMaxHpExact ?? Infinity;
+                const diffA_exact = Math.abs(maxHealth - exactHpA);
+                const diffB_exact = Math.abs(maxHealth - exactHpB);
+                console.log(`  Step 2: ExactHP Diff A=${diffA_exact.toFixed(4)}, B=${diffB_exact.toFixed(4)}`);
+
+                if (diffA_exact !== diffB_exact) { // 정확히 같지 않으면 비교
+                    const result = diffA_exact - diffB_exact;
+                    console.log(`  Step 2 Result: ExactHP Diffs are different. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(4)})`);
+                    return result;
+                }
+                 console.log(`  Step 2 Result: ExactHP Diffs are identical. Proceeding to Step 3.`);
+
+
+                // 3단계: proximity 비교 (1, 2단계 모두 동점 시)
+                console.log(`  Step 3: Proximity A=${a.proximity?.toFixed(6)}, B=${b.proximity?.toFixed(6)}`);
+                 if (a.proximity === 0 && b.proximity === 0) {
+                     console.log(`  Step 3 Result: Both proximities are 0. Returning 0 (tie).`);
+                    return 0;
+                 }
+                 if (a.proximity === 0) {
+                     console.log(`  Step 3 Result: Proximity A is 0. Returning -1 (A wins).`);
+                     return -1;
+                 }
+                 if (b.proximity === 0) {
+                     console.log(`  Step 3 Result: Proximity B is 0. Returning 1 (B wins).`);
+                     return 1;
+                 }
+                 const result = a.proximity - b.proximity;
+                 console.log(`  Step 3 Result: Comparing proximities. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(6)})`);
+                 return result;
             }
             // --- 비교 함수 끝 ---
 
             // 4. 최종 후보 선택
             if (exactMatchFound) {
                 // 단독 펫1 후보 제외 시도
-                const filteredMatches = exactMatches.filter(match => {
-                    const petIdx = match.buffLevelSum - match.rangerIdx;
+                    const filteredMatches = exactMatches.filter(match => {
+                        const petIdx = match.buffLevelSum - match.rangerIdx;
                     return !(petIdx === 1 && match.rangerIdx === 0);
-                });
+                    });
                 // Assign to the 'candidates' declared outside
                 candidates = filteredMatches.length > 0 ? filteredMatches : exactMatches;
 
-                if (candidates.length === 1) {
-                    initialBestResult = candidates[0];
-                } else {
-                    candidates.sort(compareCandidates);
-                    initialBestResult = candidates[0];
-                }
+                // Proximity 필터링 (0.0005 미만 제외) 및 fallback
+                candidates.sort(compareCandidates); // 우선 순위 결정을 위해 먼저 정렬
+                // const proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0005); // const 제거, 외부 변수에 할당
+                proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0005);
+                const effectiveCandidates = proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates; // 필터링 결과 없으면 원본 사용
+
+                // 필터링된 리스트에서 최상위 후보 선택
+                initialBestResult = effectiveCandidates[0]; // candidates.sort()는 이미 위에서 수행됨
+
             } else { // 정확한 일치 없을 경우
                 currentWorkingResults.sort(compareCandidates); // Rounded HP diff -> proximity 정렬
-                initialBestResult = currentWorkingResults[0];
+
+                // Proximity 필터링 (0.0005 미만 제외) 및 fallback
+                // const proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0005); // const 제거, 외부 변수에 할당
+                proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0005);
+                const effectiveWorkingResults = proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults; // 필터링 결과 없으면 원본 사용
+
+                // 필터링된 리스트에서 최상위 후보 선택
+                initialBestResult = effectiveWorkingResults[0]; // currentWorkingResults.sort()는 이미 위에서 수행됨
+
+                // initialBestResult = currentWorkingResults[0]; // 기존 로직 주석 처리 또는 삭제
             }
 
             // --- 서포터 방범대 0 우선 로직 추가 ---
             let finalBestResult = initialBestResult; // 기본값은 정렬 최상위 결과
-            if (!isSupport) { 
-                const relevantSortedCandidates = exactMatchFound ? candidates : currentWorkingResults;
+            if (!isSupport) {
+                // Proximity 필터링이 적용된 리스트를 사용하도록 수정
+                const relevantSortedCandidates = exactMatchFound
+                    ? (proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates)
+                    : (proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults);
+
 
                 // 정렬된 리스트에서 rangerIdx === 0 인 가장 높은 순위의 후보 찾기
                 if (relevantSortedCandidates.length > 0) {
@@ -2241,8 +2308,8 @@ export async function getCharacterProfile(data, dataBase) {
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
         // 결과 로깅 (필요시 주석 해제)
-        //console.log("카르마 추정 결과:", result.bestResult);
-        //console.log("모든 가능성:", result.allResults);
+        console.log("카르마 추정 결과:", result.bestResult);
+        console.log("모든 가능성:", result.allResults);
 
         etcObj.evolutionkarmaRank = 0; // 기본값 설정
         etcObj.evolutionkarmaPoint = result.bestResult.karmaLevel;

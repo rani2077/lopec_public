@@ -1025,6 +1025,10 @@ i.lopec_badge_01 {
     background-image: url("/asset/image/lopec_badge_01.png");
 }
 
+i.lopec_badge_02 {
+    background-image: url("/asset/image/lopec_badge_02.png");
+}
+
 i.lopec_badge_03 {
     background-image: url("/asset/image/lopec_badge_03.png");
 }
@@ -1267,8 +1271,9 @@ i.lopec_badge_06 {
     text-align: left;
     font-weight: inherit;
 }
-.sc-lopec-click .group-simple .result-item:nth-child(4n)  {
-    border-bottom:1px solid #1e1e1e;
+
+.sc-lopec-click .group-simple .result-item:nth-child(4n) {
+    border-bottom: 1px solid #1e1e1e;
 }
 
 .sc-lopec-click .group-simple .result-item .name {
