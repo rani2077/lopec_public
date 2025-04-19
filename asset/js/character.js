@@ -71,8 +71,8 @@ export var insertLopecCharacters = function (lchaCharacterNickname, lchaCharacte
 					// console.log("LOPEC_API 저장 Exception");
 				}
 				let rankData = await fetchLostArkRankingData(lchaCharacterNickname, lchaCharacterClass);
-				console.log(msg)
-				console.log(rankData)
+				//console.log(msg)
+				//console.log(rankData)
 				msg.classRank = rankData.classRank;
 				msg.totalRank = rankData.totalRank;
 				resolve(msg); // 성공 시 resolve 함수를 호출하며 msg 값을 전달

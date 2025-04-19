@@ -2308,8 +2308,8 @@ export async function getCharacterProfile(data, dataBase) {
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
         // 결과 로깅 (필요시 주석 해제)
-        console.log("카르마 추정 결과:", result.bestResult);
-        console.log("모든 가능성:", result.allResults);
+        //console.log("카르마 추정 결과:", result.bestResult);
+        //console.log("모든 가능성:", result.allResults);
 
         etcObj.evolutionkarmaRank = 0; // 기본값 설정
         etcObj.evolutionkarmaPoint = result.bestResult.karmaLevel;
