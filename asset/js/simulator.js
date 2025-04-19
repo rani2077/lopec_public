@@ -84,9 +84,7 @@ async function simulatorInputCalc() {
         let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
         dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
         if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-            originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-            if (dataBaseResponse.totalStatus !== 0 && dataBaseResponse.totalStatusSupport !== 0) {
+            if (extractValue.etcObj.supportCheck !== "서폿") {
                 extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
             } else {
                 extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
@@ -110,8 +108,15 @@ async function simulatorInputCalc() {
     gemInfoChangeToJson()
 
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-    console.log(dataBaseResponse.totalStatus)
-    // extractValue.defaultObj.totalStatus = dataBase.totalStatus;
+    // if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
+    //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+    //     if (dataBaseResponse.totalStatus !== 0 && dataBaseResponse.totalStatusSupport !== 0) {
+    //         extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+    //     } else {
+    //         extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+    //     }
+    // }
+    console.log(dataBaseResponse)
     //console.log("오리진OBJ", extractValue)
 
 

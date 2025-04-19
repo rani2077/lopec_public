@@ -629,7 +629,7 @@ export async function getCharacterProfile(data, dataBase) {
             defaultObj.totalStatus = (defaultObj.haste + defaultObj.special + defaultObj.crit - bangleObj.haste - bangleObj.crit - bangleObj.special)
         }
         // console.log(dataBase)
-    
+
     };
     bangleBlockStats();
 
@@ -1881,9 +1881,9 @@ export async function getCharacterProfile(data, dataBase) {
                 return result;
             }
             let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
-                 //console.log("gemResultValue" + gemResultValue)
-                 //console.log("finalGemValue.per" + finalGemValue.per)
-                 //console.log("finalGemValue.skillper" + finalGemValue.skillPer)
+                //console.log("gemResultValue" + gemResultValue)
+                //console.log("finalGemValue.per" + finalGemValue.per)
+                //console.log("finalGemValue.skillper" + finalGemValue.skillPer)
                 return gemResultValue + finalGemValue.per * finalGemValue.skillPer
             }, 0)
 
@@ -2200,36 +2200,36 @@ export async function getCharacterProfile(data, dataBase) {
                     console.log(`  Step 2 Result: ExactHP Diffs are different. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(4)})`);
                     return result;
                 }
-                 console.log(`  Step 2 Result: ExactHP Diffs are identical. Proceeding to Step 3.`);
+                console.log(`  Step 2 Result: ExactHP Diffs are identical. Proceeding to Step 3.`);
 
 
                 // 3단계: proximity 비교 (1, 2단계 모두 동점 시)
                 console.log(`  Step 3: Proximity A=${a.proximity?.toFixed(6)}, B=${b.proximity?.toFixed(6)}`);
-                 if (a.proximity === 0 && b.proximity === 0) {
-                     console.log(`  Step 3 Result: Both proximities are 0. Returning 0 (tie).`);
+                if (a.proximity === 0 && b.proximity === 0) {
+                    console.log(`  Step 3 Result: Both proximities are 0. Returning 0 (tie).`);
                     return 0;
-                 }
-                 if (a.proximity === 0) {
-                     console.log(`  Step 3 Result: Proximity A is 0. Returning -1 (A wins).`);
-                     return -1;
-                 }
-                 if (b.proximity === 0) {
-                     console.log(`  Step 3 Result: Proximity B is 0. Returning 1 (B wins).`);
-                     return 1;
-                 }
-                 const result = a.proximity - b.proximity;
-                 console.log(`  Step 3 Result: Comparing proximities. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(6)})`);
-                 return result;
+                }
+                if (a.proximity === 0) {
+                    console.log(`  Step 3 Result: Proximity A is 0. Returning -1 (A wins).`);
+                    return -1;
+                }
+                if (b.proximity === 0) {
+                    console.log(`  Step 3 Result: Proximity B is 0. Returning 1 (B wins).`);
+                    return 1;
+                }
+                const result = a.proximity - b.proximity;
+                console.log(`  Step 3 Result: Comparing proximities. Returning ${result > 0 ? 'B wins' : 'A wins'} (${result.toFixed(6)})`);
+                return result;
             }
             // --- 비교 함수 끝 ---
 
             // 4. 최종 후보 선택
             if (exactMatchFound) {
                 // 단독 펫1 후보 제외 시도
-                    const filteredMatches = exactMatches.filter(match => {
-                        const petIdx = match.buffLevelSum - match.rangerIdx;
+                const filteredMatches = exactMatches.filter(match => {
+                    const petIdx = match.buffLevelSum - match.rangerIdx;
                     return !(petIdx === 1 && match.rangerIdx === 0);
-                    });
+                });
                 // Assign to the 'candidates' declared outside
                 candidates = filteredMatches.length > 0 ? filteredMatches : exactMatches;
 

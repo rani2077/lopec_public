@@ -50,11 +50,12 @@ async function importModuleManager() {
     //     simulatorFilter: modules[6],
     //     simulatorData: modules[7],
     // }
-    globalThis.moduleObj = moduleObj;
 
 
     return moduleObj
 }
+// globalThis.moduleObj = importModuleManager();
+
 
 /* **********************************************************************************************************************
 * variable name		:	userDeviceToRedirection
@@ -1121,14 +1122,11 @@ async function lopecClickSearch() {
         let calcValue = await Modules.calcValue.specPointCalc(extractValue);
         let dataBaseResponse = await Modules.dataBase.dataBaseWrite(data, extractValue, calcValue);
         if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-            // specPoint = await Modules.calcValue.specPointCalc(extractValue);
             if (extractValue.etcObj.supportCheck !== "서폿") {
                 extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
             } else {
                 extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
             }
-
         }
         calcValue = await Modules.calcValue.specPointCalc(extractValue);
 
