@@ -333,8 +333,8 @@
     padding: 20px 0 10px;
 }
 
-.sc-info .group-info .spec-area.alert .tier-box{
-    cursor:pointer;
+.sc-info .group-info .spec-area.alert .tier-box {
+    cursor: pointer;
 }
 
 .sc-info .group-info .spec-area.alert .tier-box:after {
@@ -1138,3 +1138,7 @@
 .sc-expedition .expedition-area .expedition-list .info-box .armor-level {}
 
 .sc-expedition .expedition-area .expedition-list .info-box .spec {}
+
+.sc-history {
+    display: none;
+}

@@ -398,7 +398,8 @@ export async function scNav(userName) {
     }
     async function scNavEvent() {
         document.querySelector(".sc-nav").insertAdjacentHTML('afterend', await scExpeditionSkeleton());
-        let elements = document.querySelectorAll(`.sc-nav .link.${nowPage}, .sc-nav .link.expedition`);
+        document.querySelector(".sc-nav").insertAdjacentHTML('afterend', await scHistorySkeleton());
+        let elements = document.querySelectorAll(`.sc-nav .link.${nowPage}, .sc-nav .link[href=""]`);
         let expeditionFlag = null;
         elements.forEach((element, idx) => {
             element.addEventListener("click", async (e) => {
@@ -409,10 +410,12 @@ export async function scNav(userName) {
                 element.classList.add("on");
                 let scInfo = document.querySelector(".sc-info");
                 let scExpeditionElement = document.querySelector(".sc-expedition");
+                let scHistoryElement = document.querySelector(".sc-history");
 
-                let page = element.getAttribute("data-page");
                 scInfo.style.display = "none";
                 scExpeditionElement.style.display = "none";
+                scHistoryElement.style.display = "none";
+                let page = element.getAttribute("data-page");
                 document.querySelector(`.${page}`).style.display = "flex";
                 if (element.classList.contains("expedition") && !expeditionFlag) {
                     expeditionFlag = true;
@@ -430,9 +433,10 @@ export async function scNav(userName) {
     }
     return `
     <nav class="sc-nav">
-        <a href="${mobilePath}/search/search.php?headerCharacterName=${name}" class="link ${searchClassName} search" data-page="sc-info" >메인</a>
-        <a href="" class="link expedition" data-page="sc-expedition">원정대</a>
+        <a href="${mobilePath}/search/search.php?headerCharacterName=${name}" class="link search ${searchClassName}" data-page="sc-info" >메인</a>
         <a href="${mobilePath}/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
+        <a href="" class="link expedition" data-page="sc-expedition">원정대</a>
+        <a href="" class="link history" data-page="sc-history">히스토리</a>
         <a href="https://cool-kiss-ec2.notion.site/1da758f0e8da8058a37bd1b7c6f49cd3?pvs=4" target="_blink" class="link" data-page="">중앙값</a>
     </nav>`
 }
@@ -530,6 +534,16 @@ async function scExpedition(inputName) {
     return `
         <section class="sc-expedition">
             ${groupServer.join('')}
+        </section>`;
+}
+/* **********************************************************************************************************************
+* function name		:	scHistory
+* description       : 	원정대 컴포넌트
+*********************************************************************************************************************** */
+async function scHistorySkeleton() {
+    return `
+        <section class="sc-history">
+            <i>로딩중...</i>
         </section>`;
 }
 

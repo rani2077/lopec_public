@@ -986,7 +986,8 @@ export async function getCharacterProfile(data, dataBase) {
                 if (stoneArry.AbilityStoneLevel == filterArry.level && stoneArry.Name == filterArry.name && stoneArry.Name == name) {
 
                     engObj.finalDamagePer = (engObj.finalDamagePer) / notZero(minusVal) //퐁트라이커기준 저주받은 인형(돌맹이) 제거값
-                    engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) + filterArry.finalDamagePer / 100));
+                    //engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) * ((filterArry.finalDamagePer / 100) + 1)));
+                    engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) + (filterArry.finalDamagePer / 100)));
                     engObj.engBonusPer = (engObj.engBonusPer) / notZero(minusVal)
                     engObj.engBonusPer = (engObj.engBonusPer * (notZero(minusVal) + filterArry.engBonusPer / 100));
                     engObj.atkPer = (engObj.atkPer + filterArry.atkPer);
@@ -2166,6 +2167,7 @@ export async function getCharacterProfile(data, dataBase) {
             let candidates = []; // <--- Declare candidates here
             let proximityFilteredCandidates = []; // 스코프 문제 해결을 위해 외부 선언
             let proximityFilteredWorkingResults = []; // 스코프 문제 해결을 위해 외부 선언
+            let finalContenders = []; // 최종 후보 결정을 위한 리스트
 
             // --- 후보 비교 함수 ---
             function compareCandidates(a, b) {
@@ -2217,25 +2219,25 @@ export async function getCharacterProfile(data, dataBase) {
                 // Assign to the 'candidates' declared outside
                 candidates = filteredMatches.length > 0 ? filteredMatches : exactMatches;
 
-                // Proximity 필터링 (0.0005 미만 제외) 및 fallback
+                // Proximity 필터링 제거: 아래 filter 라인 및 관련 변수 사용 로직 수정
                 candidates.sort(compareCandidates); // 우선 순위 결정을 위해 먼저 정렬
-                // const proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0005); // const 제거, 외부 변수에 할당
-                proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0003);
-                const effectiveCandidates = proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates; // 필터링 결과 없으면 원본 사용
+                // proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0003); // 필터링 제거
+                // const effectiveCandidates = proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates; // effective 변수 불필요, candidates 직접 사용
 
-                // 필터링된 리스트에서 최상위 후보 선택
-                initialBestResult = effectiveCandidates[0]; // candidates.sort()는 이미 위에서 수행됨
+                // 필터링된 리스트에서 최상위 후보 선택 -> 정렬된 candidates 에서 직접 선택
+                initialBestResult = candidates[0]; // candidates.sort()는 이미 위에서 수행됨
+                finalContenders = candidates; // 최종 후보 리스트 저장 (Proximity 필터링 거치지 않음)
 
             } else { // 정확한 일치 없을 경우
                 currentWorkingResults.sort(compareCandidates); // Rounded HP diff -> proximity 정렬
 
-                // Proximity 필터링 (0.0005 미만 제외) 및 fallback
-                // const proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0005); // const 제거, 외부 변수에 할당
-                proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0003);
-                const effectiveWorkingResults = proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults; // 필터링 결과 없으면 원본 사용
+                // Proximity 필터링 제거: 아래 filter 라인 및 관련 변수 사용 로직 수정
+                // proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0003); // 필터링 제거
+                // const effectiveWorkingResults = proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults; // effective 변수 불필요, currentWorkingResults 직접 사용
 
-                // 필터링된 리스트에서 최상위 후보 선택
-                initialBestResult = effectiveWorkingResults[0]; // currentWorkingResults.sort()는 이미 위에서 수행됨
+                // 필터링된 리스트에서 최상위 후보 선택 -> 정렬된 currentWorkingResults 에서 직접 선택
+                initialBestResult = currentWorkingResults[0]; // currentWorkingResults.sort()는 이미 위에서 수행됨
+                finalContenders = currentWorkingResults; // 최종 후보 리스트 저장 (Proximity 필터링 거치지 않음)
 
                 // initialBestResult = currentWorkingResults[0]; // 기존 로직 주석 처리 또는 삭제
             }
@@ -2243,10 +2245,10 @@ export async function getCharacterProfile(data, dataBase) {
             // --- 서포터 방범대 0 우선 로직 추가 ---
             let finalBestResult = initialBestResult; // 기본값은 정렬 최상위 결과
             if (!isSupport) {
-                // Proximity 필터링이 적용된 리스트를 사용하도록 수정
+                // Proximity 필터링이 제거되었으므로, candidates 또는 currentWorkingResults 직접 참조
                 const relevantSortedCandidates = exactMatchFound
-                    ? (proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates)
-                    : (proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults);
+                    ? candidates // proximityFiltered* 대신 candidates 사용
+                    : currentWorkingResults; // proximityFiltered* 대신 currentWorkingResults 사용
 
                 // 정렬된 리스트에서 rangerIdx === 0 인 가장 높은 순위의 후보 찾기
                 if (relevantSortedCandidates.length > 0) {
@@ -2270,6 +2272,49 @@ export async function getCharacterProfile(data, dataBase) {
             }
             // --- 서포터 우선 로직 끝 ---
 
+            // --- 최종 결정: 후보 2명 이상 시 최고 Proximity 우선 --- (새 로직)
+            if (finalContenders.length >= 2) {
+                //console.log(`[카르마 디버그] 최종 후보 ${finalContenders.length}명 발견. 최고 근접도(Proximity) 규칙 적용.`);
+                // proximity 기준으로 내림차순 정렬 (높은 값이 먼저 오도록)
+                finalContenders.sort((a, b) => b.proximity - a.proximity);
+                const highestProximityCandidate = finalContenders[0];
+                //console.log(`[카르마 디버그] 최고 근접도(${highestProximityCandidate.proximity.toFixed(6)}) 후보:`, JSON.stringify(highestProximityCandidate));
+
+                if (finalBestResult !== highestProximityCandidate) {
+                    //console.log(`[카르마 디버그] 이전 최종 후보를 최고 근접도 후보로 변경합니다.`);
+                    finalBestResult = highestProximityCandidate;
+                } else {
+                    //console.log(`[카르마 디버그] 기존 최종 후보가 이미 최고 근접도 후보입니다.`);
+                }
+            }
+
+            // --- 최종 결정: 특별 후보(펫0/펫5) 우선 검증 --- (수정된 로직)
+            const provisionalFinalBestResult = finalBestResult; // 현재까지의 최선 후보 저장
+            const pet0Candidate = finalContenders.find(c => c.buffLevelSum === 0);
+            // const effect5Candidate = finalContenders.find(c => c.formulaDesc === "효과(5%)"); // 기존 조건 주석 처리
+            const pet5Candidate = finalContenders.find(c => c.buffLevelSum - c.rangerIdx === 5); // 펫 인덱스 5 확인
+
+            //console.log(`[카르마 디버그] 특별 후보 검증 시작. 임시 최종 후보:`, JSON.stringify(provisionalFinalBestResult));
+            //console.log(`[카르마 디버그] 펫0 후보 발견 여부: ${!!pet0Candidate}, 펫5 후보 발견 여부: ${!!pet5Candidate}`); // 로그 수정
+
+            if (pet0Candidate && !pet5Candidate) {
+                // 펫0 후보만 존재
+                //console.log(`[카르마 디버그] 펫0 후보만 발견되어 최종 후보로 선택합니다.`);
+                finalBestResult = pet0Candidate;
+            } else if (!pet0Candidate && pet5Candidate) {
+                // 펫5 후보만 존재 (로그 수정)
+                //console.log(`[카르마 디버그] 펫5 후보만 발견되어 최종 후보로 선택합니다.`);
+                finalBestResult = pet5Candidate;
+            } else if (pet0Candidate && pet5Candidate) {
+                // 둘 다 존재: 임시 최종 후보 유지 (로그 수정)
+                //console.log(`[카르마 디버그] 펫0 및 펫5 후보가 모두 존재하여, 이전 단계의 임시 최종 후보를 유지합니다.`);
+                finalBestResult = provisionalFinalBestResult; // 명시적으로 유지
+            } else {
+                // 둘 다 없음: 임시 최종 후보 유지 (로그 수정)
+                //console.log(`[카르마 디버그] 펫0 및 펫5 후보가 모두 없어, 이전 단계의 임시 최종 후보를 유지합니다.`);
+                finalBestResult = provisionalFinalBestResult; // 명시적으로 유지
+            }
+
 
             // 5. 최종 결과 반환 (범위 보정 포함)
             let finalKarmaLevel = Math.round(finalBestResult.karmaExact);
@@ -2291,8 +2336,8 @@ export async function getCharacterProfile(data, dataBase) {
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
         // 결과 로깅 (필요시 주석 해제)
-        //console.log("카르마 추정 결과:", result.bestResult);
-        //console.log("모든 가능성:", result.allResults);
+        console.log("카르마 추정 결과:", result.bestResult);
+        console.log("모든 가능성:", result.allResults);
 
         etcObj.evolutionkarmaRank = 0; // 기본값 설정
         etcObj.evolutionkarmaPoint = result.bestResult.karmaLevel;
@@ -2305,16 +2350,41 @@ export async function getCharacterProfile(data, dataBase) {
         else if (etcObj.evolutionkarmaPoint >= 5) etcObj.evolutionkarmaRank = 2;
         else if (etcObj.evolutionkarmaPoint >= 1) etcObj.evolutionkarmaRank = 1;
 
-        // 깨달음 포인트 및 무기 공격력 계산
-        let enlightkarmaPoint = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);
-        arkObj.weaponAtkPer = 1;
-        if (enlightkarmaPoint >= 6) arkObj.weaponAtkPer = 1.021;
-        else if (enlightkarmaPoint >= 5) arkObj.weaponAtkPer = 1.017;
-        else if (enlightkarmaPoint >= 4) arkObj.weaponAtkPer = 1.013;
-        else if (enlightkarmaPoint >= 3) arkObj.weaponAtkPer = 1.009;
-        else if (enlightkarmaPoint >= 2) arkObj.weaponAtkPer = 1.005;
-        else if (enlightkarmaPoint >= 1) arkObj.weaponAtkPer = 1.001;
 
+        // 진화 카르마 랭크에따른 진피 및 낙인력 추가
+        if (etcObj.evolutionkarmaRank === 6) {
+            arkObj.evolutionDamage += 0.00;
+            arkObj.stigmaPer += 0
+        } else if (etcObj.evolutionkarmaRank === 5) {
+            arkObj.evolutionDamage += 0.00;
+            arkObj.stigmaPer += 0
+        } else if (etcObj.evolutionkarmaRank === 4) {
+            arkObj.evolutionDamage += 0.00;
+            arkObj.stigmaPer += 0
+        } else if (etcObj.evolutionkarmaRank === 3) {
+            arkObj.evolutionDamage += 0.00;
+            arkObj.stigmaPer += 0
+        } else if (etcObj.evolutionkarmaRank === 2) {
+            arkObj.evolutionDamage += 0.00;
+            arkObj.stigmaPer += 0
+        } else if (etcObj.evolutionkarmaRank === 1) {
+            arkObj.evolutionDamage += 0.00;
+            arkObj.stigmaPer += 0
+        } else {
+            arkObj.evolutionDamage += 0.00;
+            arkObj.stigmaPer += 0
+        }
+
+        // 깨달음 포인트 및 무기 공격력 계산
+        let enlightkarmaRank = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);
+        arkObj.weaponAtkPer = 1;
+        if (enlightkarmaRank >= 6) arkObj.weaponAtkPer = 1.021;
+        else if (enlightkarmaRank >= 5) arkObj.weaponAtkPer = 1.017;
+        else if (enlightkarmaRank >= 4) arkObj.weaponAtkPer = 1.013;
+        else if (enlightkarmaRank >= 3) arkObj.weaponAtkPer = 1.009;
+        else if (enlightkarmaRank >= 2) arkObj.weaponAtkPer = 1.005;
+        else if (enlightkarmaRank >= 1) arkObj.weaponAtkPer = 1.001;
+        etcObj.enlightkarmaRank = enlightkarmaRank;
     };
     karmaPointCalc();
 

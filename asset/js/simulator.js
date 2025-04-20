@@ -213,6 +213,7 @@ async function simulatorInputCalc() {
                 // 이름이 같은 경우, 합연산으로 병합
                 mergedEngs.push({
                     name: eng.name,
+                    //finalDamagePer: eng.finalDamagePer * (foundStoneEng.finalDamagePer / 100 + 1),
                     finalDamagePer: eng.finalDamagePer + foundStoneEng.finalDamagePer / 100,
                     engBonusPer: eng.engBonusPer + foundStoneEng.engBonusPer / 100
                 });
@@ -222,13 +223,14 @@ async function simulatorInputCalc() {
             }
 
         });
+        console.log()
 
         stoneOutputCalc().forEach(stoneEng => {
             if (stoneEng.name !== "없음" && !mergedEngs.find(eng => eng.name === stoneEng.name)) {
                 mergedEngs.push(stoneEng)
             }
         })
-        // console.log("각인 + 돌 병합:", mergedEngs);
+        //console.log("각인 + 돌 병합:", mergedEngs);
 
 
         // 최종 결과 객체 생성
@@ -988,9 +990,8 @@ async function simulatorInputCalc() {
 
     /* **********************************************************************************************************************
      * function name		:	karmaRankToValue()
-     * description			: 	카르마 랭크를 arkObj.weaponAtkPer 수치로 변환 
+     * description			: 	깨달음 카르마 랭크를 arkObj.weaponAtkPer 수치로 변환 
      *********************************************************************************************************************** */
-
     function karmaRankToValue() {
         let result = 1
         let enlightKarmaElements = document.querySelectorAll(".ark-list.enlightenment .ark-item")[1].querySelectorAll("input[type=radio]");
@@ -1002,6 +1003,21 @@ async function simulatorInputCalc() {
         return result;
     }
     // console.log("카르마",karmaRankToValue())
+    /* **********************************************************************************************************************
+     * function name		:	evolutionKarmaRankToValue()
+     * description			: 	진화 카르마 랭크를 변환 
+     *********************************************************************************************************************** */
+    function evolutionKarmaRankToValue() {
+        let elements = document.querySelectorAll(".ark-list.evolution .ark-item")[1].querySelectorAll("input[type=radio]");
+        let karmaRank = 0;
+        elements.forEach((element, idx) => {
+            if (element.checked) {
+                karmaRank = idx;
+            }
+        })
+        return karmaRank;
+    }
+    let evolutionKarmaRank = evolutionKarmaRankToValue();
 
     /* **********************************************************************************************************************
      * function name		:	gemAttackBonusValueCalc
@@ -1037,6 +1053,29 @@ async function simulatorInputCalc() {
             result.evolutionDamage += 1.10
         } else if (evolutionElement >= 40) {
             result.evolutionDamage += 1
+        }
+
+        if (evolutionKarmaRank === 6) {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
+        } else if (evolutionKarmaRank === 5) {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
+        } else if (evolutionKarmaRank === 4) {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
+        } else if (evolutionKarmaRank === 3) {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
+        } else if (evolutionKarmaRank === 2) {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
+        } else if (evolutionKarmaRank === 1) {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
+        } else {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
         }
 
 
@@ -1222,23 +1261,19 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
 
     function etcObjChangeValue() {
-        let result = {
-            expeditionStats: Math.floor((cachedData.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5,
-            gemAttackBonus: gemAttackBonusValueCalc(),
-            abilityAttackBonus: stoneLevelBuffStat(),
-            armorStatus: armorWeaponStatsObj.armorStats + accessoryInputStatsValue(),
-            avatarStats: avatarPointCalc(),
-            gemsCoolAvg: extractValue.etcObj.gemsCoolAvg,
-            supportCheck: supportCheck,
-            gemCheckFnc: {
-                specialSkill: extractValue.etcObj.gemCheckFnc.specialSkill,
-                originGemValue: extractValue.etcObj.gemCheckFnc.originGemValue,
-                gemValue: extractValue.etcObj.gemCheckFnc.gemValue,
-                gemAvg: extractValue.etcObj.gemCheckFnc.gemAvg,
-                etcAverageValue: extractValue.etcObj.gemCheckFnc.etcAverageValue,
-            }
-        }
-        return result;
+        extractValue.etcObj.expeditionStats = Math.floor((cachedData.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5;
+        extractValue.etcObj.gemAttackBonus = gemAttackBonusValueCalc();
+        extractValue.etcObj.abilityAttackBonus = stoneLevelBuffStat();
+        extractValue.etcObj.armorStatus = armorWeaponStatsObj.armorStats + accessoryInputStatsValue();
+        extractValue.etcObj.avatarStats = avatarPointCalc();
+        extractValue.etcObj.gemsCoolAvg = extractValue.etcObj.gemsCoolAvg;
+        extractValue.etcObj.supportCheck = supportCheck;
+        extractValue.etcObj.evolutionkarmaRank = evolutionKarmaRank;
+        extractValue.etcObj.gemCheckFnc.specialSkill = extractValue.etcObj.gemCheckFnc.specialSkill;
+        extractValue.etcObj.gemCheckFnc.originGemValue = extractValue.etcObj.gemCheckFnc.originGemValue;
+        extractValue.etcObj.gemCheckFnc.gemValue = extractValue.etcObj.gemCheckFnc.gemValue;
+        extractValue.etcObj.gemCheckFnc.gemAvg = extractValue.etcObj.gemCheckFnc.gemAvg;
+        extractValue.etcObj.gemCheckFnc.etcAverageValue = extractValue.etcObj.gemCheckFnc.etcAverageValue;
     }
     // console.log("기타OBJ", etcObjChangeValue())
 
@@ -1253,9 +1288,10 @@ async function simulatorInputCalc() {
         extractValue.defaultObj = defaultObjChangeValue();
         extractValue.elixirObj = armorElixirToObj();
         extractValue.engObj = engOutputCalc(engExtract());
-        extractValue.etcObj = etcObjChangeValue();
+        // extractValue.etcObj = etcObjChangeValue();
         extractValue.gemObj = supportGemValueCalc();
         extractValue.hyperObj = extractHyperStageValue();
+        etcObjChangeValue()
     }
     simulatorDataToExtractValue()
     console.log("오리진OBJ", extractValue)
@@ -2057,10 +2093,19 @@ async function selectCreate(data, Modules) {
     collectToKarma()
 
     /* **********************************************************************************************************************
+    * function name		:	evloutionKarmaRankChange()
+    * description	    : 	진화 카르마 랭크를 유저에게 표시해줌
+    *********************************************************************************************************************** */
+    async function evloutionKarmaRankChange() {
+        let karmaElements = document.querySelector(".ark-list.evolution .ark-item.karma-radio").querySelectorAll("input[type=radio]");
+        let extractValue = await Modules.transValue.getCharacterProfile(data);
+        let karmaRank = extractValue.etcObj.evolutionkarmaRank;
+        karmaElements[karmaRank].checked = true;
+    }
+    /* **********************************************************************************************************************
     * function name		:	enlightValueChange()
     * description	    : 	깨달음 포인트를 유저에게 표시해줌
     *********************************************************************************************************************** */
-
     function enlightValueChange() {
         let karmaElements = document.querySelector(".ark-list.enlightenment .ark-item.karma-radio").querySelectorAll("input[type=radio]");
         let collectElements = document.querySelectorAll(".ark-list.enlightenment .ark-item input[type=checkbox]");
@@ -2108,15 +2153,8 @@ async function selectCreate(data, Modules) {
     function leafPointToKarmaSelect() {
         let karmaValue = Math.min((data.ArkPassive.Points[2].Value - bangleToLeafPoint()) / 2, 6);
         let radioElements = document.querySelectorAll('.ark-list.leap input[type=radio]');
-        // console.log(karmaValue)
+        console.log(karmaValue)
         radioElements[karmaValue].checked = true;
-        radioElements.forEach(radio => {
-            if (radio.checked) {
-                radioElements[karmaValue - 0].checked = true;
-            }
-        })
-
-        // if()
     }
 
     /* **********************************************************************************************************************
@@ -2135,6 +2173,7 @@ async function selectCreate(data, Modules) {
         let leaf = document.querySelector(".ark-list.leap .title");
         leaf.textContent = leafPoint;
     }
+
     /* **********************************************************************************************************************
     * function name		:	userGemEquipmentToOption()
     * description	    : 	유저가 실제 착용중인 보석 정보를 이용해 html생성
@@ -2179,7 +2218,6 @@ async function selectCreate(data, Modules) {
     }
     userGemEquipmentToOption()
 
-
     /* **********************************************************************************************************************
     * function name		:	gemSimpleChangeButtonExtend()
     * description	    :   보석 선택 일괄변경
@@ -2211,7 +2249,7 @@ async function selectCreate(data, Modules) {
         })
 
     }
-    gemSimpleChangeButtonExtend()
+    gemSimpleChangeButtonExtend();
 
     /* **********************************************************************************************************************
     * function name		:	userLevelAndArmorToEvolution()
@@ -2238,7 +2276,6 @@ async function selectCreate(data, Modules) {
     * function name		:	applyDataMinMaxToOptions()
     * description	    : 	data-min data-max값을 이용하여 select 드롭박스 숫자값 자동생성
     *********************************************************************************************************************** */
-
     function sortGemInfo(parentSelector) {
         const parentElement = document.querySelector(parentSelector);
         if (!parentElement) {
@@ -2322,7 +2359,6 @@ async function selectCreate(data, Modules) {
         })
     }
     applyDataSelectToOptions()
-
 
     /* **********************************************************************************************************************
     * function name		:	engravingAutoSelect()
@@ -2507,6 +2543,7 @@ async function selectCreate(data, Modules) {
         })
     }
     keepStoneOption()
+
     /* **********************************************************************************************************************
     * function name		    :	armoryTierAutoSelect()
     * description	        : 	방어구의 티어등급을 자동으로 선택해줌
@@ -2782,7 +2819,6 @@ async function selectCreate(data, Modules) {
             }
             backgroundClassNameChange();
         })
-
     }
     /* **********************************************************************************************************************
     * function name		:	armoryImageSetting()
@@ -2833,6 +2869,7 @@ async function selectCreate(data, Modules) {
         })
     }
     setItemImages()
+
     /* **********************************************************************************************************************
     * function name		:	stoneProgressAndBackground
     * description	    : 	어비리티 스톤의 등급에 따라 배경과 progress의 색상을 변경
@@ -2861,6 +2898,7 @@ async function selectCreate(data, Modules) {
         progressElement.textContent = stoneData.Grade;
     }
     stoneProgressAndBackground()
+
     /* **********************************************************************************************************************
     * function name		:	armorQualityToHTML
     * description	    : 	장비의 품질을 표시해줌
@@ -3030,6 +3068,7 @@ async function selectCreate(data, Modules) {
         }
 
     }
+
     avatarAutoSelect()
 
     /* **********************************************************************************************************************
@@ -3410,7 +3449,6 @@ async function selectCreate(data, Modules) {
         }
     }
     bangleAutoSelect()
-
     /* **********************************************************************************************************************
     * function name		:	bangleQualityToHTML
     * description	    : 	팔찌의 옵션을 토대로 상중하 표시를 해줌
@@ -3496,7 +3534,7 @@ async function selectCreate(data, Modules) {
     leafPointToKarmaSelect()
     showLeafInfo()
     userLevelAndArmorToEvolution()
-    // createTooltip() // 툴팁 텍스트 생성
+    evloutionKarmaRankChange()
 
 
     /* **********************************************************************************************************************
@@ -3531,7 +3569,6 @@ async function selectCreate(data, Modules) {
         showLeafInfo();
         enlightValueChange();
         avgLevelKarmaYN();
-        // createTooltip(); // 툴팁생성
     })
 }
 

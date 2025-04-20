@@ -4,9 +4,6 @@
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 
-if (window.location.pathname !== "/") {
-    //location.href = "/"
-}
 /* **********************************************************************************************************************
  * function name		:	importModuleManager()
  * description			: 	사용하는 모든 외부 module파일 import
@@ -620,10 +617,281 @@ async function scLopecClickCreate() {
         return;
     }
 
-    // --- groupUserDataElement 생성 및 참조 ---
-    // applyPosition 함수보다 먼저 생성되도록 위치 조정
-    const groupUserDataHtml = `
-    <div class="group-user-data shadow">
+    // --- 위치 관련 함수 (loadPosition, applyPosition, savePosition) ---
+    function loadPosition() {
+        const savedPosition = localStorage.getItem(storageKey);
+        if (savedPosition) {
+            try {
+                const pos = JSON.parse(savedPosition);
+                applyPosition(pos); // 부모와 자식 위치 동시 적용
+            } catch (e) {
+                console.error("저장된 위치 데이터 파싱 오류:", e);
+                localStorage.removeItem(storageKey);
+                // 기본 위치 적용 (선택 사항)
+                // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
+            }
+        } else {
+            // 저장된 위치 없을 때 기본 위치 적용 (선택 사항)
+            // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
+        }
+    }
+
+    function applyPosition(pos) {
+        if (!pos) return;
+
+        // 1. 부모(lopecClickElement) 위치 적용
+        lopecClickElement.style.transform = '';
+        lopecClickElement.style.left = pos.left ?? 'auto';
+        lopecClickElement.style.top = pos.top ?? 'auto';
+        lopecClickElement.style.right = pos.right ?? 'auto';
+        lopecClickElement.style.bottom = pos.bottom ?? 'auto';
+
+        // 2. 모든 자식(group-user-data) 요소에 위치 적용
+        const groupUserDataElements = document.querySelectorAll('.group-user-data');
+        groupUserDataElements.forEach(element => {
+            // 기존 위치 속성 초기화
+            element.style.left = 'auto';
+            element.style.right = 'auto';
+            element.style.top = 'auto';
+            element.style.bottom = 'auto';
+
+            // 가로 위치 설정
+            if (pos.left !== 'auto') { // 부모가 왼쪽에 있을 때
+                element.style.left = '100%';
+            } else if (pos.right !== 'auto') { // 부모가 오른쪽에 있을 때
+                element.style.right = '100%';
+            }
+
+            // 세로 위치 설정
+            if (pos.top !== 'auto') { // 부모가 위쪽에 있을 때
+                element.style.top = '0';
+            } else if (pos.bottom !== 'auto') { // 부모가 아래쪽에 있을 때
+                element.style.bottom = '0';
+            }
+        });
+    }
+
+    function savePosition(pos) {
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(pos));
+        } catch (e) {
+            console.error("localStorage 저장 오류:", e);
+        }
+    }
+
+    // --- 드래그 및 클릭/드래그 구분 관련 변수 ---
+    let isDragging = false;       // 실제 드래그 중인지 여부
+    let potentialDrag = false;    // 드래그 시작 가능성이 있는지 여부
+    let wasDragging = false;      // 직전에 드래그가 있었는지 여부 (클릭 이벤트 방지용)
+    let startX = 0;               // mousedown 시 X 좌표
+    let startY = 0;               // mousedown 시 Y 좌표
+    let offsetX = 0;              // 드래그 시작 시 요소 내부 X 오프셋
+    let offsetY = 0;              // 드래그 시작 시 요소 내부 Y 오프셋
+    const dragThreshold = 5;      // 드래그로 간주할 최소 이동 거리 (px)
+
+    // --- 드래그 시작 (mousedown) ---
+    lopecClickElement.addEventListener("mousedown", (e) => {
+        // 1. 'on' 클래스가 있으면 드래그 시작 안 함
+        if (lopecClickElement.classList.contains('on')) {
+            return;
+        }
+
+        // 2. 특정 자식 요소 클릭 시 드래그 시작 방지
+        if (e.target.closest('input, button, .btn, a, .group-user-data')) { // group-user-data 내부 클릭 시에도 드래그 방지 추가
+            return;
+        }
+
+        // 3. 드래그 시작 가능성 설정 및 시작 좌표 기록
+        potentialDrag = true;
+        isDragging = false; // 아직 실제 드래그는 아님
+        wasDragging = false; // 드래그 상태 초기화
+        startX = e.clientX;
+        startY = e.clientY;
+
+        // 4. mousemove, mouseup 리스너 등록 (드래그 감지 및 종료 처리용)
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
+
+        // 5. 기본 커서 설정 (아직 grabbing 아님) - 'on' 클래스가 없을 때만 grab으로 설정
+        lopecClickElement.style.cursor = 'grab';
+    });
+
+    // --- 드래그 중 (mousemove) ---
+    function handleMouseMove(e) {
+        // 드래그 시작 가능성이 없으면 아무것도 안 함
+        if (!potentialDrag && !isDragging) return;
+
+        // 드래그 시작 가능성이 있다면, 임계값 이상 움직였는지 확인
+        if (potentialDrag) {
+            const deltaX = Math.abs(e.clientX - startX);
+            const deltaY = Math.abs(e.clientY - startY);
+
+            if (deltaX > dragThreshold || deltaY > dragThreshold) {
+                // 임계값 이상 움직였으면 실제 드래그 시작
+                isDragging = true;
+                potentialDrag = false; // 시작 가능성 해제
+                wasDragging = true; // 드래그 발생 기록
+
+                // 드래그 스타일 적용
+                lopecClickElement.style.cursor = 'grabbing'; // 드래그 중에는 grabbing
+                lopecClickElement.style.userSelect = 'none';
+
+                // 현재 위치 기준으로 오프셋 계산 (드래그 시작 시점)
+                const rect = lopecClickElement.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+            }
+        }
+
+        // 실제 드래그 중일 때만 요소 이동
+        if (isDragging) {
+            const elementRect = lopecClickElement.getBoundingClientRect();
+            const newLeft = e.clientX - offsetX;
+            const newTop = e.clientY - offsetY;
+
+            const constrainedLeft = Math.max(0, Math.min(newLeft, window.innerWidth - elementRect.width));
+            const constrainedTop = Math.max(0, Math.min(newTop, window.innerHeight - elementRect.height));
+
+            const centerX = constrainedLeft + elementRect.width / 2;
+            const centerY = constrainedTop + elementRect.height / 2;
+
+            const newPosition = { left: 'auto', top: 'auto', right: 'auto', bottom: 'auto' };
+
+            if (centerX > window.innerWidth / 2) {
+                newPosition.right = `${window.innerWidth - (constrainedLeft + elementRect.width)}px`;
+            } else {
+                newPosition.left = `${constrainedLeft}px`;
+            }
+
+            if (centerY > window.innerHeight / 2) {
+                newPosition.bottom = `${window.innerHeight - (constrainedTop + elementRect.height)}px`;
+            } else {
+                newPosition.top = `${constrainedTop}px`;
+            }
+
+            applyPosition(newPosition); // 부모와 자식 위치 동시 적용
+        }
+    }
+
+    // --- 드래그 종료 (mouseup) ---
+    function handleMouseUp(e) {
+        // 드래그 시작 가능성이나 실제 드래그 중이 아니었으면 무시
+        if (!potentialDrag && !isDragging) return;
+
+        if (isDragging) {
+            // 실제 드래그가 발생했을 경우에만 최종 위치 계산 및 저장
+            const finalRect = lopecClickElement.getBoundingClientRect();
+            const finalLeft = finalRect.left;
+            const finalTop = finalRect.top;
+            const finalCenterX = finalLeft + finalRect.width / 2;
+            const finalCenterY = finalTop + finalRect.height / 2;
+
+            const finalPosition = { left: 'auto', top: 'auto', right: 'auto', bottom: 'auto' };
+
+            if (finalCenterX > window.innerWidth / 2) {
+                finalPosition.right = `${window.innerWidth - (finalLeft + finalRect.width)}px`;
+            } else {
+                finalPosition.left = `${finalLeft}px`;
+            }
+
+            if (finalCenterY > window.innerHeight / 2) {
+                finalPosition.bottom = `${window.innerHeight - (finalTop + finalRect.height)}px`;
+            } else {
+                finalPosition.top = `${finalTop}px`;
+            }
+
+            savePosition(finalPosition);
+            // applyPosition은 mousemove에서 이미 호출되었으므로 여기서 중복 호출 불필요
+        } else {
+            // isDragging이 false이면 단순 클릭으로 간주
+        }
+
+        // 상태 초기화 및 리스너 제거
+        potentialDrag = false;
+        isDragging = false;
+
+        lopecClickElement.style.cursor = lopecClickElement.classList.contains('on') ? 'auto' : 'grab';
+        lopecClickElement.style.removeProperty('user-select');
+
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    // --- 외부 클릭 시 'on' 클래스 제거 / 내부 클릭 시 'on' 클래스 추가 로직 ---
+    window.addEventListener("click", (e) => {
+        if (wasDragging) {
+            wasDragging = false;
+            return;
+        }
+
+        // groupUserDataElement 내부 클릭 시 'on' 클래스 유지 (제거 로직 방지)
+        if (e.target.closest('.group-user-data')) {
+            return;
+        }
+        if (e.target.classList.contains("del")) { // 삭제버튼 클릭시 on 유지
+            return;
+        }
+        if (!lopecClickElement.classList.contains('on') && lopecClickElement.contains(e.target)) {
+            lopecClickElement.classList.add("on");
+            lopecClickElement.querySelector(".search-area input").focus();
+            lopecClickElement.style.cursor = 'auto';
+        } else if (lopecClickElement.classList.contains('on') && !lopecClickElement.contains(e.target)) {
+            lopecClickElement.classList.remove("on");
+            // 모든 group-user-data 요소들에서 on 클래스 제거
+            document.querySelectorAll('.group-user-data').forEach(element => {
+                element.classList.remove("on");
+            });
+            simpleNameFlag = "";
+            lopecClickElement.style.cursor = 'grab';
+        }
+    });
+
+    // --- 탭 간 동기화 (storage 이벤트) ---
+    window.addEventListener('storage', (e) => {
+        if (e.key === storageKey) {
+            if (e.newValue) {
+                try {
+                    const newPos = JSON.parse(e.newValue);
+                    applyPosition(newPos); // 부모와 자식 위치 동시 적용
+                } catch (err) {
+                    console.error("Error parsing storage event data:", err);
+                }
+            } else {
+                // 위치 데이터가 삭제되었을 때의 처리 (예: 기본 위치로 리셋)
+                // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
+            }
+        }
+    });
+
+    // --- 초기화 ---
+    loadPosition(); // 여기서 applyPosition 호출되어 초기 위치 설정됨
+    lopecClickElement.style.position = 'fixed';
+    lopecClickElement.style.cursor = lopecClickElement.classList.contains('on') ? 'auto' : 'grab';
+
+}
+
+// 함수 실행
+await scLopecClickCreate();
+
+
+/* **********************************************************************************************************************
+* variable name		:	lopecClickSearch
+* description       : 	로펙딸깍 검색기능
+* useDevice         : 	데스크탑
+*********************************************************************************************************************** */
+async function lopecClickSearch() {
+    if (mobileCheck) {
+        return;
+    }
+    const lopecClickElement = document.querySelector(".sc-lopec-click");
+    let Modules = await importModuleManager();
+    // accessoryAbbreviationMap import 추가
+    const { accessoryAbbreviationMap } = await import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`);
+
+    // groupUserDataElementSkeleton 초기화를 가장 먼저 진행
+    // 빈 템플릿 생성하여 스켈레톤 HTML 저장
+    const tempGroupUserDataHtml = `
+    <div class="group-user-data shadow temp-skeleton">
         <div class="name-area">
             <span class="name">로딩중 <em style="color:#adadaa;font-weight:600;">--</em></span>
         </div>
@@ -812,301 +1080,28 @@ async function scLopecClickCreate() {
         </div>
     </div>`;
 
-
-    lopecClickElement.insertAdjacentHTML('beforeend', groupUserDataHtml);
-    const groupUserDataElement = lopecClickElement.querySelector(".group-user-data");
-    const groupUserDataElementSkeleton = groupUserDataElement.innerHTML;
-    // ---------------------------------------
-
-
-    // --- 위치 관련 함수 (loadPosition, applyPosition, savePosition) ---
-    function loadPosition() {
-        const savedPosition = localStorage.getItem(storageKey);
-        if (savedPosition) {
-            try {
-                const pos = JSON.parse(savedPosition);
-                applyPosition(pos); // 부모와 자식 위치 동시 적용
-            } catch (e) {
-                console.error("저장된 위치 데이터 파싱 오류:", e);
-                localStorage.removeItem(storageKey);
-                // 기본 위치 적용 (선택 사항)
-                // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
-            }
-        } else {
-            // 저장된 위치 없을 때 기본 위치 적용 (선택 사항)
-            // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
-        }
-    }
-
-    function applyPosition(pos) {
-        if (!pos) return;
-
-        // 1. 부모(lopecClickElement) 위치 적용
-        lopecClickElement.style.transform = '';
-        lopecClickElement.style.left = pos.left ?? 'auto';
-        lopecClickElement.style.top = pos.top ?? 'auto';
-        lopecClickElement.style.right = pos.right ?? 'auto';
-        lopecClickElement.style.bottom = pos.bottom ?? 'auto';
-
-        // 2. 자식(groupUserDataElement) 위치 적용
-        if (groupUserDataElement) {
-            // 기존 위치 속성 초기화
-            groupUserDataElement.style.left = 'auto';
-            groupUserDataElement.style.right = 'auto';
-            groupUserDataElement.style.top = 'auto';
-            groupUserDataElement.style.bottom = 'auto';
-            // 가로 위치 설정
-            if (pos.left !== 'auto') { // 부모가 왼쪽에 있을 때
-                groupUserDataElement.style.left = '100%';
-            } else if (pos.right !== 'auto') { // 부모가 오른쪽에 있을 때
-                groupUserDataElement.style.right = '100%';
-            }
-            // 세로 위치 설정
-            if (pos.top !== 'auto') { // 부모가 위쪽에 있을 때
-                groupUserDataElement.style.top = '0';
-            } else if (pos.bottom !== 'auto') { // 부모가 아래쪽에 있을 때
-                groupUserDataElement.style.bottom = '0';
-            }
-        }
-    }
-
-    function savePosition(pos) {
-        try {
-            localStorage.setItem(storageKey, JSON.stringify(pos));
-        } catch (e) {
-            console.error("localStorage 저장 오류:", e);
-        }
-    }
-
-    // --- 드래그 및 클릭/드래그 구분 관련 변수 ---
-    let isDragging = false;       // 실제 드래그 중인지 여부
-    let potentialDrag = false;    // 드래그 시작 가능성이 있는지 여부
-    let wasDragging = false;      // 직전에 드래그가 있었는지 여부 (클릭 이벤트 방지용)
-    let startX = 0;               // mousedown 시 X 좌표
-    let startY = 0;               // mousedown 시 Y 좌표
-    let offsetX = 0;              // 드래그 시작 시 요소 내부 X 오프셋
-    let offsetY = 0;              // 드래그 시작 시 요소 내부 Y 오프셋
-    const dragThreshold = 5;      // 드래그로 간주할 최소 이동 거리 (px)
-
-    // --- 드래그 시작 (mousedown) ---
-    lopecClickElement.addEventListener("mousedown", (e) => {
-        // 1. 'on' 클래스가 있으면 드래그 시작 안 함
-        if (lopecClickElement.classList.contains('on')) {
-            return;
-        }
-
-        // 2. 특정 자식 요소 클릭 시 드래그 시작 방지
-        if (e.target.closest('input, button, .btn, a, .group-user-data')) { // group-user-data 내부 클릭 시에도 드래그 방지 추가
-            return;
-        }
-
-        // 3. 드래그 시작 가능성 설정 및 시작 좌표 기록
-        potentialDrag = true;
-        isDragging = false; // 아직 실제 드래그는 아님
-        wasDragging = false; // 드래그 상태 초기화
-        startX = e.clientX;
-        startY = e.clientY;
-
-        // 4. mousemove, mouseup 리스너 등록 (드래그 감지 및 종료 처리용)
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
-
-        // 5. 기본 커서 설정 (아직 grabbing 아님) - 'on' 클래스가 없을 때만 grab으로 설정
-        lopecClickElement.style.cursor = 'grab';
-    });
-
-    // --- 드래그 중 (mousemove) ---
-    function handleMouseMove(e) {
-        // 드래그 시작 가능성이 없으면 아무것도 안 함
-        if (!potentialDrag && !isDragging) return;
-
-        // 드래그 시작 가능성이 있다면, 임계값 이상 움직였는지 확인
-        if (potentialDrag) {
-            const deltaX = Math.abs(e.clientX - startX);
-            const deltaY = Math.abs(e.clientY - startY);
-
-            if (deltaX > dragThreshold || deltaY > dragThreshold) {
-                // 임계값 이상 움직였으면 실제 드래그 시작
-                isDragging = true;
-                potentialDrag = false; // 시작 가능성 해제
-                wasDragging = true; // 드래그 발생 기록
-
-                // 드래그 스타일 적용
-                lopecClickElement.style.cursor = 'grabbing'; // 드래그 중에는 grabbing
-                lopecClickElement.style.userSelect = 'none';
-
-                // 현재 위치 기준으로 오프셋 계산 (드래그 시작 시점)
-                const rect = lopecClickElement.getBoundingClientRect();
-                offsetX = e.clientX - rect.left;
-                offsetY = e.clientY - rect.top;
-            }
-        }
-
-        // 실제 드래그 중일 때만 요소 이동
-        if (isDragging) {
-            const elementRect = lopecClickElement.getBoundingClientRect();
-            const newLeft = e.clientX - offsetX;
-            const newTop = e.clientY - offsetY;
-
-            const constrainedLeft = Math.max(0, Math.min(newLeft, window.innerWidth - elementRect.width));
-            const constrainedTop = Math.max(0, Math.min(newTop, window.innerHeight - elementRect.height));
-
-            const centerX = constrainedLeft + elementRect.width / 2;
-            const centerY = constrainedTop + elementRect.height / 2;
-
-            const newPosition = { left: 'auto', top: 'auto', right: 'auto', bottom: 'auto' };
-
-            if (centerX > window.innerWidth / 2) {
-                newPosition.right = `${window.innerWidth - (constrainedLeft + elementRect.width)}px`;
-            } else {
-                newPosition.left = `${constrainedLeft}px`;
-            }
-
-            if (centerY > window.innerHeight / 2) {
-                newPosition.bottom = `${window.innerHeight - (constrainedTop + elementRect.height)}px`;
-            } else {
-                newPosition.top = `${constrainedTop}px`;
-            }
-
-            applyPosition(newPosition); // 부모와 자식 위치 동시 적용
-        }
-    }
-
-    // --- 드래그 종료 (mouseup) ---
-    function handleMouseUp(e) {
-        // 드래그 시작 가능성이나 실제 드래그 중이 아니었으면 무시
-        if (!potentialDrag && !isDragging) return;
-
-        if (isDragging) {
-            // 실제 드래그가 발생했을 경우에만 최종 위치 계산 및 저장
-            const finalRect = lopecClickElement.getBoundingClientRect();
-            const finalLeft = finalRect.left;
-            const finalTop = finalRect.top;
-            const finalCenterX = finalLeft + finalRect.width / 2;
-            const finalCenterY = finalTop + finalRect.height / 2;
-
-            const finalPosition = { left: 'auto', top: 'auto', right: 'auto', bottom: 'auto' };
-
-            if (finalCenterX > window.innerWidth / 2) {
-                finalPosition.right = `${window.innerWidth - (finalLeft + finalRect.width)}px`;
-            } else {
-                finalPosition.left = `${finalLeft}px`;
-            }
-
-            if (finalCenterY > window.innerHeight / 2) {
-                finalPosition.bottom = `${window.innerHeight - (finalTop + finalRect.height)}px`;
-            } else {
-                finalPosition.top = `${finalTop}px`;
-            }
-
-            savePosition(finalPosition);
-            // applyPosition은 mousemove에서 이미 호출되었으므로 여기서 중복 호출 불필요
-        } else {
-            // isDragging이 false이면 단순 클릭으로 간주
-        }
-
-        // 상태 초기화 및 리스너 제거
-        potentialDrag = false;
-        isDragging = false;
-
-        lopecClickElement.style.cursor = lopecClickElement.classList.contains('on') ? 'auto' : 'grab';
-        lopecClickElement.style.removeProperty('user-select');
-
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-    }
-
-    // --- 외부 클릭 시 'on' 클래스 제거 / 내부 클릭 시 'on' 클래스 추가 로직 ---
-    window.addEventListener("click", (e) => {
-        if (wasDragging) {
-            wasDragging = false;
-            return;
-        }
-
-        // groupUserDataElement 내부 클릭 시 'on' 클래스 유지 (제거 로직 방지)
-        if (groupUserDataElement && groupUserDataElement.contains(e.target)) {
-            return;
-        }
-        if (e.target.classList.contains("del")) { // 삭제버튼 클릭시 on 유지
-            return;
-        }
-        if (!lopecClickElement.classList.contains('on') && lopecClickElement.contains(e.target)) {
-            lopecClickElement.classList.add("on");
-            lopecClickElement.querySelector(".search-area input").focus();
-            lopecClickElement.style.cursor = 'auto';
-        } else if (lopecClickElement.classList.contains('on') && !lopecClickElement.contains(e.target)) {
-            lopecClickElement.classList.remove("on");
-            groupUserDataElement.innerHTML = groupUserDataElementSkeleton;
-            groupUserDataElement.classList.remove("on");
-            simpleNameFlag = "";
-            lopecClickElement.style.cursor = 'grab';
-        }
-    });
-
-    // --- 탭 간 동기화 (storage 이벤트) ---
-    window.addEventListener('storage', (e) => {
-        if (e.key === storageKey) {
-            if (e.newValue) {
-                try {
-                    const newPos = JSON.parse(e.newValue);
-                    applyPosition(newPos); // 부모와 자식 위치 동시 적용
-                } catch (err) {
-                    console.error("Error parsing storage event data:", err);
-                }
-            } else {
-                // 위치 데이터가 삭제되었을 때의 처리 (예: 기본 위치로 리셋)
-                // applyPosition({ left: '10px', top: '10px', right: 'auto', bottom: 'auto' });
-            }
-        }
-    });
-
-    // --- 초기화 ---
-    loadPosition(); // 여기서 applyPosition 호출되어 초기 위치 설정됨
-    lopecClickElement.style.position = 'fixed';
-    lopecClickElement.style.cursor = lopecClickElement.classList.contains('on') ? 'auto' : 'grab';
-
-}
-
-// 함수 실행
-await scLopecClickCreate();
-
-
-/* **********************************************************************************************************************
-* variable name		:	lopecClickSearch
-* description       : 	로펙딸깍 검색기능
-* useDevice         : 	데스크탑
-*********************************************************************************************************************** */
-async function lopecClickSearch() {
-    if (mobileCheck) {
-        return;
-    }
-    const lopecClickElement = document.querySelector(".sc-lopec-click");
-    let Modules = await importModuleManager();
-    // accessoryAbbreviationMap import 추가
-    const { accessoryAbbreviationMap } = await import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`);
+    // 임시로 body에 추가
+    document.body.insertAdjacentHTML('beforeend', tempGroupUserDataHtml);
+    const tempElement = document.querySelector('.group-user-data.temp-skeleton');
+    const groupUserDataElementSkeleton = tempElement.innerHTML;
+    // 임시 요소 제거
+    tempElement.remove();
 
     let inputElement = lopecClickElement.querySelector(".group-simple input");
     lopecClickElement.addEventListener("keydown", async (key) => {
         // 한글 입력 이벤트 더블링 처리 <== 젠장 한글 또 너야
         if (key.code === `Enter` && !key.isComposing) {
             await simpleSearch(inputElement.value);
-            await groupUserDataSet(inputElement.value);
+            // await groupUserDataSet(inputElement.value);
         }
     })
 
     let searchElement = lopecClickElement.querySelector(".group-simple .search");
     searchElement.addEventListener("click", async () => {
         await simpleSearch(inputElement.value);
-        await groupUserDataSet(inputElement.value);
+        // await groupUserDataSet(inputElement.value);
     })
-    const groupUserDataSkeletonElement = lopecClickElement.querySelector(".group-user-data").innerHTML;
-    // let resultItem = ` <== 삭제예정
-    //     <div class="result-item sort">
-    //         <span class="name result">닉네임</span>
-    //         <span class="job result">직업</span>
-    //         <span class="point result">점수</span>
-    //         <span class="change result">딜러환산</span>
-    //     </div>`;
+
     async function simpleSearch(inputName) {
         let nameElements = lopecClickElement.querySelectorAll(".result-area .result-item.not-sort .name");
         let nameLogArray = Array.from(nameElements).map(name => name.textContent);
@@ -1163,21 +1158,36 @@ async function lopecClickSearch() {
             convertValue = "-";
         }
 
+        // 각 캐릭터마다 고유한 ID 생성 (타임스탬프 + 랜덤값)
+        const characterId = `char_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
         // 1. 새로 추가할 아이템의 HTML 문자열만 생성
         const newResultItemHtml = `
-        <div class="result-item not-sort" title="${inputName}의 상세정보 확인하기">
+        <div class="result-item not-sort" title="${inputName}의 상세정보 확인하기" data-character-id="${characterId}">
             <span class="name result">${inputName}</span>
             <span class="job result">${extractValue.etcObj.supportCheck}</span>
             <span class="point result">${calcValue.completeSpecPoint.toFixed(2)}</span>
             <span class="change result" style="text-align:${convertValue == "-" ? "center" : "auto"}">${convertValue}</span>
             <span class="del result">삭제</span>
         </div>`;
-
+        //❌삭제 유니코드 저장용
         let resultBox = lopecClickElement.querySelector('.result-area .result-box');
 
-        // 2. 새 아이템 HTML을 resultArea의 맨 끝에 삽입 (기존 내용 유지)
-        // resultArea.insertAdjacentHTML('beforeend', newResultItemHtml);
+        // 2. 새 아이템 HTML을 resultBox의 맨 앞에 삽입
         resultBox.insertAdjacentHTML('afterbegin', newResultItemHtml);
+
+        // 3. 이 캐릭터에 대한 group-user-data 생성 및 초기화 
+        // (이미 만들어진 groupUserDataElementSkeleton HTML을 기반으로)
+        const newGroupUserDataHtml = `
+        <div class="group-user-data shadow" data-character-id="${characterId}">
+            ${groupUserDataElementSkeleton}
+        </div>`;
+
+        // 4. 생성한 group-user-data를 lopecClickElement에 추가
+        lopecClickElement.insertAdjacentHTML('beforeend', newGroupUserDataHtml);
+
+        // 5. 생성된 group-user-data에 데이터 채우기
+        await groupUserDataSet(inputName, characterId, data, extractValue, calcValue);
 
         inputElement.value = "";
         searchElement.textContent = "검색";
@@ -1191,42 +1201,63 @@ async function lopecClickSearch() {
         }
         if (!resultItem.classList.contains('sort')) {
             if (e.target.classList.contains('del')) {
+                // 삭제 시 연결된 group-user-data도 함께 삭제
+                const characterId = resultItem.dataset.characterId;
+                const groupUserData = document.querySelector(`.group-user-data[data-character-id="${characterId}"]`);
+                if (groupUserData) {
+                    groupUserData.remove();
+                }
                 resultItem.remove();
             } else {
-                // let inputName = resultItem.querySelector(".name").textContent;
-                // await groupUserDataSet(inputName);
+                // 클릭 시 해당 group-user-data 토글
+                const characterId = resultItem.dataset.characterId;
+                const allGroupUserData = document.querySelectorAll('.group-user-data');
+                allGroupUserData.forEach(element => {
+                    if (element.dataset.characterId === characterId) {
+                        element.classList.toggle("on");
+                    } else {
+                        element.classList.remove("on");
+                    }
+                });
             }
         }
     })
     // let simpleNameFlag = "";
-    async function groupUserDataSet(inputName) {
-        let groupUserDataElement = document.querySelector(".group-user-data");
-        if (simpleNameFlag === inputName) {
-            groupUserDataElement.classList.remove("on");
-            simpleNameFlag = "";
+    async function groupUserDataSet(inputName, characterId, fetchedData, fetchedExtractValue, fetchedCalcValue) {
+        let groupUserDataElement = document.querySelector(`.group-user-data[data-character-id="${characterId}"]`);
+        if (!groupUserDataElement) {
+            console.error(`캐릭터 ID ${characterId}에 해당하는 group-user-data를 찾을 수 없습니다.`);
             return;
-        } else {
-            groupUserDataElement.classList.add("on");
-            groupUserDataElement.innerHTML = groupUserDataSkeletonElement;
         }
-        // let inputName = resultItem.querySelector(".name").textContent;  <== 삭제예정
-        let data = await Modules.fetchApi.lostarkApiCall(inputName);
-        let extractValue = await Modules.transValue.getCharacterProfile(data);
-        let calcValue = await Modules.calcValue.specPointCalc(extractValue);
+
+        // 매개변수로 전달된 데이터가 있으면 사용, 없으면 새로 API 호출
+        let data, extractValue, calcValue;
+
+        if (fetchedData && fetchedExtractValue && fetchedCalcValue) {
+            // 이미 가져온 데이터 사용
+            data = fetchedData;
+            extractValue = fetchedExtractValue;
+            calcValue = fetchedCalcValue;
+        } else {
+            // 새로 API 호출 (이전 버전과의 호환성 유지)
+            data = await Modules.fetchApi.lostarkApiCall(inputName);
+            extractValue = await Modules.transValue.getCharacterProfile(data);
+            calcValue = await Modules.calcValue.specPointCalc(extractValue);
+        }
 
         // 유저닉네임 및 직업 설정
-        let nameArea = lopecClickElement.querySelector(".name-area");
+        let nameArea = groupUserDataElement.querySelector(".name-area");
         nameArea.innerHTML = `<span class="name">${inputName} <em style="color:#adadaa;font-weight:600;">${extractValue.etcObj.supportCheck} ${data.ArmoryProfile.CharacterClassName}</em></span>`
 
         // 엘릭서 설정
-        let elxirValueElement = lopecClickElement.querySelector(".etc-item.elxir .value");
+        let elxirValueElement = groupUserDataElement.querySelector(".etc-item.elxir .value");
         elxirValueElement.textContent = extractValue.htmlObj.elxirInfo.name === "" ? "없음" : extractValue.htmlObj.elxirInfo.name + " " + extractValue.htmlObj.elxirInfo.sumValue;
         // 초월 설정
-        let hyperValueElement = lopecClickElement.querySelector(".etc-item.hyper .value");
+        let hyperValueElement = groupUserDataElement.querySelector(".etc-item.hyper .value");
         hyperValueElement.textContent = extractValue.htmlObj.hyperInfo.sumValue;
 
         // 진/깨/도 포인트 설정
-        let arkItems = lopecClickElement.querySelectorAll(".ark-list .ark-item");
+        let arkItems = groupUserDataElement.querySelectorAll(".ark-list .ark-item");
         let evloutionValueElement = arkItems[0].querySelector(".value");
         let enlightValueElement = arkItems[1].querySelector(".value");
         let leapValueElement = arkItems[2].querySelector(".value");
@@ -1235,7 +1266,7 @@ async function lopecClickSearch() {
         leapValueElement.textContent = data.ArkPassive.Points[2].Value
 
         // 장비 설정
-        let armoryElements = lopecClickElement.querySelectorAll(".armory-list.armory .armory-item");
+        let armoryElements = groupUserDataElement.querySelectorAll(".armory-list.armory .armory-item");
         let helmetElement = armoryElements[0];
         let shoulderElement = armoryElements[1];
         let armorElement = armoryElements[2];
@@ -1273,10 +1304,9 @@ async function lopecClickSearch() {
             imgElement.classList.add(backgroundClassName);
             upgradeElement.textContent = `${normalValue}`;
             advancedUpgradeElement.textContent = `X${advancedValue}`;
-
         }
         function accessoryElementSet() {
-            let accessoryElements = lopecClickElement.querySelectorAll(".armory-list.accessory .accessory-item");
+            let accessoryElements = groupUserDataElement.querySelectorAll(".armory-list.accessory .accessory-item");
             let necklaceElement = accessoryElements[0];
             let earRingElement1 = accessoryElements[1];
             let earRingElement2 = accessoryElements[2];
@@ -1318,7 +1348,6 @@ async function lopecClickSearch() {
                         ringElement2.querySelector("img").src = item.icon;
                         ringElement2.querySelector(".accessory").innerHTML = optionElementsCreate();
                     }
-
                 }
                 function optionElementsCreate() {
                     let optionHtml = ``;
@@ -1344,25 +1373,26 @@ async function lopecClickSearch() {
 
             // 팔찌 설정
             let bangleElement = accessoryElements[5];
-            if (extractValue.htmlObj.bangleInfo.grade === "고대") {
-                bangleElement.querySelector("img").classList.add("ultra-background");
-            } else if (extractValue.htmlObj.bangleInfo.grade === "유물") {
-                bangleElement.querySelector("img").classList.add("rare-background");
+            if (extractValue.htmlObj.bangleInfo) {
+                if (extractValue.htmlObj.bangleInfo.grade === "고대") {
+                    bangleElement.querySelector("img").classList.add("ultra-background");
+                } else if (extractValue.htmlObj.bangleInfo.grade === "유물") {
+                    bangleElement.querySelector("img").classList.add("rare-background");
+                }
+                if (extractValue.etcObj.supportCheck !== "서폿") {
+                    bangleElement.querySelector(".option").textContent = calcValue.dealerBangleResult + "%";
+                } else if (extractValue.etcObj.supportCheck === "서폿") {
+                    bangleElement.querySelector(".option").textContent = calcValue.supportBangleResult.toFixed(2) + "%";
+                }
+                bangleElement.querySelector("img").src = extractValue.htmlObj.bangleInfo.icon;
             }
-            if (extractValue.etcObj.supportCheck !== "서폿") {
-                bangleElement.querySelector(".option").textContent = calcValue.dealerBangleResult + "%";
-            } else if (extractValue.etcObj.supportCheck === "서폿") {
-                bangleElement.querySelector(".option").textContent = calcValue.supportBangleResult.toFixed(2) + "%";
-            }
-            bangleElement.querySelector("img").src = extractValue.htmlObj.bangleInfo.icon;
         };
         accessoryElementSet();
 
         // 보석 설정
-        let gemAreaElement = lopecClickElement.querySelector(".gem-area");
+        let gemAreaElement = groupUserDataElement.querySelector(".gem-area");
         let gemItemHtml = "";
         if (data.ArmoryGem.Gems) {
-
             data.ArmoryGem.Gems.forEach(gem => {
                 let gemSort = gem.Name.match(/(겁화|멸화|작열|홍염)/)[0];
                 let gemIndex = 0;
@@ -1401,11 +1431,10 @@ async function lopecClickSearch() {
             gemItemArray.forEach(item => {
                 gemAreaElement.appendChild(item);
             });
-
         }
 
         // 각인 설정
-        let engravingAreaElement = lopecClickElement.querySelector(".engraving-area");
+        let engravingAreaElement = groupUserDataElement.querySelector(".engraving-area");
         let engravingItemHtml = "";
         extractValue.htmlObj.engravingInfo.forEach(engraving => {
             engravingItemHtml += `
@@ -1418,9 +1447,6 @@ async function lopecClickSearch() {
         engravingAreaElement.innerHTML = engravingItemHtml;
 
         createTooltip();
-
-        // group-user-data의 토글을 위한 이전 이름 기록 저장
-        simpleNameFlag = inputName;
     }
 
 
@@ -1429,6 +1455,7 @@ async function lopecClickSearch() {
     * function name		:	
     * description		: 	ocr모듈 호출 <== 베타 후 제거 예정
     *********************************************************************************************************************** */
+    // OCR 기능 부분(베타 후 제거 예정) - 주석 처리됨
     // let btnElement = document.querySelector(".sc-lopec-click .auto.btn");
     // await LopecOCR.loadDefaultTemplates();
     // btnElement.addEventListener("click", async (e) => {
@@ -1484,7 +1511,6 @@ async function lopecClickSearch() {
 
 }
 await lopecClickSearch()
-
 /* **********************************************************************************************************************
  * function name		:	createTooltip()
  * description			: 	.tooltip-text 클래스를 가진 요소에 마우스 오버 시 툴팁을 생성하고, select 요소의 경우 선택된 option의 텍스트를 표시합니다.
