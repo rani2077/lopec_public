@@ -87,6 +87,8 @@ async function simulatorInputCalc() {
             extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
         } else if (dataBaseResponse.totalStatusSupport !== 0) {
             extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+        } else {
+            dataBaseResponse.totalStatus = extractValue.defaultObj.totalStatus;
         }
         originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
