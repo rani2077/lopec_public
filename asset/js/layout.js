@@ -10,48 +10,48 @@ let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini
  *********************************************************************************************************************** */
 async function importModuleManager() {
     let interValTime = 60 * 1000;
-    let modules = await Promise.all([
-        import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark api호출
-        import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
-        import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
-        import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 함수
-
-        // import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
-    ])
-    let moduleObj = {
-        fetchApi: modules[0],
-        transValue: modules[1],
-        calcValue: modules[2],
-        dataBase: modules[3],
-
-        //ocrModule: modules[2],
-    }
     // let modules = await Promise.all([
-    //     import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),      // lostark API 호출
-    //     import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 유저정보 수치화
-    //     import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 수치값을 스펙포인트로 계산
-    //     import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 컴포넌트 모듈
-    //     import("../js/character.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),                // 특정 유저의 상세정보를 저장
-    //     import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),               // 필터 호출 (기존 filter.js)
-    //     import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 시뮬레이터 필터
-    //     import("../filter/simulator-data.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),       // 장비레벨 스텟 정보
-    //     import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 수치값을 스펙포인트로 계산(어차피 기본적으로 전역변수가 됨)
+    //     import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark api호출
+    //     import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
+    //     import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+    //     import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 함수
+
+    //     // import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
     // ])
-    // let Modules = {
+    // let moduleObj = {
     //     fetchApi: modules[0],
     //     transValue: modules[1],
     //     calcValue: modules[2],
-    //     component: modules[3],
-    //     dataBase: modules[4],
-    //     originFilter: modules[5],
-    //     simulatorFilter: modules[6],
-    //     simulatorData: modules[7],
+    //     dataBase: modules[3],
+
+    //     //ocrModule: modules[2],
     // }
+    let modules = await Promise.all([
+        import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),      // lostark API 호출
+        import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 유저정보 수치화
+        import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 수치값을 스펙포인트로 계산
+        import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 컴포넌트 모듈
+        import("../js/character.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),                // 특정 유저의 상세정보를 저장
+        import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),               // 필터 호출 (기존 filter.js)
+        import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 시뮬레이터 필터
+        import("../filter/simulator-data.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),       // 장비레벨 스텟 정보
+        import("../custom-module/lopec-ocr.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),     // 수치값을 스펙포인트로 계산(어차피 기본적으로 전역변수가 됨)
+    ])
+    let Modules = {
+        fetchApi: modules[0],
+        transValue: modules[1],
+        calcValue: modules[2],
+        component: modules[3],
+        dataBase: modules[4],
+        originFilter: modules[5],
+        simulatorFilter: modules[6],
+        simulatorData: modules[7],
+    }
 
 
-    return moduleObj
+    return Modules
 }
-// globalThis.moduleObj = importModuleManager();
+globalThis.Modules = importModuleManager();
 
 
 /* **********************************************************************************************************************
@@ -884,7 +884,7 @@ async function lopecClickSearch() {
         return;
     }
     const lopecClickElement = document.querySelector(".sc-lopec-click");
-    let Modules = await importModuleManager();
+    // let Modules = await importModuleManager();
     // accessoryAbbreviationMap import 추가
     const { accessoryAbbreviationMap } = await import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`);
 

@@ -401,6 +401,7 @@ export async function scNav(userName) {
         document.querySelector(".sc-nav").insertAdjacentHTML('afterend', await scHistorySkeleton());
         let elements = document.querySelectorAll(`.sc-nav .link.${nowPage}, .sc-nav .link[href=""]`);
         let expeditionFlag = null;
+        let historyFlag = null;
         elements.forEach((element, idx) => {
             element.addEventListener("click", async (e) => {
                 e.preventDefault();
@@ -422,6 +423,12 @@ export async function scNav(userName) {
                     let expeditionElement = document.querySelector(".sc-expedition");
                     expeditionElement.outerHTML = await scExpedition(name);
                     document.querySelector(`.${page}`).style.display = "flex";
+                } if (element.classList.contains("history") && !historyFlag) {
+                    historyFlag = true;
+                    let historyElement = document.querySelector(".sc-history");
+                    await scHistory()
+                    // historyElement.outerHTML = await 
+                    // document.querySelector(`.${page}`).style.display = "flex";
                 }
             })
         })
@@ -537,7 +544,7 @@ async function scExpedition(inputName) {
         </section>`;
 }
 /* **********************************************************************************************************************
-* function name		:	scHistory
+* function name		:	scHistorySkeleton
 * description       : 	원정대 컴포넌트
 *********************************************************************************************************************** */
 async function scHistorySkeleton() {
@@ -547,6 +554,19 @@ async function scHistorySkeleton() {
         </section>`;
 }
 
+/* **********************************************************************************************************************
+* function name		:	scHistory
+* description       : 	원정대 컴포넌트
+*********************************************************************************************************************** */
+async function scHistory() {
+    let response = await fetch("https://lopec.o-r.kr/api/score-history?nickname=로스트다람쥐&characterClass=황후 아르카나")
+    let historyData = await response.json()
+    console.log(historyData)
+    return `
+        <section class="sc-history">
+            <i>로딩중...</i>
+        </section>`;
+}
 /* **********************************************************************************************************************
 * function name		:	manageExpeditionData
 * description       : 	원정대 데이터 로컬스토리지 저장
