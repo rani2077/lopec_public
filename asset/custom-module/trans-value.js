@@ -2049,7 +2049,7 @@ export async function getCharacterProfile(data, dataBase) {
     /* **********************************************************************************************************************
      * name		              :	  karmaPoint{}
      * version                :   2.0
-     * description            :   깨달음 및 진화 카르마
+     * description            :   진화 카르마 추론 알고리즘
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
 
@@ -2375,6 +2375,7 @@ export async function getCharacterProfile(data, dataBase) {
             arkObj.stigmaPer += 0
         }
 
+
         // 깨달음 포인트 및 무기 공격력 계산
         let enlightkarmaRank = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);
         arkObj.weaponAtkPer = 1;
@@ -2387,6 +2388,303 @@ export async function getCharacterProfile(data, dataBase) {
         etcObj.enlightkarmaRank = enlightkarmaRank;
     };
     karmaPointCalc();
+
+
+    /* **********************************************************************************************************************
+     * name		              :	  calculatePossiblePotionSums
+     * version                :   2.0
+     * description            :   깨달음 카르마 추론 알고리즘
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+
+    /**
+    * 능력치 물약으로 얻을 수 있는 모든 스탯 합 계산
+    * @returns {Set<number>} 가능한 스탯 합 집합
+    */
+    function calculatePossiblePotionSums() {
+        const potions = [
+            { value: 5, count: 75 },
+            { value: 25, count: 11 },
+            { value: 50, count: 4 },
+        ];
+        const maxPotionSum = (75 * 5) + (11 * 25) + (4 * 50); // 850
+
+        let possibleSums = new Set([0]);
+        for (const potion of potions) {
+            let sumsToAddThisPotion = new Set();
+            for (const currentSum of possibleSums) {
+                for (let k = 1; k <= potion.count; k++) {
+                    const nextSum = currentSum + potion.value * k;
+                    if (nextSum <= maxPotionSum) {
+                        sumsToAddThisPotion.add(nextSum);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            for(const newSum of sumsToAddThisPotion) {
+                possibleSums.add(newSum);
+            }
+        }
+        return possibleSums;
+    }
+
+    /**
+    * 카드 수집으로 얻을 수 있는 모든 스탯 합 계산
+    * @returns {Set<number>} 가능한 스탯 합 집합
+    */
+    function calculatePossibleCardSums() {
+        const cardStats = [
+            8, 5, 6, 7, 8, 5, 5, 5, 6, 8, 8, 8, 3, 6, 8, 6, 5, 3, 4, 4, 6, 4, 6, 8, 3, 6, 3, 3, 7, 6, 2, 8, 3, 7, 7, 3, 6, 4, 4, 4, 5
+        ];
+        const maxCardSum = cardStats.reduce((a, b) => a + b, 0); // 223
+
+        let dp = new Array(maxCardSum + 1).fill(false);
+        dp[0] = true;
+
+        for (const cardValue of cardStats) {
+            for (let sum = maxCardSum; sum >= cardValue; sum--) {
+                if (dp[sum - cardValue]) {
+                    dp[sum] = true;
+                }
+            }
+        }
+
+        let possibleSums = new Set();
+        for (let i = 0; i <= maxCardSum; i++) {
+            if (dp[i]) {
+                possibleSums.add(i);
+            }
+        }
+        return possibleSums;
+    }
+
+    // --- 내실 스탯 집합 계산 ---
+    const possiblePotionSums = calculatePossiblePotionSums();
+    const possibleCardSums = calculatePossibleCardSums();
+    const achievableInternalStats = new Set();
+    for (const potionSum of possiblePotionSums) {
+        for (const cardSum of possibleCardSums) {
+            achievableInternalStats.add(potionSum + cardSum);
+        }
+    }
+    // --- 계산 끝 ---
+
+    const KARMA_LEVEL_RANGES = {
+        0: { min: 0, max: 0 }, // 랭크 0 추가
+        1: { min: 1, max: 4 },
+        2: { min: 5, max: 8 },
+        3: { min: 9, max: 12 },
+        4: { min: 13, max: 16 },
+        5: { min: 17, max: 20 },
+        6: { min: 21, max: 30 },
+    };
+
+    /**
+    * 깨달음 카르마 레벨을 추정하는 함수 (만찬/방범대 제외, 최고 내실 우선)
+    * @param {object} inputData - 캐릭터 데이터 객체
+    * @returns {number | null} 추정된 최적 카르마 레벨 (찾지 못한 경우 null)
+    */
+    function estimateKarmaLevel(inputData) {
+        const {
+            realAttackPower: observedAttackPower,
+            CalcarmorStatus: armorStatus,
+            CalcfightLevelStats: fightLevelStats,
+            CalcexpeditionStats: expeditionStats,
+            CalchyperStr: hyperStr,
+            CalcelixirStr: elixirStr,
+            CalcbangleStr: bangleStr,
+            CalcavatarStats: avatarStats,
+            CalckarmaRank: karmaRank,
+            CalcdefaultWeaponAtk: defaultWeaponAtk,
+            CalchyperWeaponAtkPlus: hyperWeaponAtkPlus,
+            CalcelixirWeaponAtkPlus: elixirWeaponAtkPlus,
+            CalcaccWeaponAtkPlus: accWeaponAtkPlus,
+            CalcbangleWeaponAtkPlus: bangleWeaponAtkPlus,
+            CalcaccWeaponAtkPer: accWeaponAtkPer,
+            CalcelixirAtkPlus: elixirAtkPlus,
+            CalchyperAtkPlus: hyperAtkPlus,
+            CalcaccAtkPlus: accAtkPlus,
+            CalcaccAtkPer: flatAccAtkPer,
+            CalcelixirAtkPer: elixirAtkPer,
+            CalcattackBonus: attackBonus
+        } = inputData;
+
+        console.debug("[estimateKarmaLevel] Input Data (No Feast/Pet, Highest Internal):", JSON.stringify(inputData, null, 2));
+
+        // --- 유효성 검사 및 기본값 설정 (기존 코드) ---
+        if (observedAttackPower === undefined || observedAttackPower <= 0 || isNaN(observedAttackPower)) { /* ... */ return null; } // 반환값 null로 변경
+        let validKarmaRank = (karmaRank === undefined || karmaRank === null || typeof karmaRank !== 'number' || isNaN(karmaRank)) ? 0 : karmaRank;
+        if (validKarmaRank < 0 || validKarmaRank > 6) { /* ... */ validKarmaRank = 0; }
+        console.debug(`[estimateKarmaLevel] Using Karma Rank: ${validKarmaRank}`);
+        const levelRange = KARMA_LEVEL_RANGES[validKarmaRank];
+        if (!levelRange) { /* ... */ return null; } // 반환값 null로 변경
+        console.debug(`[estimateKarmaLevel] Karma Level Range: min=${levelRange.min}, max=${levelRange.max}`);
+
+        const safeArmorStatus = armorStatus || 0;
+        const safeHyperStr = hyperStr || 0;
+        const safeElixirStr = elixirStr || 0;
+        const safeBangleStr = bangleStr || 0;
+        const safeExpeditionStats = expeditionStats || 0;
+        const safeFightLevelStats = fightLevelStats || 0;
+        const knownApiStatSum = safeArmorStatus + safeHyperStr + safeElixirStr + safeBangleStr;
+        const knownBaseStatSum = knownApiStatSum + safeExpeditionStats + safeFightLevelStats;
+        console.debug(`[estimateKarmaLevel] Known Base Stat Sum: ${knownBaseStatSum}`);
+
+        const safeDefaultWeaponAtk = defaultWeaponAtk || 0;
+        const safeHyperWeaponAtkPlus = hyperWeaponAtkPlus || 0;
+        const safeElixirWeaponAtkPlus = elixirWeaponAtkPlus || 0;
+        const safeAccWeaponAtkPlus = accWeaponAtkPlus || 0;
+        const safeBangleWeaponAtkPlus = bangleWeaponAtkPlus || 0;
+        const safeAccWeaponAtkPer = accWeaponAtkPer || 0;
+        const currentKnownFlatWeaponAtkSum = safeDefaultWeaponAtk + safeHyperWeaponAtkPlus + safeElixirWeaponAtkPlus + safeAccWeaponAtkPlus + safeBangleWeaponAtkPlus;
+        console.debug(`[estimateKarmaLevel] Flat Weapon Atk Sum (No Feast): ${currentKnownFlatWeaponAtkSum}`);
+
+        const safeElixirAtkPlus = elixirAtkPlus || 0;
+        const safeHyperAtkPlus = hyperAtkPlus || 0;
+        const safeAccAtkPlus = accAtkPlus || 0;
+        const safeFlatAccAtkPer = flatAccAtkPer || 0;
+        const safeElixirAtkPer = elixirAtkPer || 0;
+        const safeAttackBonus = attackBonus || 1;
+        const safeAvatarStats = avatarStats || 0;
+
+        // --- 일치하는 조합 저장 및 최고 내실 추적 ---
+        let bestMatch = null; // { level: kLevel, internalStat: internalStat }
+        let maxInternalStatFound = -1; // 찾은 최대 내실 값 추적
+
+        const observedAttackPowerFloored = Math.floor(observedAttackPower);
+        console.log("estimateKarmaLevel: 깨달음 카르마 레벨 탐색 시작 (만찬/방범대 제외, 최고 내실 우선)...");
+        let combinationCount = 0;
+
+        // --- 반복문 (기존과 유사) ---
+        for (const internalStat of achievableInternalStats) {
+            const minLevel = levelRange.min;
+            const maxLevel = levelRange.max;
+            for (let kLevel = minLevel; kLevel <= maxLevel; kLevel++) {
+                combinationCount++;
+
+                // 계산 로직 (기존과 동일)
+                const calculatedStat = Math.floor((knownBaseStatSum + internalStat) * (1 + safeAvatarStats));
+                const currentKarmaPercent = kLevel * 0.001;
+                const calculatedWeaponAtkRaw = currentKnownFlatWeaponAtkSum * (1 + safeAccWeaponAtkPer + currentKarmaPercent);
+                const calculatedWeaponAtk = Math.floor(calculatedWeaponAtkRaw);
+                const baseAttackRaw = ((calculatedStat * calculatedWeaponAtk) / 6) ** 0.5;
+                 if (isNaN(baseAttackRaw) || !isFinite(baseAttackRaw)) {
+                     // if (combinationCount < 10 || combinationCount % 10000 === 0) { console.warn(...) } // 로그 필요시
+                     continue;
+                 }
+                 const baseAttack = baseAttackRaw;
+                const flatBonus = safeElixirAtkPlus + safeHyperAtkPlus + safeAccAtkPlus;
+                const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
+                const calculatedAttackPower = (baseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
+                const calculatedAttackPowerFloored = Math.floor(calculatedAttackPower);
+                const match = (calculatedAttackPowerFloored === observedAttackPowerFloored);
+
+                 // 상세 로그 (필요시 활성화)
+                 // if (combinationCount <= 50 || match || combinationCount % 10000 === 0) { ... }
+
+                if (match) {
+                    // 최고 내실 값 업데이트 및 bestMatch 저장
+                    if (internalStat > maxInternalStatFound) {
+                        maxInternalStatFound = internalStat;
+                        bestMatch = { level: kLevel, internalStat: internalStat };
+                        console.info(` >> 새로운 최고 내실(${internalStat}) 조합 발견! 카르마 레벨: ${kLevel}`);
+                    } else if (internalStat === maxInternalStatFound) {
+                        // 동일한 최고 내실 값이면, 기존 bestMatch 유지 (첫 번째 발견 우선)
+                         console.debug(` >> 동일한 최고 내실(${internalStat}) 조합 발견. 카르마 레벨: ${kLevel}. (기존 레벨 ${bestMatch.level} 유지)`);
+                    }
+                }
+            } // kLevel loop
+        } // internalStat loop
+        // --- 반복문 끝 ---
+
+        console.log(`estimateKarmaLevel: 탐색 완료. 총 ${combinationCount}개 조합 확인.`);
+
+        if (bestMatch) {
+            console.log(`[estimateKarmaLevel] 최종 선택된 카르마 레벨: ${bestMatch.level} (최고 내실: ${bestMatch.internalStat})`);
+            return bestMatch.level; // 최종 선택된 카르마 레벨 반환
+        } else {
+            console.warn("estimateKarmaLevel: 일치하는 조합을 찾지 못했습니다. 최대값 기준 로그 참고:");
+            // --- 실패 시 최대값 기준 로그 (기존 코드와 유사하게) ---
+            try {
+                const maxInternalStat = Math.max(...achievableInternalStats);
+                const maxKarmaLevel = levelRange.max;
+                const maxCalculatedStat = Math.floor((knownBaseStatSum + maxInternalStat) * (1 + safeAvatarStats));
+                const maxCalculatedWeaponAtkRaw = currentKnownFlatWeaponAtkSum * (1 + safeAccWeaponAtkPer + maxKarmaLevel * 0.001);
+                const maxCalculatedWeaponAtk = Math.floor(maxCalculatedWeaponAtkRaw);
+                const maxBaseAttack = ((maxCalculatedStat * maxCalculatedWeaponAtk) / 6) ** 0.5;
+                 if (!isNaN(maxBaseAttack) && isFinite(maxBaseAttack)) {
+                     // 로그 출력 로직 주석 해제
+                     const flatBonus = safeElixirAtkPlus + safeHyperAtkPlus + safeAccAtkPlus;
+                     const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
+                     const maxCalculatedAttackPower = (maxBaseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
+
+                     console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
+                     console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
+                     console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
+                     console.log(`    -> 계산된 Base공: ${maxBaseAttack.toFixed(2)}`);
+                     console.log(`    -> 계산된 최종 공격력: ${Math.floor(maxCalculatedAttackPower)} (Raw: ${maxCalculatedAttackPower.toFixed(2)})`);
+                     console.log(`  - 비교 대상 입력 공격력: ${observedAttackPowerFloored} (Raw: ${observedAttackPower})`);
+                     console.log(`  - 차이: ${observedAttackPowerFloored - Math.floor(maxCalculatedAttackPower)}`);
+                 } else {
+                     console.warn("estimateKarmaLevel: 최대값 기준 baseAttack 계산 결과 NaN 또는 Infinite.");
+                     // 로그 출력 로직 주석 해제
+                     console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
+                     console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
+                     console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
+                 }
+            } catch (e) {
+                console.error("estimateKarmaLevel: 최대값 기준 계산 중 오류 발생:", e);
+            }
+            return null; // 일치하는 조합 없음
+        }
+    }
+
+    // --- estimateKarmaLevel 함수 호출을 위한 데이터 준비 ---
+     // 직업 주 스탯 확인
+     let mainStatTypeForKarma = 'str'; // 기본값
+     let userClassForKarma = data.ArmoryProfile.CharacterClassName;
+     let bangleJobFilterForKarma = Modules.originFilter.bangleJobFilter;
+     let vailedStatInfoForKarma = bangleJobFilterForKarma.find(item => item.job === userClassForKarma);
+     if (vailedStatInfoForKarma) {
+         mainStatTypeForKarma = vailedStatInfoForKarma.stats;
+     }
+
+     // 전투 레벨 스탯 계산 (전투레벨 50 이상 가정)
+     let fightLevelStatValue = 477
+
+
+    const karmaInputData = {
+        realAttackPower: defaultObj.attackPow,
+        CalcarmorStatus: etcObj.armorStatus || 0,
+        CalcfightLevelStats: fightLevelStatValue,
+        CalcexpeditionStats: etcObj.expeditionStats || 0,
+        CalchyperStr: hyperObj[mainStatTypeForKarma] || 0,
+        CalcelixirStr: elixirObj[mainStatTypeForKarma] || 0,
+        CalcbangleStr: bangleObj[mainStatTypeForKarma] || 0,
+        CalcavatarStats: (etcObj.avatarStats || 1) - 1,
+        CalckarmaRank: etcObj.enlightkarmaRank,
+        CalcdefaultWeaponAtk: defaultObj.weaponAtk || 0,
+        CalchyperWeaponAtkPlus: hyperObj.weaponAtkPlus || 0,
+        CalcelixirWeaponAtkPlus: elixirObj.weaponAtkPlus || 0,
+        CalcaccWeaponAtkPlus: accObj.weaponAtkPlus || 0,
+        //CalcbangleWeaponAtkPlus: bangleObj.weaponAtkPlus || 0,
+        CalcbangleWeaponAtkPlus: 0,
+        CalcaccWeaponAtkPer: (accObj.weaponAtkPer || 0) / 100, // 복원됨: 악세 무기 공격력 %
+        CalcelixirAtkPlus: elixirObj.atkPlus || 0,
+        CalchyperAtkPlus: hyperObj.atkPlus || 0,
+        CalcaccAtkPlus: accObj.atkPlus || 0,
+        CalcaccAtkPer: (accObj.atkPer || 0) / 100,          // 복원됨: 악세 공격력 %
+        CalcelixirAtkPer: (elixirObj.atkPer || 0) / 100,
+        CalcattackBonus: (((etcObj.gemAttackBonus || 0) + (etcObj.abilityAttackBonus || 0)) / 100) + 1
+    };
+    console.log(karmaInputData)
+    // --- estimateKarmaLevel 함수 호출 및 결과 출력 ---
+    const estimatedBestKarmaLevel = estimateKarmaLevel(karmaInputData);
+    console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
+
+    // 추후 estimatedBestKarmaLevel 값을 etcObj 등에 저장하여 활용 가능
+    // etcObj.estimatedEnlightKarmaLevel = estimatedBestKarmaLevel;
 
 
     /* **********************************************************************************************************************
