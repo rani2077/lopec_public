@@ -441,12 +441,12 @@ export async function scNav(userName) {
     return `
     <nav class="sc-nav">
         <a href="${mobilePath}/search/search.php?headerCharacterName=${name}" class="link search ${searchClassName}" data-page="sc-info" >메인</a>
-        <a href="${mobilePath}/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
         <a href="" class="link expedition" data-page="sc-expedition">원정대</a>
-        <a href="" class="link history" data-page="sc-history">히스토리</a>
+        <a href="${mobilePath}/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
         <a href="https://cool-kiss-ec2.notion.site/1da758f0e8da8058a37bd1b7c6f49cd3?pvs=4" target="_blink" class="link" data-page="">중앙값</a>
-    </nav>`
-}
+        </nav>`
+    }
+    // <a href="" class="link history" data-page="sc-history">히스토리</a>
 
 /* **********************************************************************************************************************
 * function name		:	scExpedition
@@ -545,18 +545,19 @@ async function scExpedition(inputName) {
 }
 /* **********************************************************************************************************************
 * function name		:	scHistorySkeleton
-* description       : 	원정대 컴포넌트
+* description       : 	히스토리 컴포넌트 스켈레톤
 *********************************************************************************************************************** */
 async function scHistorySkeleton() {
     return `
-        <section class="sc-history">
-            <i>로딩중...</i>
+        <section class="sc-history" style="margin-top:20px;">
+            <i style="color:#121212;">준비중</i>
+            <i style="color:#fff;">준비중</i>
         </section>`;
 }
 
 /* **********************************************************************************************************************
 * function name		:	scHistory
-* description       : 	원정대 컴포넌트
+* description       : 	히스토리 컴포넌트
 *********************************************************************************************************************** */
 async function scHistory() {
     let response = await fetch("https://lopec.o-r.kr/api/score-history?nickname=로스트다람쥐&characterClass=황후 아르카나")

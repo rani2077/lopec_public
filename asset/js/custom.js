@@ -39,7 +39,7 @@ let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini
 //     return moduleObj
 // }
 Modules = await Modules
-
+console.log(Modules)
 async function mainSearchFunction() {
 
     const urlParams = new URLSearchParams(window.location.search);

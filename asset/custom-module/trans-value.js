@@ -2336,8 +2336,8 @@ export async function getCharacterProfile(data, dataBase) {
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
         // 결과 로깅 (필요시 주석 해제)
-        console.log("카르마 추정 결과:", result.bestResult);
-        console.log("모든 가능성:", result.allResults);
+        //console.log("카르마 추정 결과:", result.bestResult);
+        //console.log("모든 가능성:", result.allResults);
 
         etcObj.evolutionkarmaRank = 0; // 기본값 설정
         etcObj.evolutionkarmaPoint = result.bestResult.karmaLevel;
@@ -2587,10 +2587,10 @@ export async function getCharacterProfile(data, dataBase) {
                     if (internalStat > maxInternalStatFound) {
                         maxInternalStatFound = internalStat;
                         bestMatch = { level: kLevel, internalStat: internalStat };
-                        console.info(` >> 새로운 최고 내실(${internalStat}) 조합 발견! 카르마 레벨: ${kLevel}`);
+                        //console.info(` >> 새로운 최고 내실(${internalStat}) 조합 발견! 카르마 레벨: ${kLevel}`);
                     } else if (internalStat === maxInternalStatFound) {
                         // 동일한 최고 내실 값이면, 기존 bestMatch 유지 (첫 번째 발견 우선)
-                         console.debug(` >> 동일한 최고 내실(${internalStat}) 조합 발견. 카르마 레벨: ${kLevel}. (기존 레벨 ${bestMatch.level} 유지)`);
+                         //console.debug(` >> 동일한 최고 내실(${internalStat}) 조합 발견. 카르마 레벨: ${kLevel}. (기존 레벨 ${bestMatch.level} 유지)`);
                     }
                 }
             } // kLevel loop
@@ -2631,7 +2631,7 @@ export async function getCharacterProfile(data, dataBase) {
                      //console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
                  }
             } catch (e) {
-                console.error("estimateKarmaLevel: 최대값 기준 계산 중 오류 발생:", e);
+                //console.error("estimateKarmaLevel: 최대값 기준 계산 중 오류 발생:", e);
             }
             return null; // 일치하는 조합 없음
         }

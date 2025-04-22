@@ -77,40 +77,6 @@ const LopecOCR = (function () {
     }
 
     // ===========================================================================================
-    // 프록시 서버에서 API 키 가져오기
-    // ===========================================================================================
-
-    /**
-     * 프록시 서버에서 OCR API 키를 가져오는 함수
-     * @returns {Promise<string>} API 키
-     * @throws {Error} API 키 가져오기 실패 시 오류
-     */
-    async function getOcrApiKey() {
-        try {
-            // 프록시 서버에 API 키 요청
-            const response = await fetch(API_KEY_PROXY_URL);
-
-            // 응답 확인
-            if (!response.ok) {
-                throw new Error(`API 키 가져오기 실패: ${response.status} ${response.statusText}`);
-            }
-
-            // API 키 추출
-            const data = await response.json();
-
-            // 응답에서 API 키 확인
-            if (!data || !data.apiKey) {
-                throw new Error('프록시 서버에서 유효한 API 키를 제공하지 않았습니다');
-            }
-
-            return data.apiKey;
-        } catch (error) {
-            console.error('OCR API 키 가져오기 오류:', error);
-            throw new Error(`API 키 가져오기 실패: ${error.message}`);
-        }
-    }
-
-    // ===========================================================================================
     // OpenCV 관련 함수
     // ===========================================================================================
 
@@ -665,12 +631,6 @@ const LopecOCR = (function () {
     }
 
     /**
-     * 화면 구역에 따른 기본 크롭 오프셋 설정값
-     * 템플릿 매칭이 실패한 경우 비율에 따른 기본 크롭 영역 계산에 사용
-     */
-    // const DEFAULT_CROP_REGIONS = { ... }; // 제거됨
-
-    /**
      * 이미지를 로스트아크 관심 영역으로 크롭하는 함수 (템플릿 매칭 기반)
      * @param {HTMLImageElement} img - 크롭할 이미지 객체
      * @param {string} version - OCR 처리 버전 (현재는 크롭 오프셋 계산에만 사용될 수 있음)
@@ -1028,92 +988,8 @@ const LopecOCR = (function () {
     }
 
     /**
-     * 이미지에서 버전(신청자/참가자)을 자동으로 감지하는 함수
-     * @param {HTMLImageElement} img - 분석할 이미지
-     * @param {Function} debugCallback - 디버그 콜백 함수
-     * @returns {Promise<string>} - 감지된 버전 (OCR_VERSIONS.APPLICANT 또는 OCR_VERSIONS.PARTICIPANT)
-     */
-    async function detectVersion(img, debugCallback = null) {
-        const logDebug = (message) => {
-            console.log(message);
-            if (debugCallback && typeof debugCallback === 'function') {
-                debugCallback(message);
-            }
-        };
-
-        try {
-            logDebug("버전 자동 감지 시작 (템플릿 매칭 사용)...");
-
-            // OpenCV 로드 확인
-            if (!isOpenCVLoaded) {
-                await loadOpenCV();
-            }
-
-            // 템플릿 매칭 결과 확인
-            const matchResult = await matchTemplate(img);
-
-            // 버전 감지 템플릿 찾기
-            const versionTemplate = matchResult.matches.find(m => m.name === '버전_감지템플릿');
-
-            if (!versionTemplate) {
-                logDebug("버전 감지 템플릿을 찾을 수 없습니다. 기본값(참가자 목록)으로 진행합니다.");
-                return OCR_VERSIONS.PARTICIPANT;
-            }
-
-            logDebug(`버전 감지 템플릿 매칭 점수: ${versionTemplate.score.toFixed(2)}`);
-
-            // 버전 결정 - 템플릿이 매치되면 신청자 목록, 아니면 참가자 목록
-            if (versionTemplate.isMatched) {
-                logDebug("템플릿 매칭 결과: 신청자 목록 감지됨 (버전 템플릿 발견)");
-                return OCR_VERSIONS.APPLICANT;
-            } else {
-                logDebug("템플릿 매칭 결과: 참가자 목록 감지됨 (버전 템플릿 미발견)");
-                return OCR_VERSIONS.PARTICIPANT;
-            }
-
-        } catch (error) {
-            console.error("버전 감지 중 오류:", error);
-            logDebug(`버전 감지 실패: ${error.message}. 기본값(참가자 목록)으로 진행합니다.`);
-            return OCR_VERSIONS.PARTICIPANT; // 오류 발생 시 기본값을 참가자 목록으로 변경
-        }
-    }
-
-    /**
-     * 지정된 영역의 평균 밝기를 계산하는 유틸리티 함수
-     * @param {CanvasRenderingContext2D} ctx - 캔버스 컨텍스트
-     * @param {Object} region - 분석할 영역 {x, y, width, height}
-     * @returns {number} - 영역의 평균 밝기 (0-255)
-     */
-    function getRegionBrightness(ctx, region) {
-        try {
-            const imageData = ctx.getImageData(region.x, region.y, region.width, region.height);
-            const data = imageData.data;
-            let sum = 0;
-            let count = 0;
-
-            // RGBA 데이터에서 밝기 계산 (R+G+B)/3
-            for (let i = 0; i < data.length; i += 4) {
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-                // 알파 채널(data[i + 3])은 무시
-
-                const brightness = (r + g + b) / 3;
-                sum += brightness;
-                count++;
-            }
-
-            return count > 0 ? sum / count : 0;
-        } catch (error) {
-            console.error("영역 밝기 분석 오류:", error);
-            return 0;
-        }
-    }
-
-    /**
      * 메인 OCR 처리 함수 - 클립보드 이미지를 OCR 처리하고 캐릭터 정보 추출
      * 
-     * @param {string} apiKey - OCR API 키 ('free'인 경우 프록시에서 가져옴, 직접 제공할 경우 해당 키 사용)
      * @param {string} version - OCR 처리 버전 ('auto'인 경우 자동 감지)
      * @param {Object} callbacks - 콜백 함수 모음
      * @param {Function} callbacks.onStatusUpdate - 상태 업데이트 콜백
@@ -1123,7 +999,7 @@ const LopecOCR = (function () {
      * @param {boolean} skipValidation - 이미지 유효성 검사 건너뛰기 (기본값: false)
      * @returns {Promise<Array<string>>} 추출된 닉네임 문자열 배열
      */
-    async function processClipboardImage(apiKey, version = 'auto', callbacks = {}, skipValidation = false) {
+    async function processClipboardImage(version = 'auto', callbacks = {}, skipValidation = false) {
         const { onStatusUpdate, onDebugInfo, onImageCropped, onError } = callbacks;
 
         // 상태 업데이트 및 디버그 함수 초기화
@@ -1150,30 +1026,6 @@ const LopecOCR = (function () {
         startTimer('전체 프로세스');
 
         try {
-            // 1. API 키 처리 
-            startTimer('API 키 가져오기');
-            let actualApiKey;
-            if (!apiKey || apiKey === 'free') {
-                updateStatus('API 키 가져오는 중...');
-                addDebug('프록시 서버에서 API 키 요청 시작');
-                try {
-                    actualApiKey = await getOcrApiKey();
-                    addDebug('프록시 서버에서 API 키 가져오기 성공');
-                } catch (keyError) {
-                    addDebug(`API 키 가져오기 실패: ${keyError.message}`);
-                    handleError(keyError);
-                    throw keyError;
-                }
-            } else {
-                actualApiKey = apiKey;
-                addDebug('직접 제공된 API 키 사용');
-            }
-            endTimer('API 키 가져오기');
-
-            if (!actualApiKey || typeof actualApiKey !== 'string') {
-                throw new Error('유효한 API 키를 가져올 수 없습니다.');
-            }
-
             // 2. 클립보드 이미지 가져오기
             startTimer('클립보드 이미지 가져오기');
             updateStatus('클립보드 이미지 가져오는 중...');
@@ -1325,29 +1177,24 @@ const LopecOCR = (function () {
 
             addDebug(`이미지를 Base64로 변환 완료: ${Math.round(base64Image.length / 1024)}KB`);
             const formData = new FormData();
-            formData.append('document', croppedBlob, 'image.png');
-            formData.append('model', 'ocr');
-            // 아래 라인을 주석 처리 또는 삭제
-            // formData.append('options', JSON.stringify({ language: "ko" })); 
+            formData.append('file', croppedBlob, 'filename.png');
             const requestOptions = {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${actualApiKey}`
-                },
                 body: formData
             };
-            addDebug(`OCR API 호출 시작 (API 키: ${actualApiKey.substring(0, 5)}...)`);
+            addDebug(`서버 OCR API 호출 시작 (https://lopec.o-r.kr/api/images)`);
 
-            // OCR API 호출
-            const response = await fetch(API_URL, requestOptions);
+            // 서버 OCR API 호출 (실제 엔드포인트 URL로 변경)
+            const response = await fetch('https://lopec.o-r.kr/api/images', requestOptions);
             if (!response.ok) {
                 const errorResponse = await response.text();
-                addDebug(`OCR API 오류: ${response.status} ${response.statusText}`);
+                addDebug(`서버 OCR API 오류: ${response.status} ${response.statusText}`);
                 addDebug(`오류 응답: ${errorResponse}`);
-                throw new Error(`OCR API 호출 실패: ${response.status} ${response.statusText}`);
+                // 오류 메시지에 서버 응답 포함 고려
+                throw new Error(`서버 OCR API 호출 실패: ${response.status} ${response.statusText}. 응답: ${errorResponse}`);
             }
 
-            // OCR 결과 처리
+            // OCR 결과 처리 (서버로부터 받은 JSON 사용)
             const ocrResult = await response.json();
             endTimer('OCR API 호출');
             addDebug('OCR API 응답 수신 완료');
@@ -1426,7 +1273,6 @@ const LopecOCR = (function () {
     return {
         /**
          * 클립보드에서 이미지를 가져와 OCR 처리 후 캐릭터 닉네임을 추출하는 함수
-         * @param {string} apiKey - OCR API 키 ('free'인 경우 프록시에서 가져옴, 직접 제공할 경우 해당 키 사용)
          * @param {string} version - OCR 처리 버전 ('auto'인 경우 자동 감지)
          * @param {Object} callbacks - 콜백 함수들
          * @param {boolean} skipValidation - 이미지 유효성 검사 건너뛰기 (기본값: false)
@@ -1521,3 +1367,6 @@ const LopecOCR = (function () {
 
 // 브라우저 환경에서 전역으로 노출
 window.LopecOCR = LopecOCR;
+
+// ESM 내보내기 추가
+export { LopecOCR };

@@ -11,7 +11,7 @@ export async function dataBaseWrite(data, extractValue, specPoint) {
 	}
 	// await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam); <== 삭제예정
 	// console.log(totalStatus)
-	let result = await Module.insertLopecCharacters(
+	let result = await insertLopecCharacters(
 		data.ArmoryProfile.CharacterName,                                               // 닉네임 
 		data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
 		extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 

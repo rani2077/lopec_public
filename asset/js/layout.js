@@ -52,7 +52,7 @@ async function importModuleManager() {
     return Modules
 }
 globalThis.Modules = importModuleManager();
-
+Modules = await Modules;
 
 /* **********************************************************************************************************************
 * variable name		:	userDeviceToRedirection
@@ -511,63 +511,13 @@ if (mobileCheck) {
 }
 
 /* **********************************************************************************************************************
-* variable name		:	simpleLogSave() <== 삭제예정
-* description       : 	단순 로그 저장함수
-* useDevice         : 	서버이전하여 사용하지 않음
-*********************************************************************************************************************** */
-
-// async function simpleLogSave() {
-//     await import('https://code.jquery.com/jquery-3.7.1.min.js');
-//     $(document).ready(function () {
-//         insertLopecLog();
-//     });
-
-//     var insertLopecLog = function () {
-//         var atMode = "insertlog";
-//         var llogUrl = document.URL;
-//         var saveDatas = {
-//             atMode: atMode,
-//             llogUrl: llogUrl
-//         }
-//         $.ajax({
-//             dataType: "json",
-//             type: "POST",
-//             url: "/applications/process/lopecLog/",
-//             data: saveDatas,
-//             success: function (msg) {
-//                 // console.log("msg : " + msg);
-//                 // console.log("msg.result : " + msg.result);
-//                 if (msg.result == "S") {
-//                     // console.log("log insert result : LOPEC_LOG 저장 성공");
-//                 } else if (msg.result == "F") {
-//                     // console.log("log insert result : LOPEC_LOG 저장 실패");
-//                 } else if (msg.result == "E") {
-//                     // console.log("log insert result : LOPEC_LOG 저장 Exception");
-//                 }
-//             },
-//             error: function (request, status, error) {
-//                 // console.log("log insert result : LOPEC_LOG 저장 Error");
-//                 // console.log("request.status : " + request.status);
-//                 // console.log("request.responseText : " + request.responseText);
-//                 // console.log("request.error : " + request.error);
-//             }
-//         });
-//     }
-
-// }
-// if (/lopec.kr/.test(window.location.host)) {
-//     simpleLogSave()
-// } else {
-// }
-// await import('https://code.jquery.com/jquery-3.7.1.min.js');
-
-/* **********************************************************************************************************************
 * variable name		:	scLopecClickCreate
 * description       : 	sc-lopec-click를 생성하고 드래그 가능하게 하며, 위치를 저장/동기화하는 함수 (on 클래스 시 드래그 방지, 클릭/드래그 구분)
 * useDevice         : 	데스크탑
 *********************************************************************************************************************** */
 let simpleNameFlag = "";
-{/* <span class="auto btn">딸깍</span> */ }
+// <span class="auto btn">딸깍</span>
+// <span class="auto btn" style="opacity:0.2" onClick="alert('해당 기능은 현재 준비중입니다 빠른 시일내 준비할 수 있도록 노력하겠습니다.')">딸깍</span>
 
 async function scLopecClickCreate() {
     const clickElementHtml = `
@@ -582,7 +532,7 @@ async function scLopecClickCreate() {
                 <div class="search-area">
                     <input type="text no-recent" placeholder="캐릭터 검색">
                     <span class="search btn">검색</span>
-                    <span class="auto btn" style="opacity:0.2" onClick="alert('해당 기능은 현재 준비중입니다 빠른 시일내 준비할 수 있도록 노력하겠습니다.')">딸깍</span>
+                    <span class="auto btn">딸깍</span>
                 </div>
                 <div class="result-area scrollbar">
                     <div class="sort-box">
@@ -649,6 +599,7 @@ async function scLopecClickCreate() {
         // 2. 모든 자식(group-user-data) 요소에 위치 적용
         const groupUserDataElements = document.querySelectorAll('.group-user-data');
         groupUserDataElements.forEach(element => {
+
             // 기존 위치 속성 초기화
             element.style.left = 'auto';
             element.style.right = 'auto';
@@ -1083,6 +1034,7 @@ async function lopecClickSearch() {
     // 임시로 body에 추가
     document.body.insertAdjacentHTML('beforeend', tempGroupUserDataHtml);
     const tempElement = document.querySelector('.group-user-data.temp-skeleton');
+
     const groupUserDataElementSkeleton = tempElement.innerHTML;
     // 임시 요소 제거
     tempElement.remove();
@@ -1101,7 +1053,6 @@ async function lopecClickSearch() {
         await simpleSearch(inputElement.value);
         // await groupUserDataSet(inputElement.value);
     })
-
     async function simpleSearch(inputName) {
         let nameElements = lopecClickElement.querySelectorAll(".result-area .result-item.not-sort .name");
         let nameLogArray = Array.from(nameElements).map(name => name.textContent);
@@ -1185,6 +1136,112 @@ async function lopecClickSearch() {
 
         // 4. 생성한 group-user-data를 lopecClickElement에 추가
         lopecClickElement.insertAdjacentHTML('beforeend', newGroupUserDataHtml);
+        const groupUserDataElements = document.querySelectorAll('.group-user-data');
+        groupUserDataElements.forEach(element => {
+            positionUserDataElement(lopecClickElement, element)
+            // const elementRect = lopecClickElement.getBoundingClientRect();
+            // const newLeft = lopecClickElement.clientX - offsetX;
+            // const newTop = lopecClickElement.clientY - offsetY;
+
+            // const constrainedLeft = Math.max(0, Math.min(newLeft, window.innerWidth - elementRect.width));
+            // const constrainedTop = Math.max(0, Math.min(newTop, window.innerHeight - elementRect.height));
+
+            // const centerX = constrainedLeft + elementRect.width / 2;
+            // const centerY = constrainedTop + elementRect.height / 2;
+
+            // const newPosition = { left: 'auto', top: 'auto', right: 'auto', bottom: 'auto' };
+
+            // if (centerX > window.innerWidth / 2) {
+            //     newPosition.right = `${window.innerWidth - (constrainedLeft + elementRect.width)}px`;
+            // } else {
+            //     newPosition.left = `${constrainedLeft}px`;
+            // }
+
+            // if (centerY > window.innerHeight / 2) {
+            //     newPosition.bottom = `${window.innerHeight - (constrainedTop + elementRect.height)}px`;
+            // } else {
+            //     newPosition.top = `${constrainedTop}px`;
+            // }
+
+            // // 기존 위치 속성 초기화
+            // element.style.left = 'auto';
+            // element.style.right = 'auto';
+            // element.style.top = 'auto';
+            // element.style.bottom = 'auto';
+
+            // // 가로 위치 설정
+            // if (newPosition.left !== 'auto') { // 부모가 왼쪽에 있을 때
+            //     element.style.left = '100%';
+            // } else if (newPosition.right !== 'auto') { // 부모가 오른쪽에 있을 때
+            //     element.style.right = '100%';
+            // }
+
+            // // 세로 위치 설정
+            // if (newPosition.top !== 'auto') { // 부모가 위쪽에 있을 때
+            //     element.style.top = '0';
+            // } else if (newPosition.bottom !== 'auto') { // 부모가 아래쪽에 있을 때
+            //     element.style.bottom = '0';
+            // }
+        });
+
+        function positionUserDataElement(parentElement, userDataElement) {
+            // 부모 요소와 자식 요소 찾기
+            // const parentElement = document.querySelector(parentSelector);
+            // const userDataElement = document.querySelector(childSelector);
+
+            // 요소가 존재하는지 확인
+            if (!parentElement || !userDataElement) {
+                console.error("부모 요소 또는 group-user-data 요소를 찾을 수 없습니다.");
+                return;
+            }
+
+            // 부모 요소의 위치 및 크기 정보 가져오기 (뷰포트 기준)
+            const parentRect = parentElement.getBoundingClientRect();
+
+            // 뷰포트(화면)의 너비와 높이 가져오기
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // 부모 요소의 중앙 위치가 뷰포트의 어느 사분면에 있는지 판단
+            // 부모 요소의 왼쪽 상단 좌표를 기준으로 판단합니다.
+            const isInTopHalf = parentRect.top < viewportHeight / 2;
+            const isInLeftHalf = parentRect.left < viewportWidth / 2;
+
+            // group-user-data 요소의 위치를 절대 위치로 설정 (필요하다면)
+            // CSS에 position: absolute; 가 미리 설정되어 있다면 이 줄은 필요 없을 수 있습니다.
+            userDataElement.style.position = 'absolute';
+
+            // 사분면에 따라 group-user-data 요소의 위치 설정
+            if (isInTopHalf && isInLeftHalf) {
+                // 좌측 상단에 위치한 경우
+                console.log("부모가 좌측 상단에 위치");
+                userDataElement.style.left = '100%'; // 부모 너비의 100%만큼 오른쪽으로 이동
+                userDataElement.style.top = '0';     // 부모의 상단에 맞춤
+                userDataElement.style.right = 'auto';// 다른 위치 속성 초기화
+                userDataElement.style.bottom = 'auto'; // 다른 위치 속성 초기화
+            } else if (!isInTopHalf && isInLeftHalf) {
+                // 좌측 하단에 위치한 경우
+                console.log("부모가 좌측 하단에 위치");
+                userDataElement.style.left = '100%';   // 부모 너비의 100%만큼 오른쪽으로 이동
+                userDataElement.style.bottom = '0';  // 부모의 하단에 맞춤
+                userDataElement.style.right = 'auto'; // 다른 위치 속성 초기화
+                userDataElement.style.top = 'auto';    // 다른 위치 속성 초기화
+            } else if (isInTopHalf && !isInLeftHalf) {
+                // 우측 상단에 위치한 경우
+                console.log("부모가 우측 상단에 위치");
+                userDataElement.style.right = '100%';  // 부모 너비의 100%만큼 왼쪽으로 이동
+                userDataElement.style.top = '0';     // 부모의 상단에 맞춤
+                userDataElement.style.left = 'auto';   // 다른 위치 속성 초기화
+                userDataElement.style.bottom = 'auto'; // 다른 위치 속성 초기화
+            } else {
+                // 우측 하단에 위치한 경우 (그 외의 경우)
+                console.log("부모가 우측 하단에 위치");
+                userDataElement.style.right = '100%';  // 부모 너비의 100%만큼 왼쪽으로 이동
+                userDataElement.style.bottom = '0';  // 부모의 하단에 맞춤
+                userDataElement.style.left = 'auto';   // 다른 위치 속성 초기화
+                userDataElement.style.top = 'auto';    // 다른 위치 속성 초기화
+            }
+        }
 
         // 5. 생성된 group-user-data에 데이터 채우기
         await groupUserDataSet(inputName, characterId, data, extractValue, calcValue);
@@ -1456,58 +1513,58 @@ async function lopecClickSearch() {
     * description		: 	ocr모듈 호출 <== 베타 후 제거 예정
     *********************************************************************************************************************** */
     // OCR 기능 부분(베타 후 제거 예정) - 주석 처리됨
-    // let btnElement = document.querySelector(".sc-lopec-click .auto.btn");
-    // await LopecOCR.loadDefaultTemplates();
-    // btnElement.addEventListener("click", async (e) => {
-    //     let searchBtnElement = e.target.closest(".search-area").querySelector(".search.btn");
-    //     let timerCountDown
-    //     try {
-    //         // OCR 실행 (API 키 'free', 버전 'auto')
-    //         let leftTimeCount = 3;
-    //         searchBtnElement.textContent = "검색중";
-    //         btnElement.style.pointerEvents = "none";
-    //         btnElement.style.opacity = "0.2";
-    //         timerCountDown = setInterval(() => {
-    //             if (leftTimeCount >= 0) {
-    //                 btnElement.textContent = `딸깍(${leftTimeCount})`;
-    //                 leftTimeCount--;
-    //             } else {
-    //                 btnElement.style.pointerEvents = "auto";
-    //                 btnElement.style.opacity = "1";
-    //                 btnElement.textContent = `딸깍`;
-    //                 clearInterval(timerCountDown);
-    //             }
-    //         }, 1000)
-    //         const nicknames = await LopecOCR.extractCharactersFromClipboard('free', 'auto', {
-    //             onStatusUpdate: (message) => {
-    //                 // statusElement.textContent = message; // 진행 상태 업데이트
-    //             },
-    //             onError: (error) => {
-    //                 clearInterval(timerCountDown);
+    let btnElement = document.querySelector(".sc-lopec-click .auto.btn");
+    await LopecOCR.loadDefaultTemplates();
+    btnElement.addEventListener("click", async (e) => {
+        let searchBtnElement = e.target.closest(".search-area").querySelector(".search.btn");
+        let timerCountDown
+        try {
+            // OCR 실행 (API 키 'free', 버전 'auto')
+            let leftTimeCount = 3;
+            searchBtnElement.textContent = "검색중";
+            btnElement.style.pointerEvents = "none";
+            btnElement.style.opacity = "0.2";
+            timerCountDown = setInterval(() => {
+                if (leftTimeCount >= 0) {
+                    btnElement.textContent = `딸깍(${leftTimeCount})`;
+                    leftTimeCount--;
+                } else {
+                    btnElement.style.pointerEvents = "auto";
+                    btnElement.style.opacity = "1";
+                    btnElement.textContent = `딸깍`;
+                    clearInterval(timerCountDown);
+                }
+            }, 1000)
+            const nicknames = await LopecOCR.extractCharactersFromClipboard('auto', {
+                onStatusUpdate: (message) => {
+                    // statusElement.textContent = message; // 진행 상태 업데이트
+                },
+                onError: (error) => {
+                    clearInterval(timerCountDown);
 
-    //                 // 사소한 오류는 여기서 처리 가능 (예: OCR API 자체 오류)
-    //                 // errorElement.textContent = `처리 중 오류: ${error.message}`;
-    //                 console.warn('OCR 처리 중 오류 발생:', error);
-    //             }
-    //         });
-    //         console.warn(nicknames)
-    //         if (nicknames.length > 0) {
-    //             nicknames.forEach(name => {
-    //                 simpleSearch(name);
-    //             })
-    //         }
-    //     } catch (error) {
-    //         btnElement.style.pointerEvents = "auto";
-    //         btnElement.style.opacity = "1";
-    //         searchBtnElement.textContent = "검색";
-    //         clearInterval(timerCountDown);
-    //         alert("이미지가 감지되지 않았습니다.\n파티 입장 후 alt + Printscreen키를 누른 뒤 사용해주세요!")
-    //         // 치명적인 오류 처리 (예: 클립보드 접근 불가, 유효하지 않은 이미지 등)
-    //         // statusElement.textContent = 'OCR 실패';
-    //         // errorElement.textContent = `오류: ${error.message}`;
-    //         console.error('OCR 실행 중 심각한 오류 발생:', error);
-    //     }
-    // })
+                    // 사소한 오류는 여기서 처리 가능 (예: OCR API 자체 오류)
+                    // errorElement.textContent = `처리 중 오류: ${error.message}`;
+                    console.warn('OCR 처리 중 오류 발생:', error);
+                }
+            });
+            console.warn(nicknames)
+            if (nicknames.length > 0) {
+                nicknames.forEach(name => {
+                    simpleSearch(name);
+                })
+            }
+        } catch (error) {
+            btnElement.style.pointerEvents = "auto";
+            btnElement.style.opacity = "1";
+            searchBtnElement.textContent = "검색";
+            clearInterval(timerCountDown);
+            // alert("이미지가 감지되지 않았습니다.\n파티 입장 후 alt + Printscreen키를 누른 뒤 사용해주세요!")
+            // 치명적인 오류 처리 (예: 클립보드 접근 불가, 유효하지 않은 이미지 등)
+            // statusElement.textContent = 'OCR 실패';
+            // errorElement.textContent = `오류: ${error.message}`;
+            console.error('OCR 실행 중 심각한 오류 발생:', error);
+        }
+    })
 
 }
 await lopecClickSearch()
