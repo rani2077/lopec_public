@@ -2553,7 +2553,6 @@ export async function getCharacterProfile(data, dataBase) {
         let maxInternalStatFound = -1; // 찾은 최대 내실 값 추적
 
         const observedAttackPowerFloored = Math.floor(observedAttackPower);
-        console.log("estimateKarmaLevel: 깨달음 카르마 레벨 탐색 시작 (만찬/방범대 제외, 최고 내실 우선)...");
         let combinationCount = 0;
 
         // --- 반복문 (기존과 유사) ---
@@ -2598,13 +2597,11 @@ export async function getCharacterProfile(data, dataBase) {
         } // internalStat loop
         // --- 반복문 끝 ---
 
-        console.log(`estimateKarmaLevel: 탐색 완료. 총 ${combinationCount}개 조합 확인.`);
-
         if (bestMatch) {
-            console.log(`[estimateKarmaLevel] 최종 선택된 카르마 레벨: ${bestMatch.level} (최고 내실: ${bestMatch.internalStat})`);
+            //console.log(`[estimateKarmaLevel] 최종 선택된 카르마 레벨: ${bestMatch.level} (최고 내실: ${bestMatch.internalStat})`);
             return bestMatch.level; // 최종 선택된 카르마 레벨 반환
         } else {
-            console.warn("estimateKarmaLevel: 일치하는 조합을 찾지 못했습니다. 최대값 기준 로그 참고:");
+            //console.warn("estimateKarmaLevel: 일치하는 조합을 찾지 못했습니다. 최대값 기준 로그 참고:");
             // --- 실패 시 최대값 기준 로그 (기존 코드와 유사하게) ---
             try {
                 const maxInternalStat = Math.max(...achievableInternalStats);
@@ -2619,19 +2616,19 @@ export async function getCharacterProfile(data, dataBase) {
                      const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
                      const maxCalculatedAttackPower = (maxBaseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
 
-                     console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
-                     console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
-                     console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
-                     console.log(`    -> 계산된 Base공: ${maxBaseAttack.toFixed(2)}`);
-                     console.log(`    -> 계산된 최종 공격력: ${Math.floor(maxCalculatedAttackPower)} (Raw: ${maxCalculatedAttackPower.toFixed(2)})`);
-                     console.log(`  - 비교 대상 입력 공격력: ${observedAttackPowerFloored} (Raw: ${observedAttackPower})`);
-                     console.log(`  - 차이: ${observedAttackPowerFloored - Math.floor(maxCalculatedAttackPower)}`);
+                     //console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
+                     //console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
+                     //console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
+                     //console.log(`    -> 계산된 Base공: ${maxBaseAttack.toFixed(2)}`);
+                     //console.log(`    -> 계산된 최종 공격력: ${Math.floor(maxCalculatedAttackPower)} (Raw: ${maxCalculatedAttackPower.toFixed(2)})`);
+                     //console.log(`  - 비교 대상 입력 공격력: ${observedAttackPowerFloored} (Raw: ${observedAttackPower})`);
+                     //console.log(`  - 차이: ${observedAttackPowerFloored - Math.floor(maxCalculatedAttackPower)}`);
                  } else {
-                     console.warn("estimateKarmaLevel: 최대값 기준 baseAttack 계산 결과 NaN 또는 Infinite.");
-                     // 로그 출력 로직 주석 해제
-                     console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
-                     console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
-                     console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
+                     //console.warn("estimateKarmaLevel: 최대값 기준 baseAttack 계산 결과 NaN 또는 Infinite.");
+                     //// 로그 출력 로직 주석 해제
+                     //console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
+                     //console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
+                     //console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
                  }
             } catch (e) {
                 console.error("estimateKarmaLevel: 최대값 기준 계산 중 오류 발생:", e);
@@ -2678,7 +2675,7 @@ export async function getCharacterProfile(data, dataBase) {
         CalcelixirAtkPer: (elixirObj.atkPer || 0) / 100,
         CalcattackBonus: (((etcObj.gemAttackBonus || 0) + (etcObj.abilityAttackBonus || 0)) / 100) + 1
     };
-    console.log(karmaInputData)
+    //console.log(karmaInputData)
     // --- estimateKarmaLevel 함수 호출 및 결과 출력 ---
     const estimatedBestKarmaLevel = estimateKarmaLevel(karmaInputData);
     console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
