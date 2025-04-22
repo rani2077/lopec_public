@@ -4,40 +4,41 @@
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
 /* **********************************************************************************************************************
- * function name		:	importModuleManager()
+ * function name		:	importModuleManager() <== import 전역화로 인한 미사용
  * description			: 	사용하는 모든 외부 module파일 import
  *********************************************************************************************************************** */
-async function importModuleManager() {
-    let interValTime = 60 * 1000 * 10;
-    let modules = await Promise.all([
-        import(`../custom-module/fetchApi.js?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark API 호출
-        import(`../filter/filter.js?${Math.floor((new Date).getTime() / interValTime)}`),              // 필터 호출
-        import(`../custom-module/trans-value.js?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
-        import(`../custom-module/calculator.js?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
-        import(`../custom-module/component.js?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 모듈
-        import(`../js/character.js?${Math.floor((new Date).getTime() / interValTime)}`),               // 특정 유저의 상세정보를 저장
+// async function importModuleManager() {
+//     let interValTime = 60 * 1000 * 10;
+//     let modules = await Promise.all([
+//         import(`../custom-module/fetchApi.js?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark API 호출
+//         import(`../filter/filter.js?${Math.floor((new Date).getTime() / interValTime)}`),              // 필터 호출
+//         import(`../custom-module/trans-value.js?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
+//         import(`../custom-module/calculator.js?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
+//         import(`../custom-module/component.js?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 모듈
+//         import(`../js/character.js?${Math.floor((new Date).getTime() / interValTime)}`),               // 특정 유저의 상세정보를 저장
 
-        //import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
-        //import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
-        //import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구 
-        //import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 기존 타임스탬프 방식 복구
-        //import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 기존 타임스탬프 방식 복구
-        //import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 기존 타임스탬프 방식 복구
-        //import('../js/search.js' + `?${(new Date).getTime()}`),                   // 기존 타임스탬프 방식 복구
-        //import('../js/character.js' + `?${(new Date).getTime()}`),                // 기존 타임스탬프 방식 복구
-    ])
-    let moduleObj = {
-        fetchApi: modules[0],
-        originFilter: modules[1],
-        transValue: modules[2],
-        calcValue: modules[3],
-        component: modules[4],
+//         //import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
+//         //import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
+//         //import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구 
+//         //import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 기존 타임스탬프 방식 복구
+//         //import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 기존 타임스탬프 방식 복구
+//         //import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 기존 타임스탬프 방식 복구
+//         //import('../js/search.js' + `?${(new Date).getTime()}`),                   // 기존 타임스탬프 방식 복구
+//         //import('../js/character.js' + `?${(new Date).getTime()}`),                // 기존 타임스탬프 방식 복구
+//     ])
+//     let moduleObj = {
+//         fetchApi: modules[0],
+//         originFilter: modules[1],
+//         transValue: modules[2],
+//         calcValue: modules[3],
+//         component: modules[4],
 
-        userDataWriteDeviceLog: modules[5],
-    }
+//         userDataWriteDeviceLog: modules[5],
+//     }
 
-    return moduleObj
-}
+//     return moduleObj
+// }
+Modules = await Modules
 
 async function mainSearchFunction() {
 
@@ -45,7 +46,7 @@ async function mainSearchFunction() {
     // const nameParam = urlParams.get('headerCharacterName');
     const nameParam = urlParams.get('headerCharacterName');
     document.title = `로펙 : ${nameParam}님의 스펙포인트 및 환산점수`
-    let Modules = await importModuleManager();
+    // let Modules = await importModuleManager();
     let component = await Modules.component;
     /* **********************************************************************************************************************
     * function name		:	scProfileSkeleton
