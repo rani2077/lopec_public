@@ -1007,17 +1007,17 @@ async function simulatorInputCalc() {
      * function name		:	evolutionKarmaRankToValue()
      * description			: 	진화 카르마 랭크를 변환 
      *********************************************************************************************************************** */
-    function evolutionKarmaRankToValue() {
-        let elements = document.querySelectorAll(".ark-list.evolution .ark-item")[1].querySelectorAll("input[type=radio]");
-        let karmaRank = 0;
-        elements.forEach((element, idx) => {
-            if (element.checked) {
-                karmaRank = idx;
-            }
-        })
-        return karmaRank;
-    }
-    let evolutionKarmaRank = evolutionKarmaRankToValue();
+    // function evolutionKarmaRankToValue() {
+    //     let elements = document.querySelectorAll(".ark-list.evolution .ark-item")[1].querySelectorAll("input[type=radio]");
+    //     let karmaRank = 0;
+    //     elements.forEach((element, idx) => {
+    //         if (element.checked) {
+    //             karmaRank = idx;
+    //         }
+    //     })
+    //     return karmaRank;
+    // }
+    // let evolutionKarmaRank = evolutionKarmaRankToValue();
 
     /* **********************************************************************************************************************
      * function name		:	gemAttackBonusValueCalc
@@ -1055,28 +1055,28 @@ async function simulatorInputCalc() {
             result.evolutionDamage += 1
         }
 
-        if (evolutionKarmaRank === 6) {
-            result.evolutionDamage += 0.00;
-            result.stigmaPer += 0
-        } else if (evolutionKarmaRank === 5) {
-            result.evolutionDamage += 0.00;
-            result.stigmaPer += 0
-        } else if (evolutionKarmaRank === 4) {
-            result.evolutionDamage += 0.00;
-            result.stigmaPer += 0
-        } else if (evolutionKarmaRank === 3) {
-            result.evolutionDamage += 0.00;
-            result.stigmaPer += 0
-        } else if (evolutionKarmaRank === 2) {
-            result.evolutionDamage += 0.00;
-            result.stigmaPer += 0
-        } else if (evolutionKarmaRank === 1) {
-            result.evolutionDamage += 0.00;
-            result.stigmaPer += 0
-        } else {
-            result.evolutionDamage += 0.00;
-            result.stigmaPer += 0
-        }
+        // if (evolutionKarmaRank === 6) {
+        //     result.evolutionDamage += 0.00;
+        //     result.stigmaPer += 0
+        // } else if (evolutionKarmaRank === 5) {
+        //     result.evolutionDamage += 0.00;
+        //     result.stigmaPer += 0
+        // } else if (evolutionKarmaRank === 4) {
+        //     result.evolutionDamage += 0.00;
+        //     result.stigmaPer += 0
+        // } else if (evolutionKarmaRank === 3) {
+        //     result.evolutionDamage += 0.00;
+        //     result.stigmaPer += 0
+        // } else if (evolutionKarmaRank === 2) {
+        //     result.evolutionDamage += 0.00;
+        //     result.stigmaPer += 0
+        // } else if (evolutionKarmaRank === 1) {
+        //     result.evolutionDamage += 0.00;
+        //     result.stigmaPer += 0
+        // } else {
+        //     result.evolutionDamage += 0.00;
+        //     result.stigmaPer += 0
+        // }
 
 
 
@@ -1268,7 +1268,7 @@ async function simulatorInputCalc() {
         extractValue.etcObj.avatarStats = avatarPointCalc();
         extractValue.etcObj.gemsCoolAvg = extractValue.etcObj.gemsCoolAvg;
         extractValue.etcObj.supportCheck = supportCheck;
-        extractValue.etcObj.evolutionkarmaRank = evolutionKarmaRank;
+        // extractValue.etcObj.evolutionkarmaRank = evolutionKarmaRank;
         extractValue.etcObj.gemCheckFnc.specialSkill = extractValue.etcObj.gemCheckFnc.specialSkill;
         extractValue.etcObj.gemCheckFnc.originGemValue = extractValue.etcObj.gemCheckFnc.originGemValue;
         extractValue.etcObj.gemCheckFnc.gemValue = extractValue.etcObj.gemCheckFnc.gemValue;
@@ -2096,12 +2096,12 @@ async function selectCreate(data, Modules) {
     * function name		:	evloutionKarmaRankChange()
     * description	    : 	진화 카르마 랭크를 유저에게 표시해줌
     *********************************************************************************************************************** */
-    async function evloutionKarmaRankChange() {
-        let karmaElements = document.querySelector(".ark-list.evolution .ark-item.karma-radio").querySelectorAll("input[type=radio]");
-        let extractValue = await Modules.transValue.getCharacterProfile(data);
-        let karmaRank = extractValue.etcObj.evolutionkarmaRank;
-        karmaElements[karmaRank].checked = true;
-    }
+    // async function evloutionKarmaRankChange() {
+    //     let karmaElements = document.querySelector(".ark-list.evolution .ark-item.karma-radio").querySelectorAll("input[type=radio]");
+    //     let extractValue = await Modules.transValue.getCharacterProfile(data);
+    //     let karmaRank = extractValue.etcObj.evolutionkarmaRank;
+    //     karmaElements[karmaRank].checked = true;
+    // }
     /* **********************************************************************************************************************
     * function name		:	enlightValueChange()
     * description	    : 	깨달음 포인트를 유저에게 표시해줌
@@ -3534,7 +3534,7 @@ async function selectCreate(data, Modules) {
     leafPointToKarmaSelect()
     showLeafInfo()
     userLevelAndArmorToEvolution()
-    evloutionKarmaRankChange()
+    // evloutionKarmaRankChange()
 
 
     /* **********************************************************************************************************************

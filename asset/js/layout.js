@@ -1139,49 +1139,6 @@ async function lopecClickSearch() {
         const groupUserDataElements = document.querySelectorAll('.group-user-data');
         groupUserDataElements.forEach(element => {
             positionUserDataElement(lopecClickElement, element)
-            // const elementRect = lopecClickElement.getBoundingClientRect();
-            // const newLeft = lopecClickElement.clientX - offsetX;
-            // const newTop = lopecClickElement.clientY - offsetY;
-
-            // const constrainedLeft = Math.max(0, Math.min(newLeft, window.innerWidth - elementRect.width));
-            // const constrainedTop = Math.max(0, Math.min(newTop, window.innerHeight - elementRect.height));
-
-            // const centerX = constrainedLeft + elementRect.width / 2;
-            // const centerY = constrainedTop + elementRect.height / 2;
-
-            // const newPosition = { left: 'auto', top: 'auto', right: 'auto', bottom: 'auto' };
-
-            // if (centerX > window.innerWidth / 2) {
-            //     newPosition.right = `${window.innerWidth - (constrainedLeft + elementRect.width)}px`;
-            // } else {
-            //     newPosition.left = `${constrainedLeft}px`;
-            // }
-
-            // if (centerY > window.innerHeight / 2) {
-            //     newPosition.bottom = `${window.innerHeight - (constrainedTop + elementRect.height)}px`;
-            // } else {
-            //     newPosition.top = `${constrainedTop}px`;
-            // }
-
-            // // 기존 위치 속성 초기화
-            // element.style.left = 'auto';
-            // element.style.right = 'auto';
-            // element.style.top = 'auto';
-            // element.style.bottom = 'auto';
-
-            // // 가로 위치 설정
-            // if (newPosition.left !== 'auto') { // 부모가 왼쪽에 있을 때
-            //     element.style.left = '100%';
-            // } else if (newPosition.right !== 'auto') { // 부모가 오른쪽에 있을 때
-            //     element.style.right = '100%';
-            // }
-
-            // // 세로 위치 설정
-            // if (newPosition.top !== 'auto') { // 부모가 위쪽에 있을 때
-            //     element.style.top = '0';
-            // } else if (newPosition.bottom !== 'auto') { // 부모가 아래쪽에 있을 때
-            //     element.style.bottom = '0';
-            // }
         });
 
         function positionUserDataElement(parentElement, userDataElement) {
@@ -1214,28 +1171,24 @@ async function lopecClickSearch() {
             // 사분면에 따라 group-user-data 요소의 위치 설정
             if (isInTopHalf && isInLeftHalf) {
                 // 좌측 상단에 위치한 경우
-                console.log("부모가 좌측 상단에 위치");
                 userDataElement.style.left = '100%'; // 부모 너비의 100%만큼 오른쪽으로 이동
                 userDataElement.style.top = '0';     // 부모의 상단에 맞춤
                 userDataElement.style.right = 'auto';// 다른 위치 속성 초기화
                 userDataElement.style.bottom = 'auto'; // 다른 위치 속성 초기화
             } else if (!isInTopHalf && isInLeftHalf) {
                 // 좌측 하단에 위치한 경우
-                console.log("부모가 좌측 하단에 위치");
                 userDataElement.style.left = '100%';   // 부모 너비의 100%만큼 오른쪽으로 이동
                 userDataElement.style.bottom = '0';  // 부모의 하단에 맞춤
                 userDataElement.style.right = 'auto'; // 다른 위치 속성 초기화
                 userDataElement.style.top = 'auto';    // 다른 위치 속성 초기화
             } else if (isInTopHalf && !isInLeftHalf) {
                 // 우측 상단에 위치한 경우
-                console.log("부모가 우측 상단에 위치");
                 userDataElement.style.right = '100%';  // 부모 너비의 100%만큼 왼쪽으로 이동
                 userDataElement.style.top = '0';     // 부모의 상단에 맞춤
                 userDataElement.style.left = 'auto';   // 다른 위치 속성 초기화
                 userDataElement.style.bottom = 'auto'; // 다른 위치 속성 초기화
             } else {
                 // 우측 하단에 위치한 경우 (그 외의 경우)
-                console.log("부모가 우측 하단에 위치");
                 userDataElement.style.right = '100%';  // 부모 너비의 100%만큼 왼쪽으로 이동
                 userDataElement.style.bottom = '0';  // 부모의 하단에 맞춤
                 userDataElement.style.left = 'auto';   // 다른 위치 속성 초기화

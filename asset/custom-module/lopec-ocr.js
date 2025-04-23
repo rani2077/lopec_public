@@ -22,12 +22,6 @@ const LopecOCR = (function () {
     // 마지막 처리된 크롭 이미지 해시 저장 변수
     let lastProcessedCroppedImageHash = null;
 
-    // OCR API 엔드포인트
-    const API_URL = 'https://api.upstage.ai/v1/document-digitization';
-
-    // 프록시 서버 API 키 엔드포인트
-    const API_KEY_PROXY_URL = 'https://restless-art-6037.tassardar6-c0f.workers.dev'; // 프록시 서버의 API 키 제공 엔드포인트 주소
-
     // OCR 버전 상수 정의
     const OCR_VERSIONS = {
         APPLICANT: 'applicant',    // 신청자 목록 (기존 version1)
@@ -40,18 +34,68 @@ const LopecOCR = (function () {
     let templateMatchingThreshold = 0.7; // 템플릿 매칭 임계값 (0.0 ~ 1.0)
     let templateImages = []; // 템플릿 이미지 배열
 
-    // 통합 크롭 영역 설정 (신청자/참가자 모두 포함)
-    const UNIFIED_CROP_OFFSETS = {
-        top: -565,     // 더 위쪽으로 (신청자 기준)
-        right: 400,    // 더 오른쪽으로 (참가자 기준)
-        bottom: -250,  // 동일
-        left: 0        // 동일
+    // ===========================================================================================
+    // 크롭 오프셋 상수 정의 (해상도 및 역할별 세분화)
+    // ===========================================================================================
+
+    // --- FHD (1920x1080, WFHD 2560x1080 등 높이 1080 기준) ---
+    const FHD_LEADER_CROP_OFFSETS = { // 기존 UNIFIED_CROP_OFFSETS 역할
+        top: -565,
+        right: 400,
+        bottom: -250,
+        left: 0
     };
+
+    const FHD_MEMBER_CROP_OFFSETS = { // 기존 PARTY_MEMBER_CROP_OFFSETS 역할 (현재 값 유지)
+        top: FHD_LEADER_CROP_OFFSETS.top ,    
+        right: FHD_LEADER_CROP_OFFSETS.right - 150,  
+        bottom: FHD_LEADER_CROP_OFFSETS.bottom, 
+        left: FHD_LEADER_CROP_OFFSETS.left - 184  
+    };
+
+
+    // --- QHD (2560x1440, WQHD 3440x1440 등 높이 1440 기준) ---
+    const QHD_LEADER_CROP_OFFSETS = {
+        top: FHD_LEADER_CROP_OFFSETS.top - 190,    // -755
+        right: FHD_LEADER_CROP_OFFSETS.right + 120,   // 345
+        bottom: FHD_LEADER_CROP_OFFSETS.bottom - 90, // -345
+        left: FHD_LEADER_CROP_OFFSETS.left -12.5// -250
+    };
+
+    const QHD_MEMBER_CROP_OFFSETS = {
+        top: FHD_LEADER_CROP_OFFSETS.top - 190,      // 임시
+        right: FHD_MEMBER_CROP_OFFSETS.right + 90,    // 임시
+        bottom: FHD_LEADER_CROP_OFFSETS.bottom - 90,  // 임시
+        left: FHD_MEMBER_CROP_OFFSETS.left - 75       // 임시
+    };
+
+
+    // --- UHD (3840x2160 등 높이 2160 기준) ---
+    const UHD_LEADER_CROP_OFFSETS = {
+        top: FHD_LEADER_CROP_OFFSETS.top * 2,        // 임시: 높이 비율(2160/1080) 곱하기
+        right: FHD_LEADER_CROP_OFFSETS.right + 400,      // 임시
+        bottom: FHD_LEADER_CROP_OFFSETS.bottom * 2,    // 임시
+        left: FHD_LEADER_CROP_OFFSETS.left - 20         // 임시
+    };
+
+    const UHD_MEMBER_CROP_OFFSETS = {
+        top: FHD_MEMBER_CROP_OFFSETS.top * 2,         // 임시
+        right: FHD_MEMBER_CROP_OFFSETS.right + 200,       // 임시
+        bottom: FHD_MEMBER_CROP_OFFSETS.bottom * 2,     // 임시
+        left: FHD_MEMBER_CROP_OFFSETS.left - 205      // 임시
+    };
+
+    // ===========================================================================================
 
     // 기본 템플릿 이미지 경로 및 정보 (HTML 파일 기준 상대 경로)
     const DEFAULT_TEMPLATES = [
-        { path: '/asset/templates/Img_65.bmp', name: '공통_기준템플릿', threshold: 0.7 }
+        { path: '/asset/templates/Img_65.bmp', name: '공통_기준템플릿', threshold: 0.7 }, // FHD 기준
+        { path: '/asset/templates/effective_qhd.png', name: 'QHD_기준템플릿', threshold: 0.7 }, // QHD 기준 추가
+        { path: '/asset/templates/effective_uhd.png', name: 'UHD_기준템플릿', threshold: 0.7 }, // UHD 기준 추가
         // 첫 번째 템플릿은 유효성 검사 및 크롭 기준점으로 사용
+        { path: '/asset/templates/invite.png', name: '파티장_초대템플릿', threshold: 0.7 }, // 파티장 식별용 템플릿 추가
+        { path: '/asset/templates/invite_qhd.png', name: 'QHD_파티장_초대템플릿', threshold: 0.7 }, // QHD 파티장 식별용
+        { path: '/asset/templates/invite_uhd.png', name: 'UHD_파티장_초대템플릿', threshold: 0.7 } // UHD 파티장 식별용
     ];
 
     // ===========================================================================================
@@ -658,7 +702,7 @@ const LopecOCR = (function () {
             const templateName = '공통_기준템플릿';
 
             // 통합 크롭 오프셋 사용
-            const cropOffsets = UNIFIED_CROP_OFFSETS;
+            const cropOffsets = FHD_LEADER_CROP_OFFSETS;
 
             // 템플릿 기반 크롭 실행 (지정된 단일 템플릿 이름 사용)
             const croppedData = await cropRegionAroundTemplate(img, templateName, cropOffsets, logDebug);
@@ -732,7 +776,7 @@ const LopecOCR = (function () {
      * @param {Function|null} debug - 디버그 로그 콜백 함수
      * @returns {Array} 추출된 캐릭터 정보 배열
      */
-    function extractCharacterInfo(ocrData, version = OCR_VERSIONS.APPLICANT, debug = null) {
+    function extractCharacterInfo(ocrData, version = OCR_VERSIONS.APPLICANT, resolution = 'FHD_like', debug = null) {
         // 반환할 캐릭터 정보 배열
         const characterResults = [];
 
@@ -755,23 +799,16 @@ const LopecOCR = (function () {
 
             // 참가자 목록 버전일 경우 좌표 기반 닉네임 추출
             if (version === OCR_VERSIONS.PARTICIPANT) {
+                logDebug(`==== 해상도(${resolution}) 기반 좌표 설정 ====`);
+
                 // API 응답 전체 로깅 (개발용)
                 logDebug(`==== 참가자 목록 OCR API 응답 (개발용) ====`);
-
-                // JSON 문자열로 변환하여 로깅
-                const jsonStr = JSON.stringify(ocrData, null, 2);
-                logDebug(`API 응답 JSON: ${jsonStr}`);
-
-                // 텍스트 내용 출력
-                logDebug(`==== OCR 추출 텍스트 ====`);
-                logDebug(ocrData.text);
-                logDebug(`==== 텍스트 길이: ${ocrData.text.length}자 ====`);
 
                 // 좌표 기반 닉네임 추출 시도
                 logDebug(`==== 좌표 기반 닉네임 추출 시작 ====`);
 
-                // 닉네임 좌상단 좌표 목록 (정확한 위치)
-                const nicknamePositions = [
+                // --- 해상도별 닉네임 좌표 정의 ---
+                const FHD_NICKNAME_POSITIONS = [
                     // 왼쪽 열
                     { x: 5, y: 38 },    // 첫번째 닉네임
                     { x: 5, y: 66 },    // 두번째 닉네임
@@ -780,16 +817,71 @@ const LopecOCR = (function () {
                     
                     // 오른쪽 열
                     { x: 304, y: 38 },  // 다섯번째 닉네임
-                    { x: 304, y: 69 },  // 여섯번째 닉네임
+                    { x: 304, y: 66 },  // 여섯번째 닉네임
                     { x: 304, y: 99 },  // 일곱번째 닉네임
                     { x: 304, y: 128 }  // 여덟번째 닉네임
                 ];
 
+                // !!! QHD 좌표 필요 !!!
+                const QHD_NICKNAME_POSITIONS = [
+                    // 왼쪽 열
+                    { x: 11, y: 54 },    // 첫번째 닉네임
+                    { x: 11, y: 94 },    // 두번째 닉네임
+                    { x: 11, y: 134 },    // 세번째 닉네임
+                    { x: 11, y: 174 },   // 네번째 닉네임
+                    
+                    // 오른쪽 열
+                    { x: 411, y: 54 },  // 다섯번째 닉네임
+                    { x: 411, y: 94 },  // 여섯번째 닉네임
+                    { x: 411, y: 134 },  // 일곱번째 닉네임
+                    { x: 411, y: 174 }  // 여덟번째 닉네임
+                ];
+
+                // !!! UHD 좌표 필요 !!!
+                const UHD_NICKNAME_POSITIONS = [
+                    // 왼쪽 열
+                    { x: 20, y: 84 },    // 첫번째 닉네임
+                    { x: 20, y: 144 },    // 두번째 닉네임
+                    { x: 20, y: 204 },    // 세번째 닉네임
+                    { x: 20, y: 264 },   // 네번째 닉네임
+                    
+                    // 오른쪽 열
+                    { x: 621, y: 84 },  // 다섯번째 닉네임
+                    { x: 621, y: 144 },  // 여섯번째 닉네임
+                    { x: 621, y: 204 },  // 일곱번째 닉네임
+                    { x: 621, y: 264 }  // 여덟번째 닉네임
+                ];
+
+                // --- 해상도에 따라 사용할 좌표 배열 선택 ---
+                let selectedNicknamePositions;
+                if (resolution === 'FHD_like' || resolution === 'Unknown') {
+                    selectedNicknamePositions = FHD_NICKNAME_POSITIONS;
+                    logDebug('FHD 해상도 닉네임 좌표 사용');
+                } else if (resolution === 'QHD') {
+                    if (QHD_NICKNAME_POSITIONS.length === 0) {
+                        logDebug('경고: QHD 닉네임 좌표가 정의되지 않았습니다. 추출을 건너뜁니다.');
+                        return []; // 좌표 없으면 빈 배열 반환
+                    }
+                    selectedNicknamePositions = QHD_NICKNAME_POSITIONS;
+                    logDebug('QHD 해상도 닉네임 좌표 사용');
+                } else if (resolution === 'UHD') {
+                    if (UHD_NICKNAME_POSITIONS.length === 0) {
+                        logDebug('경고: UHD 닉네임 좌표가 정의되지 않았습니다. 추출을 건너뜁니다.');
+                        return []; // 좌표 없으면 빈 배열 반환
+                    }
+                    selectedNicknamePositions = UHD_NICKNAME_POSITIONS;
+                    logDebug('UHD 해상도 닉네임 좌표 사용');
+                } else {
+                    logDebug(`처리되지 않은 해상도: ${resolution}. 기본 FHD 좌표 사용.`);
+                    selectedNicknamePositions = FHD_NICKNAME_POSITIONS;
+                }
+
                 // 미리 계산된 허용 오차 범위로 좌표 맵 생성 (속도 최적화)
                 const positionMap = new Map();
-                const tolerance = 2;
+                const tolerance = 3;
 
-                nicknamePositions.forEach((pos, index) => {
+                // 선택된 좌표 배열 사용
+                selectedNicknamePositions.forEach((pos, index) => {
                     for (let x = pos.x - tolerance; x <= pos.x + tolerance; x++) {
                         for (let y = pos.y - tolerance; y <= pos.y + tolerance; y++) {
                             positionMap.set(`${x},${y}`, index);
@@ -1000,7 +1092,7 @@ const LopecOCR = (function () {
      * @returns {Promise<Array<string>>} 추출된 닉네임 문자열 배열
      */
     async function processClipboardImage(version = 'auto', callbacks = {}, skipValidation = false) {
-        const { onStatusUpdate, onDebugInfo, onImageCropped, onError } = callbacks;
+        const { onStatusUpdate, onDebugInfo, onImageCropped, onError, onRawResponse } = callbacks; // onRawResponse 추가
 
         // 상태 업데이트 및 디버그 함수 초기화
         const updateStatus = (message) => { if (onStatusUpdate && typeof onStatusUpdate === 'function') { onStatusUpdate(message); } };
@@ -1045,72 +1137,184 @@ const LopecOCR = (function () {
             addDebug(`원본 이미지 크기: ${img.width}x${img.height}, 비율: ${(img.width / img.height).toFixed(2)}`);
             endTimer('이미지 변환 (Blob → HTMLImage)');
 
-            // 4. 템플릿 매칭으로 이미지 유효성 검사
+            // ===========================================================================
+            // 4. 최적화: 검색 영역을 오른쪽 절반으로 제한
+            // ===========================================================================
+            startTimer('오른쪽 절반 이미지 생성');
+            // === ROI 좌표 계산 수정: 우측 60%, 하단 50% ===
+            const roiX = Math.floor(img.width * 0.4); // X 시작점 (40% 지점)
+            const roiY = Math.floor(img.height * 0.5); // Y 시작점 (50% 지점)
+            const roiWidth = img.width - roiX;         // 너비 (60%)
+            const roiHeight = img.height - roiY;        // 높이 (50%)
+
+            // ROI 캔버스 생성 및 이미지 영역 복사
+            const roiCanvas = document.createElement('canvas');
+            roiCanvas.width = roiWidth;
+            roiCanvas.height = roiHeight;
+            const roiCtx = roiCanvas.getContext('2d');
+            roiCtx.drawImage(img, roiX, roiY, roiWidth, roiHeight, 0, 0, roiWidth, roiHeight);
+            addDebug(`템플릿 검색 영역: 우측 60%(X:${roiX}~), 하단 50%(Y:${roiY}~), 크기:${roiWidth}x${roiHeight}`);
+            endTimer('오른쪽 절반 이미지 생성');
+
+            // ===========================================================================
+            // 4. 해상도 감지 및 기준 템플릿 결정 (수정된 로직)
+            // ===========================================================================
+            let resolution = 'FHD'; // 기본값
+            let baseTemplateName = '공통_기준템플릿';
+            const imageWidth = img.width; // 여기서 한 번만 선언
+            const imageHeight = img.height; // 여기서 한 번만 선언
+
+            // 높이 기준으로 해상도 판별
+            let inviteTemplateName = '파티장_초대템플릿'; // 기본 FHD용 초대 템플릿
+            if (imageHeight > 1050 && imageHeight < 1110) { // FHD 높이 범위 (1080p)
+                resolution = 'FHD_like'; // FHD, WFHD 등
+                baseTemplateName = '공통_기준템플릿';
+                // inviteTemplateName = '파티장_초대템플릿'; // 이미 기본값
+            } else if (imageHeight > 1400 && imageHeight < 1500) { // QHD 높이 범위 (1440p)
+                resolution = 'QHD';
+                baseTemplateName = 'QHD_기준템플릿';
+                inviteTemplateName = 'QHD_파티장_초대템플릿'; // QHD용 초대 템플릿 사용
+            } else if (imageHeight > 2100 && imageHeight < 2200) { // UHD 높이 범위 (2160p)
+                resolution = 'UHD';
+                // UHD 기준 템플릿 사용
+                baseTemplateName = 'UHD_기준템플릿';
+                inviteTemplateName = 'UHD_파티장_초대템플릿';
+            } else {
+                addDebug(`알 수 없는 이미지 높이: ${imageHeight}. 기본 FHD 기준으로 처리합니다.`);
+                resolution = 'Unknown';
+                baseTemplateName = '공통_기준템플릿'; // 기본값 FHD 템플릿 사용
+            }
+            addDebug(`감지된 해상도 (높이 기준 ${imageHeight}px): ${resolution}, 사용할 기준 템플릿: ${baseTemplateName}`);
+
+            // 5. 템플릿 매칭 수행
             startTimer('템플릿 매칭 (통합)');
             updateStatus('템플릿 매칭 수행 중...');
+            // 오른쪽 절반 이미지에서만 매칭 수행
+            // === ROI 캔버스에서 매칭 수행 ===
+            const matchResult = await matchTemplate(roiCanvas);
+            endTimer('템플릿 매칭 (통합)');
 
-            // 유효성 검사만 수행 (버전 감지는 OCR 결과로 수행)
-            const matchResult = await matchTemplate(img, true); // 조기 종료 옵션 활성화
+            // 6. 유효성 검사 (해상도에 맞는 기준 템플릿 확인)
+            const baseTemplateMatch = matchResult.matches.find(m => m.name === baseTemplateName && m.isMatched);
 
-            // 4.1 유효성 검사
             if (!skipValidation && templateImages.length > 0) {
-                const isValid = matchResult.isValid;
-
-                if (!isValid) {
-                    addDebug('이미지 유효성 검사 실패: 로스트아크 UI 요소를 찾을 수 없음');
+                if (!baseTemplateMatch) {
+                    // 오류 메시지에 해상도와 템플릿 이름 표시
+                    addDebug(`이미지 유효성 검사 실패: ${resolution} 기준 템플릿(${baseTemplateName})을 찾을 수 없음`);
                     const error = new Error('유효한 로스트아크 이미지가 아닙니다. 올바른 게임 화면을 캡처해주세요.');
                     handleError(error);
                     throw error;
                 }
-
-                addDebug('이미지 유효성 검사 통과: 로스트아크 UI 요소 확인됨');
+                // 성공 메시지에 해상도와 템플릿 이름 표시
+                addDebug(`이미지 유효성 검사 통과: ${resolution} 기준 템플릿(${baseTemplateName}) 확인됨`);
             } else if (!skipValidation && templateImages.length === 0) {
                 addDebug('경고: 등록된 템플릿 이미지가 없어 유효성 검사를 건너뜁니다');
             }
 
-            endTimer('템플릿 매칭 (통합)');
+            // 7. 파티장 여부 확인 및 크롭 오프셋 결정
+            // 기준 템플릿 위치를 기반으로 초대 버튼 예상 X 좌표 범위 계산
+            // !! 중요: matchResult 좌표는 오른쪽 절반 기준이므로 원본 기준으로 변환 필요 !!
+            // === 기준 템플릿 좌표 변환 (ROI -> 원본) ===
+            const baseX_relative = baseTemplateMatch ? baseTemplateMatch.location.x : -1; // ROI 기준 X
+            const baseY_relative = baseTemplateMatch ? baseTemplateMatch.location.y : -1; // ROI 기준 Y
+            const originalBaseX = baseTemplateMatch ? baseX_relative + roiX : -1; // 원본 기준 X
+            const originalBaseY = baseTemplateMatch ? baseY_relative + roiY : -1; // 원본 기준 Y
 
-            // 버전은 OCR 결과를 받은 후에 결정할 것임 (임시값 설정)
-            let finalVersion = version;
+            // 원본 이미지 기준 X 좌표로 초대 버튼 예상 범위 계산
+            // --- 해상도별 스케일링된 X 오프셋 적용 --- 
+            let inviteOffsetX_start = 300; // FHD 기준 시작 오프셋
+            let inviteOffsetX_end = 600;   // FHD 기준 끝 오프셋
+            if (resolution === 'QHD') {
+                inviteOffsetX_start *= 1.33; // 임시 스케일링 (1440/1080)
+                inviteOffsetX_end *= 1.33;
+            } else if (resolution === 'UHD') {
+                inviteOffsetX_start *= 2;    // 임시 스케일링 (2160/1080)
+                inviteOffsetX_end *= 2;
+            }
+            const minInviteX_original = originalBaseX + Math.round(inviteOffsetX_start);
+            const maxInviteX_original = originalBaseX + Math.round(inviteOffsetX_end);
+            addDebug(`초대 버튼 예상 X 좌표 범위 (원본 기준): ${minInviteX_original} ~ ${maxInviteX_original}`);
 
-            // 버전 결정 전에 크롭 영역 계산을 위한 기준 템플릿 위치 확인
-            const baseTemplate = matchResult.matches.find(m => m.name === '공통_기준템플릿');
-            console.log(baseTemplate)
+            // 해상도에 맞는 초대 템플릿 이름과 계산된 X 좌표 범위를 사용하여 파티장 여부 판단
+            const partyLeaderMatch = matchResult.matches.find(m => {
+                if (!(m.name === inviteTemplateName && m.isMatched)) return false;
 
-            if (!baseTemplate || !baseTemplate.isMatched) {
-                addDebug("템플릿 기반 크롭 실패: 기준 템플릿을 찾을 수 없습니다.");
-                throw new Error("이미지 크롭 실패: 기준점을 찾을 수 없습니다.");
+                // 초대 템플릿의 원본 X 좌표 계산
+                // === 초대 템플릿 좌표 변환 (ROI -> 원본) ===
+                const inviteX_relative = m.location.x; // ROI 기준 X
+                const inviteY_relative = m.location.y; // ROI 기준 Y
+                const originalInviteX = inviteX_relative + roiX; // 원본 기준 X
+                // const originalInviteY = inviteY_relative + roiY; // Y 좌표는 필터링에 사용 안 함
+
+                // 원본 X 좌표 기준으로 범위 필터링
+                return originalInviteX >= minInviteX_original && originalInviteX <= maxInviteX_original;
+            });
+            const isPartyLeader = !!partyLeaderMatch; // 매칭 결과(객체 또는 undefined)를 boolean으로 변환
+
+            // 해상도와 파티 상태에 따라 최종 크롭 오프셋 선택
+            let cropOffsets;
+            let selectedOffsetName = 'Unknown'; // 디버깅용 이름
+            if (resolution === 'FHD_like') {
+                if (isPartyLeader) {
+                    cropOffsets = FHD_LEADER_CROP_OFFSETS;
+                    selectedOffsetName = 'FHD_LEADER_CROP_OFFSETS';
+                } else {
+                    cropOffsets = FHD_MEMBER_CROP_OFFSETS;
+                    selectedOffsetName = 'FHD_MEMBER_CROP_OFFSETS';
+                }
+            } else if (resolution === 'QHD') {
+                if (isPartyLeader) {
+                    cropOffsets = QHD_LEADER_CROP_OFFSETS;
+                    selectedOffsetName = 'QHD_LEADER_CROP_OFFSETS';
+                } else {
+                    cropOffsets = QHD_MEMBER_CROP_OFFSETS;
+                    selectedOffsetName = 'QHD_MEMBER_CROP_OFFSETS';
+                }
+            } else if (resolution === 'UHD') {
+                if (isPartyLeader) {
+                    cropOffsets = UHD_LEADER_CROP_OFFSETS;
+                    selectedOffsetName = 'UHD_LEADER_CROP_OFFSETS';
+                } else {
+                    cropOffsets = UHD_MEMBER_CROP_OFFSETS;
+                    selectedOffsetName = 'UHD_MEMBER_CROP_OFFSETS';
+                }
+            } else { // Unknown 해상도 또는 예외 상황
+                addDebug('경고: 해상도 판별 불가 또는 예외 상황. FHD 기본 오프셋 사용.');
+                if (isPartyLeader) {
+                    cropOffsets = FHD_LEADER_CROP_OFFSETS;
+                    selectedOffsetName = 'FHD_LEADER_CROP_OFFSETS (Fallback)';
+                } else {
+                    cropOffsets = FHD_MEMBER_CROP_OFFSETS;
+                    selectedOffsetName = 'FHD_MEMBER_CROP_OFFSETS (Fallback)';
+                }
+            }
+            addDebug(`최종 선택된 크롭 오프셋: ${selectedOffsetName}`);
+
+            // QHD/UHD 해상도일 경우 오프셋 값 확인 필요 경고
+            if (resolution === 'QHD' || resolution === 'UHD') {
+                addDebug(`경고: ${resolution} 해상도 감지됨. 현재 크롭 오프셋 값은 FHD 기준일 수 있습니다. 크롭 결과를 확인하세요.`);
             }
 
-            // OCR API 호출 준비 (OCR 결과에 따라 버전 결정)
-            startTimer('OCR API 호출');
-            updateStatus('OCR API 호출 중...');
+            // 8. 크롭 영역 계산 및 크롭 실행
+            startTimer('이미지 크롭');
+            updateStatus('관심 영역 크롭 중...');
 
-            // 4.2 크롭 작업 준비
-            let croppedImageData;
+            // 기준 템플릿 위치 (원본 이미지 기준 좌표 사용)
+            if (!baseTemplateMatch || originalBaseX === -1 || originalBaseY === -1) { // 안전장치 (Y 좌표 변환 실패 포함)
+                 addDebug("템플릿 기반 크롭 실패: 기준 템플릿 매치 정보를 찾을 수 없습니다.");
+                 throw new Error("이미지 크롭 실패: 기준점을 찾을 수 없습니다.");
+             }
 
-            // 크롭 영역 계산
-            const templateX = baseTemplate.location.x;
-            const templateY = baseTemplate.location.y;
-            const templateWidth = baseTemplate.width;
-            const templateHeight = baseTemplate.height;
+            const templateX = originalBaseX;
+            const templateY = originalBaseY;
+            const templateWidth = baseTemplateMatch.width;
+            const templateHeight = baseTemplateMatch.height;
 
-            // 이미지 크기 가져오기
-            const imageWidth = img.width;
-            const imageHeight = img.height;
-
-            // 통합 크롭 오프셋 사용
-            const cropOffsets = UNIFIED_CROP_OFFSETS;
-
-            // 크롭 영역 계산 (템플릿 위치 + 오프셋)
+            // 크롭 영역 계산 (템플릿 위치 + 선택된 오프셋)
             const cropX = Math.max(0, templateX + cropOffsets.left);
             const cropY = Math.max(0, templateY + cropOffsets.top);
-
-            // 크롭 영역 오른쪽/아래 경계 계산
             const cropRight = Math.min(imageWidth, templateX + templateWidth + cropOffsets.right);
             const cropBottom = Math.min(imageHeight, templateY + templateHeight + cropOffsets.bottom);
-
-            // 최종 크롭 영역 크기
             const cropWidth = Math.max(1, cropRight - cropX);
             const cropHeight = Math.max(1, cropBottom - cropY);
 
@@ -1118,7 +1322,6 @@ const LopecOCR = (function () {
             const canvas = document.createElement('canvas');
             canvas.width = cropWidth;
             canvas.height = cropHeight;
-
             const ctx = canvas.getContext('2d');
             ctx.drawImage(
                 img,
@@ -1127,7 +1330,8 @@ const LopecOCR = (function () {
             );
 
             // 이미지 데이터 획득
-            croppedImageData = ctx.getImageData(0, 0, cropWidth, cropHeight);
+            const croppedImageData = ctx.getImageData(0, 0, cropWidth, cropHeight);
+            endTimer('이미지 크롭');
 
             // 디버그 정보 로깅
             addDebug(`기준 템플릿 위치: x=${templateX}, y=${templateY}, 크기: ${templateWidth}x${templateHeight}`);
@@ -1135,45 +1339,37 @@ const LopecOCR = (function () {
             addDebug(`최종 크롭 영역: x=${cropX}, y=${cropY}, 크기: ${cropWidth}x${cropHeight}`);
             addDebug(`크롭된 이미지 크기: ${croppedImageData.width}x${croppedImageData.height}`);
 
+            // 크롭된 이미지 콜백 호출
             if (onImageCropped && typeof onImageCropped === 'function') {
                 onImageCropped(croppedImageData);
             }
 
-            // 5. 이미지 데이터를 Blob으로 변환
-            startTimer('이미지 변환 (ImageData → Blob)');
-            const croppedBlob = await imageDataToBlob(croppedImageData);
-            endTimer('이미지 변환 (ImageData → Blob)');
-
-            // 새로 추가: 크롭된 이미지 해시 계산
+            // 9. 크롭된 이미지 해시 계산 및 중복 검사
             startTimer('이미지 해시 계산');
             const currentCroppedImageHash = await calculateImageHash(croppedImageData.data.buffer);
             endTimer('이미지 해시 계산');
             addDebug(`계산된 이미지 해시: ${currentCroppedImageHash.substring(0, 10)}...`);
 
-            // 새로 추가: 해시 비교 및 중복 검사
             if (currentCroppedImageHash === lastProcessedCroppedImageHash) {
-                // 해시값이 같으면 중복 이미지!
                 updateStatus('중복된 이미지 요청입니다. 이전 결과를 사용하세요.');
                 addDebug('이전 이미지와 동일한 해시값 감지. OCR API 호출 건너뜁니다.');
-
-                // 중복 시 처리: 에러를 발생시켜 호출 측에서 알 수 있도록 함
-                throw new Error('DUPLICATE_IMAGE'); // 이 에러를 메인 JS에서 catch하여 처리 필요
+                throw new Error('DUPLICATE_IMAGE');
             } else {
-                 // 해시값이 다르면 새로운 이미지!
                  addDebug('새로운 이미지 해시값 확인. OCR API 호출 진행.');
-
-                 // 중요: OCR API를 호출하기 직전에 마지막 해시값을 현재 값으로 업데이트
                  lastProcessedCroppedImageHash = currentCroppedImageHash;
-
-                 // 기존 OCR API 호출 로직 계속 진행
-                 // updateStatus('OCR API 호출 중...'); // 이전에 상태 업데이트 위치 조정 제안했지만, 여기서는 유지
             }
 
-            // 6. OCR API 호출
-            // Base64 변환 시간 측정
+            // 10. OCR API 호출
+            startTimer('OCR API 호출 준비');
+            updateStatus('OCR API 호출 준비 중...');
+            startTimer('이미지 변환 (ImageData → Blob)');
+            const croppedBlob = await imageDataToBlob(croppedImageData);
+            endTimer('이미지 변환 (ImageData → Blob)');
+
             startTimer('Base64 변환');
             const base64Image = await blobToBase64(croppedBlob);
             endTimer('Base64 변환');
+            endTimer('OCR API 호출 준비');
 
             addDebug(`이미지를 Base64로 변환 완료: ${Math.round(base64Image.length / 1024)}KB`);
             const formData = new FormData();
@@ -1182,71 +1378,52 @@ const LopecOCR = (function () {
                 method: 'POST',
                 body: formData
             };
+
+            startTimer('OCR API 호출');
+            updateStatus('OCR API 호출 중...');
             addDebug(`서버 OCR API 호출 시작 (https://lopec.o-r.kr/api/images)`);
 
-            // 서버 OCR API 호출 (실제 엔드포인트 URL로 변경)
             const response = await fetch('https://lopec.o-r.kr/api/images', requestOptions);
             if (!response.ok) {
+                alert("현재 요청이 폭주하여 지연되고 있습니다. 잠시 후에 다시 시도해주세요.")
                 const errorResponse = await response.text();
                 addDebug(`서버 OCR API 오류: ${response.status} ${response.statusText}`);
                 addDebug(`오류 응답: ${errorResponse}`);
-                // 오류 메시지에 서버 응답 포함 고려
                 throw new Error(`서버 OCR API 호출 실패: ${response.status} ${response.statusText}. 응답: ${errorResponse}`);
             }
 
-            // OCR 결과 처리 (서버로부터 받은 JSON 사용)
             const ocrResult = await response.json();
             endTimer('OCR API 호출');
             addDebug('OCR API 응답 수신 완료');
 
-            // OCR 결과에서 버전 감지
+            // 원본 OCR 응답 콜백 호출
+            if (onRawResponse && typeof onRawResponse === 'function') {
+                onRawResponse(ocrResult);
+            }
+
+            // 11. OCR 결과 기반 버전 감지 (auto 모드일 경우)
+            let finalVersion = version;
             if (version === 'auto') {
-                // OCR 결과에서 버전 감지 (상세보기 텍스트 존재 확인)
                 const hasDetailButton = ocrResult.text && ocrResult.text.includes("상세보기");
                 finalVersion = hasDetailButton ? OCR_VERSIONS.APPLICANT : OCR_VERSIONS.PARTICIPANT;
-
                 addDebug(`OCR 텍스트 기반 버전 감지: "${hasDetailButton ? '상세보기 텍스트 발견' : '상세보기 텍스트 없음'}"`);
                 addDebug(`자동 감지된 이미지 유형: ${finalVersion}`);
                 updateStatus(`이미지 유형 감지됨: ${finalVersion === OCR_VERSIONS.APPLICANT ? '신청자 목록' : '참가자 목록'}`);
             } else if (![OCR_VERSIONS.APPLICANT, OCR_VERSIONS.PARTICIPANT].includes(version)) {
                 addDebug(`알 수 없는 버전 값: ${version}. 기본값(참가자 목록)으로 진행합니다.`);
-                finalVersion = OCR_VERSIONS.PARTICIPANT;
+                finalVersion = OCR_VERSIONS.PARTICIPANT; // 기본값을 PARTICIPANT로 변경 또는 오류 처리 필요
             }
 
-            // 7. 캐릭터 정보 추출 (OCR 결과 텍스트에서)
+            // 12. 캐릭터 정보 추출
             startTimer('캐릭터 정보 추출');
             updateStatus('OCR 결과에서 캐릭터 정보 추출 중...');
 
-            // 디버그 모드에서만 전체 API 응답 로깅
-            if (onDebugInfo && typeof onDebugInfo === 'function' &&
-                onDebugInfo.toString().includes('debug')) { // 간단한 디버그 모드 확인
-                addDebug(`==== OCR API 응답 요약 ====`);
-                try {
-                    const textLength = ocrResult.text ? ocrResult.text.length : 0;
-                    const wordCount = ocrResult.pages && ocrResult.pages[0] ?
-                        ocrResult.pages[0].words.length : 0;
-
-                    addDebug(`텍스트 길이: ${textLength}자, 단어 수: ${wordCount}`);
-                } catch (e) {
-                    addDebug(`응답 요약 중 오류: ${e.message}`);
-                }
-            }
-
-            const extractedCharacters = extractCharacterInfo(ocrResult, finalVersion, addDebug);
+            // 해상도 정보(resolution)를 extractCharacterInfo에 전달
+            const extractedCharacters = extractCharacterInfo(ocrResult, finalVersion, resolution, addDebug);
             endTimer('캐릭터 정보 추출');
 
-            // 8. 결과 요약 및 닉네임만 추출
-            if (extractedCharacters.length > 0) {
-                if (extractedCharacters[0].nickname) {
-                    addDebug(`첫 번째 캐릭터: ${extractedCharacters[0].nickname}${extractedCharacters[0].itemLevel ? ', 아이템 레벨: ' + extractedCharacters[0].itemLevel : ''}`);
-                }
-            } else {
-                addDebug(`추출된 캐릭터 없음`);
-            }
-
-            // 닉네임만 추출하여 반환
+            // 13. 결과 반환
             const uniqueNicknames = [...new Set(extractedCharacters.map(char => char.nickname))];
-
             updateStatus(`${uniqueNicknames.length}개 고유 닉네임 추출 완료`);
             addDebug(`OCR 처리 완료: ${extractedCharacters.length}개 캐릭터 추출 -> ${uniqueNicknames.length}개 고유 닉네임 반환`);
 
@@ -1254,7 +1431,7 @@ const LopecOCR = (function () {
             const totalTime = endTimer('전체 프로세스');
             addDebug(`총 소요 시간: ${totalTime.toFixed(2)}ms`);
 
-            return uniqueNicknames; // 닉네임 문자열 배열만 반환
+            return uniqueNicknames;
 
         } catch (error) {
             const errorMessage = `OCR 처리 오류: ${error.message}`;
@@ -1263,7 +1440,7 @@ const LopecOCR = (function () {
             if (error.stack) {
                 addDebug(`오류 스택: ${error.stack}`);
             }
-            throw error;
+            throw error; // 오류를 다시 던져서 상위에서 처리하도록 함
         }
     }
 
