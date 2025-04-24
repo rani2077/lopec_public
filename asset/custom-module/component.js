@@ -60,31 +60,35 @@ export async function scProfile(userData, extractValue, response) {
     let totalRankVariable = response.totalRank.rank;
     let jobPercent = response.classRank.percentage;
     let totalPercent = response.totalRank.percentage;
-    //console.log(rankData)
-    //if (rankData) {
-    //    if (rankData.data.characterRanking && rankData.data.classRanking) {
-    //        if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
-    //            totalRankVariable = "수집중";
-    //            jobRankVariable = "수집중";
-    //            // totalPercent = "0.00%";
-    //            // jobPercent = "0.00%";
-    //        } else {
-    //            totalRankVariable = rankData.data.characterRanking.RANKING_NUM + "위";
-    //            jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
-    //            totalPercent = rankData.data.percentile.PERCENTILE + "%";
-    //            jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2) + "%";
-    //        }
-    //        // if (["진실된 용맹", "심판자", "회귀"].includes(extractValue.etcObj.supportCheck)) {
-    //        //     jobRankVariable = "수집중";
-    //        //     totalPercent = "0.00%";
-    //        //     jobPercent = "0.00%";
-    //        // } else if (rankData) {
-    //        //     jobRankVariable = rankData.data.classRanking.CLASS_RANK + "위";
-    //        //     totalPercent = rankData.data.percentile.PERCENTILE+"%";
-    //        //     jobPercent = Number((rankData.data.classRanking.CLASS_RANK / rankData.data.classRanking.TOTAL_IN_CLASS) * 100).toFixed(2)+"%";
-    //        // }
-    //    }
-    //}
+
+    // let patreonBadge = fetch(`https://lopec.o-r.kr/api/character/badge?nickname=로스트다람쥐`);
+    // patreonBadge = await patreonBadge;
+    // console.log(patreonBadge)
+    let patreonBadge = {
+        "nickname": "로스트다람쥐",
+        "badges": [
+            // "lopec_badge_connie",
+            // "lopec_badge_blackCow",
+            // "lopec_badge_doggie",
+            // "lopec_badge_mokoko",
+            // "lopec_badge_pinekoko",
+            // "lopec_badge_penguin"
+        ]
+    }
+
+    let badgeHtml = "";
+    if (patreonBadge) {
+        patreonBadge.badges.forEach(item => {
+            badgeHtml += `<i class="badge ${item}"></i>`
+        })
+    }
+    if (mobileCheck) {
+        let badgeElement = badgeHtml
+        badgeHtml = `
+            <div class="badge-area">
+                ${badgeElement}
+            </div>`
+    }
     setTimeout(() => {
         userBookmarkSave(userName);
         // profileImagePosUserSetting(userName)
@@ -97,13 +101,14 @@ export async function scProfile(userData, extractValue, response) {
         </div>
         <div class="group-profile">
             <div class="name-area">
-                <span class="name">LV.${characterLevel} ${userName}<i class="job" style="margin-left:6px">#${jobName}</i></span>
+                <span class="name">LV.${characterLevel} ${userName}${mobileCheck ? "" : badgeHtml}<i class="job" style="margin-left:6px">#${jobName}</i></span>
                 <button class="favorite-button">
                     <div class="icon">
                         <div class="star"></div>
                     </div>
                 </button>
             </div>
+            ${mobileCheck ? badgeHtml : ""}
             <div class="info-area">
                 <div class="info-box">
                     <span class="name">서버 : ${serverName}</span>
@@ -445,8 +450,8 @@ export async function scNav(userName) {
         <a href="${mobilePath}/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
         <a href="https://cool-kiss-ec2.notion.site/1da758f0e8da8058a37bd1b7c6f49cd3?pvs=4" target="_blink" class="link" data-page="">중앙값</a>
         </nav>`
-    }
-    // <a href="" class="link history" data-page="sc-history">히스토리</a>
+}
+// <a href="" class="link history" data-page="sc-history">히스토리</a>
 
 /* **********************************************************************************************************************
 * function name		:	scExpedition

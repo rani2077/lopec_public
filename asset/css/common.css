@@ -1021,29 +1021,30 @@ i.badge {
     margin: 0 2px;
 }
 
-i.lopec_badge_01 {
+i.lopec_badge_connie {
     background-image: url("/asset/image/lopec_badge_01.png");
 }
 
-i.lopec_badge_02 {
-    background-image: url("/asset/image/lopec_badge_02.png");
-}
-
-i.lopec_badge_03 {
+i.lopec_badge_blackCow {
     background-image: url("/asset/image/lopec_badge_03.png");
 }
 
-i.lopec_badge_04 {
+i.lopec_badge_doggie {
     background-image: url("/asset/image/lopec_badge_04.png");
 }
 
-i.lopec_badge_05 {
+i.lopec_badge_mokoko {
     background-image: url("/asset/image/lopec_badge_05.png");
 }
 
-i.lopec_badge_06 {
+i.lopec_badge_pinekoko {
     background-image: url("/asset/image/lopec_badge_06.png");
 }
+
+i.lopec_badge_penguin {
+    background-image: url("/asset/image/lopec_badge_02.png");
+}
+
 
 /* **********************************************************************************************************************
 * description	    : 	로펙딸깍
@@ -1296,8 +1297,9 @@ i.lopec_badge_06 {
     text-decoration: underline;
     width: 25px;
     opacity: 0.5;
-    transition:opacity 300ms;
+    transition: opacity 300ms;
 }
+
 .sc-lopec-click .group-simple .result-item .del:hover {
     opacity: 1;
 }

@@ -1554,6 +1554,7 @@ async function selectCreate(data, Modules) {
             const tierValue = Number(armorElement.closest(".name-wrap").querySelector(".plus").value);
             // console.log(upgradeElement)
             // console.log(normalUpgradeValue)
+            // console.log(tierValue)
             if (tierValue === 1 && armorCounts[idx] !== 1) {
                 createOptions(upgradeElement, 0, 20);
                 // selectLastOption(upgradeElement);
@@ -1562,7 +1563,7 @@ async function selectCreate(data, Modules) {
                 createOptions(upgradeElement, 0, 40);
                 // selectLastOption(upgradeElement);
                 armorCounts[idx] = 2;
-            } else if (tierValue + normalUpgradeValue * 5 < 1620 && armorCounts[idx] !== 3) {
+            } else if (tierValue + normalUpgradeValue * 5 < 1620 && armorCounts[idx] !== 3 && !(/1|2/.test(tierValue))) {
                 createOptions(upgradeElement, -1);
                 // selectLastOption(upgradeElement);
                 armorCounts[idx] = 3;
@@ -1625,7 +1626,7 @@ async function selectCreate(data, Modules) {
         let tierElement = armorItem.querySelector(".plus");
         let normalUpgradeElement = armorItem.querySelector(".armor-name");
 
-        // tierElement.addEventListener("change",() => {ellaCheck()})
+        tierElement.addEventListener("change", () => { ellaCheck() })
         ellaCheck()
         function ellaCheck() {
 
@@ -3565,7 +3566,7 @@ async function selectCreate(data, Modules) {
     document.body.addEventListener('change', () => {
         userLevelAndArmorToEvolution();
         // userLevelAccessoryToEnlight();
-        ellaOptionSetting(); // 엘라옵션 선택 조절
+        // ellaOptionSetting(); // 엘라옵션 선택 조절
         showLeafInfo();
         enlightValueChange();
         avgLevelKarmaYN();
@@ -3994,11 +3995,15 @@ function createSpinButton() {
             let maxIndex = spinInput.options.length - 1;
             let minIndex = 0;
             if (btnType === "up" && maxIndex > index) {
-                spinInput.selectedIndex = index + 1;
-                spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+                if (!spinInput.options[spinInput.selectedIndex + 1].disabled) {
+                    spinInput.selectedIndex = index + 1;
+                    spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             } else if (btnType === "down" && minIndex < index) {
-                spinInput.selectedIndex = index - 1;
-                spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+                if (!spinInput.options[spinInput.selectedIndex - 1].disabled) {
+                    spinInput.selectedIndex = index - 1;
+                    spinInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             }
         })
     })
