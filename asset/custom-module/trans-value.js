@@ -447,6 +447,8 @@ export async function getCharacterProfile(data, dataBase) {
         damageBuff: 0,
         enlightPoint: 0,
         carePower: 1,
+        identityUptime: 1,
+        
     }
 
 
@@ -493,6 +495,8 @@ export async function getCharacterProfile(data, dataBase) {
                 accObj.carePower += filterArry.value
             } else if (optionCheck && filterArry.attr == "StatHp") { // 최대 생명력
                 accObj.statHp += filterArry.value
+            } else if (optionCheck && filterArry.attr == "IdentityUptime") { // 게이지 획득량
+                accObj.identityUptime += filterArry.value
             }
         })
     }
@@ -926,6 +930,8 @@ export async function getCharacterProfile(data, dataBase) {
         engBonusPer: 1,
         carePower: 1,
         utilityPower: 1,
+        cdrPercent: 0,
+        awakencdrPercent: 0,
     }
 
 
@@ -942,6 +948,9 @@ export async function getCharacterProfile(data, dataBase) {
                     engObj.engBonusPer = (engObj.engBonusPer * (checkArry.engBonusPer / 100 + 1));
                     engObj.atkPer = (engObj.atkPer + checkArry.atkPer);
                     engObj.carePower = (engObj.carePower + checkArry.carePower);
+                    engObj.cdrPercent = (engObj.cdrPercent + checkArry.cdrPercent);
+                    engObj.awakencdrPercent = (engObj.awakencdrPercent + checkArry.awakencdrPercent);
+                    engObj.utilityPower = (engObj.utilityPower + checkArry.utilityPower);
                     if (supportCheck() !== "서폿") {
                         stoneCalc(realEngArry.Name, checkArry.finalDamagePer)
                     } else {
@@ -991,6 +1000,10 @@ export async function getCharacterProfile(data, dataBase) {
                     engObj.engBonusPer = (engObj.engBonusPer) / notZero(minusVal)
                     engObj.engBonusPer = (engObj.engBonusPer * (notZero(minusVal) + filterArry.engBonusPer / 100));
                     engObj.atkPer = (engObj.atkPer + filterArry.atkPer);
+                    engObj.cdrPercent = (engObj.cdrPercent + filterArry.cdrPercent);
+                    engObj.awakencdrPercent = (engObj.awakencdrPercent + filterArry.awakencdrPercent);
+                    engObj.utilityPower = (engObj.utilityPower + filterArry.utilityPower);
+                    engObj.carePower = (engObj.carePower + filterArry.carePower);
                 }
             })
 
@@ -1266,6 +1279,7 @@ export async function getCharacterProfile(data, dataBase) {
         evolutionBuff: 0,
         enlightenmentBuff: 0,
         weaponAtkPer: 1,
+        cdrPercent: 0,
     }
 
     data.ArkPassive.Effects.forEach(function (arkArry) {
@@ -1292,7 +1306,7 @@ export async function getCharacterProfile(data, dataBase) {
     })
 
     function arkAttrCheck(validValue) {
-        let arkAttr = ['skillCool', 'evolutionDamage', 'criticalChancePer', 'moveSpeed', 'atkSpeed', 'stigmaPer', 'criticalDamagePer', 'evolutionBuff']
+        let arkAttr = ['skillCool', 'evolutionDamage', 'criticalChancePer', 'moveSpeed', 'atkSpeed', 'stigmaPer', 'criticalDamagePer', 'evolutionBuff', 'cdrPercent']
         arkAttr.forEach(function (attrArry) {
             if (!(validValue[attrArry] == undefined) && data.ArkPassive.IsArkPassive) {
                 arkObj[attrArry] += validValue[attrArry];

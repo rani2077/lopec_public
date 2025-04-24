@@ -236,7 +236,7 @@ const LopecOCR = (function () {
                         threshold: threshold || templateMatchingThreshold
                     });
 
-                    console.log(`템플릿 이미지 추가됨: ${name} (${img.width}x${img.height})`);
+                    //console.log(`템플릿 이미지 추가됨: ${name} (${img.width}x${img.height})`);
 
                     // Blob URL 정리
                     if (templateSource instanceof Blob || templateSource instanceof File) {
@@ -1029,7 +1029,7 @@ const LopecOCR = (function () {
                 await loadOpenCV();
             }
 
-            console.log(`기본 템플릿 이미지 로드 시작...`);
+            //console.log(`기본 템플릿 이미지 로드 시작...`);
             let loadedCount = 0;
 
             // 모든 기본 템플릿 로드
@@ -1037,13 +1037,13 @@ const LopecOCR = (function () {
                 try {
                     await addTemplateImage(template.path, template.name, template.threshold);
                     loadedCount++;
-                    console.log(`템플릿 로드됨: ${template.name} (${template.path})`);
+                    //console.log(`템플릿 로드됨: ${template.name} (${template.path})`);
                 } catch (error) {
                     console.warn(`템플릿 로드 실패: ${template.name} (${template.path})`, error);
                 }
             }
 
-            console.log(`기본 템플릿 이미지 ${loadedCount}개 로드 완료`);
+            //console.log(`기본 템플릿 이미지 ${loadedCount}개 로드 완료`);
             return loadedCount;
         } catch (error) {
             console.error("기본 템플릿 로드 중 오류:", error);
