@@ -333,6 +333,7 @@ input[type=number]::-ms-expand {
 
 .sc-info .group-equip .gem-area .skill {
     letter-spacing: -1.2px;
+    height: calc(44px / 3);
 }
 
 .sc-info .group-equip .simple-option-area {

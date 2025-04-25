@@ -61,20 +61,20 @@ export async function scProfile(userData, extractValue, response) {
     let jobPercent = response.classRank.percentage;
     let totalPercent = response.totalRank.percentage;
 
-    // let patreonBadge = fetch(`https://lopec.o-r.kr/api/character/badge?nickname=로스트다람쥐`);
-    // patreonBadge = await patreonBadge;
+    let patreonBadge = await fetch(`https://lopec.o-r.kr/api/character/badge?nickname=${userName}`);
+    patreonBadge = await patreonBadge.json();
     // console.log(patreonBadge)
-    let patreonBadge = {
-        "nickname": "로스트다람쥐",
-        "badges": [
-            // "lopec_badge_connie",
-            // "lopec_badge_blackCow",
-            // "lopec_badge_doggie",
-            // "lopec_badge_mokoko",
-            // "lopec_badge_pinekoko",
-            // "lopec_badge_penguin"
-        ]
-    }
+    // patreonBadge = { // <== 응답값 예시
+    //     "nickname": "로스트다람쥐",
+    //     "badges": [
+    //      "lopec_badge_connie",
+    //      "lopec_badge_blackCow",
+    //      "lopec_badge_doggie",
+    //      "lopec_badge_mokoko",
+    //      "lopec_badge_pinekoko",
+    //      "lopec_badge_penguin"
+    //     ]
+    // }
 
     let badgeHtml = "";
     if (patreonBadge) {

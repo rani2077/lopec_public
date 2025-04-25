@@ -873,28 +873,81 @@ i.badge {
     width: 24px;
     height: 24px;
     margin: 0 2px;
+    position: relative;
 }
+
+i.badge:hover:before {
+    content: "";
+    display: block;
+    width: 15px;
+    height: 7px;
+    background: #2f2f2f;
+    position: absolute;
+    left: 50%;
+    bottom: -7px;
+    transform: translateX(-50%);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+i.badge:hover:after {
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 7px);
+    transform: translateX(-50%);
+    color: #fff;
+    background: #2f2f2f;
+    padding: 5px;
+    border-radius: 4px;
+    z-index: 3;
+}
+
 
 i.lopec_badge_connie {
     background-image: url("/asset/image/lopec_badge_01.png");
+}
+
+i.lopec_badge_connie:hover:after {
+    content: "감사의 마음이 듬뿍 담긴 코니뱃지!";
 }
 
 i.lopec_badge_blackCow {
     background-image: url("/asset/image/lopec_badge_03.png");
 }
 
+i.lopec_badge_blackCow:hover:after {
+    content: "감사의 마음이 듬뿍 담긴 흑우뱃지!";
+}
+
 i.lopec_badge_doggie {
     background-image: url("/asset/image/lopec_badge_04.png");
+}
+
+i.lopec_badge_doggie:hover:after {
+    content: "감사의 마음이 듬뿍 담긴 댕댕이뱃지!";
 }
 
 i.lopec_badge_mokoko {
     background-image: url("/asset/image/lopec_badge_05.png");
 }
 
+i.lopec_badge_mokoko:hover:after {
+    content: "감사의 마음이 듬뿍 담긴 모코코뱃지!";
+}
+
 i.lopec_badge_pinekoko {
     background-image: url("/asset/image/lopec_badge_06.png");
 }
 
+i.lopec_badge_pinekoko:hover:after {
+    content: "감사의 마음이 듬뿍 담긴 파인코코뱃지!";
+}
+
 i.lopec_badge_penguin {
     background-image: url("/asset/image/lopec_badge_02.png");
+}
+
+i.lopec_badge_penguin:hover:after {
+    content: "감사의 마음이 듬뿍 담긴 펭바타뱃지!";
 }
