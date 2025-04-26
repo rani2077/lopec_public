@@ -981,10 +981,10 @@ let bangleFilter = [
     { name: "증가하지만, 적에게 주는 피해가", option: "5%", tier: "Pmiddle", initial: "쿨 +2% | 적에게 주는 피해 +5.0%",skillCool:-2,finalDamagePer:2.94},
     { name: "증가하지만, 적에게 주는 피해가", option: "5.5%", tier: "Phigh", initial: "쿨 +2% | 적에게 주는 피해 +5.5%",skillCool:-2,finalDamagePer:3.43},
 
-    { name: "추가 피해가", option: "2%", tier: "Plow1", initial: "추피 +2.0% | 악마&대악마 피해량 +2.5%",finalDamagePer:2.12},
-    { name: "추가 피해가", option: "2.5%", tier: "Plow2", initial: "추피 +2.5% | 악마&대악마 피해량 +2.5%",finalDamagePer:2.48},
-    { name: "추가 피해가", option: "3%", tier: "Pmiddle", initial: "추피 +3.0% | 악마&대악마 피해량 +2.5%",finalDamagePer:2.83},
-    { name: "추가 피해가", option: "3.5%", tier: "Phigh", initial: "추피 +3.5% | 악마&대악마 피해량 +2.5%",finalDamagePer:3.18},
+    { name: "추가 피해가", option: "2%", tier: "Plow1", initial: "추피 +2.0% | 악마&대악마 피해량 +2.5%",addDamagePer:2},
+    { name: "추가 피해가", option: "2.5%", tier: "Plow2", initial: "추피 +2.5% | 악마&대악마 피해량 +2.5%",addDamagePer:2.5},
+    { name: "추가 피해가", option: "3%", tier: "Pmiddle", initial: "추피 +3.0% | 악마&대악마 피해량 +2.5%",addDamagePer:3},
+    { name: "추가 피해가", option: "3.5%", tier: "Phigh", initial: "추피 +3.5% | 악마&대악마 피해량 +2.5%",addDamagePer:3.5},
 
     { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1000", tier: "DuelLlow1", initial: "공격 적중 시 무공 1000, 공이속 1% 증가",finalDamagePer:2.1, weaponAtkPlus:6000},
     { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1160", tier: "DuelLlow2", initial: "공격 적중 시 무공 1160, 공이속 1% 증가",finalDamagePer:2.1, weaponAtkPlus:6960},
@@ -1016,10 +1016,10 @@ let bangleFilter = [
     { name: "방향성 공격이 아닌 스킬이 적에게 주는 피해가", option: "3%", tier: "middle", initial: "타대 스킬 피해 +3.0%",finalDamagePer:3},
     { name: "방향성 공격이 아닌 스킬이 적에게 주는 피해가", option: "3.5%", tier: "high", initial: "타대 스킬 피해 +3.5%",finalDamagePer:3.5},
 
-    { name: "추가 피해 +2.50%", option: null, tier: "Llow1", initial: "추가 피해 +2.5%",finalDamagePer:1.82},
-    { name: "추가 피해 +3.00%", option: null, tier: "Llow2", initial: "추가 피해 +3.0%",finalDamagePer:2.12},
-    { name: "추가 피해 +3.50%", option: null, tier: "Lmiddle", initial: "추가 피해 +3.5%",finalDamagePer:2.48},
-    { name: "추가 피해 +4.00%", option: null, tier: "Lhigh", initial: "추가 피해 +4.0%",finalDamagePer:2.83},
+    { name: "추가 피해 +2.50%", option: null, tier: "Llow1", initial: "추가 피해 +2.5%",addDamagePer:2.5},
+    { name: "추가 피해 +3.00%", option: null, tier: "Llow2", initial: "추가 피해 +3.0%",addDamagePer:3},
+    { name: "추가 피해 +3.50%", option: null, tier: "Lmiddle", initial: "추가 피해 +3.5%",addDamagePer:3.5},
+    { name: "추가 피해 +4.00%", option: null, tier: "Lhigh", initial: "추가 피해 +4.0%",addDamagePer:4},
     
     { name: "아군 공격력 강화 효과 +3.00%", option: null, tier: "SpLlow1", initial: "아군 공격력 강화 +3.0%",atkBuff:3},
     { name: "아군 공격력 강화 효과 +4.00%", option: null, tier: "SpLlow2", initial: "아군 공격력 강화 +4.0%",atkBuff:4},
