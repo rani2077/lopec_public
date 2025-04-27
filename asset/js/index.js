@@ -570,15 +570,7 @@ let noticeArry = [
             앞서 말씀드렸듯 늦어도 열흘 이내에 작업을 완료할 예정이라,
             조금만 기다려주시면 감사드리겠습니다.`
     },
-
-
-
 ]
-
-
-
-
-
 
 // notice 공지 생성
 let noticeListHtml = ""
@@ -589,7 +581,6 @@ noticeArry.reverse().forEach(function (notice) {
 // console.log(noticeListHtml)
 
 function noticeList(name, desc) {
-
     return `
     <div class="notice-list">
         <div class="name-box">

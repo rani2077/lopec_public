@@ -11,8 +11,6 @@
     <meta name="keywords" content="로펙, 로스트아크 스펙, 로스트아크 정보, 환산점수">
 
 
-
-
     <link rel="icon" type="image/png" href="https://cdnlopec.xyz/asset/image/lopec-ico.png">
     <script>
         let baseUrl = "https://cdnlopec.xyz/asset";
@@ -21,27 +19,22 @@
             baseUrl = "/asset"
         }
         document.write('<link rel="stylesheet" href="' + baseUrl + '/css/reset.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
-        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/layout.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
-        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/common.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
-        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/main.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-layout.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-common.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
+        document.write('<link rel="stylesheet" href="' + baseUrl + '/css/m-main.css?' + Math.floor((new Date).getTime() / interValTime) + '">');
     </script>
-
     <title>로펙 : 스펙포인트 및 환산점수</title>
 </head>
 
 
 <body class="">
-
     <div class="wrapper" style="display:none;">
-
         <section class="sc-info search-page" id="sc-info">
 
             <div class="group-info">
                 <div class="spec-area shadow minimum flag on">
                     <div class="tier-box">
                         <img src="/asset/image/skeleton-img.png" style="border-radius:4px;" alt="">
-                        <?php //  <p class="tier-info">티어정보</p> 
-                        ?>
                         <div class="spec-point">로딩중</div>
                     </div>
                     <div class="gauge-box">
@@ -55,131 +48,118 @@
                     <span class="reset">갱신</span>
                 </div>
                 <div class="detail-area shadow">
-
+                    <div class="title-box">
+                        <span class="title">상세정보</span>
+                    </div>
+                    <span class="button"></span>
                     <div class="info-wrap">
                         <span class="tag">점수 통계</span>
                         <div class="info-box">
-                            <span class="text"><i class="medal-solid icon"></i>달성 최고 점수</span>
+                            <span class="text">달성 최고 점수</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="chart-simple-solid icon"></i>현재 레벨 중앙값</span>
+                            <span class="text">현재 레벨 중앙값</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="calendar-check-solid icon"></i>최고 점수 달성일</span>
+                            <span class="text">최고 점수 달성일</span>
                             <span class="text">로딩중</span>
                         </div>
                     </div>
                     <div class="info-wrap">
                         <span class="tag">장비 효과</span>
                         <div class="info-box">
-                            <span class="text"><i class="bolt-solid icon"></i>공격력</span>
+                            <span class="text">공격력</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="flask-solid icon"></i>엘릭서</span>
+                            <span class="text">엘릭서</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="star-solid icon"></i>초월</span>
+                            <span class="text">초월</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="circle-notch-solid icon"></i>악세</span>
+                            <span class="text">각인</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="ring-solid icon"></i>팔찌</span>
-                            <span class="text">로딩중</span>
-                        </div>
-                        <div class="info-box">
-                            <span class="text"><i class="book-solid icon"></i>각인</span>
+                            <span class="text">팔찌</span>
                             <span class="text">로딩중</span>
                         </div>
                     </div>
                     <div class="info-wrap">
                         <span class="tag">아크패시브</span>
                         <div class="info-box">
-                            <span class="text"><i class="fire-solid icon"></i>진화</span>
+                            <span class="text">진화</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="lightbulb-solid icon"></i>깨달음</span>
+                            <span class="text">깨달음</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="feather-pointed-solid icon"></i>도약</span>
+                            <span class="text">도약</span>
                             <span class="text">로딩중</span>
                         </div>
                     </div>
                     <div class="info-wrap">
                         <span class="tag">보석 효과</span>
                         <div class="info-box">
-                            <span class="text"><i class="gem-solid icon"></i>보석 실질 딜증</span>
+                            <span class="text">보석 실질 딜증</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="gem-solid icon"></i>보석 최종 딜증</span>
+                            <span class="text">보석 최종 딜증</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="gem-solid icon"></i>보석 쿨감</span>
+                            <span class="text">보석 쿨감</span>
                             <span class="text">로딩중</span>
                         </div>
                         <div class="info-box">
-                            <span class="text"><i class="gem-solid icon"></i>보석 보정치</span>
+                            <span class="text">보석 보정치</span>
                             <span class="text">로딩중</span>
                         </div>
                     </div>
-                </div>
-                <div class="ads-area" style="width:100%;height:143px;margin-top:20px;">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                        crossorigin="anonymous"></script>
-                    <!-- main-left-side-1 -->
-                    <ins class="adsbygoogle"
-                        style="display:inline-block;width:300px;height:143px"
-                        data-ad-client="ca-pub-5125145415518329"
-                        data-ad-slot="9880125998"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
                 </div>
             </div>
             <div class="group-equip">
                 <div class="gem-area shadow">
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                     <div class="gem-box radius skeleton">
-                        <img src="../asset/image/skeleton-img.png" alt="">
+                        <img src="/asset/image/skeleton-img.png" alt="">
                     </div>
                 </div>
                 <div class="armor-wrap">
@@ -187,7 +167,7 @@
                         <ul class="armor-list">
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -201,7 +181,7 @@
                             </li>
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -215,7 +195,7 @@
                             </li>
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -229,7 +209,7 @@
                             </li>
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -243,7 +223,7 @@
                             </li>
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -257,7 +237,7 @@
                             </li>
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -271,7 +251,7 @@
                             </li>
                             <li class="armor-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -279,7 +259,7 @@
                                     </div>
                                 </div>
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -293,7 +273,7 @@
                         <ul class="accessory-list">
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="text-box">
@@ -305,7 +285,7 @@
                             </li>
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
@@ -317,7 +297,7 @@
                             </li>
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
@@ -329,7 +309,7 @@
                             </li>
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
@@ -341,7 +321,7 @@
                             </li>
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">0</span>
                                 </div>
                                 <div class="option-box">
@@ -353,7 +333,7 @@
                             </li>
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">NN</span>
                                 </div>
                                 <div class="option-box">
@@ -365,7 +345,7 @@
                             </li>
                             <li class="accessory-item">
                                 <div class="img-box radius skeleton">
-                                    <img src="../asset/image/skeleton-img.png" alt="">
+                                    <img src="/asset/image/skeleton-img.png" alt="">
                                     <span class="progress">NN</span>
                                 </div>
                                 <div class="option-box">
@@ -388,7 +368,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -396,7 +376,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -404,7 +384,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -412,7 +392,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -420,7 +400,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -428,7 +408,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -442,7 +422,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -450,7 +430,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -458,7 +438,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -466,7 +446,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -474,7 +454,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -482,7 +462,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -498,7 +478,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -506,7 +486,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -514,7 +494,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -522,7 +502,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -530,7 +510,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -538,7 +518,7 @@
                             <li class="ark-item">
                                 <div class="img-box">
                                     <span class="tier">N</span>
-                                    <img src="../asset/image/skeleton-img.png" alt="아크패시브">
+                                    <img src="/asset/image/skeleton-img.png" alt="아크패시브">
                                 </div>
                                 <div class="text-box">
                                 </div>
@@ -551,39 +531,28 @@
             <div class="group-system">
                 <div class="engraving-area shadow">
                     <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                        <img src="/asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                     <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                        <img src="/asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                     <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                        <img src="/asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                     <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                        <img src="/asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                     <div class="engraving-box">
-                        <img src="../asset/image/skeleton-img.png" class="engraving-img" alt="">
+                        <img src="/asset/image/skeleton-img.png" class="engraving-img" alt="">
                     </div>
                 </div>
-                <div class="karma-area shadow">
-                    <span style="font-size:16px;font-weight:600;">진화 카르마 예상 수치</span>
+                <div class="karma-area shadow" style="background:#fff;margin-top:20px;padding:15px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+                    <span>진화 카르마 예상 수치</span>
                     <span>알고리즘 추정치로, 실제 값과 다를 수 있습니다.</span>
                     <span class="karma"><em style="color:#f00;font-weight:600;">?</em>랭크 <em style="color:#f00;font-weight:600;">?</em>레벨</span>
-                    <a href="https://forms.gle/QYfYAGEmQZQ7oX7n6" target="_blank" style="color:#00f">카르마 랭크 불일치 제보</a>
+                    <a href="https://forms.gle/QYfYAGEmQZQ7oX7n6" target="_blank">카르마 랭크 불일치 제보</a>
                 </div>
-                <div class="ads-area" style="width:100%;height:513px;margin-top:20px;">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5125145415518329"
-                        crossorigin="anonymous"></script>
-                    <!-- main-right-side-1 -->
-                    <ins class="adsbygoogle"
-                        style="display:inline-block;width:300px;height:513px"
-                        data-ad-client="ca-pub-5125145415518329"
-                        data-ad-slot="5681860685"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
+
             </div>
         </section>
 

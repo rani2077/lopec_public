@@ -1,41 +1,65 @@
 /* **********************************************************************************************************************
+* variable name		:	mobileCheck
+* description       : 	현재 접속한 디바이스 기기가 모바일, 태블릿일 경우 true를 반환
+*********************************************************************************************************************** */
+let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
+/* **********************************************************************************************************************
  * function name		:	importModuleManager()
  * description			: 	사용하는 모든 외부 module파일 import
  *********************************************************************************************************************** */
-async function importModuleManager() {
+export async function importModuleManager() {
+    // 이 함수는 매개변수를 받지 않으며, 정의된 모든 모듈을 무조건 로드합니다.
+
     let interValTime = 60 * 1000;
-    let modules = await Promise.all([
-        import("../custom-module/fetchApi.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // lostark api호출
-        import("../filter/filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),              // 기존 filter.js
-        import("../filter/simulator-data.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),      // 장비레벨 스텟 정보
-        import("../filter/simulator-filter.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 시뮬레이터 필터
-        import("../custom-module/trans-value.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
-        import("../custom-module/calculator.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
-        import("../custom-module/component.js" + `?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 파일을 호출
-    ])
-    let moduleObj = {
-        fetchApi: modules[0],
-        originFilter: modules[1],
-        simulatorData: modules[2],
-        simulatorFilter: modules[3],
-        transValue: modules[4],
-        calcValue: modules[5],
-        component: modules[6],
+    const cacheBuster = `?${Math.floor((new Date).getTime() / interValTime)}`;
+
+    // 로드할 가능성이 있는 모든 모듈 정보
+    // filename 키는 더 이상 사용되지 않으므로 제거했습니다.
+    const potentialModules = [
+        { key: 'fetchApi', path: '../custom-module/fetchApi.js' },
+        { key: 'transValue', path: '../custom-module/trans-value.js' },
+        { key: 'calcValue', path: '../custom-module/calculator.js' },
+        { key: 'apiCalcValue', path: '../custom-module/api-calc.js' },
+        { key: 'component', path: '../custom-module/component.js' },
+        { key: 'dataBase', path: '../js/character.js' },
+        { key: 'originFilter', path: '../filter/filter.js' },
+        { key: 'simulatorFilter', path: '../filter/simulator-filter.js' },
+        { key: 'simulatorData', path: '../filter/simulator-data.js' },
+        { key: 'lopecOcr', path: '../custom-module/lopec-ocr.js' },
+    ];
+
+    const promisesToLoad = [];
+    const loadedModuleKeys = [];
+
+    // potentialModules 목록을 순회하며 모든 모듈을 로드 대상에 추가
+    for (const moduleInfo of potentialModules) {
+        // filename 키와 관련된 로직은 모두 제거되었습니다.
+
+        // 모든 모듈을 로드할 프로미스 배열에 추가합니다.
+        promisesToLoad.push(import(moduleInfo.path + cacheBuster));
+        // 로드될 모듈의 키(key)도 함께 저장합니다.
+        loadedModuleKeys.push(moduleInfo.key);
     }
 
+    // 로드 대상으로 선정된 모든 모듈을 비동기적으로 로드
+    const loadedModules = await Promise.all(promisesToLoad);
 
-    return moduleObj
+    // 로드된 모듈들을 원래의 키에 매핑하여 결과 객체 생성
+    const Modules = {};
+    for (let i = 0; i < loadedModules.length; i++) {
+        const key = loadedModuleKeys[i];
+        Modules[key] = loadedModules[i];
+    }
+
+    // 로드되지 않은 모듈에 대한 키는 결과 객체에 포함되지 않습니다.
+    return Modules;
 }
-
-
-
-
+let Modules = await importModuleManager();
 
 let cachedData = null;
-let Modules;
+let cachedDetailInfo = {};
 let dataBaseResponse;
 async function simulatorInputCalc() {
-
     /* ************~**********************************************************************************************************
     * function name		:	nameParam
     * description		: 	검색 닉네임 정의
@@ -44,28 +68,27 @@ async function simulatorInputCalc() {
     const nameParam = urlParams.get('headerCharacterName');
     document.title = `로펙 : ${nameParam}님의 시뮬레이터`
     /* **********************************************************************************************************************
-    * function name		:	Modules
-    * description		: 	모든 외부모듈 정의
-    *********************************************************************************************************************** */
-    // let Modules = await importModuleManager()
-    /* **********************************************************************************************************************
      * function name		:	
      * description			: 	유저 JSON데이터 호출 및 캐싱처리
      *********************************************************************************************************************** */
     if (!cachedData) {
-        Modules = await importModuleManager();
-        // console.log(Modules)
         let scProfileSkeleton = await Modules.component.scProfileSkeleton();
         document.querySelector(".wrapper").insertAdjacentHTML('afterbegin', scProfileSkeleton);
         document.querySelector(".sc-profile").insertAdjacentHTML('afterend', await Modules.component.scNav(nameParam));
         document.querySelector(".wrapper").style.display = "block";
 
-        cachedData = await Modules.fetchApi.lostarkApiCall(nameParam);
-        console.log(cachedData);
-
+        let apiData = await Modules.apiCalcValue.apiCalcValue(nameParam);
+        console.log("API데이터", apiData)
+        let data = apiData.data;
+        let extractValue = apiData.extractValue;
+        let specPoint = apiData.calcValue;
+        dataBaseResponse = apiData.dataBase;
+        cachedDetailInfo.extractValue = extractValue;
+        cachedDetailInfo.specPoint = specPoint;
+        cachedData = data;
 
         // await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset")); // 캐싱없이 api갱신
-        await originSpecPointToHtml();
+        await originSpecPointToHtml(specPoint, extractValue);
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         const isFirefox = /firefox/i.test(navigator.userAgent);
         if (isSafari || isFirefox) {
@@ -79,18 +102,19 @@ async function simulatorInputCalc() {
      * function name		:	originSpecPointToHtml
      * description			: 	사용자의 기본 스펙포인트를 표시해줌
      *********************************************************************************************************************** */
-    async function originSpecPointToHtml() {
-        let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-        let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
-        if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-        } else if (dataBaseResponse.totalStatusSupport !== 0) {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-        } else {
-            dataBaseResponse.totalStatus = extractValue.defaultObj.totalStatus;
-        }
-        originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+    async function originSpecPointToHtml(originSpecPoint, extractValue) {
+        // let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
+        // let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+        // dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
+        // if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
+        //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        // } else if (dataBaseResponse.totalStatusSupport !== 0) {
+        //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+        // } else {
+        //     dataBaseResponse.totalStatus = extractValue.defaultObj.totalStatus;
+        // }
+        // originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+        // console.log(dataBaseResponse)
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
         let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
         document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue, dataBaseResponse);
@@ -108,16 +132,8 @@ async function simulatorInputCalc() {
     gemInfoChangeToJson()
 
     let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-    // if (dataBaseResponse.totalStatus !== 0 || dataBaseResponse.totalStatusSupport !== 0) {
-    //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-    //     if (dataBaseResponse.totalStatus !== 0 && dataBaseResponse.totalStatusSupport !== 0) {
-    //         extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-    //     } else {
-    //         extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-    //     }
-    // }
-    console.log(dataBaseResponse)
-    //console.log("오리진OBJ", extractValue)
+    // console.log(dataBaseResponse)
+    // console.log("오리진OBJ", extractValue)
 
 
     /* **********************************************************************************************************************
@@ -138,7 +154,7 @@ async function simulatorInputCalc() {
 
             let stoneObj = Modules.simulatorFilter.stoneFilter.find((filter) => filter.name === name && filter.level === level);
             if (!stoneObj) {
-                stoneObj = { name: "없음", finalDamagePer: 1, engBonusPer: 1 };
+                stoneObj = { name: "없음", finalDamagePer: 1, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 };
             }
             obj.push(stoneObj)
         })
@@ -179,8 +195,11 @@ async function simulatorInputCalc() {
     function engOutputCalc(inputValueObjArr) {
         let arr = [];
         let result = {
-            engBonusPer: 1,
-            finalDamagePer: 1
+            finalDamagePer: 1,
+            carePower: 1,
+            cdrPercent: 0,
+            awakencdrPercent: 0,
+            utilityPower: 0
         };
         let matchingFilters
         inputValueObjArr.forEach(function (inputValue) {
@@ -199,11 +218,14 @@ async function simulatorInputCalc() {
                 arr.push({
                     name: filter.name,
                     finalDamagePer: filter.finalDamagePer,
-                    engBonusPer: filter.engBonusPer
+                    carePower: filter.carePower,
+                    cdrPercent: filter.cdrPercent,
+                    awakencdrPercent: filter.awakencdrPercent,
+                    utilityPower: filter.utilityPower
                 });
             });
         });
-        // console.log("착용된 각인", arr);
+        //console.log("착용된 각인", arr);
 
 
         let mergedEngs = [];
@@ -215,7 +237,10 @@ async function simulatorInputCalc() {
                     name: eng.name,
                     //finalDamagePer: eng.finalDamagePer * (foundStoneEng.finalDamagePer / 100 + 1),
                     finalDamagePer: eng.finalDamagePer + foundStoneEng.finalDamagePer / 100,
-                    engBonusPer: eng.engBonusPer + foundStoneEng.engBonusPer / 100
+                    carePower: eng.carePower + foundStoneEng.carePower,
+                    cdrPercent: eng.cdrPercent + foundStoneEng.cdrPercent,
+                    awakencdrPercent: eng.awakencdrPercent + foundStoneEng.awakencdrPercent,
+                    utilityPower: eng.utilityPower + foundStoneEng.utilityPower
                 });
             } else {
                 // 이름이 다른 경우, arr의 객체를 그대로 추가
@@ -236,7 +261,10 @@ async function simulatorInputCalc() {
         // 최종 결과 객체 생성
         mergedEngs.forEach(eng => {
             result.finalDamagePer *= eng.finalDamagePer;
-            result.engBonusPer *= eng.engBonusPer;
+            result.carePower += eng.carePower
+            result.cdrPercent += eng.cdrPercent
+            result.awakencdrPercent += eng.awakencdrPercent
+            result.utilityPower += eng.utilityPower
         });
 
         // console.log("최종결과:", result);
@@ -373,6 +401,7 @@ async function simulatorInputCalc() {
                 damageBuff: 0,
                 weaponAtkPlus: 0,
                 finalDamagePer: 1,
+                skillCool: 0,
                 special: 0,
                 crit: 0,
                 haste: 0,
@@ -400,7 +429,7 @@ async function simulatorInputCalc() {
             }
         })
         arr = objKeyValueCombine(arr)
-
+        console.log(arr)
         let bangleElement = document.querySelector(".accessory-area .accessory-item.bangle");
         let statsElements = bangleElement.querySelectorAll(".stats");
         let numberElements = bangleElement.querySelectorAll("input.option");
@@ -436,8 +465,7 @@ async function simulatorInputCalc() {
                 }
             }
             return combinedObj;
-        }
-        return arr;
+        } return arr;
     }
     // console.log("bangleOptionCalc()", bangleOptionCalc())
 
@@ -508,9 +536,11 @@ async function simulatorInputCalc() {
         // 그룹화된 데이터를 바탕으로 새로운 객체 생성
         const combinedObj = {
             atkPlus: 0,
+            atkBonus: 0,
             weaponAtkPlus: 0,
             atkPer: 0,
             atkBuff: 0,
+            carePower: 0,
             str: 0,
             int: 0,
             dex: 0,
@@ -855,7 +885,7 @@ async function simulatorInputCalc() {
         for (const key in grouped) {
             // console.log(grouped)
             if (key === "finalDamagePer") {
-                // finalDamagePer는 곱셈
+                // finalDamagePer은 곱셈
                 combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1));
             } else {
                 // 기타 스텟은 덧셈
@@ -1032,6 +1062,7 @@ async function simulatorInputCalc() {
             evolutionBuff: 0,
             stigmaPer: 0,
             leapDamage: 0,
+            cdrPercent: 0,
         }
         let enlightElement = Number(document.querySelector(".ark-area .title-box.enlightenment .title").textContent);
         let evolutionElement = Number(document.querySelector(".ark-area .title-box.evolution .title").textContent);
@@ -1180,10 +1211,11 @@ async function simulatorInputCalc() {
         result.weaponAtkPer = karmaRankToValue();
         result.evolutionBuff = evloutionArkCheck().evolutionBuff;
         result.stigmaPer = evloutionArkCheck().stigmaPer;
+        result.cdrPercent = leapArkCheck().cdrPercent
         return result
     }
     /* **********************************************************************************************************************
-    * function name		:	evloutionArkCheck()
+    * function name		:	evolutionArkCheck()
     * description	    : 	진화 노드 검사
     *********************************************************************************************************************** */
     function evloutionArkCheck() {
@@ -1212,6 +1244,39 @@ async function simulatorInputCalc() {
         }
         return result;
     }
+
+
+
+    /* **********************************************************************************************************************
+    * function name		:	leapArkCheck()
+    * description	    : 	깨달음 노드 검사
+    *********************************************************************************************************************** */
+    function leapArkCheck() {
+        let result = {
+            cdrPercent: 0
+        }
+        let leapArkPassive = cachedData.ArkPassive.Effects.filter(data => data.Name === "도약");
+        leapArkPassive = leapArkPassive.map(leap => leap.Description.match(/>([^<]+)</g)[2].slice(1, -1));
+        leapArkPassive.forEach(arkPassive => {
+            if (arkPassive === "잠재력 해방 Lv.1") {
+                result.cdrPercent = 0.02;
+
+            } else if (arkPassive === "잠재력 해방 Lv.2") {
+                result.cdrPercent = 0.04;
+
+            } else if (arkPassive === "잠재력 해방 Lv.3") {
+                result.cdrPercent = 0.06;
+
+            } else if (arkPassive === "잠재력 해방 Lv.4") {
+                result.cdrPercent = 0.08;
+
+            } else if (arkPassive === "잠재력 해방 Lv.5") {
+                result.cdrPercent = 0.1;
+            }
+        })
+        return result;
+    }
+
 
     /* **********************************************************************************************************************
      * function name		:	gemAttackBonusValueCalc
@@ -1301,6 +1366,7 @@ async function simulatorInputCalc() {
      * description			: 	최종 스펙포인트 계산식
      *********************************************************************************************************************** */
     let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
+    console.log(originSpecPoint)
     /* **********************************************************************************************************************
      * function name		:	calcSpecPointToHtml
      * description			: 	변환된 스펙포인트를 표시해줌
@@ -1342,6 +1408,171 @@ async function simulatorInputCalc() {
         specPointElement.innerHTML = formatSpecPoint(specPoint);
     }
     calcSpecPointToHtml();
+
+    /* **********************************************************************************************************************
+    * function name		:	detailAreaCreate()
+    * description       : 	detail-area 상세정보의 내용을 생성함
+    *********************************************************************************************************************** */
+    async function detailAreaCreate() {
+        let element = document.querySelector(".sc-info .group-info .detail-area");
+        //console.log(userDbInfo)
+
+        function infoWrap(tag, array) {
+            let mobilePos = "";
+            if (mobileCheck) {
+                mobilePos = "top:initial;bottom:95%;left:-50px;";
+            }
+            let infoBox = array.map(object => {
+                return `
+                        <div class="info-box">
+                            <span class="text">
+                                <i class="icon ${object.icon}"></i>
+                                ${object.name}
+                                ${object.question ?
+                        `<div class="question" style="margin-left:5px;">
+                                <span class="detail" style="${mobilePos};width:200px;white-space:wrap;">${object.question}</span>
+                            </div>` : ""}
+                            </span>
+                            <span class="text">${object.value}</span>
+                        </div>`;
+            });
+            return `
+                    <div class="info-wrap">
+                        <span class="tag">${tag}</span>
+                        ${infoBox.join('')}
+                    </div>`;
+        }
+        function formatDate(dateString) {
+            // 입력된 날짜 문자열의 형식을 검증합니다.
+            if (!/^\d{14}$/.test(dateString)) {
+                return '잘못된 날짜 형식입니다.';
+            }
+
+            // 문자열에서 년, 월, 일을 추출합니다.
+            const year = dateString.substring(2, 4);
+            const month = dateString.substring(4, 6);
+            const day = dateString.substring(6, 8);
+
+            // 'YY.MM.DD' 형식의 문자열을 생성합니다.
+            return `${year}.${month}.${day}`;
+        }
+
+        let dealerMedianValue = extractValue.htmlObj.medianInfo.dealerMedianValue;
+        let supportMedianValue = extractValue.htmlObj.medianInfo.supportMedianValue;
+        let supportMinMedianValue = extractValue.htmlObj.medianInfo.supportMinMedianValue;
+        let supportMaxMedianValue = extractValue.htmlObj.medianInfo.supportMaxMedianValue;
+        let dealerMinMedianValue = extractValue.htmlObj.medianInfo.dealerMinMedianValue;
+        let dealerMaxMedianValue = extractValue.htmlObj.medianInfo.dealerMaxMedianValue;
+        let currentSupportScore = originSpecPoint.completeSpecPoint;
+        let supportRange = supportMaxMedianValue - supportMinMedianValue;
+        let supportPosition = currentSupportScore - supportMinMedianValue;
+
+        // 3. 서포터 위치 정규화 (0 이상 값으로, 상한 제한 없음)
+        let normalizedSupport = 0; // 기본값 0
+        if (supportRange > 0) { // 0으로 나누는 경우 방지
+            normalizedSupport = supportPosition / supportRange;
+        }
+        normalizedSupport = Math.max(0, normalizedSupport);
+
+        // 4. 딜러 점수 범위 계산
+        let dealerRange = dealerMaxMedianValue - dealerMinMedianValue;
+
+        // 5. 최종 딜러 환산 점수 계산
+        let dealerSupportConversion = dealerMinMedianValue + (normalizedSupport * dealerRange);
+        function compareValue(cachedValue, simulatorValue) {
+            // cachedValue = Number(cachedValue);
+            // simulatorValue = Number(simulatorValue);
+            // let fontSizeValue = "12px;"
+            // if (cachedValue < simulatorValue) return `<em style="color:#FF4500;font-size:${fontSizeValue}">▲${(simulatorValue - cachedValue).toFixed(0)}</em>`
+            // else if (cachedValue > simulatorValue) return `<em style="color:#1E90FF;font-size:${fontSizeValue}">▼${(simulatorValue - cachedValue)}</em>`
+            // else if (cachedValue == simulatorValue) return `<em style="color:#fff;font-size:${fontSizeValue}">▬0</em>`
+            const cachedComp = Math.round(Number(cachedValue) * 100);
+            const simulatorComp = Math.round(Number(simulatorValue) * 100);
+            const diff = (Number(simulatorValue) - Number(cachedValue)).toFixed(2);
+            let fontSizeValue = "11px;"
+            if (cachedComp < simulatorComp) {
+                return `<em style="color:#FF4500;font-size:${fontSizeValue}">(▲${diff})</em>`;
+            } else if (cachedComp > simulatorComp) {
+                return `<em style="color:#1E90FF;font-size:${fontSizeValue}">(▼${diff})</em>`;
+            } else {
+                return `<em style="color:#fff;font-size:${fontSizeValue}">(▬0)</em>`;
+            }
+        }
+        let armorInfo = [
+            { name: "공격력", value: Number(originSpecPoint.dealerAttackPowResult).toFixed(0) + compareValue(cachedDetailInfo.specPoint.dealerAttackPowResult, originSpecPoint.dealerAttackPowResult), icon: "bolt-solid" },
+            { name: "엘릭서", value: Number(originSpecPoint.dealerExlixirValue).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.dealerExlixirValue, originSpecPoint.dealerExlixirValue), icon: "flask-solid" },
+            { name: "초월", value: Number(originSpecPoint.dealerHyperValue).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.dealerHyperValue, originSpecPoint.dealerHyperValue), icon: "star-solid" },
+            { name: "악세", value: Number(originSpecPoint.dealerAccValue).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.dealerAccValue, originSpecPoint.dealerAccValue), icon: "circle-notch-solid" },
+            { name: "팔찌", value: Number(originSpecPoint.dealerBangleResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.dealerBangleResult, originSpecPoint.dealerBangleResult), icon: "ring-solid" },
+            { name: "각인", value: Number(originSpecPoint.dealerEngResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.dealerEngResult, originSpecPoint.dealerEngResult), icon: "book-solid" },
+        ]
+        let arkPassiveInfo = [
+            { name: "진화", value: Number(originSpecPoint.dealerEvloutionResult).toFixed(0) + "%" + compareValue(cachedDetailInfo.specPoint.dealerEvloutionResult, originSpecPoint.dealerEvloutionResult), icon: "fire-solid" },
+            { name: "깨달음", value: Number(originSpecPoint.dealerEnlightResult).toFixed(0) + "%" + compareValue(cachedDetailInfo.specPoint.dealerEnlightResult, originSpecPoint.dealerEnlightResult), icon: "lightbulb-solid" },
+            { name: "도약", value: Number(originSpecPoint.dealerLeapResult).toFixed(0) + "%" + compareValue(cachedDetailInfo.specPoint.dealerLeapResult, originSpecPoint.dealerLeapResult), icon: "feather-pointed-solid" },
+        ]
+        let gemInfo;
+        if (extractValue.etcObj.gemCheckFnc.originGemValue === 0) {
+            gemInfo = [
+                { name: "보석 실질 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.etcAverageValue, extractValue.etcObj.gemCheckFnc.etcAverageValue), icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
+                { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.etcAverageValue, extractValue.etcObj.gemCheckFnc.etcAverageValue), icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemsCoolAvg, extractValue.etcObj.gemsCoolAvg), icon: "gem-solid", question: "보석 평균 쿨감 수치" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.specialSkill, extractValue.etcObj.gemCheckFnc.specialSkill), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수. 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
+            ]
+        } else {
+            gemInfo = [
+                { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.originGemValue).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.originGemValue, extractValue.etcObj.gemCheckFnc.originGemValue), icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
+                { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.gemValue - 1) * 100).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.gemValue, extractValue.etcObj.gemCheckFnc.gemValue), icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemsCoolAvg, extractValue.etcObj.gemsCoolAvg), icon: "gem-solid", question: "보석 평균 쿨감 수치" },
+                { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.specialSkill, extractValue.etcObj.gemCheckFnc.specialSkill), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수. 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
+            ]
+        }
+        let supportImportantBuffInfo = [
+            { name: "공격력 증가", value: Number(originSpecPoint.supportFinalAtkBuff).toFixed(0) + compareValue(cachedDetailInfo.specPoint.supportFinalAtkBuff, originSpecPoint.supportFinalAtkBuff), icon: "bolt-solid" },
+            { name: "평균 피해량 증가", value: Number(originSpecPoint.supportAvgBuffPower).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportAvgBuffPower, originSpecPoint.supportAvgBuffPower) + "%", icon: "arrow-trend-up-solid" },
+        ]
+        let supportBuffInfo = [
+            { name: "낙인력", value: Number(originSpecPoint.supportStigmaResult).toFixed(1) + "%" + compareValue(cachedDetailInfo.specPoint.supportStigmaResult, originSpecPoint.supportStigmaResult), icon: "bullseye-solid" },
+            { name: "상시버프", value: Number(originSpecPoint.supportAllTimeBuff).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportAllTimeBuff, originSpecPoint.supportAllTimeBuff), icon: "arrows-rotate-solid" },
+            { name: "풀버프", value: Number(originSpecPoint.supportFullBuff).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportFullBuff, originSpecPoint.supportFullBuff), icon: "wand-magic-solid" },
+            { name: "종합버프", value: Number(originSpecPoint.supportTotalAvgBuff).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportTotalAvgBuff, originSpecPoint.supportTotalAvgBuff) + "%", icon: "wand-magic-sparkles-solid" },
+            { name: "팔찌", value: Number(originSpecPoint.supportBangleResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportBangleResult, originSpecPoint.supportBangleResult), icon: "ring-solid" },
+        ]
+        let supportUtilizationRate = [
+            { name: "아덴 가동률", value: Number(originSpecPoint.supportIdentityUptime).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportIdentityUptime, originSpecPoint.supportIdentityUptime) + "%", icon: "hourglass-half-solid" },
+            { name: "초각 가동률", value: Number(originSpecPoint.supportHyperUptime).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportHyperUptime, originSpecPoint.supportHyperUptime) + "%", icon: "hourglass-half-solid" },
+            { name: "풀버프 가동률", value: Number(originSpecPoint.supportFullBuffUptime).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportFullBuffUptime, originSpecPoint.supportFullBuffUptime) + "%", icon: "hourglass-half-solid" },
+        ]
+        let supportEffectInfo = [
+            { name: "케어력", value: Number(originSpecPoint.supportCarePowerResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportCarePowerResult, originSpecPoint.supportCarePowerResult), icon: "shield-halved-solid" },
+            { name: "유틸력", value: Number(originSpecPoint.supportUtilityPower).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportUtilityPower, originSpecPoint.supportUtilityPower), icon: "book-solid" },
+            { name: "특성", value: originSpecPoint.supportTotalStatus + compareValue(cachedDetailInfo.specPoint.supportTotalStatus, originSpecPoint.supportTotalStatus), icon: "person-solid" },
+            { name: "쿨타임 감소", value: originSpecPoint.supportgemsCoolAvg + "%" + compareValue(cachedDetailInfo.specPoint.supportgemsCoolAvg, originSpecPoint.supportgemsCoolAvg), icon: "gem-solid" },
+        ]
+
+        let result = "";
+        if (mobileCheck) {
+            result = `
+                    <div class="title-box">
+                        <span class="title">상세정보</span>
+                    </div>
+                    <span class="button" onclick="document.querySelector('.sc-info .detail-area').classList.toggle('on');"></span>`;
+        }
+        // extractValue.etcObj.supportCheck !== "서폿"
+        if (!/서폿|회귀|심판자|진실된 용맹/.test(extractValue.etcObj.supportCheck)) {
+            result += infoWrap("장비 효과", armorInfo);
+            result += infoWrap("아크패시브", arkPassiveInfo);
+            result += infoWrap("보석 효과", gemInfo);
+        } else {
+            result += infoWrap("주요 버프", supportImportantBuffInfo);
+            result += infoWrap("버프 정보", supportBuffInfo);
+            result += infoWrap("가동률", supportUtilizationRate);
+            result += infoWrap("추가 효과", supportEffectInfo);
+        }
+        element.innerHTML = result;
+    }
+    detailAreaCreate()
+
 }
 await simulatorInputCalc()
 document.body.addEventListener('change', () => { simulatorInputCalc() })

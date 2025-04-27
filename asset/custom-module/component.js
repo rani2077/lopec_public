@@ -3,7 +3,52 @@
 * description       : 	현재 접속한 디바이스 기기가 모바일, 태블릿일 경우 true를 반환
 *********************************************************************************************************************** */
 let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(navigator.userAgent.toLowerCase());
+export async function importModuleManager() {
+    // 이 함수는 매개변수를 받지 않으며, 정의된 모든 모듈을 무조건 로드합니다.
 
+    let interValTime = 60 * 1000;
+    const cacheBuster = `?${Math.floor((new Date).getTime() / interValTime)}`;
+
+    // 로드할 가능성이 있는 모든 모듈 정보
+    // filename 키는 더 이상 사용되지 않으므로 제거했습니다.
+    const potentialModules = [
+        { key: 'fetchApi', path: '../custom-module/fetchApi.js' },
+        { key: 'transValue', path: '../custom-module/trans-value.js' },
+        { key: 'calcValue', path: '../custom-module/calculator.js' },
+        // { key: 'component', path: '../custom-module/component.js' },
+        { key: 'dataBase', path: '../js/character.js' },
+        { key: 'originFilter', path: '../filter/filter.js' },
+        { key: 'simulatorFilter', path: '../filter/simulator-filter.js' },
+        { key: 'simulatorData', path: '../filter/simulator-data.js' },
+        { key: 'lopecOcr', path: '../custom-module/lopec-ocr.js' },
+    ];
+
+    const promisesToLoad = [];
+    const loadedModuleKeys = [];
+
+    // potentialModules 목록을 순회하며 모든 모듈을 로드 대상에 추가
+    for (const moduleInfo of potentialModules) {
+        // filename 키와 관련된 로직은 모두 제거되었습니다.
+
+        // 모든 모듈을 로드할 프로미스 배열에 추가합니다.
+        promisesToLoad.push(import(moduleInfo.path + cacheBuster));
+        // 로드될 모듈의 키(key)도 함께 저장합니다.
+        loadedModuleKeys.push(moduleInfo.key);
+    }
+
+    // 로드 대상으로 선정된 모든 모듈을 비동기적으로 로드
+    const loadedModules = await Promise.all(promisesToLoad);
+
+    // 로드된 모듈들을 원래의 키에 매핑하여 결과 객체 생성
+    const Modules = {};
+    for (let i = 0; i < loadedModules.length; i++) {
+        const key = loadedModuleKeys[i];
+        Modules[key] = loadedModules[i];
+    }
+    // 로드되지 않은 모듈에 대한 키는 결과 객체에 포함되지 않습니다.
+    return Modules;
+}
+let Modules = await importModuleManager();
 /* **********************************************************************************************************************
 * function name		:	scProfileSkeleton
 * description       : 	유저 프로필 정보 스켈레톤 화면
@@ -134,40 +179,40 @@ export async function scProfile(userData, extractValue, response) {
 
 /* **********************************************************************************************************************
 * function name		:	
-* description       : 	
+* description       :   함수를 이전하여 더이상 사용되지 않음
 *********************************************************************************************************************** */
-export async function dataBaseWrite(data, extractValue, specPoint) {
-    let Module = await import("../js/character.js");
-    // console.log(Module);
-    // console.log(extractValue);
-    // console.log(extractValue.etcObj.supportCheck)
-    let totalStatus = 0;
-    if (extractValue.etcObj.supportCheck === "서폿") {
-        totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
-    } else {
-        totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
-    }
-    // await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam); <== 삭제예정
-    // console.log(totalStatus)
-    let result = await Module.insertLopecCharacters(
-        data.ArmoryProfile.CharacterName,                                               // 닉네임 
-        data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
-        extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
-        totalStatus,                                                                    // 프로필 이미지 
-        data.ArmoryProfile.ServerName,                                                  // 서버 
-        parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
-        data.ArmoryProfile.GuildName,                                                   // 길드 
-        data.ArmoryProfile.Title,                                                       // 칭호 
-        specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
-        specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
-        specPoint.supportAllTimeBuff,                                                   // 상시버프 
-        specPoint.supportFullBuff,                                                      // 풀버프 
-        null,                                                                           // 진화 카르마 랭크                  
-        "2.0"                                                                           // 현재 버전 
-    );
-    // console.log(result)
-    return result;
-}
+// export async function dataBaseWrite(data, extractValue, specPoint) {
+//     let Module = await import("../js/character.js");
+//     // console.log(Module);
+//     // console.log(extractValue);
+//     // console.log(extractValue.etcObj.supportCheck)
+//     let totalStatus = 0;
+//     if (extractValue.etcObj.supportCheck === "서폿") {
+//         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
+//     } else {
+//         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
+//     }
+//     // await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam); <== 삭제예정
+//     // console.log(totalStatus)
+//     let result = await Modules.dataBase.insertLopecCharacters(
+//         data.ArmoryProfile.CharacterName,                                               // 닉네임 
+//         data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
+//         extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
+//         totalStatus,                                                                    // 프로필 이미지 
+//         data.ArmoryProfile.ServerName,                                                  // 서버 
+//         parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
+//         data.ArmoryProfile.GuildName,                                                   // 길드 
+//         data.ArmoryProfile.Title,                                                       // 칭호 
+//         specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
+//         specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
+//         specPoint.supportAllTimeBuff,                                                   // 상시버프 
+//         specPoint.supportFullBuff,                                                      // 풀버프 
+//         null,                                                                           // 진화 카르마 랭크                  
+//         "2.0"                                                                           // 현재 버전 
+//     );
+//     // console.log(result)
+//     return result;
+// }
 
 /* **********************************************************************************************************************
 * function name		:	profileImagePosition
@@ -445,7 +490,7 @@ export async function scNav(userName) {
     }
     return `
     <nav class="sc-nav">
-        <a href="${mobilePath}/search/search.php?headerCharacterName=${name}" class="link search ${searchClassName}" data-page="sc-info" >메인</a>
+        <a href="${mobilePath}/search/search.html?headerCharacterName=${name}" class="link search ${searchClassName}" data-page="sc-info" >메인</a>
         <a href="" class="link expedition" data-page="sc-expedition">원정대</a>
         <a href="${mobilePath}/simulator/simulator.html?headerCharacterName=${name}" class="link simulator ${simulatorClassName}" data-page="sc-info">시뮬레이터</a>
         <a href="https://cool-kiss-ec2.notion.site/1da758f0e8da8058a37bd1b7c6f49cd3?pvs=4" target="_blink" class="link" data-page="">중앙값</a>
@@ -534,7 +579,7 @@ async function scExpedition(inputName) {
     })
     function expeditionList(info) {
         return `
-            <a href="/search/search.php?headerCharacterName=${info.CharacterName}" class="expedition-list">
+            <a href="/search/search.html?headerCharacterName=${info.CharacterName}" class="expedition-list">
                 <!-- <img src="https://cdn.korlark.com/lostark/avatars/striker.png" alt=""> -->
                 <div class="info-box">
                     <span class="character-level">Lv.${info.CharacterLevel} ${info.CharacterClassName}</span>

@@ -1,5 +1,3 @@
-// import 'https://code.jquery.com/jquery-3.6.0.min.js';
-
 async function importModuleManager() {
     let interValTime = 60 * 1000;
     let modules = await Promise.all([
@@ -14,6 +12,9 @@ async function importModuleManager() {
     }
     return moduleObj
 }
+// let Modules = await import("../custom-module/module-manager.js")
+// Modules = await Modules.importModuleManager("trans-value.js");
+
 
 // 필터
 // import {
@@ -241,6 +242,7 @@ export async function getCharacterProfile(data, dataBase) {
         gemAttackBonus: 0,
         abilityAttackBonus: 0,
         armorStatus: 0,
+        healthStatus: 0,
         avatarStats: 1,
         supportCheck: supportCheck(),
         gemCheckFnc: {
@@ -344,10 +346,6 @@ export async function getCharacterProfile(data, dataBase) {
     });
 
     //console.log(vitalitySum)
-    // 합산된 생명 활성력 값을 사용하여 최종 hpActive 계산
-    //defaultObj.hpActive = (vitalitySum / 140) / 100 + 1;
-    //console.log(defaultObj.hpActive)
-    //defaultObj.hpActive = (defaultObj.hpActive / 100) + 1
     //defaultObj.hpActive = (0.000071427 * vitalitySum) + 1
     defaultObj.hpActive = 1 + (vitalitySum / 14000);
 
@@ -446,9 +444,9 @@ export async function getCharacterProfile(data, dataBase) {
         atkBuff: 0,
         damageBuff: 0,
         enlightPoint: 0,
-        carePower: 1,
+        carePower: 0,
         identityUptime: 1,
-        
+
     }
 
 
@@ -927,9 +925,8 @@ export async function getCharacterProfile(data, dataBase) {
     let engObj = {
         finalDamagePer: 1,
         atkPer: 0,
-        engBonusPer: 1,
         carePower: 1,
-        utilityPower: 1,
+        utilityPower: 0,
         cdrPercent: 0,
         awakencdrPercent: 0,
     }
@@ -945,7 +942,6 @@ export async function getCharacterProfile(data, dataBase) {
                     engCalMinus(checkArry.name, checkArry.finalDamagePer, checkArry.criticalChancePer, checkArry.criticalDamagePer, checkArry.atkPer, checkArry.atkSpeed, checkArry.moveSpeed, checkArry.carePower, checkArry.utilityPower, checkArry.engBonusPer)
 
                     engObj.finalDamagePer = (engObj.finalDamagePer * (checkArry.finalDamagePer / 100 + 1));
-                    engObj.engBonusPer = (engObj.engBonusPer * (checkArry.engBonusPer / 100 + 1));
                     engObj.atkPer = (engObj.atkPer + checkArry.atkPer);
                     engObj.carePower = (engObj.carePower + checkArry.carePower);
                     engObj.cdrPercent = (engObj.cdrPercent + checkArry.cdrPercent);
@@ -997,8 +993,6 @@ export async function getCharacterProfile(data, dataBase) {
                     engObj.finalDamagePer = (engObj.finalDamagePer) / notZero(minusVal) //퐁트라이커기준 저주받은 인형(돌맹이) 제거값
                     //engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) * ((filterArry.finalDamagePer / 100) + 1)));
                     engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) + (filterArry.finalDamagePer / 100)));
-                    engObj.engBonusPer = (engObj.engBonusPer) / notZero(minusVal)
-                    engObj.engBonusPer = (engObj.engBonusPer * (notZero(minusVal) + filterArry.engBonusPer / 100));
                     engObj.atkPer = (engObj.atkPer + filterArry.atkPer);
                     engObj.cdrPercent = (engObj.cdrPercent + filterArry.cdrPercent);
                     engObj.awakencdrPercent = (engObj.awakencdrPercent + filterArry.awakencdrPercent);
@@ -1021,6 +1015,7 @@ export async function getCharacterProfile(data, dataBase) {
 
     let elixirObj = {
         atkPlus: 0,
+        atkBonus: 0,
         atkBuff: 0,
         weaponAtkPlus: 0,
         criticalDamagePer: 0,
@@ -1082,6 +1077,10 @@ export async function getCharacterProfile(data, dataBase) {
 
                 elixirObj.weaponAtkPlus += filterArry.weaponAtkPlus[realElixir.level - 1]
                 // console.log(realElixir.name+" : " + elixirWeaponAtkPlus)
+
+            } else if (realElixir.name == filterArry.name && !(filterArry.atkBonus == undefined)) {
+
+                elixirObj.atkBonus += filterArry.atkBonus[realElixir.level - 1]
 
             } else if (realElixir.name == filterArry.name && !(filterArry.criticalDamage == undefined)) {
 
@@ -1251,7 +1250,7 @@ export async function getCharacterProfile(data, dataBase) {
             }
         })
     } else {
-        gemsCool = 1
+        gemsCool = 0
         gemsCoolCount = 1
     }
     etcObj.gemsCoolAvg = Number(((gemsCool / gemsCoolCount)).toFixed(1))
@@ -2061,6 +2060,40 @@ export async function getCharacterProfile(data, dataBase) {
 
 
     /* **********************************************************************************************************************
+     * name		              :	  healthStatus()
+     * version                :   2.0
+     * description            :   체력 자체 계산 로직
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
+
+    function healthStatus() {
+        let result = 0;
+        data.ArmoryEquipment.forEach(function (armor) {
+
+            if (/^(투구|상의|하의|장갑|어깨|목걸이|귀걸이|반지|어빌리티 스톤)$/.test(armor.Type)) {
+    
+
+                if (armor.Tooltip && typeof armor.Tooltip === 'string') { 
+                    const allMatches = armor.Tooltip.match(/체력 \+\d+/g);
+    
+                    if (allMatches) {
+                        allMatches.forEach(matchText => {
+                            const numberMatch = matchText.match(/\d+/);
+
+                            if (numberMatch) {
+                                result += Number(numberMatch[0]);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        return result;
+    }
+    etcObj.healthStatus = Number((healthStatus() * jobObj.healthPer + hyperObj.statHp + elixirObj.statHp + bangleObj.statHp + accObj.statHp) * defaultObj.hpActive * 1.07).toFixed(0);
+
+
+    /* **********************************************************************************************************************
      * name		              :	  karmaPoint{}
      * version                :   2.0
      * description            :   진화 카르마 추론 알고리즘
@@ -2436,7 +2469,7 @@ export async function getCharacterProfile(data, dataBase) {
                     }
                 }
             }
-            for(const newSum of sumsToAddThisPotion) {
+            for (const newSum of sumsToAddThisPotion) {
                 possibleSums.add(newSum);
             }
         }
@@ -2582,19 +2615,19 @@ export async function getCharacterProfile(data, dataBase) {
                 const calculatedWeaponAtkRaw = currentKnownFlatWeaponAtkSum * (1 + safeAccWeaponAtkPer + currentKarmaPercent);
                 const calculatedWeaponAtk = Math.floor(calculatedWeaponAtkRaw);
                 const baseAttackRaw = ((calculatedStat * calculatedWeaponAtk) / 6) ** 0.5;
-                 if (isNaN(baseAttackRaw) || !isFinite(baseAttackRaw)) {
-                     // if (combinationCount < 10 || combinationCount % 10000 === 0) { console.warn(...) } // 로그 필요시
-                     continue;
-                 }
-                 const baseAttack = baseAttackRaw;
+                if (isNaN(baseAttackRaw) || !isFinite(baseAttackRaw)) {
+                    // if (combinationCount < 10 || combinationCount % 10000 === 0) { console.warn(...) } // 로그 필요시
+                    continue;
+                }
+                const baseAttack = baseAttackRaw;
                 const flatBonus = safeElixirAtkPlus + safeHyperAtkPlus + safeAccAtkPlus;
                 const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
                 const calculatedAttackPower = (baseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
                 const calculatedAttackPowerFloored = Math.floor(calculatedAttackPower);
                 const match = (calculatedAttackPowerFloored === observedAttackPowerFloored);
 
-                 // 상세 로그 (필요시 활성화)
-                 // if (combinationCount <= 50 || match || combinationCount % 10000 === 0) { ... }
+                // 상세 로그 (필요시 활성화)
+                // if (combinationCount <= 50 || match || combinationCount % 10000 === 0) { ... }
 
                 if (match) {
                     // 최고 내실 값 업데이트 및 bestMatch 저장
@@ -2604,7 +2637,7 @@ export async function getCharacterProfile(data, dataBase) {
                         //console.info(` >> 새로운 최고 내실(${internalStat}) 조합 발견! 카르마 레벨: ${kLevel}`);
                     } else if (internalStat === maxInternalStatFound) {
                         // 동일한 최고 내실 값이면, 기존 bestMatch 유지 (첫 번째 발견 우선)
-                         //console.debug(` >> 동일한 최고 내실(${internalStat}) 조합 발견. 카르마 레벨: ${kLevel}. (기존 레벨 ${bestMatch.level} 유지)`);
+                        //console.debug(` >> 동일한 최고 내실(${internalStat}) 조합 발견. 카르마 레벨: ${kLevel}. (기존 레벨 ${bestMatch.level} 유지)`);
                     }
                 }
             } // kLevel loop
@@ -2624,26 +2657,26 @@ export async function getCharacterProfile(data, dataBase) {
                 const maxCalculatedWeaponAtkRaw = currentKnownFlatWeaponAtkSum * (1 + safeAccWeaponAtkPer + maxKarmaLevel * 0.001);
                 const maxCalculatedWeaponAtk = Math.floor(maxCalculatedWeaponAtkRaw);
                 const maxBaseAttack = ((maxCalculatedStat * maxCalculatedWeaponAtk) / 6) ** 0.5;
-                 if (!isNaN(maxBaseAttack) && isFinite(maxBaseAttack)) {
-                     // 로그 출력 로직 주석 해제
-                     const flatBonus = safeElixirAtkPlus + safeHyperAtkPlus + safeAccAtkPlus;
-                     const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
-                     const maxCalculatedAttackPower = (maxBaseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
+                if (!isNaN(maxBaseAttack) && isFinite(maxBaseAttack)) {
+                    // 로그 출력 로직 주석 해제
+                    const flatBonus = safeElixirAtkPlus + safeHyperAtkPlus + safeAccAtkPlus;
+                    const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
+                    const maxCalculatedAttackPower = (maxBaseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
 
-                     //console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
-                     //console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
-                     //console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
-                     //console.log(`    -> 계산된 Base공: ${maxBaseAttack.toFixed(2)}`);
-                     //console.log(`    -> 계산된 최종 공격력: ${Math.floor(maxCalculatedAttackPower)} (Raw: ${maxCalculatedAttackPower.toFixed(2)})`);
-                     //console.log(`  - 비교 대상 입력 공격력: ${observedAttackPowerFloored} (Raw: ${observedAttackPower})`);
-                     //console.log(`  - 차이: ${observedAttackPowerFloored - Math.floor(maxCalculatedAttackPower)}`);
-                 } else {
-                     //console.warn("estimateKarmaLevel: 최대값 기준 baseAttack 계산 결과 NaN 또는 Infinite.");
-                     //// 로그 출력 로직 주석 해제
-                     //console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
-                     //console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
-                     //console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
-                 }
+                    //console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
+                    //console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
+                    //console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
+                    //console.log(`    -> 계산된 Base공: ${maxBaseAttack.toFixed(2)}`);
+                    //console.log(`    -> 계산된 최종 공격력: ${Math.floor(maxCalculatedAttackPower)} (Raw: ${maxCalculatedAttackPower.toFixed(2)})`);
+                    //console.log(`  - 비교 대상 입력 공격력: ${observedAttackPowerFloored} (Raw: ${observedAttackPower})`);
+                    //console.log(`  - 차이: ${observedAttackPowerFloored - Math.floor(maxCalculatedAttackPower)}`);
+                } else {
+                    //console.warn("estimateKarmaLevel: 최대값 기준 baseAttack 계산 결과 NaN 또는 Infinite.");
+                    //// 로그 출력 로직 주석 해제
+                    //console.log(`  - 최대 조합 가정 시: 내실=${maxInternalStat}, 카르마=${maxKarmaLevel}`);
+                    //console.log(`    -> 계산된 스탯: ${maxCalculatedStat}`);
+                    //console.log(`    -> 계산된 무공: ${maxCalculatedWeaponAtk} (Raw: ${maxCalculatedWeaponAtkRaw.toFixed(2)})`);
+                }
             } catch (e) {
                 //console.error("estimateKarmaLevel: 최대값 기준 계산 중 오류 발생:", e);
             }
@@ -2652,17 +2685,17 @@ export async function getCharacterProfile(data, dataBase) {
     }
 
     // --- estimateKarmaLevel 함수 호출을 위한 데이터 준비 ---
-     // 직업 주 스탯 확인
-     let mainStatTypeForKarma = 'str'; // 기본값
-     let userClassForKarma = data.ArmoryProfile.CharacterClassName;
-     let bangleJobFilterForKarma = Modules.originFilter.bangleJobFilter;
-     let vailedStatInfoForKarma = bangleJobFilterForKarma.find(item => item.job === userClassForKarma);
-     if (vailedStatInfoForKarma) {
-         mainStatTypeForKarma = vailedStatInfoForKarma.stats;
-     }
+    // 직업 주 스탯 확인
+    let mainStatTypeForKarma = 'str'; // 기본값
+    let userClassForKarma = data.ArmoryProfile.CharacterClassName;
+    let bangleJobFilterForKarma = Modules.originFilter.bangleJobFilter;
+    let vailedStatInfoForKarma = bangleJobFilterForKarma.find(item => item.job === userClassForKarma);
+    if (vailedStatInfoForKarma) {
+        mainStatTypeForKarma = vailedStatInfoForKarma.stats;
+    }
 
-     // 전투 레벨 스탯 계산 (전투레벨 50 이상 가정)
-     let fightLevelStatValue = 477
+    // 전투 레벨 스탯 계산 (전투레벨 50 이상 가정)
+    let fightLevelStatValue = 477
 
 
     const karmaInputData = {

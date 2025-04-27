@@ -7,39 +7,46 @@ let mobileCheck = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini
  * function name		:	importModuleManager() <== import 전역화로 인한 미사용
  * description			: 	사용하는 모든 외부 module파일 import
  *********************************************************************************************************************** */
-// async function importModuleManager() {
-//     let interValTime = 60 * 1000 * 10;
-//     let modules = await Promise.all([
-//         import(`../custom-module/fetchApi.js?${Math.floor((new Date).getTime() / interValTime)}`),     // lostark API 호출
-//         import(`../filter/filter.js?${Math.floor((new Date).getTime() / interValTime)}`),              // 필터 호출
-//         import(`../custom-module/trans-value.js?${Math.floor((new Date).getTime() / interValTime)}`),  // 유저정보 수치화
-//         import(`../custom-module/calculator.js?${Math.floor((new Date).getTime() / interValTime)}`),   // 수치값을 스펙포인트로 계산
-//         import(`../custom-module/component.js?${Math.floor((new Date).getTime() / interValTime)}`),    // 컴포넌트 모듈
-//         import(`../js/character.js?${Math.floor((new Date).getTime() / interValTime)}`),               // 특정 유저의 상세정보를 저장
+export async function importModuleManager() {
+    // 이 함수는 매개변수를 받지 않으며, 정의된 모든 모듈을 무조건 로드합니다.
+    let interValTime = 60 * 1000;
+    const cacheBuster = `?${Math.floor((new Date).getTime() / interValTime)}`;
+    // 로드할 가능성이 있는 모든 모듈 정보
+    // filename 키는 더 이상 사용되지 않으므로 제거했습니다.
+    const potentialModules = [
+        { key: 'fetchApi', path: '../custom-module/fetchApi.js' },
+        { key: 'transValue', path: '../custom-module/trans-value.js' },
+        { key: 'calcValue', path: '../custom-module/calculator.js' },
+        { key: 'apiCalcValue', path: '../custom-module/api-calc.js' },
+        { key: 'component', path: '../custom-module/component.js' },
+        { key: 'dataBase', path: '../js/character.js' },
+        { key: 'originFilter', path: '../filter/filter.js' },
+        { key: 'simulatorFilter', path: '../filter/simulator-filter.js' },
+        { key: 'simulatorData', path: '../filter/simulator-data.js' },
+        { key: 'lopecOcr', path: '../custom-module/lopec-ocr.js' },
+    ];
+    const promisesToLoad = [];
+    const loadedModuleKeys = [];
+    // potentialModules 목록을 순회하며 모든 모듈을 로드 대상에 추가
+    for (const moduleInfo of potentialModules) {
+        // 모든 모듈을 로드할 프로미스 배열에 추가합니다.
+        promisesToLoad.push(import(moduleInfo.path + cacheBuster));
+        // 로드될 모듈의 키(key)도 함께 저장합니다.
+        loadedModuleKeys.push(moduleInfo.key);
+    }
+    // 로드 대상으로 선정된 모든 모듈을 비동기적으로 로드
+    const loadedModules = await Promise.all(promisesToLoad);
+    // 로드된 모듈들을 원래의 키에 매핑하여 결과 객체 생성
+    const Modules = {};
+    for (let i = 0; i < loadedModules.length; i++) {
+        const key = loadedModuleKeys[i];
+        Modules[key] = loadedModules[i];
+    }
+    // 로드되지 않은 모듈에 대한 키는 결과 객체에 포함되지 않습니다.
+    return Modules;
+}
+let Modules = await importModuleManager();
 
-//         //import("../custom-module/fetchApi.js" + `?${(new Date).getTime()}`),     // 기존 타임스탬프 방식 복구
-//         //import("../filter/filter.js" + `?${(new Date).getTime()}`),              // 기존 타임스탬프 방식 복구
-//         //import("../custom-module/trans-value.js" + `?${(new Date).getTime()}`),  // 기존 타임스탬프 방식 복구 
-//         //import("../custom-module/calculator.js" + `?${(new Date).getTime()}`),   // 기존 타임스탬프 방식 복구
-//         //import("../custom-module/component.js" + `?${(new Date).getTime()}`),    // 기존 타임스탬프 방식 복구
-//         //import("../js/characterRead2.js" + `?${(new Date).getTime()}`),           // 기존 타임스탬프 방식 복구
-//         //import('../js/search.js' + `?${(new Date).getTime()}`),                   // 기존 타임스탬프 방식 복구
-//         //import('../js/character.js' + `?${(new Date).getTime()}`),                // 기존 타임스탬프 방식 복구
-//     ])
-//     let moduleObj = {
-//         fetchApi: modules[0],
-//         originFilter: modules[1],
-//         transValue: modules[2],
-//         calcValue: modules[3],
-//         component: modules[4],
-
-//         userDataWriteDeviceLog: modules[5],
-//     }
-
-//     return moduleObj
-// }
-Modules = await Modules
-console.log(Modules)
 async function mainSearchFunction() {
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -62,19 +69,25 @@ async function mainSearchFunction() {
     * function name		:	
     * description       : 	
     *********************************************************************************************************************** */
-    let data = await Modules.fetchApi.lostarkApiCall(nameParam);
-    console.log(data)
-    let extractValue = await Modules.transValue.getCharacterProfile(data);
-    let specPoint = await Modules.calcValue.specPointCalc(extractValue);
-    let dataBaseResponse = await component.dataBaseWrite(data, extractValue, specPoint);
-    if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
-        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-    } else if (dataBaseResponse.totalStatusSupport !== 0) {
-        extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-    }
-    specPoint = await Modules.calcValue.specPointCalc(extractValue);
-    // console.log(specPoint)
-    console.log("오리진obj", extractValue);
+    // let data = await Modules.fetchApi.lostarkApiCall(nameParam);
+    // let extractValue = await Modules.transValue.getCharacterProfile(data);
+    // let specPoint = await Modules.calcValue.specPointCalc(extractValue);
+    // let dataBaseResponse = await component.dataBaseWrite(data, extractValue, specPoint);
+    // if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
+    //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+    // } else if (dataBaseResponse.totalStatusSupport !== 0) {
+    //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+    // }
+    // specPoint = await Modules.calcValue.specPointCalc(extractValue);
+    let apiData = await Modules.apiCalcValue.apiCalcValue(nameParam);
+    console.log("API데이터", apiData)
+    let data = apiData.data;
+    let dataBaseResponse = apiData.dataBase;
+    let extractValue = apiData.extractValue;
+    let specPoint = apiData.calcValue;
+
+    console.log("스펙포인트", specPoint)
+    // console.log("오리진obj", extractValue);
 
     await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
 
@@ -103,106 +116,86 @@ async function mainSearchFunction() {
         //에스더 1300+
 
         let gradeImageSrc = "";
-        let nextTierValue = 0;
-        let nowTierValue = 0;
-        let tierIndex = 0;
-        let tierNameArray = ['브론즈', '실버', '골드', '다이아몬드', '마스터', '에스더'];
-        let tierNameEngArray = ['bronze', 'silver', 'gold', 'diamond', 'master', 'esther'];
-        if (extractValue.etcObj.supportCheck !== "서폿") {
-            if (specPoint.completeSpecPoint >= 3000) {
-                gradeImageSrc = `${baseUrl}/image/esther.png`;
-                nextTierValue = 0;
-                nowTierValue = 0;
-                tierIndex = 5;
-            } else if (specPoint.completeSpecPoint >= 2400) {
-                gradeImageSrc = `${baseUrl}/image/master.png`;
-                nextTierValue = 3000;
-                nowTierValue = 2400;
-                tierIndex = 4;
-            } else if (specPoint.completeSpecPoint >= 1900) {
-                gradeImageSrc = `${baseUrl}/image/diamond.png`;
-                nextTierValue = 2400;
-                nowTierValue = 1900;
-                tierIndex = 3;
-            } else if (specPoint.completeSpecPoint >= 1600) {
-                gradeImageSrc = `${baseUrl}/image/gold.png`;
-                nextTierValue = 1900;
-                nowTierValue = 1600;
-                tierIndex = 2;
-            } else if (specPoint.completeSpecPoint >= 1400) {
-                gradeImageSrc = `${baseUrl}/image/silver.png`;
-                nextTierValue = 1600;
-                nowTierValue = 1400;
-                tierIndex = 1;
-            } else if (specPoint.completeSpecPoint < 1400) {
-                gradeImageSrc = `${baseUrl}/image/bronze.png`;
-                nextTierValue = 1400;
-                nowTierValue = 1;
-                tierIndex = 0;
-            }
-        } else {
-            if (specPoint.completeSpecPoint >= 1300) {
-                gradeImageSrc = `${baseUrl}/image/esther.png`;
-                nextTierValue = 0;
-                nowTierValue = 0;
-                tierIndex = 5;
-            } else if (specPoint.completeSpecPoint >= 1000) {
-                gradeImageSrc = `${baseUrl}/image/master.png`;
-                nextTierValue = 1300;
-                nowTierValue = 1000;
-                tierIndex = 4;
-            } else if (specPoint.completeSpecPoint >= 800) {
-                gradeImageSrc = `${baseUrl}/image/diamond.png`;
-                nextTierValue = 1000;
-                nowTierValue = 800;
-                tierIndex = 3;
-            } else if (specPoint.completeSpecPoint >= 700) {
-                gradeImageSrc = `${baseUrl}/image/gold.png`;
-                nextTierValue = 800;
-                nowTierValue = 700;
-                tierIndex = 2;
-            } else if (specPoint.completeSpecPoint >= 400) {
-                gradeImageSrc = `${baseUrl}/image/silver.png`;
-                nextTierValue = 700;
-                nowTierValue = 400;
-                tierIndex = 1;
-            } else if (specPoint.completeSpecPoint < 400) {
-                gradeImageSrc = `${baseUrl}/image/bronze.png`;
-                nextTierValue = 400;
-                nowTierValue = 1;
-                tierIndex = 0;
-            }
-        }
-        let totalStatus = 0;
-        // nowSpecElement
-        // if (userDbInfo.data.characterBest) {
-        //     userDbInfo.data.characterBest.LCHB_TOTALSTATUS
-        //     if (extractValue.etcObj.supportCheck === "서폿") {
-        //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
-        //     } else {
-        //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
+        // let nextTierValue = 0;
+        // let nowTierValue = 0;
+        // let tierIndex = 0;
+        // let tierNameArray = ['브론즈', '실버', '골드', '다이아몬드', '마스터', '에스더'];
+        // let tierNameEngArray = ['bronze', 'silver', 'gold', 'diamond', 'master', 'esther'];
+        // if (extractValue.etcObj.supportCheck !== "서폿") {
+        //     if (specPoint.completeSpecPoint >= 3000) {
+        //         gradeImageSrc = `${baseUrl}/image/esther.png`;
+        //         nextTierValue = 0;
+        //         nowTierValue = 0;
+        //         tierIndex = 5;
+        //     } else if (specPoint.completeSpecPoint >= 2400) {
+        //         gradeImageSrc = `${baseUrl}/image/master.png`;
+        //         nextTierValue = 3000;
+        //         nowTierValue = 2400;
+        //         tierIndex = 4;
+        //     } else if (specPoint.completeSpecPoint >= 1900) {
+        //         gradeImageSrc = `${baseUrl}/image/diamond.png`;
+        //         nextTierValue = 2400;
+        //         nowTierValue = 1900;
+        //         tierIndex = 3;
+        //     } else if (specPoint.completeSpecPoint >= 1600) {
+        //         gradeImageSrc = `${baseUrl}/image/gold.png`;
+        //         nextTierValue = 1900;
+        //         nowTierValue = 1600;
+        //         tierIndex = 2;
+        //     } else if (specPoint.completeSpecPoint >= 1400) {
+        //         gradeImageSrc = `${baseUrl}/image/silver.png`;
+        //         nextTierValue = 1600;
+        //         nowTierValue = 1400;
+        //         tierIndex = 1;
+        //     } else if (specPoint.completeSpecPoint < 1400) {
+        //         gradeImageSrc = `${baseUrl}/image/bronze.png`;
+        //         nextTierValue = 1400;
+        //         nowTierValue = 1;
+        //         tierIndex = 0;
         //     }
-
-        //     if (userDbInfo.data.characterBest.LCHB_TOTALSTATUS > totalStatus && (userDbInfo.data.characterBest.LCHB_TOTALSUM > ((specPoint.completeSpecPoint).toFixed(2)))) {
-        //         nowSpecElement.style.color = "#f00";
-        //         specAreaElement.classList.add("alert");
-        //         document.querySelector(".sc-info .group-info .tier-box").addEventListener("click", () => {
-        //             window.open('https://cool-kiss-ec2.notion.site/1d2758f0e8da8040bc4dd0fe3a48f9f7?pvs=4', '_blank');
-        //         })
+        // } else {
+        //     if (specPoint.completeSpecPoint >= 1300) {
+        //         gradeImageSrc = `${baseUrl}/image/esther.png`;
+        //         nextTierValue = 0;
+        //         nowTierValue = 0;
+        //         tierIndex = 5;
+        //     } else if (specPoint.completeSpecPoint >= 1000) {
+        //         gradeImageSrc = `${baseUrl}/image/master.png`;
+        //         nextTierValue = 1300;
+        //         nowTierValue = 1000;
+        //         tierIndex = 4;
+        //     } else if (specPoint.completeSpecPoint >= 800) {
+        //         gradeImageSrc = `${baseUrl}/image/diamond.png`;
+        //         nextTierValue = 1000;
+        //         nowTierValue = 800;
+        //         tierIndex = 3;
+        //     } else if (specPoint.completeSpecPoint >= 700) {
+        //         gradeImageSrc = `${baseUrl}/image/gold.png`;
+        //         nextTierValue = 800;
+        //         nowTierValue = 700;
+        //         tierIndex = 2;
+        //     } else if (specPoint.completeSpecPoint >= 400) {
+        //         gradeImageSrc = `${baseUrl}/image/silver.png`;
+        //         nextTierValue = 700;
+        //         nowTierValue = 400;
+        //         tierIndex = 1;
+        //     } else if (specPoint.completeSpecPoint < 400) {
+        //         gradeImageSrc = `${baseUrl}/image/bronze.png`;
+        //         nextTierValue = 400;
+        //         nowTierValue = 1;
+        //         tierIndex = 0;
         //     }
-
         // }
-
-
-
-        let gaugePercent = (specPoint.completeSpecPoint - nowTierValue) / (nextTierValue - nowTierValue) * 100;
+        // let totalStatus = 0;
+        console.log(specPoint.tierInfoObj)
+        let gaugePercent = (specPoint.completeSpecPoint - specPoint.tierInfoObj.nowTierValue) / (specPoint.tierInfoObj.nextTierValue - specPoint.tierInfoObj.nowTierValue) * 100;
         let gauge = "";
-        if (tierIndex !== 5) {
+        if (specPoint.tierInfoObj.nextTierNameEng) {
             gauge = `
             <div class="gauge">
-                <span class="tier now ${tierNameEngArray[tierIndex]}">${tierNameArray[tierIndex]}</span>
-                <span class="tier next ${tierNameEngArray[tierIndex + 1]}">${tierNameArray[tierIndex + 1]}</span>
-                <span class="value">${Math.floor(specPoint.completeSpecPoint)}/${nextTierValue}</span>
+                <span class="tier now ${specPoint.tierInfoObj.tierNameEng}">${specPoint.tierInfoObj.tierNameKor}</span>
+                <span class="tier next ${specPoint.tierInfoObj.nextTierNameEng}">${specPoint.tierInfoObj.nextTierNameKor}</span>
+                <span class="value">${Math.floor(specPoint.completeSpecPoint)}/${specPoint.tierInfoObj.nextTierValue}</span>
                 <i class="bar" style="clip-path: polygon(0 0, ${gaugePercent}% 0, ${gaugePercent}% 100%, 0% 100%);"></i>
             </div>`;
         } else {
@@ -220,7 +213,7 @@ async function mainSearchFunction() {
 
 
         // bestSpecElement.innerHTML = "다이아몬드 티어<br> 마스터까지 앞으로 100점!";
-        tierImageElement.setAttribute("src", gradeImageSrc);
+        tierImageElement.setAttribute("src", `${baseUrl}/image/${specPoint.tierInfoObj.tierNameEng}.png`);
 
     }
     specAreaCreate()
@@ -995,14 +988,6 @@ async function mainSearchFunction() {
                     ${infoBox.join('')}
                 </div>`;
         }
-        function todayFormattedDate() {
-            const today = new Date();
-            const year = String(today.getFullYear()).slice(-2); // 년도의 마지막 두 자리
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 +1), 두 자리로 만들기
-            const day = String(today.getDate()).padStart(2, '0'); // 일, 두 자리로 만들기
-
-            return `${year}.${month}.${day}`;
-        }
         function formatDate(dateString) {
             // 입력된 날짜 문자열의 형식을 검증합니다.
             if (!/^\d{14}$/.test(dateString)) {
@@ -1033,7 +1018,6 @@ async function mainSearchFunction() {
         if (supportRange > 0) { // 0으로 나누는 경우 방지
             normalizedSupport = supportPosition / supportRange;
         }
-        // 최소 0으로만 제한 (음수 점수는 없다고 가정)
         normalizedSupport = Math.max(0, normalizedSupport);
 
         // 4. 딜러 점수 범위 계산
@@ -1083,16 +1067,26 @@ async function mainSearchFunction() {
             { name: "딜러 환산 점수", value: dealerSupportConversion.toFixed(2), icon: "arrows-left-right-to-line-solid" },
             { name: "최고 점수 달성일", value: formatDate(dataBaseResponse.achieveDate), icon: "calendar-check-solid" },
         ]
+        let supportImportantBuffInfo = [
+            { name: "공격력 증가", value: Number(specPoint.supportFinalAtkBuff).toFixed(0) /* 추가됨 */, icon: "bolt-solid" },
+            { name: "평균 피해 증가", value: Number(specPoint.supportAvgBuffPower).toFixed(2) /* 추가됨 */ + "%", icon: "arrow-trend-up-solid" },
+        ]
         let supportBuffInfo = [
-            { name: "상시버프", value: Number(specPoint.supportAllTimeBuff).toFixed(2) + "%", icon: "arrows-rotate-solid" },
-            { name: "풀버프", value: Number(specPoint.supportFullBuff).toFixed(2) + "%", icon: "wand-magic-sparkles-solid" },
             { name: "낙인력", value: Number(specPoint.supportStigmaResult).toFixed(1) + "%", icon: "bullseye-solid" },
+            { name: "상시버프", value: Number(specPoint.supportAllTimeBuff).toFixed(2) + "%", icon: "arrows-rotate-solid" },
+            { name: "풀버프", value: Number(specPoint.supportFullBuff).toFixed(2) + "%", icon: "wand-magic-solid" },
+            { name: "종합버프", value: Number(specPoint.supportTotalAvgBuff).toFixed(2) /* 추가됨 */ + "%", icon: "wand-magic-sparkles-solid" },
             { name: "팔찌", value: Number(specPoint.supportBangleResult).toFixed(2) + "%", icon: "ring-solid" },
         ]
+        let supportUtilizationRate = [
+            { name: "아덴 가동률", value: Number(specPoint.supportIdentityUptime).toFixed(2) /* 추가됨 */ + "%", icon: "hourglass-half-solid" },
+            { name: "초각 가동률", value: Number(specPoint.supportHyperUptime).toFixed(2) /* 추가됨 */ + "%", icon: "hourglass-half-solid" },
+            { name: "풀버프 가동률", value: Number(specPoint.supportFullBuffUptime).toFixed(2) /* 추가됨 */ + "%", icon: "hourglass-half-solid" },
+        ]
         let supportEffectInfo = [
-            { name: "특성", value: specPoint.supportTotalStatus, icon: "person-solid" },
             { name: "케어력", value: Number(specPoint.supportCarePowerResult).toFixed(2) + "%", icon: "shield-halved-solid" },
-            { name: "각인 보너스", value: Number(specPoint.supportEngBonus).toFixed(2) + "%", icon: "book-solid" },
+            { name: "유틸력", value: Number(specPoint.supportUtilityPower).toFixed(2) /* 추가됨 */ + "%", icon: "gear-solid" },
+            { name: "특성", value: specPoint.supportTotalStatus, icon: "person-solid" },
             { name: "쿨타임 감소", value: specPoint.supportgemsCoolAvg + "%", icon: "gem-solid" },
         ]
 
@@ -1112,7 +1106,9 @@ async function mainSearchFunction() {
             result += infoWrap("보석 효과", gemInfo);
         } else {
             result += infoWrap("점수 통계", supportSpecPointInfo);
+            result += infoWrap("주요 버프", supportImportantBuffInfo);
             result += infoWrap("버프 정보", supportBuffInfo);
+            result += infoWrap("가동률", supportUtilizationRate);
             result += infoWrap("추가 효과", supportEffectInfo);
         }
         element.innerHTML = result;

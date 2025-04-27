@@ -1448,3 +1448,8 @@
 .sc-expedition .expedition-area .expedition-list .info-box .armor-level {}
 
 .sc-expedition .expedition-area .expedition-list .info-box .spec {}
+
+
+.sc-history {
+    display: none;
+}

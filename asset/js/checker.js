@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 return`
                     <div class="simple-group">
                         <div class="name">
-                            <a href="https://lopec.kr/search/search.php?mainCharacterName=${inputText}" target="_blink"><strong>${inputText}</strong><em>${userSecondClass + " " + originClass}</em></a>
+                            <a href="https://lopec.kr/search/search.html?mainCharacterName=${inputText}" target="_blink"><strong>${inputText}</strong><em>${userSecondClass + " " + originClass}</em></a>
                         </div>
                         <span class="grade"  ${gradeObj.lowTier}><img src="${gradeObj.ico}" alt=""></span>
                         <span class="point">${specPoint}</span>
