@@ -695,11 +695,11 @@ export const elixirOptionData = {
         { name: "물리 방어력 Lv.3", value: 0, level: 3 },
         { name: "물리 방어력 Lv.4", value: 0, level: 4 },
         { name: "물리 방어력 Lv.5", value: 0, level: 5 },
-        { name: "최대 생명력 Lv.1", value: 0, level: 1 },
-        { name: "최대 생명력 Lv.2", value: 0, level: 2 },
-        { name: "최대 생명력 Lv.3", value: 0, level: 3 },
-        { name: "최대 생명력 Lv.4", value: 0, level: 4 },
-        { name: "최대 생명력 Lv.5", value: 0, level: 5 }
+        { name: "최대 생명력 Lv.1", statHp: 2720, level: 1 },
+        { name: "최대 생명력 Lv.2", statHp: 5610, level: 2 },
+        { name: "최대 생명력 Lv.3", statHp: 8500, level: 3 },
+        { name: "최대 생명력 Lv.4", statHp: 12750, level: 4 },
+        { name: "최대 생명력 Lv.5", statHp: 17000, level: 5 }
     ]
     ,
     pants: [

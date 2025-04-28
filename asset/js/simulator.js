@@ -402,6 +402,7 @@ async function simulatorInputCalc() {
                 weaponAtkPlus: 0,
                 finalDamagePer: 1,
                 skillCool: 0,
+                statHp: 0,
                 special: 0,
                 crit: 0,
                 haste: 0,
@@ -545,6 +546,7 @@ async function simulatorInputCalc() {
             int: 0,
             dex: 0,
             stats: 0,
+            statHp: 0,
             finalDamagePer: 1,
         };
         for (const key in grouped) {
@@ -667,6 +669,7 @@ async function simulatorInputCalc() {
             str: 0,
             dex: 0,
             int: 0,
+            statHp: 0,
             finalDamagePer: 1,
         }
 
@@ -682,15 +685,18 @@ async function simulatorInputCalc() {
         })
         // 투구 초월 별 개수에 따른 버프 계산 (helmetHyper)
         if (helmetHyper >= 20) {
+            obj.statHp += totalHyper * 80
             obj.atkBuff += totalHyper * 0.04
             obj.stats += totalHyper * 55;
             obj.weaponAtkPlus += totalHyper * 14;
             obj.atkPlus += totalHyper * 6;
         } else if (helmetHyper >= 15) {
+            obj.statHp += totalHyper * 80
             obj.atkBuff += totalHyper * 0.03;
             obj.stats += totalHyper * 55;
             obj.weaponAtkPlus += totalHyper * 14;
         } else if (helmetHyper >= 10) {
+            obj.statHp += totalHyper * 80
             obj.atkBuff += totalHyper * 0.02;
             obj.stats += totalHyper * 55;
         } else if (helmetHyper >= 5) {
@@ -831,6 +837,7 @@ async function simulatorInputCalc() {
             "atkBuff": 0,
             "damageBuff": 0,
             "enlightPoint": 0,
+            "statHp": 0,
             "carePower": 1,
         };
 
@@ -2385,7 +2392,7 @@ async function selectCreate(data, Modules) {
     function leafPointToKarmaSelect() {
         let karmaValue = Math.min((data.ArkPassive.Points[2].Value - bangleToLeafPoint()) / 2, 6);
         let radioElements = document.querySelectorAll('.ark-list.leap input[type=radio]');
-        console.log(karmaValue)
+        //console.log(karmaValue)
         radioElements[karmaValue].checked = true;
     }
 

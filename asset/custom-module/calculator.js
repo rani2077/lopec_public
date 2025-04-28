@@ -33,6 +33,8 @@ export async function specPointCalc(inputObj) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
     let totalStatus = 0
+    let totalHealth = Number(((inputObj.etcObj.healthStatus + inputObj.hyperObj.statHp + inputObj.elixirObj.statHp + inputObj.bangleObj.statHp + inputObj.accObj.statHp) * inputObj.defaultObj.hpActive * 1.07).toFixed(0));
+
 
     let attackBonus = ((inputObj.etcObj.gemAttackBonus + inputObj.etcObj.abilityAttackBonus) / 100) + 1 // 기본 공격력 증가(보석, 어빌리티 스톤)
     let evolutionDamageResult = (inputObj.arkObj.evolutionDamage) //진화형 피해
@@ -117,7 +119,10 @@ export async function specPointCalc(inputObj) {
     let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
     let carePower = (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1) // 케어력
-    let finalCarePower = (((inputObj.etcObj.healthStatus * 0.3) * (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1)) / 260000) * 100 //최종 케어력
+    let finalCarePower = (((totalHealth * 0.3) * (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1)) / 260000) * 100 //최종 케어력
+    console.log(totalHealth)
+    console.log(inputObj.accObj.carePower)
+    console.log(inputObj.elixirObj.carePower)
     let allTimeBuff = (finalStigmaPer / 100 + 1) * 1.0965 * inputObj.bangleObj.atkBuffPlus
 
     let cdrPercent = ((1 - ((1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) * (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 마흐 포함 최종 쿨감
@@ -153,8 +158,6 @@ export async function specPointCalc(inputObj) {
 
     //서폿 최종 환산 V2
     let supportSpecPoint = supportPower + (finalCarePower / 5) + (inputObj.engObj.utilityPower / 5)
-    console.log(finalCarePower/5)
-    console.log(inputObj.engObj.utilityPower/5)
 
 
 

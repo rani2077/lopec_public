@@ -2090,8 +2090,7 @@ export async function getCharacterProfile(data, dataBase) {
         });
         return result;
     }
-    etcObj.healthStatus = Number((healthStatus() * jobObj.healthPer + hyperObj.statHp + elixirObj.statHp + bangleObj.statHp + accObj.statHp) * defaultObj.hpActive * 1.07).toFixed(0);
-
+    etcObj.healthStatus = Number(healthStatus() * jobObj.healthPer);
 
     /* **********************************************************************************************************************
      * name		              :	  karmaPoint{}
