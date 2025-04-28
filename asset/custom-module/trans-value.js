@@ -1274,6 +1274,7 @@ export async function getCharacterProfile(data, dataBase) {
         criticalDamagePer: 0,
         evolutionBuff: 0,
         enlightenmentBuff: 0,
+        leapBuff: 0,
         weaponAtkPer: 1,
         cdrPercent: 0,
     }
@@ -1489,37 +1490,45 @@ export async function getCharacterProfile(data, dataBase) {
     if (arkPassiveValue(2) >= 70) { // arkPassiveValue(2) == 도약 수치
 
         arkObj.leapDamage += 1.15
+        arkObj.leapBuff += 1.051
 
     } else if (arkPassiveValue(2) >= 68) {
 
         arkObj.leapDamage += 1.14
-
+        arkObj.leapBuff += 1.049
     } else if (arkPassiveValue(2) >= 66) {
 
         arkObj.leapDamage += 1.13
+        arkObj.leapBuff += 1.048
 
     } else if (arkPassiveValue(2) >= 64) {
 
         arkObj.leapDamage += 1.12
+        arkObj.leapBuff += 1.047
 
     } else if (arkPassiveValue(2) >= 62) {
 
         arkObj.leapDamage += 1.11
+        arkObj.leapBuff += 1.046
 
     } else if (arkPassiveValue(2) >= 60) {
 
         arkObj.leapDamage += 1.10
+        arkObj.leapBuff += 1.045
 
     } else if (arkPassiveValue(2) >= 50) {
 
         arkObj.leapDamage += 1.05
+        arkObj.leapBuff += 1.035
 
     } else if (arkPassiveValue(2) >= 40) {
 
         arkObj.leapDamage += 1.03
+        arkObj.leapBuff += 1.035
 
     } else {
         arkObj.leapDamage += 1
+        arkObj.leapBuff += 1
     }
 
 
@@ -1944,7 +1953,7 @@ export async function getCharacterProfile(data, dataBase) {
     if (!(data.ArmoryGem.Gems == null) && supportCheck() == "서폿") {
 
         data.ArmoryGem.Gems.forEach(function (gem) {
-            let atkBuff = ['천상의 축복', '천상의 연주', '묵법 : 해그리기']
+            let atkBuff = ['천상의 축복', '신의 분노', '천상의 연주', '음파 진동', '묵법 : 해그리기', '묵법 : 해우물']
             let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
             let gemInfo = JSON.parse(gem.Tooltip)
             let type = gemInfo.Element_000.value
@@ -2797,6 +2806,8 @@ export async function getCharacterProfile(data, dataBase) {
                 let grade = gradeMatch ? gradeMatch[0] : "없음";
                 let strStats = betweenText.find(item => /힘 \+(\d+)/.test(item));
                 strStats = Number(strStats.match(/힘 \+(\d+)/)[1]);
+                let healthStats = betweenText.find(item => /체력 \+(\d+)/.test(item));
+                healthStats = Number(healthStats.match(/체력 \+(\d+)/)[1]);
                 let tierMatch = betweenText[6].match(/\d+/);
                 let tier = tierMatch ? tierMatch[0] : null;
                 let accessoryTooltip = accessoryObj.Tooltip.replace(/<[^>]*>/g, '')
@@ -2821,6 +2832,7 @@ export async function getCharacterProfile(data, dataBase) {
                 obj.name = accessoryObj.Name;
                 obj.icon = accessoryObj.Icon;
                 obj.stats = strStats;
+                obj.health = healthStats;
                 return obj;
             } else {
                 return null;
@@ -2846,8 +2858,23 @@ export async function getCharacterProfile(data, dataBase) {
             let obj = {};
             if (stone.Type === "어빌리티 스톤") {
                 let betweenText = stone.Tooltip.match(/>([^<]+)</g)?.map(match => match.slice(1, -1)) || [];
-
                 let tier = betweenText[4].match(/\d+/)[0];
+
+                let totalHealth = 0;
+                let stoneParsed = JSON.parse(stone.Tooltip);
+                
+                // 모든 Element를 순회하며 체력 값 찾기
+                for (const key in stoneParsed) {
+                    if (key.startsWith('Element_') && stoneParsed[key].value) {
+                        const element = stoneParsed[key];
+                        if (element.type === 'ItemPartBox' && element.value && element.value.Element_001) {
+                            const healthMatch = element.value.Element_001.match(/체력 \+(\d+)/);
+                            if (healthMatch && healthMatch[1]) {
+                                totalHealth += parseInt(healthMatch[1], 10);
+                            }
+                        }
+                    }
+                }
 
                 let optionArray = betweenText.map((text, idx) => {
                     if (Modules.originFilter.engravingFilter.some(filter => text === filter.name)) {
@@ -2864,6 +2891,7 @@ export async function getCharacterProfile(data, dataBase) {
                 obj.grade = stone.Grade;
                 obj.name = stone.Name;
                 obj.icon = stone.Icon;
+                obj.health = totalHealth;
                 result = obj;
             }
         })

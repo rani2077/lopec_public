@@ -952,9 +952,9 @@ let cardPointFilter = [
 //        secondCheck의 경우 secondCheck명이 없는 경우 출력되도록 한다
 let bangleFilter = [
     { name: "공격 및 이동 속도가", option: "3%", tier: "Flow1", initial: "공이속 +3%",atkSpeed:3,moveSpeed:3,finalDamagePer:1.0},
-    { name: "공격 및 이동 속도가", option: "4%", tier: "Flow2", initial: "공이속 +4%",atkSpeed:4,moveSpeed:4,finalDamagePer:1.4},
-    { name: "공격 및 이동 속도가", option: "5%", tier: "Fmiddle", initial: "공이속 +5%",atkSpeed:5,moveSpeed:5,finalDamagePer:1.8},
-    { name: "공격 및 이동 속도가", option: "6%", tier: "Fhigh", initial: "공이속 +6%",atkSpeed:6,moveSpeed:6,finalDamagePer:2.2},
+    { name: "공격 및 이동 속도가", option: "4%", tier: "Flow2", initial: "공이속 +4%",atkSpeed:4,moveSpeed:4,finalDamagePer:1.3},
+    { name: "공격 및 이동 속도가", option: "5%", tier: "Fmiddle", initial: "공이속 +5%",atkSpeed:5,moveSpeed:5,finalDamagePer:1.6},
+    { name: "공격 및 이동 속도가", option: "6%", tier: "Fhigh", initial: "공이속 +6%",atkSpeed:6,moveSpeed:6,finalDamagePer:2.0},
 
     { name: "치명타 적중률이", option: "2.6%", tier: "Plow1", initial: "치적 +2.6% | 치명타 주는 피해 +1.5%",criticalChancePer:2.6,criFinalDamagePer:1.5,finalDamagePer:3.18},
     { name: "치명타 적중률이", option: "3.4%", tier: "Plow2", initial: "치적 +3.4% | 치명타 주는 피해 +1.5%",criticalChancePer:3.4,criFinalDamagePer:1.5,finalDamagePer:3.78},
@@ -986,10 +986,10 @@ let bangleFilter = [
     { name: "추가 피해가", option: "3%", tier: "Pmiddle", initial: "추피 +3.0% | 악마&대악마 피해량 +2.5%",addDamagePer:3},
     { name: "추가 피해가", option: "3.5%", tier: "Phigh", initial: "추피 +3.5% | 악마&대악마 피해량 +2.5%",addDamagePer:3.5},
 
-    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1000", tier: "DuelLlow1", initial: "공격 적중 시 무공 1000, 공이속 1% 증가",finalDamagePer:2.1, weaponAtkPlus:6000},
-    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1160", tier: "DuelLlow2", initial: "공격 적중 시 무공 1160, 공이속 1% 증가",finalDamagePer:2.1, weaponAtkPlus:6960},
-    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1320", tier: "DuelLmiddle", initial: "공격 적중 시 무공 1320, 공이속 1% 증가",finalDamagePer:2.1, weaponAtkPlus:7920},
-    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1480", tier: "DuelLhigh", initial: "공격 적중 시 무공 1480, 공이속 1% 증가",finalDamagePer:2.1, weaponAtkPlus:8880},
+    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1000", tier: "DuelLlow1", initial: "공격 적중 시 무공 1000, 공이속 1% 증가",finalDamagePer:1.9, weaponAtkPlus:6000},
+    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1160", tier: "DuelLlow2", initial: "공격 적중 시 무공 1160, 공이속 1% 증가",finalDamagePer:1.9, weaponAtkPlus:6960},
+    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1320", tier: "DuelLmiddle", initial: "공격 적중 시 무공 1320, 공이속 1% 증가",finalDamagePer:1.9, weaponAtkPlus:7920},
+    { name: "공격 적중 시 매 초마다 10초 동안 무기 공격력이", option: "1480", tier: "DuelLhigh", initial: "공격 적중 시 무공 1480, 공이속 1% 증가",finalDamagePer:1.9, weaponAtkPlus:8880},
     
     { name: "무기 공격력이", option: "6300", tier: "DuelPlow1", initial: "무공 6300 증가 | 조건부 무공 1800 증가",weaponAtkPlus:8100},
     { name: "무기 공격력이", option: "7200", tier: "DuelPlow2", initial: "무공 7200 증가 | 조건부 무공 2000 증가",weaponAtkPlus:9200},
