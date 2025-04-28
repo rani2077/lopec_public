@@ -110,29 +110,31 @@ export async function specPointCalc(inputObj) {
      *********************************************************************************************************************** */
 
     let totalAtk2 = ((totalStat * totalWeaponAtk / 6) ** 0.5) * attackBonus //기본 공격력
+    console.log(totalAtk2)
     let finalStigmaPer = ((10 * ((inputObj.accObj.stigmaPer + inputObj.arkObj.stigmaPer + inputObj.hyperObj.stigmaPer) / 100 + 1)).toFixed(1)) // 낙인력 
     let atkBuff = (1 + ((inputObj.accObj.atkBuff + inputObj.elixirObj.atkBuff + inputObj.hyperObj.atkBuff + inputObj.bangleObj.atkBuff + inputObj.gemObj.atkBuff) / 100)) // 아공강 
     let finalAtkBuff = (totalAtk2 * 0.15 * atkBuff) // 최종 공증
+    console.log(atkBuff)
     let damageBuff = (inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 아피강
     let hyperBuff = (10 * ((inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
     let statDamageBuff = ((inputObj.defaultObj.totalStatus + inputObj.bangleObj.haste + inputObj.bangleObj.special) * 0.015) / 100 + 1 // 특화 신속
     let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
-    let carePower = (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1) // 케어력
-    let finalCarePower = (((totalHealth * 0.3) * (inputObj.engObj.carePower / 100 + 1) * (inputObj.accObj.carePower / 100 + 1) * (inputObj.elixirObj.carePower / 100 + 1)) / 260000) * 100 //최종 케어력
+    let carePower = (1 + (inputObj.engObj.carePower + inputObj.accObj.carePower + inputObj.elixirObj.carePower)) // 케어력
+    let finalCarePower = (((totalHealth * 0.3) * carePower) / 260000) * 100 //최종 케어력
     console.log(totalHealth)
     console.log(inputObj.accObj.carePower)
     console.log(inputObj.elixirObj.carePower)
     let allTimeBuff = (finalStigmaPer / 100 + 1) * 1.0965 * inputObj.bangleObj.atkBuffPlus
 
-    let cdrPercent = ((1 - ((1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) * (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 마흐 포함 최종 쿨감
+    let cdrPercent = ((1 - ((1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 마흐 포함 최종 쿨감
     let awakenIdentity = ((1 / (1 - inputObj.engObj.awakencdrPercent)) - 1) * 0.15 + 1 // 각성기로 얻은 아덴 가동률
     let identityUptime = (((40 * inputObj.accObj.identityUptime * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4) // 최종 아덴 가동률
 
-    let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent))).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
+    let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
     let hyperUptime = ((40 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
 
-    let defaultAtkBuff = (((120000 + finalAtkBuff * (((inputObj.accObj.atkPer + inputObj.elixirObj.atkPer) === 0 ? 1 : (inputObj.accObj.atkPer + inputObj.elixirObj.atkPer)) / 100 + 1)) * 1.06) - 120000) / 120000 + 1 //기본 공증
+    let defaultAtkBuff = ((110000 + finalAtkBuff * 1.06) - 110000) / 110000 + 1 //기본 공증
 
     let allTimeBuffv2 = defaultAtkBuff * (finalStigmaPer / 100 + 1) * ((1.45 + evolutionBuff) / 1.45) * inputObj.bangleObj.atkBuffPlus //상시 버프력
     let identityBuffv2 = (13 * damageBuff * statDamageBuff) / 100 + 1 // 아덴 피증

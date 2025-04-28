@@ -196,7 +196,7 @@ async function simulatorInputCalc() {
         let arr = [];
         let result = {
             finalDamagePer: 1,
-            carePower: 1,
+            carePower: 0,
             cdrPercent: 0,
             awakencdrPercent: 0,
             utilityPower: 0
@@ -476,26 +476,31 @@ async function simulatorInputCalc() {
      *********************************************************************************************************************** */
     let armorWeaponStatsObj = await armoryLevelCalc(Modules)
     function defaultObjChangeValue() {
-        let result = {
-            addDamagePer: defaultObjAddDamgerPerEdit(),
-            weaponAtk: armorWeaponStatsObj.weaponStats,
-            special: bangleStatsNumberCalc().special,
-            haste: bangleStatsNumberCalc().haste,
-            crit: bangleStatsNumberCalc().crit,
-            // 안사용되는 값들
-            attackPow: 0,
-            baseAttackPow: 0,
-            criticalChancePer: 0,
-            criticalDamagePer: 0,
-            moveSpeed: 0,
-            atkSpeed: 0,
-            skillCool: 0,
-            maxHp: 0,
-            statHp: 0,
-            hpActive: 0,
-            totalStatus: extractValue.etcObj.supportCheck === "서폿" ? dataBaseResponse.totalStatusSupport : dataBaseResponse.totalStatus,
-        }
-        return result
+        extractValue.defaultObj.addDamagePer = defaultObjAddDamgerPerEdit();
+        extractValue.defaultObj.weaponAtk = armorWeaponStatsObj.weaponStats;
+        extractValue.defaultObj.special = bangleStatsNumberCalc().special;
+        extractValue.defaultObj.haste = bangleStatsNumberCalc().haste;
+        extractValue.defaultObj.crit = bangleStatsNumberCalc().crit;
+        // let result = { <== 로직 수정으로 인한 미사용 추후 삭제
+        //     addDamagePer: defaultObjAddDamgerPerEdit(),
+        //     weaponAtk: armorWeaponStatsObj.weaponStats,
+        //     special: bangleStatsNumberCalc().special,
+        //     haste: bangleStatsNumberCalc().haste,
+        //     crit: bangleStatsNumberCalc().crit,
+        //     // 안사용되는 값들
+        //     attackPow: 0,
+        //     baseAttackPow: 0,
+        //     criticalChancePer: 0,
+        //     criticalDamagePer: 0,
+        //     moveSpeed: 0,
+        //     atkSpeed: 0,
+        //     skillCool: 0,
+        //     maxHp: 0,
+        //     statHp: 0,
+        //     hpActive: 0,
+        //     totalStatus: extractValue.etcObj.supportCheck === "서폿" ? dataBaseResponse.totalStatusSupport : dataBaseResponse.totalStatus,
+        // }
+        // return result
     }
     // console.log(defaultObjChangeValue())
 
@@ -504,136 +509,253 @@ async function simulatorInputCalc() {
     * description			: 	장비 엘릭서 스텟 수치를 추출함
     *********************************************************************************************************************** */
 
+    // function armorElixirToObj() {
+    //     let arr = []
+    //     let result
+    //     let elements = document.querySelectorAll(".armor-item .elixir");
+
+    //     elements.forEach(element => {
+    //         let key = element.value.split(":")[0]
+    //         let value = element.value.split(":")[1]
+    //         let level = Number(element.value.split(":")[2])
+    //         let text = element.options[element.selectedIndex].textContent.replace(/Lv.\d+/g, "").trim();
+    //         let obj = {}
+    //         if (key && value) { // key와 value가 존재할 경우만 수행
+    //             obj[key] = Number(value); // obj 객체에 key 속성에 value 값을 할당, value는 숫자로 변환
+    //             obj.level = level;
+    //             obj.name = `${text}`;
+    //         }
+    //         arr.push(obj); // arr 배열에 obj를 추가
+
+    //     })
+    //     // 객체들을 키별로 그룹화
+    //     const grouped = {};
+    //     arr.forEach(obj => {
+    //         for (const key in obj) {
+    //             if (!grouped[key]) {
+    //                 grouped[key] = [];
+    //             }
+    //             grouped[key].push(obj[key]);
+    //         }
+    //     });
+
+    //     // 그룹화된 데이터를 바탕으로 새로운 객체 생성
+    //     const combinedObj = {
+    //         atkPlus: 0,
+    //         atkBonus: 0,
+    //         weaponAtkPlus: 0,
+    //         atkPer: 0,
+    //         atkBuff: 0,
+    //         carePower: 0,
+    //         str: 0,
+    //         int: 0,
+    //         dex: 0,
+    //         stats: 0,
+    //         statHp: 0,
+    //         finalDamagePer: 1,
+    //     };
+    //     for (const key in grouped) {
+    //         if (key === "finalDamagePer") {
+    //             // finalDamagePer는 곱셈
+    //             combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1);
+    //         } else {
+    //             // 기타 스텟은 덧셈
+    //             combinedObj[key] = grouped[key].reduce((acc, val) => acc + val, 0);
+    //         }
+    //     }
+
+    //     const elixirNames = arr.map(item => item.name);
+
+    //     const group1 = ["회심", "달인", "선봉대"];
+    //     const group2 = ["강맹", "칼날방패", "행운"];
+    //     const group3 = ["선각자", "신념"];
+    //     const group4 = ["진군"];
+
+    //     const groupElixir = ["회심", "달인", "선봉대", "강맹", "칼날방패", "행운", "선각자", "신념", "진군"];
+    //     let elixirIndexArray = [];
+    //     elixirNames.forEach(name => {
+    //         let elixirIndex = groupElixir.indexOf(name);
+    //         if (elixirIndex !== -1) {
+    //             elixirIndexArray.push(groupElixir[elixirIndex]);
+    //         }
+    //     });
+    //     // 중복된 단어가 속한 그룹을 찾는 함수
+    //     function findGroupWithDuplicates(b) {
+    //         const wordCounts = {};
+    //         for (const word of b) {
+    //             wordCounts[word] = (wordCounts[word] || 0) + 1;
+    //         }
+    //         const duplicateWords = Object.keys(wordCounts).filter(word => wordCounts[word] > 1);
+    //         if (duplicateWords.length === 0) {
+    //             return null;
+    //         }
+    //         const a = {
+    //             group1: group1,
+    //             group2: group2,
+    //             group3: group3,
+    //             group4: group4,
+    //         };
+
+    //         for (const groupName in a) {
+    //             const group = a[groupName];
+    //             const allDuplicatesInGroup = duplicateWords.every(word => group.includes(word));
+    //             if (allDuplicatesInGroup) {
+    //                 return groupName;
+    //             }
+    //         }
+    //         return null;
+    //     }
+    //     const duplicateElixirGroup = findGroupWithDuplicates(elixirIndexArray);
+
+    //     if (duplicateElixirGroup === "group1" && combinedObj.level >= 40) {
+    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.12;
+    //     } else if (duplicateElixirGroup === "group1" && combinedObj.level >= 35) {
+    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.06;
+    //     }
+    //     if (duplicateElixirGroup === "group2" && combinedObj.level >= 40) {
+    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.08;
+    //     } else if (duplicateElixirGroup === "group2" && combinedObj.level >= 35) {
+    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.04;
+    //     }
+    //     if (duplicateElixirGroup === "group3" && combinedObj.level >= 40) {
+    //         combinedObj.atkBuff = combinedObj.atkBuff + 14;
+    //     } else if (duplicateElixirGroup === "group3" && combinedObj.level >= 35) {
+    //         combinedObj.atkBuff = combinedObj.atkBuff + 8;
+    //     }
+    //     if (duplicateElixirGroup === "group4" && combinedObj.level >= 40) {
+    //         combinedObj.atkBuff = combinedObj.atkBuff + 6;
+    //     }
+    //     else if (duplicateElixirGroup === "group4" && combinedObj.level >= 35) {
+    //         combinedObj.atkBuff = combinedObj.atkBuff + 3;
+    //     }
+    //     delete combinedObj.name;
+    //     delete combinedObj.level;
+    //     delete combinedObj.value;
+    //     combinedObj.str = combinedObj.stats;
+    //     result = combinedObj;
+    //     return result;
+
+    // }
+    // armorElixirToObj()
+    // console.log("엘릭서OBJ", armorElixirToObj())
+
+
+
+    // --- 기존 코드 시작 ---
     function armorElixirToObj() {
-        let arr = []
-        let result
+        let arr = []; // Array to hold individual { key: ..., value: ... } objects
         let elements = document.querySelectorAll(".armor-item .elixir");
 
         elements.forEach(element => {
-            let key = element.value.split(":")[0]
-            let value = element.value.split(":")[1]
-            let level = Number(element.value.split(":")[2])
-            let text = element.options[element.selectedIndex].textContent.replace(/Lv.\d+/g, "").trim();
-            let obj = {}
-            if (key && value) { // key와 value가 존재할 경우만 수행
-                obj[key] = Number(value); // obj 객체에 key 속성에 value 값을 할당, value는 숫자로 변환
-                obj.level = level;
-                obj.name = `${text}`;
-            }
-            arr.push(obj); // arr 배열에 obj를 추가
+            const valueString = element.value;
+            if (!valueString) return; // Skip empty/unselected options
 
-        })
-        // 객체들을 키별로 그룹화
+            const parts = valueString.split('|'); // '|'를 기준으로 분리
+            const text = element.options[element.selectedIndex].textContent.replace(/Lv\.\d+/g, "").trim(); // Get the base name (e.g., "회심")
+
+            parts.forEach(part => {
+                const [key, valStr] = part.split(':'); // 각 부분을 ':' 기준으로 분리
+                if (key && valStr !== undefined) {
+                    const value = Number(valStr);
+                    if (!isNaN(value)) {
+                        // 각 key-value 쌍을 별도의 객체로 arr에 추가
+                        // 'level' 키도 다른 스탯과 동일하게 처리됩니다.
+                        arr.push({ key: key, value: value, originalName: text }); // 나중에 중복 체크를 위해 원래 이름 저장
+                    } else {
+                        console.warn(`Invalid numeric value for key "${key}": ${valStr}`);
+                    }
+                } else {
+                    console.warn(`Invalid part format: ${part}`);
+                }
+            });
+        });
+        // --- 기존 코드 끝 ---
+
+        // --- Aggregation Logic (기존 로직 유지 또는 약간 수정) ---
         const grouped = {};
         arr.forEach(obj => {
-            for (const key in obj) {
+            if (obj && obj.hasOwnProperty('key')) {
+                const key = obj.key;
                 if (!grouped[key]) {
                     grouped[key] = [];
                 }
-                grouped[key].push(obj[key]);
+                grouped[key].push(obj.value);
             }
         });
 
-        // 그룹화된 데이터를 바탕으로 새로운 객체 생성
         const combinedObj = {
-            atkPlus: 0,
-            atkBonus: 0,
-            weaponAtkPlus: 0,
-            atkPer: 0,
-            atkBuff: 0,
-            carePower: 0,
-            str: 0,
-            int: 0,
-            dex: 0,
-            stats: 0,
-            statHp: 0,
-            finalDamagePer: 1,
+            atkPlus: 0, atkBonus: 0, weaponAtkPlus: 0, atkPer: 0, atkBuff: 0,
+            carePower: 0, str: 0, int: 0, dex: 0, /* stats: 0, */ statHp: 0,
+            finalDamagePer: 1, level: 0 // level 합계를 위해 초기화
         };
+
         for (const key in grouped) {
-            if (key === "finalDamagePer") {
-                // finalDamagePer는 곱셈
-                combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1);
-            } else {
-                // 기타 스텟은 덧셈
+            if (key === "finalDamagePer") { // 곱셈
+                // finalDamagePer는 퍼센트 값이므로 계산 방식 확인 필요 (예: 1 + value/100)
+                // 여기서는 일단 값만 곱하고, 실제 적용 시점에 퍼센트 계산 가정
+                //combinedObj[key] = grouped[key].reduce((acc, val) => acc * (1 + val / 100), 1); // 예시: 퍼센트 적용
+                combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1); // 예시: 퍼센트 적용 원래 이거였음)
+            } else { // 덧셈 (level, atkPlus, statHp 등)
                 combinedObj[key] = grouped[key].reduce((acc, val) => acc + val, 0);
             }
         }
 
-        const elixirNames = arr.map(item => item.name);
+        // str, dex, int가 'stats' 키로 통합되어 있다면 여기서 분배
+        // if (combinedObj.hasOwnProperty('stats')) {
+        //     combinedObj.str = combinedObj.stats;
+        //     combinedObj.dex = combinedObj.stats;
+        //     combinedObj.int = combinedObj.stats;
+        //     delete combinedObj.stats; // 필요하다면 stats 키 삭제
+        // }
 
-        const group1 = ["회심", "달인", "선봉대"];
-        const group2 = ["강맹", "칼날방패", "행운"];
-        const group3 = ["선각자", "신념"];
-        const group4 = ["진군"];
+
+        // --- Duplicate Elixir Check Logic (기존 로직 유지 또는 약간 수정) ---
+        const totalLevelSum = combinedObj.level; // 합산된 레벨 사용
 
         const groupElixir = ["회심", "달인", "선봉대", "강맹", "칼날방패", "행운", "선각자", "신념", "진군"];
-        let elixirIndexArray = [];
-        elixirNames.forEach(name => {
-            let elixirIndex = groupElixir.indexOf(name);
-            if (elixirIndex !== -1) {
-                elixirIndexArray.push(groupElixir[elixirIndex]);
+        let elixirNameCounts = {};
+        // arr에서 level이 아닌 항목들의 originalName을 카운트
+        arr.filter(item => item.key !== 'level').forEach(item => {
+            const baseName = item.originalName;
+            if (groupElixir.includes(baseName)) {
+                elixirNameCounts[baseName] = (elixirNameCounts[baseName] || 0) + 1;
             }
         });
-        // 중복된 단어가 속한 그룹을 찾는 함수
-        function findGroupWithDuplicates(b) {
-            const wordCounts = {};
-            for (const word of b) {
-                wordCounts[word] = (wordCounts[word] || 0) + 1;
-            }
-            const duplicateWords = Object.keys(wordCounts).filter(word => wordCounts[word] > 1);
-            if (duplicateWords.length === 0) {
-                return null;
-            }
-            const a = {
-                group1: group1,
-                group2: group2,
-                group3: group3,
-                group4: group4,
-            };
 
-            for (const groupName in a) {
-                const group = a[groupName];
-                const allDuplicatesInGroup = duplicateWords.every(word => group.includes(word));
-                if (allDuplicatesInGroup) {
-                    return groupName;
+        let duplicateElixirName = null;
+        for (const name in elixirNameCounts) {
+            if (elixirNameCounts[name] >= 2) {
+                duplicateElixirName = name;
+                break;
+            }
+        }
+
+        // Apply duplicate bonuses based on totalLevelSum
+        if (duplicateElixirName) {
+            // finalDamagePer 곱연산 적용 방식 수정 (기존 값에 곱하기)
+            if (["회심", "달인", "선봉대"].includes(duplicateElixirName)) {
+                if (totalLevelSum >= 40) {
+                    combinedObj.finalDamagePer *= 1.12
                 }
+                else if (totalLevelSum >= 35) combinedObj.finalDamagePer *= 1.06;
+            } else if (["강맹", "칼날방패", "행운"].includes(duplicateElixirName)) {
+                if (totalLevelSum >= 40) combinedObj.finalDamagePer *= 1.08;
+                else if (totalLevelSum >= 35) combinedObj.finalDamagePer *= 1.04;
+            } else if (["선각자", "신념"].includes(duplicateElixirName)) {
+                if (totalLevelSum >= 40) combinedObj.atkBuff += 14;
+                else if (totalLevelSum >= 35) combinedObj.atkBuff += 8;
+            } else if (["진군"].includes(duplicateElixirName)) {
+                if (totalLevelSum >= 40) combinedObj.atkBuff += 6;
+                else if (totalLevelSum >= 35) combinedObj.atkBuff += 3; // 35레벨 진군 효과 확인 필요 (기존 로직 기반)
             }
-            return null;
         }
-        const duplicateElixirGroup = findGroupWithDuplicates(elixirIndexArray);
 
-        if (duplicateElixirGroup === "group1" && combinedObj.level >= 40) {
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.12;
-        } else if (duplicateElixirGroup === "group1" && combinedObj.level >= 35) {
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.06;
-        }
-        if (duplicateElixirGroup === "group2" && combinedObj.level >= 40) {
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.08;
-        } else if (duplicateElixirGroup === "group2" && combinedObj.level >= 35) {
-            combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.04;
-        }
-        if (duplicateElixirGroup === "group3" && combinedObj.level >= 40) {
-            combinedObj.atkBuff = combinedObj.atkBuff + 14;
-        } else if (duplicateElixirGroup === "group3" && combinedObj.level >= 35) {
-            combinedObj.atkBuff = combinedObj.atkBuff + 8;
-        }
-        if (duplicateElixirGroup === "group4" && combinedObj.level >= 40) {
-            combinedObj.atkBuff = combinedObj.atkBuff + 6;
-        }
-        else if (duplicateElixirGroup === "group4" && combinedObj.level >= 35) {
-            combinedObj.atkBuff = combinedObj.atkBuff + 3;
-        }
-        delete combinedObj.name;
-        delete combinedObj.level;
-        delete combinedObj.value;
-        combinedObj.str = combinedObj.stats;
-        result = combinedObj;
-        return result;
-
+        // Clean up unnecessary properties before returning
+        delete combinedObj.level; // 최종 결과 객체에서 level 합계는 제거
+        combinedObj.str = combinedObj.stats ? combinedObj.stats : 0;
+        console.log(combinedObj)
+        return combinedObj;
     }
-    // armorElixirToObj()
-    // console.log("엘릭서OBJ", armorElixirToObj())
-
 
     /* **********************************************************************************************************************
      * function name		:	extractHyperStageValue
@@ -827,6 +949,7 @@ async function simulatorInputCalc() {
         let defaultObj = {
             "addDamagePer": 0,
             "finalDamagePer": 1,
+            "identityUptime": 1,
             "weaponAtkPlus": 0,
             "weaponAtkPer": 0,
             "atkPlus": 0,
@@ -838,7 +961,7 @@ async function simulatorInputCalc() {
             "damageBuff": 0,
             "enlightPoint": 0,
             "statHp": 0,
-            "carePower": 1,
+            "carePower": 0,
         };
 
         result = objKeyValueSum(arr, defaultObj); // defaultObj 추가
@@ -891,7 +1014,7 @@ async function simulatorInputCalc() {
         const combinedObj = { ...defaultObj }; // 기본 객체 복사
         for (const key in grouped) {
             // console.log(grouped)
-            if (key === "finalDamagePer") {
+            if (key === "finalDamagePer"||key === "identityUptime") {
                 // finalDamagePer은 곱셈
                 combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1));
             } else {
@@ -1357,7 +1480,8 @@ async function simulatorInputCalc() {
         extractValue.accObj = accessoryValueToObj();
         extractValue.arkObj = arkPassiveValue();
         extractValue.bangleObj = bangleOptionCalc();
-        extractValue.defaultObj = defaultObjChangeValue();
+        // extractValue.defaultObj = defaultObjChangeValue();
+        defaultObjChangeValue();
         extractValue.elixirObj = armorElixirToObj();
         extractValue.engObj = engOutputCalc(engExtract());
         // extractValue.etcObj = etcObjChangeValue();
@@ -1536,25 +1660,25 @@ async function simulatorInputCalc() {
         }
         let supportImportantBuffInfo = [
             { name: "공격력 증가", value: Number(originSpecPoint.supportFinalAtkBuff).toFixed(0) + compareValue(cachedDetailInfo.specPoint.supportFinalAtkBuff, originSpecPoint.supportFinalAtkBuff), icon: "bolt-solid" },
-            { name: "평균 피해량 증가", value: Number(originSpecPoint.supportAvgBuffPower).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportAvgBuffPower, originSpecPoint.supportAvgBuffPower) + "%", icon: "arrow-trend-up-solid" },
+            { name: "평균 피해량 증가", value: Number(originSpecPoint.supportAvgBuffPower).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportAvgBuffPower, originSpecPoint.supportAvgBuffPower), icon: "arrow-trend-up-solid" },
         ]
         let supportBuffInfo = [
             { name: "낙인력", value: Number(originSpecPoint.supportStigmaResult).toFixed(1) + "%" + compareValue(cachedDetailInfo.specPoint.supportStigmaResult, originSpecPoint.supportStigmaResult), icon: "bullseye-solid" },
             { name: "상시버프", value: Number(originSpecPoint.supportAllTimeBuff).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportAllTimeBuff, originSpecPoint.supportAllTimeBuff), icon: "arrows-rotate-solid" },
             { name: "풀버프", value: Number(originSpecPoint.supportFullBuff).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportFullBuff, originSpecPoint.supportFullBuff), icon: "wand-magic-solid" },
-            { name: "종합버프", value: Number(originSpecPoint.supportTotalAvgBuff).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportTotalAvgBuff, originSpecPoint.supportTotalAvgBuff) + "%", icon: "wand-magic-sparkles-solid" },
+            { name: "종합버프", value: Number(originSpecPoint.supportTotalAvgBuff).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportTotalAvgBuff, originSpecPoint.supportTotalAvgBuff), icon: "wand-magic-sparkles-solid" },
             { name: "팔찌", value: Number(originSpecPoint.supportBangleResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportBangleResult, originSpecPoint.supportBangleResult), icon: "ring-solid" },
         ]
         let supportUtilizationRate = [
-            { name: "아덴 가동률", value: Number(originSpecPoint.supportIdentityUptime).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportIdentityUptime, originSpecPoint.supportIdentityUptime) + "%", icon: "hourglass-half-solid" },
-            { name: "초각 가동률", value: Number(originSpecPoint.supportHyperUptime).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportHyperUptime, originSpecPoint.supportHyperUptime) + "%", icon: "hourglass-half-solid" },
-            { name: "풀버프 가동률", value: Number(originSpecPoint.supportFullBuffUptime).toFixed(2) + compareValue(cachedDetailInfo.specPoint.supportFullBuffUptime, originSpecPoint.supportFullBuffUptime) + "%", icon: "hourglass-half-solid" },
+            { name: "아덴 가동률", value: Number(originSpecPoint.supportIdentityUptime).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportIdentityUptime, originSpecPoint.supportIdentityUptime), icon: "hourglass-half-solid" },
+            { name: "초각 가동률", value: Number(originSpecPoint.supportHyperUptime).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportHyperUptime, originSpecPoint.supportHyperUptime), icon: "hourglass-half-solid" },
+            { name: "풀버프 가동률", value: Number(originSpecPoint.supportFullBuffUptime).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportFullBuffUptime, originSpecPoint.supportFullBuffUptime), icon: "hourglass-half-solid" },
         ]
         let supportEffectInfo = [
             { name: "케어력", value: Number(originSpecPoint.supportCarePowerResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportCarePowerResult, originSpecPoint.supportCarePowerResult), icon: "shield-halved-solid" },
             { name: "유틸력", value: Number(originSpecPoint.supportUtilityPower).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportUtilityPower, originSpecPoint.supportUtilityPower), icon: "book-solid" },
             { name: "특성", value: originSpecPoint.supportTotalStatus + compareValue(cachedDetailInfo.specPoint.supportTotalStatus, originSpecPoint.supportTotalStatus), icon: "person-solid" },
-            { name: "쿨타임 감소", value: originSpecPoint.supportgemsCoolAvg + "%" + compareValue(cachedDetailInfo.specPoint.supportgemsCoolAvg, originSpecPoint.supportgemsCoolAvg), icon: "gem-solid" },
+            { name: "쿨타임 감소", value: Number(originSpecPoint.supportgemsCoolAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportgemsCoolAvg, originSpecPoint.supportgemsCoolAvg), icon: "gem-solid" },
         ]
 
         let result = "";
@@ -1710,54 +1834,134 @@ async function selectCreate(data, Modules) {
         optionCreate(gloveElixirElement, Modules.simulatorFilter.elixirOptionData.glove)
         optionCreate(gloveElixirElement, Modules.simulatorFilter.elixirOptionData.common, "common")
 
+        // function optionCreate(element, filter, tag) {
+        //     if (element instanceof NodeList) {
+
+        //         element.forEach((element) => {
+        //             // console.log(element)
+        //             let tag = document.createElement("option");
+        //             tag.value = "";
+        //             tag.disabled = true;
+        //             tag.textContent = "--------공용--------";
+        //             element.appendChild(tag);
+        //             filter.forEach(common => {
+        //                 for (const key in common) {
+        //                     if (common.hasOwnProperty(key) && key !== "name" && key !== "level") {
+        //                         let option = document.createElement("option");
+        //                         option.value = `${key}:${common[key]}:${common.level}`;
+        //                         option.textContent = common.name;
+        //                         element.appendChild(option);
+        //                     }
+        //                 }
+        //             })
+        //         })
+        //     } else {
+
+        //         filter.forEach((specialFilter, idx) => {
+        //             if (idx === 0 && tag === "common") {
+        //                 let tag = document.createElement("option");
+        //                 tag.value = "";
+        //                 tag.disabled = true;
+        //                 tag.textContent = "--------공용--------";
+        //                 element.appendChild(tag);
+        //             } else if (idx === 0) {
+        //                 let tag = document.createElement("option");
+        //                 tag.value = "";
+        //                 tag.disabled = true;
+        //                 tag.textContent = "--------특옵--------";
+        //                 element.appendChild(tag);
+        //             }
+        //             for (const key in specialFilter) {
+        //                 if (Object.keys(specialFilter).length >= 4) {
+        //                     console.log(key)
+        //                     console.log(specialFilter)
+        //                     console.log(Object.keys(specialFilter).length)
+
+        //                 }
+        //                 if (specialFilter.hasOwnProperty(key) && key !== "name" && key !== "level") {
+        //                     let option = document.createElement("option");
+        //                     option.value = `${key}:${specialFilter[key]}:${specialFilter.level}`;
+        //                     option.textContent = specialFilter.name;
+        //                     element.appendChild(option);
+        //                 }
+        //             }
+        //         })
+        //     }
+        // }
         function optionCreate(element, filter, tag) {
             if (element instanceof NodeList) {
-
-                element.forEach((element) => {
-                    // console.log(element)
-                    let tag = document.createElement("option");
-                    tag.value = "";
-                    tag.disabled = true;
-                    tag.textContent = "--------공용--------";
-                    element.appendChild(tag);
+                // NodeList handling remains the same...
+                element.forEach((el) => { // Changed variable name to avoid conflict
+                    let headerOption = document.createElement("option");
+                    headerOption.value = "";
+                    headerOption.disabled = true;
+                    headerOption.textContent = "--------공용--------";
+                    el.appendChild(headerOption);
                     filter.forEach(common => {
+                        let valueParts = [];
                         for (const key in common) {
                             if (common.hasOwnProperty(key) && key !== "name" && key !== "level") {
-                                let option = document.createElement("option");
-                                option.value = `${key}:${common[key]}:${common.level}`;
-                                option.textContent = common.name;
-                                element.appendChild(option);
+                                valueParts.push(`${key}:${common[key]}`);
                             }
                         }
-                    })
-                })
-            } else {
+                        // Add level at the end
+                        valueParts.push(`level:${common.level}`);
 
+                        let option = document.createElement("option");
+                        option.value = valueParts.join("|"); // Join parts with '|'
+                        option.textContent = common.name;
+                        el.appendChild(option);
+                    });
+                });
+            } else {
+                // Single element handling
                 filter.forEach((specialFilter, idx) => {
+                    // Header/tag logic remains the same...
                     if (idx === 0 && tag === "common") {
-                        let tag = document.createElement("option");
-                        tag.value = "";
-                        tag.disabled = true;
-                        tag.textContent = "--------공용--------";
-                        element.appendChild(tag);
+                        let headerOption = document.createElement("option");
+                        headerOption.value = "";
+                        headerOption.disabled = true;
+                        headerOption.textContent = "--------공용--------";
+                        element.appendChild(headerOption);
                     } else if (idx === 0) {
-                        let tag = document.createElement("option");
-                        tag.value = "";
-                        tag.disabled = true;
-                        tag.textContent = "--------특옵--------";
-                        element.appendChild(tag);
+                        let headerOption = document.createElement("option");
+                        headerOption.value = "";
+                        headerOption.disabled = true;
+                        headerOption.textContent = "--------특옵--------";
+                        element.appendChild(headerOption);
                     }
+
+                    // --- MODIFIED PART ---
+                    let valueParts = []; // Array to hold "key:value" strings
+
+                    // Iterate through keys of the current specialFilter object
                     for (const key in specialFilter) {
+                        // Check if the key is relevant (not 'name', not 'level')
                         if (specialFilter.hasOwnProperty(key) && key !== "name" && key !== "level") {
-                            let option = document.createElement("option");
-                            option.value = `${key}:${specialFilter[key]}:${specialFilter.level}`;
-                            option.textContent = specialFilter.name;
-                            element.appendChild(option);
+                            // Add "key:value" to the array
+                            valueParts.push(`${key}:${specialFilter[key]}`);
                         }
                     }
-                })
+
+                    // Add the level at the end
+                    valueParts.push(`level:${specialFilter.level}`); // Add level as the last part
+
+                    // Create the option element (only once per specialFilter)
+                    let option = document.createElement("option");
+
+                    // Join the parts with '|' for the value attribute
+                    option.value = valueParts.join("|");
+
+                    // Set the text content
+                    option.textContent = specialFilter.name;
+
+                    // Append the option to the select element
+                    element.appendChild(option);
+                    // --- END OF MODIFIED PART ---
+                });
             }
         }
+
 
     }
     elixirFilterToOption()

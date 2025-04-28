@@ -12,9 +12,6 @@ async function importModuleManager() {
     }
     return moduleObj
 }
-// let Modules = await import("../custom-module/module-manager.js")
-// Modules = await Modules.importModuleManager("trans-value.js");
-
 
 // 필터
 // import {
@@ -925,7 +922,7 @@ export async function getCharacterProfile(data, dataBase) {
     let engObj = {
         finalDamagePer: 1,
         atkPer: 0,
-        carePower: 1,
+        carePower: 0,
         utilityPower: 0,
         cdrPercent: 0,
         awakencdrPercent: 0,
@@ -2070,12 +2067,12 @@ export async function getCharacterProfile(data, dataBase) {
         let result = 0;
         data.ArmoryEquipment.forEach(function (armor) {
 
-            if (/^(투구|상의|하의|장갑|어깨|목걸이|귀걸이|반지|어빌리티 스톤)$/.test(armor.Type)) {
-    
+            if (/^(투구|상의|하의|장갑|어깨|목걸이|귀걸이|반지|어빌리티 스톤|팔찌)$/.test(armor.Type)) {
 
-                if (armor.Tooltip && typeof armor.Tooltip === 'string') { 
+
+                if (armor.Tooltip && typeof armor.Tooltip === 'string') {
                     const allMatches = armor.Tooltip.match(/체력 \+\d+/g);
-    
+
                     if (allMatches) {
                         allMatches.forEach(matchText => {
                             const numberMatch = matchText.match(/\d+/);
