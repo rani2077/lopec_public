@@ -443,6 +443,7 @@ export async function getCharacterProfile(data, dataBase) {
         enlightPoint: 0,
         carePower: 0,
         identityUptime: 1,
+        utilityPower: 0,
 
     }
 
@@ -490,6 +491,8 @@ export async function getCharacterProfile(data, dataBase) {
                 accObj.carePower += filterArry.value
             } else if (optionCheck && filterArry.attr == "StatHp") { // 최대 생명력
                 accObj.statHp += filterArry.value
+            } else if (optionCheck && filterArry.attr == "UtilityPower") { // 유틸력
+                accObj.utilityPower += filterArry.value
             } else if (optionCheck && filterArry.attr == "IdentityUptime") { // 게이지 획득량
                 accObj.identityUptime += filterArry.value
             }
@@ -547,6 +550,7 @@ export async function getCharacterProfile(data, dataBase) {
         dex: 0,
         int: 0,
         statHp: 0,
+        carePower: 0,
 
         weaponAtkPer: 1,
         finalDamagePer: 1,
@@ -556,7 +560,7 @@ export async function getCharacterProfile(data, dataBase) {
 
     bangleOptionArry.forEach(function (realBangleArry, realIdx) {
 
-        let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff']
+        let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff', 'carePower']
         let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff', 'atkBuffPlus']
         let statsArry = ["치명:crit", "특화:special", "신속:haste", "힘:str", "민첩:dex", "지능:int", "최대 생명력:statHp"];
 
@@ -1022,6 +1026,8 @@ export async function getCharacterProfile(data, dataBase) {
         atkPer: 0,
         finalDamagePer: 1,
         carePower: 0,
+        identityUptime: 0,
+        utilityPower: 0,
         statHp: 0,
         str: 0,
         dex: 0,
@@ -1122,6 +1128,14 @@ export async function getCharacterProfile(data, dataBase) {
             } else if (realElixir.name == filterArry.name && !(filterArry.carePower == undefined)) {
 
                 elixirObj.carePower += filterArry.carePower[realElixir.level - 1]
+
+            } else if (realElixir.name == filterArry.name && !(filterArry.identityUptime == undefined)) {
+
+                elixirObj.identityUptime += filterArry.identityUptime[realElixir.level - 1]
+
+            } else if (realElixir.name == filterArry.name && !(filterArry.utilityPower == undefined)) {
+
+                elixirObj.utilityPower += filterArry.utilityPower[realElixir.level - 1]
 
             } else if (realElixir.name == filterArry.name && !(filterArry.statHp == undefined)) {
 

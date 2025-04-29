@@ -403,6 +403,7 @@ async function simulatorInputCalc() {
                 finalDamagePer: 1,
                 skillCool: 0,
                 statHp: 0,
+                carePower: 0,
                 special: 0,
                 crit: 0,
                 haste: 0,
@@ -509,169 +510,56 @@ async function simulatorInputCalc() {
     * description			: 	장비 엘릭서 스텟 수치를 추출함
     *********************************************************************************************************************** */
 
-    // function armorElixirToObj() {
-    //     let arr = []
-    //     let result
-    //     let elements = document.querySelectorAll(".armor-item .elixir");
-
-    //     elements.forEach(element => {
-    //         let key = element.value.split(":")[0]
-    //         let value = element.value.split(":")[1]
-    //         let level = Number(element.value.split(":")[2])
-    //         let text = element.options[element.selectedIndex].textContent.replace(/Lv.\d+/g, "").trim();
-    //         let obj = {}
-    //         if (key && value) { // key와 value가 존재할 경우만 수행
-    //             obj[key] = Number(value); // obj 객체에 key 속성에 value 값을 할당, value는 숫자로 변환
-    //             obj.level = level;
-    //             obj.name = `${text}`;
-    //         }
-    //         arr.push(obj); // arr 배열에 obj를 추가
-
-    //     })
-    //     // 객체들을 키별로 그룹화
-    //     const grouped = {};
-    //     arr.forEach(obj => {
-    //         for (const key in obj) {
-    //             if (!grouped[key]) {
-    //                 grouped[key] = [];
-    //             }
-    //             grouped[key].push(obj[key]);
-    //         }
-    //     });
-
-    //     // 그룹화된 데이터를 바탕으로 새로운 객체 생성
-    //     const combinedObj = {
-    //         atkPlus: 0,
-    //         atkBonus: 0,
-    //         weaponAtkPlus: 0,
-    //         atkPer: 0,
-    //         atkBuff: 0,
-    //         carePower: 0,
-    //         str: 0,
-    //         int: 0,
-    //         dex: 0,
-    //         stats: 0,
-    //         statHp: 0,
-    //         finalDamagePer: 1,
-    //     };
-    //     for (const key in grouped) {
-    //         if (key === "finalDamagePer") {
-    //             // finalDamagePer는 곱셈
-    //             combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1);
-    //         } else {
-    //             // 기타 스텟은 덧셈
-    //             combinedObj[key] = grouped[key].reduce((acc, val) => acc + val, 0);
-    //         }
-    //     }
-
-    //     const elixirNames = arr.map(item => item.name);
-
-    //     const group1 = ["회심", "달인", "선봉대"];
-    //     const group2 = ["강맹", "칼날방패", "행운"];
-    //     const group3 = ["선각자", "신념"];
-    //     const group4 = ["진군"];
-
-    //     const groupElixir = ["회심", "달인", "선봉대", "강맹", "칼날방패", "행운", "선각자", "신념", "진군"];
-    //     let elixirIndexArray = [];
-    //     elixirNames.forEach(name => {
-    //         let elixirIndex = groupElixir.indexOf(name);
-    //         if (elixirIndex !== -1) {
-    //             elixirIndexArray.push(groupElixir[elixirIndex]);
-    //         }
-    //     });
-    //     // 중복된 단어가 속한 그룹을 찾는 함수
-    //     function findGroupWithDuplicates(b) {
-    //         const wordCounts = {};
-    //         for (const word of b) {
-    //             wordCounts[word] = (wordCounts[word] || 0) + 1;
-    //         }
-    //         const duplicateWords = Object.keys(wordCounts).filter(word => wordCounts[word] > 1);
-    //         if (duplicateWords.length === 0) {
-    //             return null;
-    //         }
-    //         const a = {
-    //             group1: group1,
-    //             group2: group2,
-    //             group3: group3,
-    //             group4: group4,
-    //         };
-
-    //         for (const groupName in a) {
-    //             const group = a[groupName];
-    //             const allDuplicatesInGroup = duplicateWords.every(word => group.includes(word));
-    //             if (allDuplicatesInGroup) {
-    //                 return groupName;
-    //             }
-    //         }
-    //         return null;
-    //     }
-    //     const duplicateElixirGroup = findGroupWithDuplicates(elixirIndexArray);
-
-    //     if (duplicateElixirGroup === "group1" && combinedObj.level >= 40) {
-    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.12;
-    //     } else if (duplicateElixirGroup === "group1" && combinedObj.level >= 35) {
-    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.06;
-    //     }
-    //     if (duplicateElixirGroup === "group2" && combinedObj.level >= 40) {
-    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.08;
-    //     } else if (duplicateElixirGroup === "group2" && combinedObj.level >= 35) {
-    //         combinedObj.finalDamagePer = combinedObj.finalDamagePer * 1.04;
-    //     }
-    //     if (duplicateElixirGroup === "group3" && combinedObj.level >= 40) {
-    //         combinedObj.atkBuff = combinedObj.atkBuff + 14;
-    //     } else if (duplicateElixirGroup === "group3" && combinedObj.level >= 35) {
-    //         combinedObj.atkBuff = combinedObj.atkBuff + 8;
-    //     }
-    //     if (duplicateElixirGroup === "group4" && combinedObj.level >= 40) {
-    //         combinedObj.atkBuff = combinedObj.atkBuff + 6;
-    //     }
-    //     else if (duplicateElixirGroup === "group4" && combinedObj.level >= 35) {
-    //         combinedObj.atkBuff = combinedObj.atkBuff + 3;
-    //     }
-    //     delete combinedObj.name;
-    //     delete combinedObj.level;
-    //     delete combinedObj.value;
-    //     combinedObj.str = combinedObj.stats;
-    //     result = combinedObj;
-    //     return result;
-
-    // }
-    // armorElixirToObj()
-    // console.log("엘릭서OBJ", armorElixirToObj())
-
-
-
-    // --- 기존 코드 시작 ---
     function armorElixirToObj() {
-        let arr = []; // Array to hold individual { key: ..., value: ... } objects
+        let arr = [];
         let elements = document.querySelectorAll(".armor-item .elixir");
-
+        
+        // 각 엘릭서 요소 처리
         elements.forEach(element => {
             const valueString = element.value;
-            if (!valueString) return; // Skip empty/unselected options
-
-            const parts = valueString.split('|'); // '|'를 기준으로 분리
-            const text = element.options[element.selectedIndex].textContent.replace(/Lv\.\d+/g, "").trim(); // Get the base name (e.g., "회심")
-
+            if (!valueString) return;
+            
+            // 엘릭서 장비 타입 식별 (투구, 장갑 등)
+            const elementType = element.className.includes("helmet") ? "helmet" : 
+                              element.className.includes("glove") ? "glove" : 
+                              element.className.includes("shoulder") ? "shoulder" : 
+                              element.className.includes("armor") ? "armor" : 
+                              element.className.includes("pants") ? "pants" : 
+                              element.className.includes("common") ? "common" : "unknown";
+            
+            const parts = valueString.split('|');
+            const text = element.options[element.selectedIndex].textContent.replace(/Lv.\d+/g, "").trim();
+            
             parts.forEach(part => {
-                const [key, valStr] = part.split(':'); // 각 부분을 ':' 기준으로 분리
+                const [key, valStr] = part.split(':');
                 if (key && valStr !== undefined) {
                     const value = Number(valStr);
                     if (!isNaN(value)) {
-                        // 각 key-value 쌍을 별도의 객체로 arr에 추가
-                        // 'level' 키도 다른 스탯과 동일하게 처리됩니다.
-                        arr.push({ key: key, value: value, originalName: text }); // 나중에 중복 체크를 위해 원래 이름 저장
-                    } else {
-                        console.warn(`Invalid numeric value for key "${key}": ${valStr}`);
+                        arr.push({ key: key, value: value, originalName: text, element: elementType });
                     }
-                } else {
-                    console.warn(`Invalid part format: ${part}`);
                 }
             });
         });
-        // --- 기존 코드 끝 ---
-
-        // --- Aggregation Logic (기존 로직 유지 또는 약간 수정) ---
+        
+        // 엘릭서 이름 카운트 - 중복 없이 한 장비당 하나씩만 카운트
+        let elixirNameCounts = {};
+        let totalLevelSum = 0;
+        let processedElixirs = new Set(); // 처리된 엘릭서 조합 추적
+        
+        arr.forEach(obj => {
+            if (obj.key === 'level') {
+                totalLevelSum += obj.value;
+            } else {
+                // 각 장비 요소별로 한 번만 카운트하기 위한 고유 식별자
+                const elementId = obj.element + "-" + obj.originalName;
+                if (!processedElixirs.has(elementId)) {
+                    processedElixirs.add(elementId);
+                    elixirNameCounts[obj.originalName] = (elixirNameCounts[obj.originalName] || 0) + 1;
+                }
+            }
+        });
+        
+        // 데이터 그룹화 및 병합
         const grouped = {};
         arr.forEach(obj => {
             if (obj && obj.hasOwnProperty('key')) {
@@ -683,45 +571,29 @@ async function simulatorInputCalc() {
             }
         });
 
+        // 기본 결과 객체 생성
         const combinedObj = {
             atkPlus: 0, atkBonus: 0, weaponAtkPlus: 0, atkPer: 0, atkBuff: 0,
-            carePower: 0, str: 0, int: 0, dex: 0, /* stats: 0, */ statHp: 0,
-            finalDamagePer: 1, level: 0 // level 합계를 위해 초기화
+            carePower: 0, str: 0, int: 0, dex: 0, stats: 0, statHp: 0, identityUptime: 0, utilityPower: 0,
+            finalDamagePer: 1, level: totalLevelSum
         };
 
+        // 값 결합하기
         for (const key in grouped) {
-            if (key === "finalDamagePer") { // 곱셈
-                // finalDamagePer는 퍼센트 값이므로 계산 방식 확인 필요 (예: 1 + value/100)
-                // 여기서는 일단 값만 곱하고, 실제 적용 시점에 퍼센트 계산 가정
-                //combinedObj[key] = grouped[key].reduce((acc, val) => acc * (1 + val / 100), 1); // 예시: 퍼센트 적용
-                combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1); // 예시: 퍼센트 적용 원래 이거였음)
-            } else { // 덧셈 (level, atkPlus, statHp 등)
+            if (key === "finalDamagePer") {
+                combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1);
+            } else {
                 combinedObj[key] = grouped[key].reduce((acc, val) => acc + val, 0);
             }
         }
-
-        // str, dex, int가 'stats' 키로 통합되어 있다면 여기서 분배
-        // if (combinedObj.hasOwnProperty('stats')) {
-        //     combinedObj.str = combinedObj.stats;
-        //     combinedObj.dex = combinedObj.stats;
-        //     combinedObj.int = combinedObj.stats;
-        //     delete combinedObj.stats; // 필요하다면 stats 키 삭제
-        // }
-
-
-        // --- Duplicate Elixir Check Logic (기존 로직 유지 또는 약간 수정) ---
-        const totalLevelSum = combinedObj.level; // 합산된 레벨 사용
-
-        const groupElixir = ["회심", "달인", "선봉대", "강맹", "칼날방패", "행운", "선각자", "신념", "진군"];
-        let elixirNameCounts = {};
-        // arr에서 level이 아닌 항목들의 originalName을 카운트
-        arr.filter(item => item.key !== 'level').forEach(item => {
-            const baseName = item.originalName;
-            if (groupElixir.includes(baseName)) {
-                elixirNameCounts[baseName] = (elixirNameCounts[baseName] || 0) + 1;
-            }
-        });
-
+        
+        // 중복 엘릭서 그룹 정의
+        const group1 = ["회심", "달인", "선봉대"];
+        const group2 = ["강맹", "칼날방패", "행운"];
+        const group3 = ["선각자", "신념"];
+        const group4 = ["진군"];
+        
+        // 중복된 엘릭서 찾기
         let duplicateElixirName = null;
         for (const name in elixirNameCounts) {
             if (elixirNameCounts[name] >= 2) {
@@ -729,31 +601,52 @@ async function simulatorInputCalc() {
                 break;
             }
         }
-
-        // Apply duplicate bonuses based on totalLevelSum
+        
+        // 중복 엘릭서의 그룹 찾기
+        let duplicateGroup = null;
         if (duplicateElixirName) {
-            // finalDamagePer 곱연산 적용 방식 수정 (기존 값에 곱하기)
-            if (["회심", "달인", "선봉대"].includes(duplicateElixirName)) {
-                if (totalLevelSum >= 40) {
-                    combinedObj.finalDamagePer *= 1.12
-                }
-                else if (totalLevelSum >= 35) combinedObj.finalDamagePer *= 1.06;
-            } else if (["강맹", "칼날방패", "행운"].includes(duplicateElixirName)) {
-                if (totalLevelSum >= 40) combinedObj.finalDamagePer *= 1.08;
-                else if (totalLevelSum >= 35) combinedObj.finalDamagePer *= 1.04;
-            } else if (["선각자", "신념"].includes(duplicateElixirName)) {
-                if (totalLevelSum >= 40) combinedObj.atkBuff += 14;
-                else if (totalLevelSum >= 35) combinedObj.atkBuff += 8;
-            } else if (["진군"].includes(duplicateElixirName)) {
-                if (totalLevelSum >= 40) combinedObj.atkBuff += 6;
-                else if (totalLevelSum >= 35) combinedObj.atkBuff += 3; // 35레벨 진군 효과 확인 필요 (기존 로직 기반)
+            if (group1.includes(duplicateElixirName)) {
+                duplicateGroup = "group1";
+            } else if (group2.includes(duplicateElixirName)) {
+                duplicateGroup = "group2";
+            } else if (group3.includes(duplicateElixirName)) {
+                duplicateGroup = "group3";
+            } else if (group4.includes(duplicateElixirName)) {
+                duplicateGroup = "group4";
+            }
+        }
+        
+        // 중복 보너스 적용
+        if (duplicateGroup === "group1") {
+            if (totalLevelSum >= 40) {
+                combinedObj.finalDamagePer *= 1.12;
+            } else if (totalLevelSum >= 35) {
+                combinedObj.finalDamagePer *= 1.06;
+            }
+        } else if (duplicateGroup === "group2") {
+            if (totalLevelSum >= 40) {
+                combinedObj.finalDamagePer *= 1.08;
+            } else if (totalLevelSum >= 35) {
+                combinedObj.finalDamagePer *= 1.04;
+            }
+        } else if (duplicateGroup === "group3") {
+            if (totalLevelSum >= 40) {
+                combinedObj.atkBuff += 14;
+            } else if (totalLevelSum >= 35) {
+                combinedObj.atkBuff += 8;
+            }
+        } else if (duplicateGroup === "group4") {
+            if (totalLevelSum >= 40) {
+                combinedObj.atkBuff += 6;
+            } else if (totalLevelSum >= 35) {
+                combinedObj.atkBuff += 3;
             }
         }
 
-        // Clean up unnecessary properties before returning
-        delete combinedObj.level; // 최종 결과 객체에서 level 합계는 제거
+        // 마무리 정리
+        delete combinedObj.level;
         combinedObj.str = combinedObj.stats ? combinedObj.stats : 0;
-        console.log(combinedObj)
+        
         return combinedObj;
     }
 
@@ -961,6 +854,7 @@ async function simulatorInputCalc() {
             "damageBuff": 0,
             "enlightPoint": 0,
             "statHp": 0,
+            "utilityPower": 0,
             "carePower": 0,
         };
 
