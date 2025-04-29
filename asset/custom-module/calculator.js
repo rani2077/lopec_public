@@ -131,8 +131,12 @@ export async function specPointCalc(inputObj) {
     let specialIdentity = (inputObj.defaultObj.special/19.971/100+1)
     let identityUptime = (((21.25 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4)
 
-    let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
-    let hyperUptime = ((40 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
+    //let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
+    //let hyperUptime = ((40 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
+
+    let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
+    let hyperUptime = ((24.45 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
+
 
     let defaultAtkBuff = ((110000 + finalAtkBuff * 0.9)) / 110000 //기준딜러 공증 상승량
 
@@ -162,10 +166,8 @@ export async function specPointCalc(inputObj) {
 
     let avgBuffPower = ((doubleBuffUptime * doubleBuffPower) + (onlyIdentityUptime * onlyIdentityPower) + (onlyHyperUptime * onlyHyperPower) + (noBuffUptime * noBuffPower)) * defaultAtkBuff
     let supportPower = ((avgBuffPower * enlightBuffResult * inputObj.arkObj.leapBuff) ** 4.335) * 28
-    console.log(inputObj.arkObj.leapBuff)
     //서폿 최종 환산 V2
     let supportSpecPoint = supportPower + (finalCarePower * 2.625) + (finalUtilityPower / 5)
-    console.log(finalUtilityPower)
 
 
 
