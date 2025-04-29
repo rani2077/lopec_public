@@ -4229,19 +4229,26 @@ async function calculateGemData(data) {
 
             // console.log(realGemValue)
 
-            let coolGemTotal = 0;
-            let count = 0;
-
+            let coolGemCount = 0;
+            let coolGemTotalWeight = 0;
+            let weightedCoolValueSum = 0; // 가중치가 적용된 쿨감 수치 합계
+            
             gemSkillArry.forEach(function (gemListArry) {
-                if (gemListArry.name == "홍염" || gemListArry.name == "작열") {
-                    let perValue = gemPerObj.filter(item => gemListArry.name == item.name);
-                    // console.log(perValue[0][`level${gemListArry.level}`]);
-                    coolGemTotal += perValue[0][`level${gemListArry.level}`];
-                    count++;
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
+                    // 해당 보석의 실제 쿨감 수치 가져오기
+                    let gemType = gemPerObj.find(g => g.name === gemListArry.name);
+                    let coolValue = gemType[`level${gemListArry.level}`];
+                    let weight = Math.pow(2, gemListArry.level - 1);
+                    
+                    // 가중치를 적용한 쿨감 수치 누적
+                    weightedCoolValueSum += coolValue * weight;
+                    coolGemTotalWeight += weight;
+                    coolGemCount++;
                 }
             });
-
-            let averageValue = count > 0 ? coolGemTotal / count : 0;
+            
+            // 가중 평균 쿨감 수치 계산
+            let averageValue = coolGemCount > 0 ? weightedCoolValueSum / coolGemTotalWeight : 0;
 
             // console.log("평균값 : " + averageValue) // <= 보석 쿨감 평균값
 
@@ -4249,16 +4256,35 @@ async function calculateGemData(data) {
             let dmgGemTotal = 0;
             let dmgCount = 0;
 
+            // console.log(gemList)
             if (specialClass == "데이터 없음") {
+                let totalWeight = 0;
+                let dmgCount = 0;
+                let weightedDmgSum = 0; // 가중치가 적용된 딜 증가율 합계
+
                 gemSkillArry.forEach(function (gemListArry) {
-                    if (gemListArry.name == "멸화" || gemListArry.name == "겁화") {
-                        let perValue = gemPerObj.filter(item => gemListArry.name == item.name);
-                        // console.log(perValue[0][`level${gemListArry.level}`]);
-                        dmgGemTotal += perValue[0][`level${gemListArry.level}`];
+                    // 멸화 또는 겁화 보석이고, 유효한 레벨을 가진 경우
+                    if ((gemListArry.name == "멸화" || gemListArry.name == "겁화") && gemListArry.level != null && gemListArry.level >= 1) {
+                        // 해당 보석의 실제 딜 증가율 가져오기
+                        let gemType = gemPerObj.find(g => g.name === gemListArry.name);
+                        let dmgPer = gemType[`level${gemListArry.level}`];
+                        
+                        let weight = Math.pow(2, gemListArry.level - 1);
+                        
+                        // 가중치를 적용한 딜 증가율 누적
+                        weightedDmgSum += dmgPer * weight;
+                        totalWeight += weight;
                         dmgCount++;
                     }
                 });
-                etcAverageValue = dmgCount > 0 ? dmgGemTotal / dmgCount : 0;
+
+                if (dmgCount > 0) {
+                    // 가중 평균 딜 증가율 계산
+                    etcAverageValue = weightedDmgSum / totalWeight;
+                } else {
+                    // 멸화/겁화 보석이 없는 경우
+                    etcAverageValue = 0;
+                }
             } else {
                 etcAverageValue = 1;
             }
