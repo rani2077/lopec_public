@@ -115,7 +115,8 @@ export async function specPointCalc(inputObj) {
     let finalAtkBuff = (totalAtk2 * 0.15 * atkBuff) // 최종 공증
     let damageBuff = (inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 아피강
     let hyperBuff = (10 * ((inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
-    let statDamageBuff = ((inputObj.defaultObj.totalStatus + inputObj.bangleObj.haste + inputObj.bangleObj.special) * 0.015) / 100 + 1 // 특화 신속
+    //let statDamageBuff = ((inputObj.defaultObj.totalStatus + inputObj.bangleObj.haste + inputObj.bangleObj.special) * 0.015) / 100 + 1 // 특화 신속
+    let statDamageBuff = (inputObj.defaultObj.special / 19.971) / 100 + 1 // 특화 딜증증
     let finalDamageBuff = (13 * damageBuff * statDamageBuff) / 100 + 1 // 최종 피증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
     let carePower = (1 + (inputObj.engObj.carePower + inputObj.accObj.carePower + inputObj.elixirObj.carePower + inputObj.bangleObj.carePower)) // 케어력
@@ -128,8 +129,8 @@ export async function specPointCalc(inputObj) {
     //let identityUptime = (((45 * (inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4) // 최종 아덴 가동률
 
     let cdrPercent = ((1 - ((1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3)
-    let specialIdentity = (inputObj.defaultObj.special/19.971/100+1)
-    let identityUptime = (((21.25 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4)
+    let specialIdentity = (inputObj.defaultObj.special/27.96/100+1)
+    let identityUptime = (((22.82 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4)
 
     //let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
     //let hyperUptime = ((40 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
@@ -165,7 +166,7 @@ export async function specPointCalc(inputObj) {
     let noBuffPower = allTimeBuff
 
     let avgBuffPower = ((doubleBuffUptime * doubleBuffPower) + (onlyIdentityUptime * onlyIdentityPower) + (onlyHyperUptime * onlyHyperPower) + (noBuffUptime * noBuffPower)) * defaultAtkBuff
-    let supportPower = ((avgBuffPower * enlightBuffResult * inputObj.arkObj.leapBuff) ** 4.335) * 28
+    let supportPower = ((avgBuffPower * enlightBuffResult * inputObj.arkObj.leapBuff) ** 4.324) * 29
     //서폿 최종 환산 V2
     let supportSpecPoint = supportPower + (finalCarePower * 2.625) + (finalUtilityPower / 5)
 
