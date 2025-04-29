@@ -513,23 +513,23 @@ async function simulatorInputCalc() {
     function armorElixirToObj() {
         let arr = [];
         let elements = document.querySelectorAll(".armor-item .elixir");
-        
+
         // 각 엘릭서 요소 처리
         elements.forEach(element => {
             const valueString = element.value;
             if (!valueString) return;
-            
+
             // 엘릭서 장비 타입 식별 (투구, 장갑 등)
-            const elementType = element.className.includes("helmet") ? "helmet" : 
-                              element.className.includes("glove") ? "glove" : 
-                              element.className.includes("shoulder") ? "shoulder" : 
-                              element.className.includes("armor") ? "armor" : 
-                              element.className.includes("pants") ? "pants" : 
-                              element.className.includes("common") ? "common" : "unknown";
-            
+            const elementType = element.className.includes("helmet") ? "helmet" :
+                element.className.includes("glove") ? "glove" :
+                    element.className.includes("shoulder") ? "shoulder" :
+                        element.className.includes("armor") ? "armor" :
+                            element.className.includes("pants") ? "pants" :
+                                element.className.includes("common") ? "common" : "unknown";
+
             const parts = valueString.split('|');
             const text = element.options[element.selectedIndex].textContent.replace(/Lv.\d+/g, "").trim();
-            
+
             parts.forEach(part => {
                 const [key, valStr] = part.split(':');
                 if (key && valStr !== undefined) {
@@ -540,12 +540,12 @@ async function simulatorInputCalc() {
                 }
             });
         });
-        
+
         // 엘릭서 이름 카운트 - 중복 없이 한 장비당 하나씩만 카운트
         let elixirNameCounts = {};
         let totalLevelSum = 0;
         let processedElixirs = new Set(); // 처리된 엘릭서 조합 추적
-        
+
         arr.forEach(obj => {
             if (obj.key === 'level') {
                 totalLevelSum += obj.value;
@@ -558,7 +558,7 @@ async function simulatorInputCalc() {
                 }
             }
         });
-        
+
         // 데이터 그룹화 및 병합
         const grouped = {};
         arr.forEach(obj => {
@@ -586,13 +586,13 @@ async function simulatorInputCalc() {
                 combinedObj[key] = grouped[key].reduce((acc, val) => acc + val, 0);
             }
         }
-        
+
         // 중복 엘릭서 그룹 정의
         const group1 = ["회심", "달인", "선봉대"];
         const group2 = ["강맹", "칼날방패", "행운"];
         const group3 = ["선각자", "신념"];
         const group4 = ["진군"];
-        
+
         // 중복된 엘릭서 찾기
         let duplicateElixirName = null;
         for (const name in elixirNameCounts) {
@@ -601,7 +601,7 @@ async function simulatorInputCalc() {
                 break;
             }
         }
-        
+
         // 중복 엘릭서의 그룹 찾기
         let duplicateGroup = null;
         if (duplicateElixirName) {
@@ -615,7 +615,7 @@ async function simulatorInputCalc() {
                 duplicateGroup = "group4";
             }
         }
-        
+
         // 중복 보너스 적용
         if (duplicateGroup === "group1") {
             if (totalLevelSum >= 40) {
@@ -646,7 +646,7 @@ async function simulatorInputCalc() {
         // 마무리 정리
         delete combinedObj.level;
         combinedObj.str = combinedObj.stats ? combinedObj.stats : 0;
-        
+
         return combinedObj;
     }
 
@@ -891,10 +891,10 @@ async function simulatorInputCalc() {
     * function name		:	accessoryInputHealthValue
     * description		: 	악세서리의 체력값을 htmlObj에서 가져와 합산함
     *********************************************************************************************************************** */
-    
+
     function accessoryInputHealthValue() {
         let totalHealth = 0;
-        
+
         // 악세서리 체력값 가져오기
         if (extractValue && extractValue.htmlObj && extractValue.htmlObj.accessoryInfo) {
             for (let i = 0; i < 5 && i < extractValue.htmlObj.accessoryInfo.length; i++) {
@@ -904,25 +904,25 @@ async function simulatorInputCalc() {
                 }
             }
         }
-        
+
         // 팔찌 체력값 계산
         const bangleStatsElements = document.querySelectorAll(".accessory-item.bangle .stats");
         const bangleValueElements = document.querySelectorAll(".accessory-item.bangle input.option");
-        
+
         let bangleInputHealth = 0;
         bangleStatsElements.forEach((statElement, idx) => {
             // value 값이나 텍스트 내용이 "체력"인 경우
-            if (statElement.value === "체력" || 
+            if (statElement.value === "체력" ||
                 statElement.options[statElement.selectedIndex].text === "체력") {
                 bangleInputHealth += Number(bangleValueElements[idx].value || 0);
             }
         });
-        
+
         // 원래 팔찌 체력값 계산
         let originalBangleHealth = 0;
-        if (extractValue && extractValue.htmlObj && extractValue.htmlObj.bangleInfo && 
+        if (extractValue && extractValue.htmlObj && extractValue.htmlObj.bangleInfo &&
             extractValue.htmlObj.bangleInfo.normalStatsArray) {
-            
+
             extractValue.htmlObj.bangleInfo.normalStatsArray.forEach(statString => {
                 const healthMatch = statString.match(/체력\s*\+(\d+)/);
                 if (healthMatch && healthMatch[1]) {
@@ -930,10 +930,10 @@ async function simulatorInputCalc() {
                 }
             });
         }
-        
+
         // 최종 체력 계산: 악세서리 체력 + (새 팔찌 체력 - 원래 팔찌 체력)
         totalHealth = totalHealth + bangleInputHealth;
-        
+
         return totalHealth;
     }
 
@@ -942,14 +942,14 @@ async function simulatorInputCalc() {
     * description          : 어빌리티 스톤에서 체력 값을 추출
     *********************************************************************************************************************** */
     function stoneHealthValue() {
-       let stoneHealth = 0;
-       
-       // htmlObj에서 스톤 정보 확인
-       if (extractValue.htmlObj && extractValue.htmlObj.stoneInfo && extractValue.htmlObj.stoneInfo.health) {
-           stoneHealth = extractValue.htmlObj.stoneInfo.health;
-       }
-       
-       return stoneHealth;
+        let stoneHealth = 0;
+
+        // htmlObj에서 스톤 정보 확인
+        if (extractValue.htmlObj && extractValue.htmlObj.stoneInfo && extractValue.htmlObj.stoneInfo.health) {
+            stoneHealth = extractValue.htmlObj.stoneInfo.health;
+        }
+
+        return stoneHealth;
     }
 
     /* **********************************************************************************************************************
@@ -973,7 +973,7 @@ async function simulatorInputCalc() {
         const combinedObj = { ...defaultObj }; // 기본 객체 복사
         for (const key in grouped) {
             // console.log(grouped)
-            if (key === "finalDamagePer"||key === "identityUptime") {
+            if (key === "finalDamagePer" || key === "identityUptime") {
                 // finalDamagePer은 곱셈
                 combinedObj[key] = Number(grouped[key].reduce((acc, val) => acc * val, 1));
             } else {
@@ -1617,14 +1617,14 @@ async function simulatorInputCalc() {
             gemInfo = [
                 { name: "보석 실질 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.etcAverageValue, extractValue.etcObj.gemCheckFnc.etcAverageValue), icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
                 { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.etcAverageValue - 1) * 100).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.etcAverageValue, extractValue.etcObj.gemCheckFnc.etcAverageValue), icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
-                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemsCoolAvg, extractValue.etcObj.gemsCoolAvg), icon: "gem-solid", question: "보석 평균 쿨감 수치" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemCheckFnc.gemAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemsCoolAvg, extractValue.etcObj.gemsCoolAvg), icon: "gem-solid", question: "보석 평균 쿨감 수치" },
                 { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.specialSkill, extractValue.etcObj.gemCheckFnc.specialSkill), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수. 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
             ]
         } else {
             gemInfo = [
                 { name: "보석 실질 딜증", value: Number(extractValue.etcObj.gemCheckFnc.originGemValue).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.originGemValue, extractValue.etcObj.gemCheckFnc.originGemValue), icon: "gem-solid", question: "보석을 통해 얻은 스킬 대미지 증가량" },
                 { name: "보석 최종 딜증", value: Number((extractValue.etcObj.gemCheckFnc.gemValue - 1) * 100).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.gemValue, extractValue.etcObj.gemCheckFnc.gemValue), icon: "gem-solid", question: "보석 순수 딜증 x 보정치로 인한 최종 딜증값으로, 스펙포인트에 적용되는 값" },
-                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemsCoolAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemsCoolAvg, extractValue.etcObj.gemsCoolAvg), icon: "gem-solid", question: "보석 평균 쿨감 수치" },
+                { name: "보석 쿨감", value: Number(extractValue.etcObj.gemCheckFnc.gemAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.extractValue.etcObj.gemsCoolAvg, extractValue.etcObj.gemsCoolAvg), icon: "gem-solid", question: "보석 평균 쿨감 수치" },
                 { name: "보석 보정치", value: Number(extractValue.etcObj.gemCheckFnc.specialSkill).toFixed(2) + compareValue(cachedDetailInfo.extractValue.etcObj.gemCheckFnc.specialSkill, extractValue.etcObj.gemCheckFnc.specialSkill), icon: "gem-solid", question: "보석에 포함되지 않는 스킬 및 효과를 보정하기 위한 계수. 직각 별로 고정값이며, 소수점 두 번째 자리까지만 표시" },
             ]
         }
@@ -4232,25 +4232,26 @@ async function calculateGemData(data) {
             let coolGemCount = 0;
             let coolGemTotalWeight = 0;
             let weightedCoolValueSum = 0; // 가중치가 적용된 쿨감 수치 합계
-            
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
+                // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
                     // 해당 보석의 실제 쿨감 수치 가져오기
+                    console.log(gemListArry)
                     let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                     let coolValue = gemType[`level${gemListArry.level}`];
                     let weight = Math.pow(2, gemListArry.level - 1);
-                    
+
                     // 가중치를 적용한 쿨감 수치 누적
                     weightedCoolValueSum += coolValue * weight;
                     coolGemTotalWeight += weight;
                     coolGemCount++;
                 }
             });
-            
+
             // 가중 평균 쿨감 수치 계산
             let averageValue = coolGemCount > 0 ? weightedCoolValueSum / coolGemTotalWeight : 0;
 
-            // console.log("평균값 : " + averageValue) // <= 보석 쿨감 평균값
+            console.log("평균값 : " + averageValue) // <= 보석 쿨감 평균값
 
             let etcAverageValue;
             let dmgGemTotal = 0;
@@ -4268,9 +4269,9 @@ async function calculateGemData(data) {
                         // 해당 보석의 실제 딜 증가율 가져오기
                         let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                         let dmgPer = gemType[`level${gemListArry.level}`];
-                        
+
                         let weight = Math.pow(2, gemListArry.level - 1);
-                        
+
                         // 가중치를 적용한 딜 증가율 누적
                         weightedDmgSum += dmgPer * weight;
                         totalWeight += weight;
@@ -4629,13 +4630,13 @@ async function armoryLevelCalc(Modules) {
         } else if (advancedLevel >= 30) {
             obj.stat = Math.floor(originalStat * 1.02);
         }
-        
+
         // 체력
         if (healthData) {
             let healthObj = healthData.find(part => part.level === resultObj);
             if (healthObj) {
                 obj.health = healthObj.health;
-                
+
                 let originalHealth = obj.health;
                 if (advancedLevel === 40) {
                     obj.health = Math.floor(originalHealth * 1.05);
@@ -4644,13 +4645,13 @@ async function armoryLevelCalc(Modules) {
                 }
             }
         }
-        
+
         armorObj.push(obj);
     }
-    
+
     let armorStats = armorObj.filter(obj => !(/무기|에스더/.test(obj.name)))
     let weaponStats = armorObj.find(obj => (/무기|에스더/.test(obj.name)))
-    
+
     function sumStats(stats) {
         if (!Array.isArray(stats)) {
             return 0;
@@ -4664,7 +4665,7 @@ async function armoryLevelCalc(Modules) {
         }
         return totalStat;
     }
-    
+
     // 체력 합계
     function sumHealth(stats) {
         if (!Array.isArray(stats)) {

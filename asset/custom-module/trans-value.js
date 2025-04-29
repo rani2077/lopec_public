@@ -1625,7 +1625,6 @@ export async function getCharacterProfile(data, dataBase) {
         })
 
     }
-
     htmlObj.gemSkillArry = gemSkillArry;
     //console.log("gemSkillArry",gemSkillArry)
 
@@ -1849,21 +1848,22 @@ export async function getCharacterProfile(data, dataBase) {
             let coolGemCount = 0;
             let coolGemTotalWeight = 0;
             let weightedCoolValueSum = 0; // 가중치가 적용된 쿨감 수치 합계
-            
+
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
+                // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
                     // 해당 보석의 실제 쿨감 수치 가져오기
                     let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                     let coolValue = gemType[`level${gemListArry.level}`];
                     let weight = Math.pow(2, gemListArry.level - 1);
-                    
+
                     // 가중치를 적용한 쿨감 수치 누적
                     weightedCoolValueSum += coolValue * weight;
                     coolGemTotalWeight += weight;
                     coolGemCount++;
                 }
             });
-            
+
             // 가중 평균 쿨감 수치 계산
             let averageValue = coolGemCount > 0 ? weightedCoolValueSum / coolGemTotalWeight : 0;
 
@@ -1887,9 +1887,9 @@ export async function getCharacterProfile(data, dataBase) {
                         // 해당 보석의 실제 딜 증가율 가져오기
                         let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                         let dmgPer = gemType[`level${gemListArry.level}`];
-                        
+
                         let weight = Math.pow(2, gemListArry.level - 1);
-                        
+
                         // 가중치를 적용한 딜 증가율 누적
                         weightedDmgSum += dmgPer * weight;
                         totalWeight += weight;
@@ -2897,7 +2897,7 @@ export async function getCharacterProfile(data, dataBase) {
 
                 let totalHealth = 0;
                 let stoneParsed = JSON.parse(stone.Tooltip);
-                
+
                 // 모든 Element를 순회하며 체력 값 찾기
                 for (const key in stoneParsed) {
                     if (key.startsWith('Element_') && stoneParsed[key].value) {
