@@ -42,7 +42,7 @@ export async function specPointCalc(inputObj) {
 
     let totalStat = (inputObj.etcObj.armorStatus + inputObj.etcObj.expeditionStats + inputObj.hyperObj.str + inputObj.elixirObj.str + inputObj.elixirObj.dex + inputObj.elixirObj.int + inputObj.bangleObj.str + inputObj.bangleObj.dex + inputObj.bangleObj.int) * inputObj.etcObj.avatarStats // 최종 힘민지 계산값
     //let totalStat = (inputObj.etcObj.armorStatus + 1688 + inputObj.hyperObj.str + inputObj.elixirObj.str + inputObj.elixirObj.dex + inputObj.elixirObj.int + inputObj.bangleObj.str + inputObj.bangleObj.dex + inputObj.bangleObj.int) * inputObj.etcObj.avatarStats // 최종 힘민지 계산값
-    let totalWeaponAtk = ((inputObj.defaultObj.weaponAtk + inputObj.hyperObj.weaponAtkPlus + inputObj.elixirObj.weaponAtkPlus + inputObj.accObj.weaponAtkPlus + inputObj.bangleObj.weaponAtkPlus) * (inputObj.arkObj.weaponAtkPer + (inputObj.accObj.weaponAtkPer / 100))) // 최종 무공 계산값 //1.021 대신 카르마에서 반환받은 무공 채우기
+    let totalWeaponAtk = ((inputObj.defaultObj.weaponAtk + inputObj.hyperObj.weaponAtkPlus + inputObj.elixirObj.weaponAtkPlus + inputObj.accObj.weaponAtkPlus + inputObj.bangleObj.weaponAtkPlus + inputObj.bangleObj.weaponAtkBonus) * (inputObj.arkObj.weaponAtkPer + (inputObj.accObj.weaponAtkPer / 100))) // 최종 무공 계산값 //1.021 대신 카르마에서 반환받은 무공 채우기
     let totalAtk = ((Math.sqrt((totalStat * totalWeaponAtk) / 6)) + (inputObj.elixirObj.atkPlus + inputObj.hyperObj.atkPlus + inputObj.accObj.atkPlus + inputObj.elixirObj.atkBonus)) * (((inputObj.accObj.atkPer + inputObj.elixirObj.atkPer) === 0 ? 1 : (inputObj.accObj.atkPer + inputObj.elixirObj.atkPer)) / 100 + 1) * attackBonus
 
     let gemsCoolValue = (1 / (1 - (inputObj.etcObj.gemCheckFnc.gemAvg) / 100) - 1) + 1
@@ -108,6 +108,13 @@ export async function specPointCalc(inputObj) {
      * description            :   스펙포인트 계산을 위한 변수 모음
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
+    //let statDamageBuff = ((inputObj.defaultObj.totalStatus + inputObj.bangleObj.haste + inputObj.bangleObj.special) * 0.015) / 100 + 1 // 특화 신속
+    //let cdrPercent = ((1 - ((1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 마흐 포함 최종 쿨감
+    //let awakenIdentity = ((1 / (1 - inputObj.engObj.awakencdrPercent)) - 1) * 0.15 + 1 // 각성기로 얻은 아덴 가동률
+    //let identityUptime = (((45 * (inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4) // 최종 아덴 가동률
+    //let identityUptime = (((20.05 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4)
+    //let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
+    //let hyperUptime = ((40 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
 
     let totalAtk2 = ((totalStat * totalWeaponAtk / 6) ** 0.5) * attackBonus //기본 공격력
     let finalStigmaPer = ((10 * ((inputObj.accObj.stigmaPer + inputObj.arkObj.stigmaPer + inputObj.hyperObj.stigmaPer) / 100 + 1)).toFixed(1)) // 낙인력 
@@ -115,38 +122,31 @@ export async function specPointCalc(inputObj) {
     let finalAtkBuff = (totalAtk2 * 0.15 * atkBuff) // 최종 공증
     let damageBuff = (inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 아피강
     let hyperBuff = (10 * ((inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
-    //let statDamageBuff = ((inputObj.defaultObj.totalStatus + inputObj.bangleObj.haste + inputObj.bangleObj.special) * 0.015) / 100 + 1 // 특화 신속
     let statDamageBuff = (inputObj.defaultObj.special / 19.971) / 100 + 1 // 특화 딜증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
     let carePower = (1 + (inputObj.engObj.carePower + inputObj.accObj.carePower + inputObj.elixirObj.carePower + inputObj.bangleObj.carePower)) // 케어력
-    let finalCarePower = ((((totalHealth * 0.3) * carePower) / 260000) * 100) //최종 케어력
+    let finalCarePower = ((((totalHealth * 0.3) * carePower) / 330000) * 100) //최종 케어력
     let finalUtilityPower = (inputObj.engObj.utilityPower + inputObj.elixirObj.utilityPower + inputObj.accObj.utilityPower) 
+    console.log(finalUtilityPower)
+    console.log(inputObj.elixirObj.utilityPower)
     let allTimeBuff = (finalStigmaPer / 100 + 1) * 1.0965 * inputObj.bangleObj.atkBuffPlus
 
 
-    let duration_A = inputObj.supportSkillObj.atkBuffADuration
-    let cd_A = (inputObj.supportSkillObj.atkBuffACool) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffACdr / 100)
-    let duration_B = inputObj.supportSkillObj.atkBuffBDuration
-    let cd_B = (inputObj.supportSkillObj.atkBuffBCool) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffBCdr / 100)
-
+    let duration_A = inputObj.supportSkillObj.atkBuffADuration // A스킬 지속시간 (천상, 신분, 해그)
+    let cd_A = (inputObj.supportSkillObj.atkBuffACool) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffACdr / 100) // A스킬 쿨감 
+    let duration_B = inputObj.supportSkillObj.atkBuffBDuration // B스킬 지속시간 (음진, 천축, 해우물)
+    let cd_B = (inputObj.supportSkillObj.atkBuffBCool) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffBCdr / 100) // B스킬 쿨감 
     let t_buff = duration_A + duration_B;
     let t_cycle = Math.max(duration_A + duration_B, cd_A, cd_B);
     let atkBuffUptime = t_buff / t_cycle;
 
-    //console.log(atkBuffUptime)
 
-    //let cdrPercent = ((1 - ((1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 마흐 포함 최종 쿨감
-    let cdrPercent = ((1 - ((1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3)
-    //let awakenIdentity = ((1 / (1 - inputObj.engObj.awakencdrPercent)) - 1) * 0.15 + 1 // 각성기로 얻은 아덴 가동률
-    let awakenIdentity = ((1 / ((1 - inputObj.engObj.awakencdrPercent) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent))) - 1) * 0.15 + 1;
-    //let identityUptime = (((45 * (inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4) // 최종 아덴 가동률
+    let cdrPercent = ((1 - ((1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 종합 쿨감
+    let awakenIdentity = ((1 / ((1 - inputObj.engObj.awakencdrPercent) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent))) - 1) * 0.15 + 1; //각성기 가치
 
-    let specialIdentity = (inputObj.defaultObj.special/27.96/100+1)
-    //let identityUptime = (((20.05 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercent)) / 100).toFixed(4)
-    let identityUptime = ((((20.05 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercent)) / 100)).toFixed(4)
+    let specialIdentity = (inputObj.defaultObj.special/27.96/100+1) // 특화 딜증
+    let identityUptime = ((((20.05 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercent)) / 100)).toFixed(4) //아덴 가동률
 
-    //let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
-    //let hyperUptime = ((40 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
 
     let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
     let hyperUptime = ((24.45 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
@@ -175,13 +175,17 @@ export async function specPointCalc(inputObj) {
 
     let avgBuffPower = ((doubleBuffUptime * doubleBuffPower) + (onlyIdentityUptime * onlyIdentityPower) + (onlyHyperUptime * onlyHyperPower) + (noBuffUptime * noBuffPower)) * defaultAtkBuff
     let supportBuffPower = avgBuffPower * enlightBuffResult * inputObj.arkObj.leapBuff //** 4.185) * 29.5
-    let supportCarePower = ((finalCarePower / (1 - cdrPercent)) / 100 + 1) //** 4.185 * 10
+    let supportCarePower = (((finalCarePower / ((1 - cdrPercent))) / (0.7 + inputObj.defaultObj.special*0.00055) ) / 100 + 1) //** 4.185 * 10
     let supportUtilityPower = finalUtilityPower / 100 + 1
+    console.log(supportBuffPower)
+    console.log(finalCarePower)
+    console.log(cdrPercent)
+    console.log(supportUtilityPower)
     //서폿 최종 환산 V2
     let supportSpecPointv1 = supportBuffPower + (finalCarePower * 2.625) + (finalUtilityPower / 5)
-    console.log(supportSpecPointv1)
-    let supportCombinedPower = (supportBuffPower ** 0.94) * (supportCarePower ** 0.03) * (supportUtilityPower ** 0.03)
-    let supportSpecPoint = (supportCombinedPower ** 4.233) * 33.4
+    //console.log(supportSpecPointv1)
+    let supportCombinedPower = (supportBuffPower ** 0.92) * (supportCarePower ** 0.05) * (supportUtilityPower ** 0.03)
+    let supportSpecPoint = (supportCombinedPower ** 4.255) * 33.4
 
 
 
@@ -356,7 +360,7 @@ export async function specPointCalc(inputObj) {
     highTierSpecPointObj.supportHyperUptime = hyperUptime * 100;
     highTierSpecPointObj.supportFullBuffUptime = identityUptime * hyperUptime * 100;
     highTierSpecPointObj.supportBangleResult = supportBangleValue;
-    highTierSpecPointObj.supportCarePowerResult = finalCarePower;
+    highTierSpecPointObj.supportCarePowerResult = (supportCarePower-1)*100*0.5;
     highTierSpecPointObj.supportUtilityPower = finalUtilityPower
     highTierSpecPointObj.supportTotalStatus = (inputObj.defaultObj.haste + inputObj.defaultObj.special);
     highTierSpecPointObj.supportgemsCoolAvg = (cdrPercent * 100);

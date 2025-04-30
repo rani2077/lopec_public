@@ -49,6 +49,11 @@ let Modules = await importModuleManager();
 // console.log(Modules)
 export async function apiCalcValue(inputName) {
     let data = await Modules.fetchApi.lostarkApiCall(inputName);
+    let gemSaveData = JSON.parse(localStorage.getItem('gemSlot'));
+    if (gemSaveData) {
+        console.log(gemSaveData)
+        data.ArmoryGem = gemSaveData;
+    }
     let extractValue = await Modules.transValue.getCharacterProfile(data);
     let calcValue = await Modules.calcValue.specPointCalc(extractValue);
     let dataBase

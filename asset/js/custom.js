@@ -69,16 +69,6 @@ async function mainSearchFunction() {
     * function name		:	
     * description       : 	
     *********************************************************************************************************************** */
-    // let data = await Modules.fetchApi.lostarkApiCall(nameParam);
-    // let extractValue = await Modules.transValue.getCharacterProfile(data);
-    // let specPoint = await Modules.calcValue.specPointCalc(extractValue);
-    // let dataBaseResponse = await component.dataBaseWrite(data, extractValue, specPoint);
-    // if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
-    //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-    // } else if (dataBaseResponse.totalStatusSupport !== 0) {
-    //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-    // }
-    // specPoint = await Modules.calcValue.specPointCalc(extractValue);
     let apiData = await Modules.apiCalcValue.apiCalcValue(nameParam);
     console.log("API데이터", apiData)
     let data = apiData.data;
@@ -88,6 +78,7 @@ async function mainSearchFunction() {
 
     console.log("스펙포인트", specPoint)
     // console.log("오리진obj", extractValue);
+    Modules.component.gemFreeSetSave(data.ArmoryGem)
 
     await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
 
@@ -1063,13 +1054,15 @@ async function mainSearchFunction() {
 
         let supportSpecPointInfo = [
             { name: "달성 최고 점수", value: dataBaseResponse.totalSumSupport, icon: "medal-solid" },
-            { name: "현재 레벨 중앙값", value : "수집 중", icon: "chart-simple-solid" }, //value: supportMedianValue
+            { name: "현재 레벨 중앙값", value: "수집 중", icon: "chart-simple-solid" }, //value: supportMedianValue
             //{ name: "딜러 환산 점수", value: dealerSupportConversion.toFixed(2), icon: "arrows-left-right-to-line-solid" },
             { name: "최고 점수 달성일", value: formatDate(dataBaseResponse.achieveDate), icon: "calendar-check-solid" },
         ]
         let supportImportantBuffInfo = [
             //{ name: "공격력 증가", value: Number(specPoint.supportFinalAtkBuff).toFixed(0) /* 추가됨 */, icon: "bolt-solid" },
             { name: "종합 버프력", value: Number(specPoint.supportAvgBuffPower).toFixed(2) /* 추가됨 */ + "%", icon: "bolt-solid" },
+            { name: "케어력", value: Number(specPoint.supportCarePowerResult).toFixed(2) + "%", icon: "shield-halved-solid" },
+            { name: "유틸력", value: Number(specPoint.supportUtilityPower).toFixed(2) /* 추가됨 */ + "%", icon: "gear-solid" },
         ]
         let supportBuffInfo = [
             { name: "낙인력", value: Number(specPoint.supportStigmaResult).toFixed(1) + "%", icon: "bullseye-solid" },
@@ -1083,12 +1076,10 @@ async function mainSearchFunction() {
             { name: "초각 가동률", value: Number(specPoint.supportHyperUptime).toFixed(2) /* 추가됨 */ + "%", icon: "hourglass-half-solid" },
             { name: "풀버프 가동률", value: Number(specPoint.supportFullBuffUptime).toFixed(2) /* 추가됨 */ + "%", icon: "hourglass-half-solid" },
         ]
-        let supportEffectInfo = [
-            { name: "특성", value: specPoint.supportTotalStatus, icon: "person-solid" },
-            { name: "케어력", value: Number(specPoint.supportCarePowerResult).toFixed(2) + "%", icon: "shield-halved-solid" },
-            { name: "유틸력", value: Number(specPoint.supportUtilityPower).toFixed(2) /* 추가됨 */ + "%", icon: "gear-solid" },
-            { name: "쿨타임 감소", value: Number(specPoint.supportgemsCoolAvg).toFixed(2) + "%", icon: "gem-solid" },
-        ]
+        //let supportEffectInfo = [
+        //    { name: "특성", value: specPoint.supportTotalStatus, icon: "person-solid" },
+        //    { name: "쿨타임 감소", value: Number(specPoint.supportgemsCoolAvg).toFixed(2) + "%", icon: "gem-solid" },
+        //]
 
         let result = "";
         if (mobileCheck) {
@@ -1109,7 +1100,7 @@ async function mainSearchFunction() {
             result += infoWrap("주요 버프", supportImportantBuffInfo);
             result += infoWrap("버프 정보", supportBuffInfo);
             result += infoWrap("가동률", supportUtilizationRate);
-            result += infoWrap("추가 효과", supportEffectInfo);
+            //result += infoWrap("추가 효과", supportEffectInfo);
         }
         element.innerHTML = result;
     }

@@ -363,6 +363,59 @@ export async function getCharacterProfile(data, dataBase) {
         }
     })
 
+    //defaultObj.haste = 1852
+    //defaultObj.special = 643
+    defaultObj.haste = 1802
+    defaultObj.special = 693
+    //defaultObj.haste = 1752
+    ///defaultObj.special = 743
+    //defaultObj.haste = 1702
+    //defaultObj.special = 793
+    //defaultObj.haste = 1652
+    //defaultObj.special = 843
+    //defaultObj.haste = 1602
+    //defaultObj.special = 893
+    //defaultObj.haste = 1552
+    //defaultObj.special = 943
+    //defaultObj.haste = 1502
+    //defaultObj.special = 993
+    //defaultObj.haste = 1452
+    //defaultObj.special = 1043
+    //defaultObj.haste = 1402
+    //defaultObj.special = 1093
+    //defaultObj.haste = 1352
+    //defaultObj.special = 1143
+    //defaultObj.haste = 1302
+    //defaultObj.special = 1193
+    //defaultObj.haste = 1252
+    //defaultObj.special = 1243
+    //defaultObj.haste = 1202
+    //defaultObj.special = 1293
+    //defaultObj.haste = 1152
+    //defaultObj.special = 1343
+    //defaultObj.haste = 1102
+    //defaultObj.special = 1393
+    //defaultObj.haste = 1052
+    //defaultObj.special = 1443
+    //defaultObj.haste = 1002
+    //defaultObj.special = 1493
+    //defaultObj.haste = 952
+    //defaultObj.special = 1543
+    //defaultObj.haste = 902
+    //defaultObj.special = 1593
+    //defaultObj.haste = 852
+    //defaultObj.special = 1643
+    //defaultObj.haste = 802
+    //defaultObj.special = 1693
+    //defaultObj.haste = 752
+    //defaultObj.special = 1743
+    //defaultObj.haste = 702
+    //defaultObj.special = 1793
+    //defaultObj.haste = 652
+    //defaultObj.special = 1843
+
+
+
     etcObj.expeditionStats = Math.floor((data.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5 // 원정대 힘민지
 
 
@@ -532,6 +585,7 @@ export async function getCharacterProfile(data, dataBase) {
         atkPlus: 0,
         atkPer: 0,
         weaponAtkPlus: 0,
+        weaponAtkBonus: 0,
         criticalDamagePer: 0,
         criticalChancePer: 0,
         addDamagePer: 0,
@@ -556,12 +610,13 @@ export async function getCharacterProfile(data, dataBase) {
         finalDamagePer: 1,
         finalDamagePerEff: 1,
         criFinalDamagePer: 1,
+        devilDamagePer: 1,
     }
 
     bangleOptionArry.forEach(function (realBangleArry, realIdx) {
 
-        let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff', 'carePower']
-        let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff', 'atkBuffPlus']
+        let plusArry = ['atkPlus', 'atkPer', 'weaponAtkPlus', 'criticalDamagePer', 'criticalChancePer', 'addDamagePer', 'moveSpeed', 'atkSpeed', "skillCool", 'atkBuff', 'damageBuff', 'carePower', 'weaponAtkBonus']
+        let perArry = ['weaponAtkPer', 'finalDamagePer', 'criFinalDamagePer', 'finalDamagePerEff', 'atkBuffPlus', "devilDamagePer"]
         let statsArry = ["치명:crit", "특화:special", "신속:haste", "힘:str", "민첩:dex", "지능:int", "최대 생명력:statHp"];
 
         statsArry.forEach(function (stats) {
@@ -601,11 +656,18 @@ export async function getCharacterProfile(data, dataBase) {
             perArry.forEach(function (value) {
                 if (!(validValue[value] == undefined)) {
                     // console.log(value+" : "+ bangleObj[value])
-                    bangleObj[value] *= (validValue[value] / 100) + 1
+                    bangleObj[value] *= (validValue[value] / 100) + 1 // <== 
                 }
             })
         }
     })
+    let devilCheck = localStorage.getItem("devilDamage");
+    // if (devilCheck !== "true") {
+    console.log(bangleObj)
+    if (devilCheck === "true") {
+        // bangleObj.devilDamagerPer = 1;
+        bangleObj.finalDamagePer = bangleObj.finalDamagePer * bangleObj.devilDamagePer;
+    }
     /* **********************************************************************************************************************
      * name		              :	  bangleBlockStats
      * version                :   2.0
@@ -1135,7 +1197,7 @@ export async function getCharacterProfile(data, dataBase) {
 
             } else if (realElixir.name == filterArry.name && !(filterArry.utilityPower == undefined)) {
 
-                elixirObj.utilityPower += filterArry.utilityPower[realElixir.level - 1]
+                elixirObj.utilityPower += filterArry.utilityPower[realElixir.level - 1] //이새끼가 문제같은데 얘만 문제인지 모르겠네
 
             } else if (realElixir.name == filterArry.name && !(filterArry.statHp == undefined)) {
 
@@ -1144,7 +1206,7 @@ export async function getCharacterProfile(data, dataBase) {
 
         })
     })
-
+    console.log(elixirObj.utilityPower)
     Modules.originFilter.elixirCalFilter.forEach(function (arr) {
 
     })
@@ -1855,7 +1917,7 @@ export async function getCharacterProfile(data, dataBase) {
 
             gemSkillArry.forEach(function (gemListArry) {
                 if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
-                // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
+                    // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
                     // 해당 보석의 실제 쿨감 수치 가져오기
                     let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                     let coolValue = gemType[`level${gemListArry.level}`];
@@ -1911,7 +1973,7 @@ export async function getCharacterProfile(data, dataBase) {
             } else {
                 etcAverageValue = 1;
             }
-            
+
             // 실제 유저가 장착한 보석의 딜 비율을 가져오는 함수
             function getLevels(gemPerObj, skillArray) {
                 let result = [];
@@ -1981,11 +2043,11 @@ export async function getCharacterProfile(data, dataBase) {
     // console.log("잼체크함수",gemCheckFnc())
     etcObj.gemCheckFnc = gemCheckFnc();
 
-    
+
     /* **********************************************************************************************************************
      * name		              :	  supportGemCheck()
      * version                :   2.0
-     * description            :   서폿의 보석 딜증 및 공증 스킬 쿨타임 계산산
+     * description            :   서폿의 보석 딜증 및 공증 스킬 쿨타임 계산
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
 
@@ -2041,16 +2103,16 @@ export async function getCharacterProfile(data, dataBase) {
             let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
             let atkBuffACdr = ['천상의 연주', '신의 분노', '묵법 : 해그리기']
             let atkBuffBCdr = ['음파 진동', '천상의 축복', '묵법 : 해우물']
-            
+
             let gemInfo = JSON.parse(gem.Tooltip)
             let type = gemInfo.Element_000.value
-            
+
             let level
             if (!(gemInfo.Element_004.value == null)) {
                 level = gemInfo.Element_004.value.replace(/\D/g, "")
             } else {
             }
-            
+
             let skill
             if (!(gemInfo.Element_006.value.Element_001 == undefined)) {
                 skill = gemInfo.Element_006.value.Element_001.match(/>([^<]+)</)[1]
@@ -2090,7 +2152,7 @@ export async function getCharacterProfile(data, dataBase) {
 
             atkBuffBCdr.forEach(function (buffSkill) {
                 if (skill == buffSkill) {
-                    
+
                     if (type.includes("작열") || type.includes("홍염")) {
                         // gemPerObj에서 해당 보석 타입 찾기
                         const gemType = type.includes("작열") ? "작열" : "홍염";
@@ -2100,7 +2162,7 @@ export async function getCharacterProfile(data, dataBase) {
                         if (gemData && level) {
                             // 레벨에 맞는 실제 값 가져오기
                             const coolValue = gemData[`level${level}`];
-                            
+
                             gemObj.atkBuffBCdr += coolValue; // 레벨 대신 실제 값 사용
                         } else {
                         }
@@ -2242,260 +2304,69 @@ export async function getCharacterProfile(data, dataBase) {
         let healthValue = jobObj.healthPer;
         const isSupport = etcObj.supportCheck === "서폿" || etcObj.supportCheck === "진실된 용맹" || etcObj.supportCheck === "회귀" || etcObj.supportCheck === "심판자"; // isSupport 값 계산
 
-        // 체력 계산 관련 추가 로그
-        //console.log("==== 체력 계산 기본 정보 ====");
-        //console.log("최대 체력(maxHealth):", maxHealth);
-        //console.log("기본 체력(baseHealth):", baseHealth, "내역:", {
-        //    defaultHp: defaultObj.statHp,
-        //    elixirHp: elixirObj.statHp,
-        //    accHp: accObj.statHp,
-        //    hyperHp: hyperObj.statHp,
-        //    bangleHp: bangleObj.statHp
-        //});
-        //console.log("생명 활성력(vitalityRate):", vitalityRate);
-        //console.log("직업 체력 계수(healthValue):", healthValue);
-
-        // --- 상수 정의 ---
-        const KARMA_HP_PER_LEVEL = 400; // 외부로 이동
-
-        // --- calculateKarmaLevel 함수: 카르마 레벨 추정 ---
         function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport) {
-            const PET_PERCENTS = [0, 0.01, 0.02, 0.03, 0.04, 0.05];
-            const RANGER_PERCENTS = [0, 0.008, 0.014, 0.02];
             const KARMA_HP_PER_LEVEL = 400;
-            const EXACT_HP_TOLERANCE = 2.5;
+            // --- 단일 계산 (펫 0%, 방범대 0% 가정) ---
+            const petPercent = 0;
+            const rangerPercent = 0;
+            const currentCardPercent = cardHP || 0;
+            const percentFactor = (1 + petPercent + rangerPercent + currentCardPercent);
+            const flatHpBonus = 0;
 
-            let allResults = [];
+            // 1. 카르마 레벨 역산
+            const estimatedKarma = ((maxHealth / (percentFactor * vitalityRate)) - baseHealth - flatHpBonus) / KARMA_HP_PER_LEVEL;
+            const roundedValue = Math.round(estimatedKarma);
+            const proximity = Math.abs(estimatedKarma - roundedValue);
+            const isPossible = !isNaN(estimatedKarma) && estimatedKarma >= -0.5 && roundedValue <= 30;
 
-            // 1. 모든 버프 조합에 대해 카르마 레벨 역산 및 후보 생성
-            for (let petIdx = 0; petIdx < PET_PERCENTS.length; petIdx++) {
-                for (let rangerIdx = 0; rangerIdx < RANGER_PERCENTS.length; rangerIdx++) {
-                    const petPercent = PET_PERCENTS[petIdx];
-                    const rangerPercent = RANGER_PERCENTS[rangerIdx];
-                    const currentCardPercent = cardHP || 0;
-                    const percentFactor = (1 + petPercent + rangerPercent + currentCardPercent);
-                    const flatHpBonus = 0;
+            let finalBestResult = null;
 
-                    const estimatedKarma = ((maxHealth / (percentFactor * vitalityRate)) - baseHealth - flatHpBonus) / KARMA_HP_PER_LEVEL;
-                    const roundedValue = Math.round(estimatedKarma);
-                    const proximity = Math.abs(estimatedKarma - roundedValue);
-                    const isPossible = !isNaN(estimatedKarma) && estimatedKarma >= -0.5 && roundedValue <= 30;
+            if (isPossible) {
+                // 2. 유효한 경우, 결과 객체 생성
+                const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL;
+                const sumForRounded = baseHealth + flatHpBonus + karmaHpForRounded;
+                const step1_unfloored = sumForRounded * vitalityRate;
+                const step1_floored = Math.floor(step1_unfloored);
+                const step2_unfloored = step1_floored * percentFactor;
+                const maxHpUsingRoundedKarma = Math.floor(step2_unfloored);
 
-                    const karmaHpForRounded = roundedValue * KARMA_HP_PER_LEVEL;
-                    const sumForRounded = baseHealth + flatHpBonus + karmaHpForRounded;
-                    // Original calculation:
-                    // const intermediateRounded = sumForRounded * vitalityRate;
-                    // const maxHpUsingRoundedKarma = intermediateRounded * percentFactor;
-
-                    // New calculation with two-step flooring:
-                    const step1_unfloored = sumForRounded * vitalityRate;
-                    const step1_floored = Math.floor(step1_unfloored); // Step 1: Floor after applying vitalityRate
-                    const step2_unfloored = step1_floored * percentFactor;
-                    const maxHpUsingRoundedKarma = Math.floor(step2_unfloored); // Step 2: Floor after applying percentage bonuses
-
-                    const totalPercentBonus = petPercent + rangerPercent;
-                    let unifiedDesc = `펫${petIdx}|방범대${rangerIdx}`;
-                    if (Math.abs(totalPercentBonus - 0.02) < 0.001) unifiedDesc = `효과(2%)`;
-                    else if (Math.abs(totalPercentBonus - 0.05) < 0.001) unifiedDesc = `효과(5%)`;
-
-                    // --- maxHpUsingRoundedKarma 계산 (이중 버림 유지) ---
-                    const sumBasedOnExactKarma = baseHealth + flatHpBonus + (estimatedKarma * KARMA_HP_PER_LEVEL);
-                    const intermediateExact = sumBasedOnExactKarma * vitalityRate;
-                    const calculatedMaxHpExact = intermediateExact * percentFactor;
-
-                    allResults.push({
-                        formulaDesc: unifiedDesc, rangerIdx: rangerIdx,
-                        karmaExact: estimatedKarma, karmaRounded: roundedValue, proximity: proximity,
-                        isPossible: isPossible, buffLevelSum: petIdx + rangerIdx,
-                        maxHpUsingRoundedKarma: maxHpUsingRoundedKarma,
-                        calculatedMaxHpExact: calculatedMaxHpExact // << 이게 포함되었는지 확인
+                // --- 추가 검증: 계산된 체력이 실제 체력과 크게 다른지 확인 ---
+                if (Math.abs(maxHealth - maxHpUsingRoundedKarma) >= 2) {
+                    console.warn("Karma Calc Warning: Calculated HP differs significantly from input HP.", {
+                        inputMaxHp: maxHealth,
+                        calculatedHp: maxHpUsingRoundedKarma,
+                        difference: Math.abs(maxHealth - maxHpUsingRoundedKarma)
                     });
+                    return {
+                        bestResult: { formulaDesc: "오류: 체력 불일치", karmaLevel: '미등록', exactValue: NaN, proximity: Infinity },
+                        allResults: [] // 결과 없음을 명시
+                    };
                 }
-            }
+                // --- 추가 검증 끝 ---
 
-            // 2. 필터링: 유효성, Proximity, 중복 제거, Low Proximity
-            const possibleResults = allResults.filter(r => r.isPossible);
-            if (possibleResults.length === 0) {
-                console.error("Karma Calc Error: No possible scenarios", { maxHealth, baseHealth, vitalityRate });
-                return { bestResult: { formulaDesc: "오류: 추정 불가", karmaLevel: 0, exactValue: NaN, proximity: Infinity }, allResults };
-            }
+                const sumBasedOnExactKarma = baseHealth + flatHpBonus + (estimatedKarma * KARMA_HP_PER_LEVEL);
+                const intermediateExact = sumBasedOnExactKarma * vitalityRate;
+                const calculatedMaxHpExact = intermediateExact * percentFactor;
 
-            const filteredByProximity = possibleResults.filter(r => r.proximity <= 0.02);
-            const workingResultsStep1 = filteredByProximity.length > 0 ? filteredByProximity : possibleResults;
-
-            const uniqueResults = [];
-            const seenKeys = new Set();
-            workingResultsStep1.forEach(r => {
-                const key = `${r.karmaRounded}-${r.proximity.toFixed(5)}`;
-                if (!seenKeys.has(key)) { uniqueResults.push(r); seenKeys.add(key); }
-            });
-            let currentWorkingResults = uniqueResults;
-
-            const lowProximityMatches = currentWorkingResults.filter(r => r.proximity < 0.005);
-            if (lowProximityMatches.length > 0) currentWorkingResults = lowProximityMatches;
-
-            if (currentWorkingResults.length === 0) {
-                console.error("Karma Calc Error: No candidates after filtering");
-                return { bestResult: { formulaDesc: "오류: 유효 후보 없음", karmaLevel: 0, exactValue: NaN, proximity: Infinity }, allResults: [] };
-            }
-
-            // 3. 정확한 체력 일치 확인 (maxHpUsingRoundedKarma 기준)
-            const exactMatches = currentWorkingResults.filter(r =>
-                Math.abs(maxHealth - r.maxHpUsingRoundedKarma) < EXACT_HP_TOLERANCE
-            );
-            let exactMatchFound = exactMatches.length > 0;
-            let initialBestResult; // 먼저 정렬된 결과 중 최상위를 찾음
-            let candidates = []; // <--- Declare candidates here
-            let proximityFilteredCandidates = []; // 스코프 문제 해결을 위해 외부 선언
-            let proximityFilteredWorkingResults = []; // 스코프 문제 해결을 위해 외부 선언
-            let finalContenders = []; // 최종 후보 결정을 위한 리스트
-
-            // --- 후보 비교 함수 ---
-            function compareCandidates(a, b) {
-                const diffA_rounded = Math.abs(maxHealth - a.maxHpUsingRoundedKarma);
-                const diffB_rounded = Math.abs(maxHealth - b.maxHpUsingRoundedKarma);
-                const TIE_THRESHOLD_ROUNDED = 0.1; // 1단계 동점 처리 임계값
-
-                // 1단계: maxHpUsingRoundedKarma 차이 비교
-                if (Math.abs(diffA_rounded - diffB_rounded) >= TIE_THRESHOLD_ROUNDED) {
-                    const result = diffA_rounded - diffB_rounded;
-                    return result; // 차이가 크면 바로 결정
-                }
-
-                // 2단계: calculatedMaxHpExact 차이 비교 (1단계에서 동점 시)
-                // calculatedMaxHpExact가 없을 경우 대비 (nullish coalescing)
-                const exactHpA = a.calculatedMaxHpExact ?? Infinity;
-                const exactHpB = b.calculatedMaxHpExact ?? Infinity;
-                const diffA_exact = Math.abs(maxHealth - exactHpA);
-                const diffB_exact = Math.abs(maxHealth - exactHpB);
-
-                if (diffA_exact !== diffB_exact) { // 정확히 같지 않으면 비교
-                    const result = diffA_exact - diffB_exact;
-                    return result;
-                }
-
-
-                // 3단계: proximity 비교 (1, 2단계 모두 동점 시)
-                if (a.proximity === 0 && b.proximity === 0) {
-                    return 0;
-                }
-                if (a.proximity === 0) {
-                    return -1;
-                }
-                if (b.proximity === 0) {
-                    return 1;
-                }
-                const result = a.proximity - b.proximity;
-                return result;
-            }
-            // --- 비교 함수 끝 ---
-
-            // 4. 최종 후보 선택
-            if (exactMatchFound) {
-                // 단독 펫1 후보 제외 시도
-                const filteredMatches = exactMatches.filter(match => {
-                    const petIdx = match.buffLevelSum - match.rangerIdx;
-                    return !(petIdx === 1 && match.rangerIdx === 0);
-                });
-                // Assign to the 'candidates' declared outside
-                candidates = filteredMatches.length > 0 ? filteredMatches : exactMatches;
-
-                // Proximity 필터링 제거: 아래 filter 라인 및 관련 변수 사용 로직 수정
-                candidates.sort(compareCandidates); // 우선 순위 결정을 위해 먼저 정렬
-                // proximityFilteredCandidates = candidates.filter(c => c.proximity >= 0.0003); // 필터링 제거
-                // const effectiveCandidates = proximityFilteredCandidates.length > 0 ? proximityFilteredCandidates : candidates; // effective 변수 불필요, candidates 직접 사용
-
-                // 필터링된 리스트에서 최상위 후보 선택 -> 정렬된 candidates 에서 직접 선택
-                initialBestResult = candidates[0]; // candidates.sort()는 이미 위에서 수행됨
-                finalContenders = candidates; // 최종 후보 리스트 저장 (Proximity 필터링 거치지 않음)
-
-            } else { // 정확한 일치 없을 경우
-                currentWorkingResults.sort(compareCandidates); // Rounded HP diff -> proximity 정렬
-
-                // Proximity 필터링 제거: 아래 filter 라인 및 관련 변수 사용 로직 수정
-                // proximityFilteredWorkingResults = currentWorkingResults.filter(c => c.proximity >= 0.0003); // 필터링 제거
-                // const effectiveWorkingResults = proximityFilteredWorkingResults.length > 0 ? proximityFilteredWorkingResults : currentWorkingResults; // effective 변수 불필요, currentWorkingResults 직접 사용
-
-                // 필터링된 리스트에서 최상위 후보 선택 -> 정렬된 currentWorkingResults 에서 직접 선택
-                initialBestResult = currentWorkingResults[0]; // currentWorkingResults.sort()는 이미 위에서 수행됨
-                finalContenders = currentWorkingResults; // 최종 후보 리스트 저장 (Proximity 필터링 거치지 않음)
-
-                // initialBestResult = currentWorkingResults[0]; // 기존 로직 주석 처리 또는 삭제
-            }
-
-            // --- 서포터 방범대 0 우선 로직 추가 ---
-            let finalBestResult = initialBestResult; // 기본값은 정렬 최상위 결과
-            if (!isSupport) {
-                // Proximity 필터링이 제거되었으므로, candidates 또는 currentWorkingResults 직접 참조
-                const relevantSortedCandidates = exactMatchFound
-                    ? candidates // proximityFiltered* 대신 candidates 사용
-                    : currentWorkingResults; // proximityFiltered* 대신 currentWorkingResults 사용
-
-                // 정렬된 리스트에서 rangerIdx === 0 인 가장 높은 순위의 후보 찾기
-                if (relevantSortedCandidates.length > 0) {
-                    const supportPreferredResult = relevantSortedCandidates.find(
-                        candidate => candidate.rangerIdx === 0 || candidate.formulaDesc === "효과(5%)"
-                    );
-
-                    // 방범대0 후보가 있고, 그게 현재 최선이 아니고, 두 후보의 maxHpUsingRoundedKarma 차이가 1 미만일 때만 진입
-                    if (supportPreferredResult && supportPreferredResult !== initialBestResult) {
-                        const diffSupport = Math.abs(maxHealth - supportPreferredResult.maxHpUsingRoundedKarma);
-                        if (diffSupport <= 1.0) {
-                            // const SUPPORT_PRIORITY_TOLERANCE = 1.0; // 허용 오차 (실제 maxHealth와의 차이 비교 기준)
-
-                            // 방범대0 후보의 체력 오차가 (원래 최선 후보의 오차 + 허용 오차) 이하일 경우에만 우선 적용
-                            finalBestResult = supportPreferredResult;
-                            // console.log("Support Priority Applied (Diff <= 1): Switched to Ranger 0 or Effect(5%) candidate."); // 디버깅 로그
-                            // }
-                        }
-                    }
-                }
-            }
-            // --- 서포터 우선 로직 끝 ---
-
-            // --- 최종 결정: 후보 2명 이상 시 최고 Proximity 우선 --- (새 로직)
-            if (finalContenders.length >= 2) {
-                //console.log(`[카르마 디버그] 최종 후보 ${finalContenders.length}명 발견. 최고 근접도(Proximity) 규칙 적용.`);
-                // proximity 기준으로 내림차순 정렬 (높은 값이 먼저 오도록)
-                finalContenders.sort((a, b) => b.proximity - a.proximity);
-                const highestProximityCandidate = finalContenders[0];
-                //console.log(`[카르마 디버그] 최고 근접도(${highestProximityCandidate.proximity.toFixed(6)}) 후보:`, JSON.stringify(highestProximityCandidate));
-
-                if (finalBestResult !== highestProximityCandidate) {
-                    //console.log(`[카르마 디버그] 이전 최종 후보를 최고 근접도 후보로 변경합니다.`);
-                    finalBestResult = highestProximityCandidate;
-                } else {
-                    //console.log(`[카르마 디버그] 기존 최종 후보가 이미 최고 근접도 후보입니다.`);
-                }
-            }
-
-            // --- 최종 결정: 특별 후보(펫0/펫5) 우선 검증 --- (수정된 로직)
-            const provisionalFinalBestResult = finalBestResult; // 현재까지의 최선 후보 저장
-            const pet0Candidate = finalContenders.find(c => c.buffLevelSum === 0);
-            // const effect5Candidate = finalContenders.find(c => c.formulaDesc === "효과(5%)"); // 기존 조건 주석 처리
-            const pet5Candidate = finalContenders.find(c => c.buffLevelSum - c.rangerIdx === 5); // 펫 인덱스 5 확인
-
-            //console.log(`[카르마 디버그] 특별 후보 검증 시작. 임시 최종 후보:`, JSON.stringify(provisionalFinalBestResult));
-            //console.log(`[카르마 디버그] 펫0 후보 발견 여부: ${!!pet0Candidate}, 펫5 후보 발견 여부: ${!!pet5Candidate}`); // 로그 수정
-
-            if (pet0Candidate && !pet5Candidate) {
-                // 펫0 후보만 존재
-                //console.log(`[카르마 디버그] 펫0 후보만 발견되어 최종 후보로 선택합니다.`);
-                finalBestResult = pet0Candidate;
-            } else if (!pet0Candidate && pet5Candidate) {
-                // 펫5 후보만 존재 (로그 수정)
-                //console.log(`[카르마 디버그] 펫5 후보만 발견되어 최종 후보로 선택합니다.`);
-                finalBestResult = pet5Candidate;
-            } else if (pet0Candidate && pet5Candidate) {
-                // 둘 다 존재: 임시 최종 후보 유지 (로그 수정)
-                //console.log(`[카르마 디버그] 펫0 및 펫5 후보가 모두 존재하여, 이전 단계의 임시 최종 후보를 유지합니다.`);
-                finalBestResult = provisionalFinalBestResult; // 명시적으로 유지
+                finalBestResult = {
+                    formulaDesc: "펫0|방범대0", // 고정
+                    rangerIdx: 0, // 고정
+                    karmaExact: estimatedKarma,
+                    karmaRounded: roundedValue,
+                    proximity: proximity,
+                    isPossible: isPossible,
+                    buffLevelSum: 0, // 고정
+                    maxHpUsingRoundedKarma: maxHpUsingRoundedKarma,
+                    calculatedMaxHpExact: calculatedMaxHpExact
+                };
             } else {
-                // 둘 다 없음: 임시 최종 후보 유지 (로그 수정)
-                //console.log(`[카르마 디버그] 펫0 및 펫5 후보가 모두 없어, 이전 단계의 임시 최종 후보를 유지합니다.`);
-                finalBestResult = provisionalFinalBestResult; // 명시적으로 유지
+                // 3. 유효하지 않은 경우, 오류 반환
+                console.error("Karma Calc Error: Calculation resulted in impossible value", { maxHealth, baseHealth, vitalityRate, estimatedKarma });
+                return {
+                    bestResult: { formulaDesc: "오류: 추정 불가 (계산 오류)", karmaLevel: '미등록', exactValue: NaN, proximity: Infinity },
+                    allResults: [] // 결과 없음을 명시
+                };
             }
-
 
             // 5. 최종 결과 반환 (범위 보정 포함)
             let finalKarmaLevel = Math.round(finalBestResult.karmaExact);
@@ -2508,7 +2379,7 @@ export async function getCharacterProfile(data, dataBase) {
                     exactValue: finalBestResult.karmaExact.toFixed(4),
                     proximity: finalBestResult.proximity.toFixed(4)
                 },
-                allResults: currentWorkingResults
+                allResults: [finalBestResult] // 단일 결과만 배열에 포함
             };
         }
         // --- calculateKarmaLevel 함수 끝 ---
@@ -2520,42 +2391,17 @@ export async function getCharacterProfile(data, dataBase) {
         //console.log("카르마 추정 결과:", result.bestResult);
         //console.log("모든 가능성:", result.allResults);
 
-        etcObj.evolutionkarmaRank = 0; // 기본값 설정
+        etcObj.evolutionkarmaRank = '미등록'; // 기본값 설정
         etcObj.evolutionkarmaPoint = result.bestResult.karmaLevel;
 
-        // 랭크 계산
+        // 랭크 계산;
         if (etcObj.evolutionkarmaPoint >= 21) etcObj.evolutionkarmaRank = 6;
         else if (etcObj.evolutionkarmaPoint >= 17) etcObj.evolutionkarmaRank = 5;
         else if (etcObj.evolutionkarmaPoint >= 13) etcObj.evolutionkarmaRank = 4;
         else if (etcObj.evolutionkarmaPoint >= 9) etcObj.evolutionkarmaRank = 3;
         else if (etcObj.evolutionkarmaPoint >= 5) etcObj.evolutionkarmaRank = 2;
         else if (etcObj.evolutionkarmaPoint >= 1) etcObj.evolutionkarmaRank = 1;
-
-
-        // 진화 카르마 랭크에따른 진피 및 낙인력 추가
-        if (etcObj.evolutionkarmaRank === 6) {
-            arkObj.evolutionDamage += 0.00;
-            arkObj.stigmaPer += 0
-        } else if (etcObj.evolutionkarmaRank === 5) {
-            arkObj.evolutionDamage += 0.00;
-            arkObj.stigmaPer += 0
-        } else if (etcObj.evolutionkarmaRank === 4) {
-            arkObj.evolutionDamage += 0.00;
-            arkObj.stigmaPer += 0
-        } else if (etcObj.evolutionkarmaRank === 3) {
-            arkObj.evolutionDamage += 0.00;
-            arkObj.stigmaPer += 0
-        } else if (etcObj.evolutionkarmaRank === 2) {
-            arkObj.evolutionDamage += 0.00;
-            arkObj.stigmaPer += 0
-        } else if (etcObj.evolutionkarmaRank === 1) {
-            arkObj.evolutionDamage += 0.00;
-            arkObj.stigmaPer += 0
-        } else {
-            arkObj.evolutionDamage += 0.00;
-            arkObj.stigmaPer += 0
-        }
-
+        else etcObj.evolutionkarmaRank = '미등록';
 
         // 깨달음 포인트 및 무기 공격력 계산
         let enlightkarmaRank = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);
@@ -2716,7 +2562,7 @@ export async function getCharacterProfile(data, dataBase) {
         const safeHyperWeaponAtkPlus = hyperWeaponAtkPlus || 0;
         const safeElixirWeaponAtkPlus = elixirWeaponAtkPlus || 0;
         const safeAccWeaponAtkPlus = accWeaponAtkPlus || 0;
-        const safeBangleWeaponAtkPlus = bangleWeaponAtkPlus || 0;
+        const safeBangleWeaponAtkPlus = 8100 || 0;
         const safeAccWeaponAtkPer = accWeaponAtkPer || 0;
         const currentKnownFlatWeaponAtkSum = safeDefaultWeaponAtk + safeHyperWeaponAtkPlus + safeElixirWeaponAtkPlus + safeAccWeaponAtkPlus + safeBangleWeaponAtkPlus;
         console.debug(`[estimateKarmaLevel] Flat Weapon Atk Sum (No Feast): ${currentKnownFlatWeaponAtkSum}`);
@@ -2859,7 +2705,7 @@ export async function getCharacterProfile(data, dataBase) {
     //console.log(karmaInputData)
     // --- estimateKarmaLevel 함수 호출 및 결과 출력 ---
     const estimatedBestKarmaLevel = estimateKarmaLevel(karmaInputData);
-    console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
+    //console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
 
     // 추후 estimatedBestKarmaLevel 값을 etcObj 등에 저장하여 활용 가능
     // etcObj.estimatedEnlightKarmaLevel = estimatedBestKarmaLevel;

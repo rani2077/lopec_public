@@ -78,6 +78,7 @@ async function simulatorInputCalc() {
         document.querySelector(".wrapper").style.display = "block";
 
         let apiData = await Modules.apiCalcValue.apiCalcValue(nameParam);
+
         console.log("API데이터", apiData)
         let data = apiData.data;
         let extractValue = apiData.extractValue;
@@ -86,6 +87,7 @@ async function simulatorInputCalc() {
         cachedDetailInfo.extractValue = extractValue;
         cachedDetailInfo.specPoint = specPoint;
         cachedData = data;
+
 
         // await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset")); // 캐싱없이 api갱신
         await originSpecPointToHtml(specPoint, extractValue);
@@ -400,7 +402,9 @@ async function simulatorInputCalc() {
                 atkBuffPlus: 1,
                 damageBuff: 0,
                 weaponAtkPlus: 0,
+                weaponAtkBonus: 0,
                 finalDamagePer: 1,
+                devilDamagePer: 1,
                 skillCool: 0,
                 statHp: 0,
                 carePower: 0,
@@ -431,7 +435,6 @@ async function simulatorInputCalc() {
             }
         })
         arr = objKeyValueCombine(arr)
-        console.log(arr)
         let bangleElement = document.querySelector(".accessory-area .accessory-item.bangle");
         let statsElements = bangleElement.querySelectorAll(".stats");
         let numberElements = bangleElement.querySelectorAll("input.option");
@@ -458,7 +461,7 @@ async function simulatorInputCalc() {
             // 그룹화된 데이터를 바탕으로 새로운 객체 생성
             for (const key in grouped) {
                 // if (key === "finalDamagePer" || key === "atkBuffPlus" /finalDamagePer|atkBuffPlus/.test(key)) {
-                if (/finalDamagePer|atkBuffPlus/.test(key)) {
+                if (/finalDamagePer|atkBuffPlus|devilDamagePer/.test(key)) {
                     // finalDamagePer, atkBuffPlus는 곱셈
                     combinedObj[key] = grouped[key].reduce((acc, val) => acc * val, 1);
                 } else {
@@ -466,8 +469,14 @@ async function simulatorInputCalc() {
                     combinedObj[key] = grouped[key].reduce((acc, val) => acc + val, 0);
                 }
             }
+            let devilCheck = localStorage.getItem("devilDamage");
+            console.log(combinedObj)
+            if (devilCheck === "true") {
+                combinedObj.finalDamagePer = combinedObj.finalDamagePer * combinedObj.devilDamagePer;
+            }
             return combinedObj;
-        } return arr;
+        }
+        return arr;
     }
     // console.log("bangleOptionCalc()", bangleOptionCalc())
 
@@ -1081,78 +1090,78 @@ async function simulatorInputCalc() {
             { name: "작열", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
         ]
 
-    if (!(cachedData.ArmoryGem.Gems == null) && supportCheck == "서폿") {
-        cachedData.ArmoryGem.Gems.forEach(function (gem) {
-            let atkBuff = ['천상의 축복', '신의 분노', '천상의 연주', '음파 진동', '묵법 : 해그리기', '묵법 : 해우물']
-            let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
-            let atkBuffACdr = ['천상의 연주', '신의 분노', '묵법 : 해그리기']
-            let atkBuffBCdr = ['음파 진동', '천상의 축복', '묵법 : 해우물']
-            
-            let gemInfo = JSON.parse(gem.Tooltip)
-            let type = gemInfo.Element_000.value
-            
-            let level
-            if (!(gemInfo.Element_004.value == null)) {
-                level = gemInfo.Element_004.value.replace(/\D/g, "")
-            } else {
-            }
-            
-            let skill
-            if (!(gemInfo.Element_006.value.Element_001 == undefined)) {
-                skill = gemInfo.Element_006.value.Element_001.match(/>([^<]+)</)[1]
-            } else {
-            }
+        if (!(cachedData.ArmoryGem.Gems == null) && supportCheck == "서폿") {
+            cachedData.ArmoryGem.Gems.forEach(function (gem) {
+                let atkBuff = ['천상의 축복', '신의 분노', '천상의 연주', '음파 진동', '묵법 : 해그리기', '묵법 : 해우물']
+                let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
+                let atkBuffACdr = ['천상의 연주', '신의 분노', '묵법 : 해그리기']
+                let atkBuffBCdr = ['음파 진동', '천상의 축복', '묵법 : 해우물']
 
-            // 기존 코드 유지
-            atkBuff.forEach(function (buffSkill) {
-                if (skill == buffSkill && type.includes("겁화")) {
-                    result.atkBuff += Number(level)
+                let gemInfo = JSON.parse(gem.Tooltip)
+                let type = gemInfo.Element_000.value
+
+                let level
+                if (!(gemInfo.Element_004.value == null)) {
+                    level = gemInfo.Element_004.value.replace(/\D/g, "")
+                } else {
                 }
-            })
 
-            damageBuff.forEach(function (buffSkill) {
-                if (skill == buffSkill && type.includes("겁화")) {
-                    result.damageBuff += Number(level)
+                let skill
+                if (!(gemInfo.Element_006.value.Element_001 == undefined)) {
+                    skill = gemInfo.Element_006.value.Element_001.match(/>([^<]+)</)[1]
+                } else {
                 }
-            })
 
-            // 작열/홍염 보석에 대한 실제 값 계산
-            atkBuffACdr.forEach(function (buffSkill) {
-                if (skill == buffSkill) {
-                    if (type.includes("작열") || type.includes("홍염")) {
-                        // gemPerObj에서 해당 보석 타입 찾기
-                        const gemType = type.includes("작열") ? "작열" : "홍염";
-                        const gemData = gemPerObj.find(g => g.name === gemType);
+                // 기존 코드 유지
+                atkBuff.forEach(function (buffSkill) {
+                    if (skill == buffSkill && type.includes("겁화")) {
+                        result.atkBuff += Number(level)
+                    }
+                })
 
-                        if (gemData && level) {
-                            // 레벨에 맞는 실제 값 가져오기
-                            const coolValue = gemData[`level${level}`];
-                            result.atkBuffACdr += coolValue; // 레벨 대신 실제 값 사용
-                        } else {
+                damageBuff.forEach(function (buffSkill) {
+                    if (skill == buffSkill && type.includes("겁화")) {
+                        result.damageBuff += Number(level)
+                    }
+                })
+
+                // 작열/홍염 보석에 대한 실제 값 계산
+                atkBuffACdr.forEach(function (buffSkill) {
+                    if (skill == buffSkill) {
+                        if (type.includes("작열") || type.includes("홍염")) {
+                            // gemPerObj에서 해당 보석 타입 찾기
+                            const gemType = type.includes("작열") ? "작열" : "홍염";
+                            const gemData = gemPerObj.find(g => g.name === gemType);
+
+                            if (gemData && level) {
+                                // 레벨에 맞는 실제 값 가져오기
+                                const coolValue = gemData[`level${level}`];
+                                result.atkBuffACdr += coolValue; // 레벨 대신 실제 값 사용
+                            } else {
+                            }
                         }
                     }
-                }
-            })
+                })
 
-            atkBuffBCdr.forEach(function (buffSkill) {
-                if (skill == buffSkill) {
-                    
-                    if (type.includes("작열") || type.includes("홍염")) {
-                        // gemPerObj에서 해당 보석 타입 찾기
-                        const gemType = type.includes("작열") ? "작열" : "홍염";
-                        const gemData = gemPerObj.find(g => g.name === gemType);
+                atkBuffBCdr.forEach(function (buffSkill) {
+                    if (skill == buffSkill) {
+
+                        if (type.includes("작열") || type.includes("홍염")) {
+                            // gemPerObj에서 해당 보석 타입 찾기
+                            const gemType = type.includes("작열") ? "작열" : "홍염";
+                            const gemData = gemPerObj.find(g => g.name === gemType);
 
 
-                        if (gemData && level) {
-                            // 레벨에 맞는 실제 값 가져오기
-                            const coolValue = gemData[`level${level}`];
-                            
-                            result.atkBuffBCdr += coolValue; // 레벨 대신 실제 값 사용
-                        } else {
+                            if (gemData && level) {
+                                // 레벨에 맞는 실제 값 가져오기
+                                const coolValue = gemData[`level${level}`];
+
+                                result.atkBuffBCdr += coolValue; // 레벨 대신 실제 값 사용
+                            } else {
+                            }
                         }
                     }
-                }
-            })
+                })
 
             })
         }
@@ -1372,7 +1381,7 @@ async function simulatorInputCalc() {
     *********************************************************************************************************************** */
     function evloutionArkCheck() {
         let result = {
-            evolutionBuff: 1,
+            evolutionBuff: 0,
             stigmaPer: 0,
         }
         let evloutionArkPassive = cachedData.ArkPassive.Effects.filter(data => data.Name === "진화");
@@ -1684,6 +1693,8 @@ async function simulatorInputCalc() {
         let supportImportantBuffInfo = [
             //{ name: "공격력 증가", value: Number(originSpecPoint.supportFinalAtkBuff).toFixed(0) + compareValue(cachedDetailInfo.specPoint.supportFinalAtkBuff, originSpecPoint.supportFinalAtkBuff), icon: "bolt-solid" },
             { name: "종합 버프력", value: Number(originSpecPoint.supportAvgBuffPower).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportAvgBuffPower, originSpecPoint.supportAvgBuffPower), icon: "bolt-solid" },
+            { name: "케어력", value: Number(originSpecPoint.supportCarePowerResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportCarePowerResult, originSpecPoint.supportCarePowerResult), icon: "shield-halved-solid" },
+            { name: "유틸력", value: Number(originSpecPoint.supportUtilityPower).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportUtilityPower, originSpecPoint.supportUtilityPower), icon: "book-solid" },
         ]
         let supportBuffInfo = [
             { name: "낙인력", value: Number(originSpecPoint.supportStigmaResult).toFixed(1) + "%" + compareValue(cachedDetailInfo.specPoint.supportStigmaResult, originSpecPoint.supportStigmaResult), icon: "bullseye-solid" },
@@ -1693,16 +1704,14 @@ async function simulatorInputCalc() {
             { name: "팔찌", value: Number(originSpecPoint.supportBangleResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportBangleResult, originSpecPoint.supportBangleResult), icon: "ring-solid" },
         ]
         let supportUtilizationRate = [
+            //{ name: "쿨타임 감소", value: Number(originSpecPoint.supportgemsCoolAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportgemsCoolAvg, originSpecPoint.supportgemsCoolAvg), icon: "gem-solid" },
             { name: "아덴 가동률", value: Number(originSpecPoint.supportIdentityUptime).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportIdentityUptime, originSpecPoint.supportIdentityUptime), icon: "hourglass-half-solid" },
             { name: "초각 가동률", value: Number(originSpecPoint.supportHyperUptime).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportHyperUptime, originSpecPoint.supportHyperUptime), icon: "hourglass-half-solid" },
             { name: "풀버프 가동률", value: Number(originSpecPoint.supportFullBuffUptime).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportFullBuffUptime, originSpecPoint.supportFullBuffUptime), icon: "hourglass-half-solid" },
         ]
-        let supportEffectInfo = [
-            { name: "특성", value: originSpecPoint.supportTotalStatus + compareValue(cachedDetailInfo.specPoint.supportTotalStatus, originSpecPoint.supportTotalStatus), icon: "person-solid" },
-            { name: "케어력", value: Number(originSpecPoint.supportCarePowerResult).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportCarePowerResult, originSpecPoint.supportCarePowerResult), icon: "shield-halved-solid" },
-            { name: "유틸력", value: Number(originSpecPoint.supportUtilityPower).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportUtilityPower, originSpecPoint.supportUtilityPower), icon: "book-solid" },
-            { name: "쿨타임 감소", value: Number(originSpecPoint.supportgemsCoolAvg).toFixed(2) + "%" + compareValue(cachedDetailInfo.specPoint.supportgemsCoolAvg, originSpecPoint.supportgemsCoolAvg), icon: "gem-solid" },
-        ]
+        //let supportEffectInfo = [
+        //    { name: "특성", value: originSpecPoint.supportTotalStatus + compareValue(cachedDetailInfo.specPoint.supportTotalStatus, originSpecPoint.supportTotalStatus), icon: "person-solid" },
+        //]
 
         let result = "";
         if (mobileCheck) {
@@ -1721,7 +1730,7 @@ async function simulatorInputCalc() {
             result += infoWrap("주요 버프", supportImportantBuffInfo);
             result += infoWrap("버프 정보", supportBuffInfo);
             result += infoWrap("가동률", supportUtilizationRate);
-            result += infoWrap("추가 효과", supportEffectInfo);
+            //result += infoWrap("추가 효과", supportEffectInfo);
         }
         element.innerHTML = result;
     }
@@ -4287,7 +4296,7 @@ async function calculateGemData(data) {
             let weightedCoolValueSum = 0; // 가중치가 적용된 쿨감 수치 합계
             gemSkillArry.forEach(function (gemListArry) {
                 if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
-                // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
+                    // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
                     // 해당 보석의 실제 쿨감 수치 가져오기
                     //console.log(gemListArry)
                     let gemType = gemPerObj.find(g => g.name === gemListArry.name);

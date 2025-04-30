@@ -31,6 +31,10 @@
         <section class="sc-info search-page" id="sc-info">
             <div class="group-info">
                 <div class="spec-area shadow minimum flag on">
+                    <div class="devil-box">
+                        <span class="icon"></span>
+                        <input type="checkbox">
+                    </div>
                     <div class="tier-box">
                         <div class="spec-point">로딩중</div>
                         <span class="difference zero">0.00</span>
@@ -112,7 +116,11 @@
                     <ins class="adsbygoogle" style="display:inline-block;width:300px;height:143px"
                         data-ad-client="ca-pub-5125145415518329" data-ad-slot="9880125998"></ins>
                     <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        const hostname = window.location.hostname;
+                        const isLocal = hostname !== 'lopec.kr';
+                        if (!isLocal) {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        }
                     </script>
                 </div>
             </div>
@@ -1037,7 +1045,9 @@
                     <ins class="adsbygoogle" style="display:inline-block;width:300px;height:660px"
                         data-ad-client="ca-pub-5125145415518329" data-ad-slot="5681860685"></ins>
                     <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        if (!isLocal) {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        }
                     </script>
                 </div>
             </div>

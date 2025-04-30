@@ -343,7 +343,7 @@
 }
 
 .sc-info .group-info .spec-area .devil-box .icon:hover:after {
-    content: "대악마 피해";
+    content: "대악마 피해 ☏체크/해제 시 새로고침 됩니다.☏";
     position: absolute;
     left: 0;
     top: 100%;

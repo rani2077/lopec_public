@@ -677,3 +677,17 @@ async function manageExpeditionData(inputName) {
         return null;
     }
 }
+
+
+export async function gemFreeSetSave(gemSlotData) {
+
+    // 'q' 키를 눌렀을 때 로컬 스토리지에 저장하는 이벤트 리스너 추가
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'q' || event.key === 'Q') {
+            const gemSlotString = JSON.stringify(gemSlotData);
+            localStorage.setItem('gemSlot', gemSlotString);
+            console.log("'q' 키 입력 감지: gemSlot 데이터가 로컬 스토리지에 저장되었습니다.", gemSlotString);
+        }
+    });
+}
+

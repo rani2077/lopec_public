@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no;" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -141,7 +141,11 @@
                     <ins class="adsbygoogle" style="display:inline-block;width:300px;height:143px"
                         data-ad-client="ca-pub-5125145415518329" data-ad-slot="9880125998"></ins>
                     <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        const hostname = window.location.hostname;
+                        const isLocal = hostname !== 'lopec.kr';
+                        if (!isLocal) {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        }
                     </script>
                 </div>
             </div>
@@ -580,7 +584,9 @@
                     <ins class="adsbygoogle" style="display:inline-block;width:300px;height:513px"
                         data-ad-client="ca-pub-5125145415518329" data-ad-slot="5681860685"></ins>
                     <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        if (!isLocal) {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        }
                     </script>
                 </div>
             </div>
