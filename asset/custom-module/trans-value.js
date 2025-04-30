@@ -1994,8 +1994,16 @@ export async function getCharacterProfile(data, dataBase) {
         atkBuffADuration: 0,
         atkBuffBCool: 0,
         atkBuffBDuration: 0,
+        //identityRate: 0,
+        //identityPerSpecial: 0,
+        //identityPower: 0,
+        //awakenSkill: 0
     }
     if (data.ArmoryProfile.CharacterClassName == "도화가") {
+        //supportSkillObj.identityRate = 18.394
+        //supportSkillObj.identityPerSpecial = 27.96
+        //supportSkillObj.identityPower = 10
+        //supportSkillObj.awakenSkill = 0.1428
         supportSkillObj.atkBuffACool = 27
         supportSkillObj.atkBuffADuration = 8
         supportSkillObj.atkBuffBCool = 30
@@ -2004,11 +2012,19 @@ export async function getCharacterProfile(data, dataBase) {
         }
         supportSkillObj.atkBuffBDuration = 6
     } else if (data.ArmoryProfile.CharacterClassName == "홀리나이트") {
+        //supportSkillObj.identityRate = 11.095
+        //supportSkillObj.identityPerSpecial = 27.96
+        //supportSkillObj.identityPower = 10
+        //supportSkillObj.awakenSkill = 0.2578
         supportSkillObj.atkBuffACool = 27
         supportSkillObj.atkBuffADuration = 8
         supportSkillObj.atkBuffBCool = 35
         supportSkillObj.atkBuffBDuration = 8
     } else if (data.ArmoryProfile.CharacterClassName == "바드") {
+        //supportSkillObj.identityRate = 19.971
+        //supportSkillObj.identityPerSpecial = 24.964
+        //supportSkillObj.identityPower = 11.5
+        //supportSkillObj.awakenSkill = 0.11
         supportSkillObj.atkBuffACool = 30
         if (data.ArmorySkills[11].Tripods[0].Level == 5) {
             supportSkillObj.atkBuffACool = 24
