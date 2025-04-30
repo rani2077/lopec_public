@@ -180,9 +180,8 @@ export async function specPointCalc(inputObj) {
     //서폿 최종 환산 V2
     let supportSpecPointv1 = supportBuffPower + (finalCarePower * 2.625) + (finalUtilityPower / 5)
     console.log(supportSpecPointv1)
-    let supportCombinedPower = (supportBuffPower ** 0.9) * (supportCarePower ** 0.07) * (supportUtilityPower ** 0.03)
-    let supportSpecPoint = (supportCombinedPower ** 4.369) * 29.5
-
+    let supportCombinedPower = (supportBuffPower ** 0.94) * (supportCarePower ** 0.03) * (supportUtilityPower ** 0.03)
+    let supportSpecPoint = (supportCombinedPower ** 4.233) * 33.4
 
 
 
