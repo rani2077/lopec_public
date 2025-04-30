@@ -156,7 +156,7 @@ const LopecOCR = (function () {
             script.setAttribute('async', '');
             script.setAttribute('type', 'text/javascript');
             script.addEventListener('load', () => {
-                console.log("OpenCV.js 스크립트 로드됨, 초기화 대기 중...");
+                //console.log("OpenCV.js 스크립트 로드됨, 초기화 대기 중...");
             });
             script.addEventListener('error', (e) => {
                 console.error("OpenCV.js 로드 실패", e);
@@ -169,7 +169,7 @@ const LopecOCR = (function () {
             // OpenCV.js는 window.onOpenCVReady가 아닌 cv.onRuntimeInitialized를 사용함
             window.Module = {
                 onRuntimeInitialized: function () {
-                    console.log("OpenCV.js 초기화 완료");
+                    //console.log("OpenCV.js 초기화 완료");
                     isOpenCVLoaded = true;
                     resolve();
                 }

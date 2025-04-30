@@ -1557,6 +1557,10 @@ export async function getCharacterProfile(data, dataBase) {
     let gemObj = {
         atkBuff: 0,
         damageBuff: 0,
+        atkBuffACool: 0,
+        atkBuffBCool: 0,
+        atkBuffACdr: 0,
+        atkBuffBCdr: 0,
     }
 
     // 보석4종 레벨별 비율
@@ -1907,8 +1911,7 @@ export async function getCharacterProfile(data, dataBase) {
             } else {
                 etcAverageValue = 1;
             }
-
-
+            
             // 실제 유저가 장착한 보석의 딜 비율을 가져오는 함수
             function getLevels(gemPerObj, skillArray) {
                 let result = [];
@@ -1978,29 +1981,67 @@ export async function getCharacterProfile(data, dataBase) {
     // console.log("잼체크함수",gemCheckFnc())
     etcObj.gemCheckFnc = gemCheckFnc();
 
+    
+    /* **********************************************************************************************************************
+     * name		              :	  supportGemCheck()
+     * version                :   2.0
+     * description            :   서폿의 보석 딜증 및 공증 스킬 쿨타임 계산산
+     * USE_TN                 :   사용
+     *********************************************************************************************************************** */
 
+    let supportSkillObj = {
+        atkBuffACool: 0,
+        atkBuffADuration: 0,
+        atkBuffBCool: 0,
+        atkBuffBDuration: 0,
+    }
+    if (data.ArmoryProfile.CharacterClassName == "도화가") {
+        supportSkillObj.atkBuffACool = 27
+        supportSkillObj.atkBuffADuration = 8
+        supportSkillObj.atkBuffBCool = 30
+        if (data.ArmorySkills[12].Tripods[0].Level == 5) {
+            supportSkillObj.atkBuffBCool = 24
+        }
+        supportSkillObj.atkBuffBDuration = 6
+    } else if (data.ArmoryProfile.CharacterClassName == "홀리나이트") {
+        supportSkillObj.atkBuffACool = 27
+        supportSkillObj.atkBuffADuration = 8
+        supportSkillObj.atkBuffBCool = 35
+        supportSkillObj.atkBuffBDuration = 8
+    } else if (data.ArmoryProfile.CharacterClassName == "바드") {
+        supportSkillObj.atkBuffACool = 30
+        if (data.ArmorySkills[11].Tripods[0].Level == 5) {
+            supportSkillObj.atkBuffACool = 24
+        }
+        supportSkillObj.atkBuffADuration = 8
+        supportSkillObj.atkBuffBCool = 24
+        supportSkillObj.atkBuffBDuration = 5
+    }
 
-
-
-
-    // 서폿용 보석 스킬명, 스킬수치 구하기
 
     if (!(data.ArmoryGem.Gems == null) && supportCheck() == "서폿") {
-
         data.ArmoryGem.Gems.forEach(function (gem) {
             let atkBuff = ['천상의 축복', '신의 분노', '천상의 연주', '음파 진동', '묵법 : 해그리기', '묵법 : 해우물']
             let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
+            let atkBuffACdr = ['천상의 연주', '신의 분노', '묵법 : 해그리기']
+            let atkBuffBCdr = ['음파 진동', '천상의 축복', '묵법 : 해우물']
+            
             let gemInfo = JSON.parse(gem.Tooltip)
             let type = gemInfo.Element_000.value
+            
             let level
             if (!(gemInfo.Element_004.value == null)) {
                 level = gemInfo.Element_004.value.replace(/\D/g, "")
+            } else {
             }
+            
             let skill
             if (!(gemInfo.Element_006.value.Element_001 == undefined)) {
                 skill = gemInfo.Element_006.value.Element_001.match(/>([^<]+)</)[1]
+            } else {
             }
 
+            // 기존 코드 유지
             atkBuff.forEach(function (buffSkill) {
                 if (skill == buffSkill && type.includes("겁화")) {
                     gemObj.atkBuff += Number(level)
@@ -2013,6 +2054,43 @@ export async function getCharacterProfile(data, dataBase) {
                 }
             })
 
+            // 작열/홍염 보석에 대한 실제 값 계산
+            atkBuffACdr.forEach(function (buffSkill) {
+                if (skill == buffSkill) {
+                    if (type.includes("작열") || type.includes("홍염")) {
+                        // gemPerObj에서 해당 보석 타입 찾기
+                        const gemType = type.includes("작열") ? "작열" : "홍염";
+                        const gemData = gemPerObj.find(g => g.name === gemType);
+
+                        if (gemData && level) {
+                            // 레벨에 맞는 실제 값 가져오기
+                            const coolValue = gemData[`level${level}`];
+                            gemObj.atkBuffACdr += coolValue; // 레벨 대신 실제 값 사용
+                        } else {
+                        }
+                    }
+                }
+            })
+
+            atkBuffBCdr.forEach(function (buffSkill) {
+                if (skill == buffSkill) {
+                    
+                    if (type.includes("작열") || type.includes("홍염")) {
+                        // gemPerObj에서 해당 보석 타입 찾기
+                        const gemType = type.includes("작열") ? "작열" : "홍염";
+                        const gemData = gemPerObj.find(g => g.name === gemType);
+
+
+                        if (gemData && level) {
+                            // 레벨에 맞는 실제 값 가져오기
+                            const coolValue = gemData[`level${level}`];
+                            
+                            gemObj.atkBuffBCdr += coolValue; // 레벨 대신 실제 값 사용
+                        } else {
+                        }
+                    }
+                }
+            })
         })
     }
 
@@ -3271,6 +3349,7 @@ export async function getCharacterProfile(data, dataBase) {
         jobObj,
         hyperObj,
         gemObj,
+        supportSkillObj,
         etcObj,
         htmlObj,
     }

@@ -1071,35 +1071,88 @@ async function simulatorInputCalc() {
     function supportGemValueCalc() {
         let result = {
             atkBuff: 0,
-            damageBuff: 0
+            damageBuff: 0,
+            atkBuffACdr: 0,
+            atkBuffBCdr: 0,
         }
-        if (!(cachedData.ArmoryGem.Gems == null) && supportCheck == "서폿") {
 
-            cachedData.ArmoryGem.Gems.forEach(function (gem) {
-                let atkBuff = ['천상의 축복', '신의 분노', '음파 진동', '천상의 연주', '묵법 : 해그리기', '묵법 : 해우물']
-                let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
-                let gemInfo = JSON.parse(gem.Tooltip)
-                let type = gemInfo.Element_000.value
-                let level
-                if (!(gemInfo.Element_004.value == null)) {
-                    level = gemInfo.Element_004.value.replace(/\D/g, "")
+        let gemPerObj = [
+            { name: "홍염", level1: 2, level2: 4, level3: 6, level4: 8, level5: 10, level6: 12, level7: 14, level8: 16, level9: 18, level10: 20 },
+            { name: "작열", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
+        ]
+
+    if (!(cachedData.ArmoryGem.Gems == null) && supportCheck == "서폿") {
+        cachedData.ArmoryGem.Gems.forEach(function (gem) {
+            let atkBuff = ['천상의 축복', '신의 분노', '천상의 연주', '음파 진동', '묵법 : 해그리기', '묵법 : 해우물']
+            let damageBuff = ['신성의 오라', '세레나데 스킬', '음양 스킬']
+            let atkBuffACdr = ['천상의 연주', '신의 분노', '묵법 : 해그리기']
+            let atkBuffBCdr = ['음파 진동', '천상의 축복', '묵법 : 해우물']
+            
+            let gemInfo = JSON.parse(gem.Tooltip)
+            let type = gemInfo.Element_000.value
+            
+            let level
+            if (!(gemInfo.Element_004.value == null)) {
+                level = gemInfo.Element_004.value.replace(/\D/g, "")
+            } else {
+            }
+            
+            let skill
+            if (!(gemInfo.Element_006.value.Element_001 == undefined)) {
+                skill = gemInfo.Element_006.value.Element_001.match(/>([^<]+)</)[1]
+            } else {
+            }
+
+            // 기존 코드 유지
+            atkBuff.forEach(function (buffSkill) {
+                if (skill == buffSkill && type.includes("겁화")) {
+                    result.atkBuff += Number(level)
                 }
-                let skill
-                if (!(gemInfo.Element_006.value.Element_001 == undefined)) {
-                    skill = gemInfo.Element_006.value.Element_001.match(/>([^<]+)</)[1]
+            })
+
+            damageBuff.forEach(function (buffSkill) {
+                if (skill == buffSkill && type.includes("겁화")) {
+                    result.damageBuff += Number(level)
                 }
+            })
 
-                atkBuff.forEach(function (buffSkill) {
-                    if (skill == buffSkill && type.includes("겁화")) {
-                        result.atkBuff += Number(level)
-                    }
-                })
+            // 작열/홍염 보석에 대한 실제 값 계산
+            atkBuffACdr.forEach(function (buffSkill) {
+                if (skill == buffSkill) {
+                    if (type.includes("작열") || type.includes("홍염")) {
+                        // gemPerObj에서 해당 보석 타입 찾기
+                        const gemType = type.includes("작열") ? "작열" : "홍염";
+                        const gemData = gemPerObj.find(g => g.name === gemType);
 
-                damageBuff.forEach(function (buffSkill) {
-                    if (skill == buffSkill && type.includes("겁화")) {
-                        result.damageBuff += Number(level)
+                        if (gemData && level) {
+                            // 레벨에 맞는 실제 값 가져오기
+                            const coolValue = gemData[`level${level}`];
+                            result.atkBuffACdr += coolValue; // 레벨 대신 실제 값 사용
+                        } else {
+                        }
                     }
-                })
+                }
+            })
+
+            atkBuffBCdr.forEach(function (buffSkill) {
+                if (skill == buffSkill) {
+                    
+                    if (type.includes("작열") || type.includes("홍염")) {
+                        // gemPerObj에서 해당 보석 타입 찾기
+                        const gemType = type.includes("작열") ? "작열" : "홍염";
+                        const gemData = gemPerObj.find(g => g.name === gemType);
+
+
+                        if (gemData && level) {
+                            // 레벨에 맞는 실제 값 가져오기
+                            const coolValue = gemData[`level${level}`];
+                            
+                            result.atkBuffBCdr += coolValue; // 레벨 대신 실제 값 사용
+                        } else {
+                        }
+                    }
+                }
+            })
 
             })
         }
@@ -4236,7 +4289,7 @@ async function calculateGemData(data) {
                 if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
                 // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
                     // 해당 보석의 실제 쿨감 수치 가져오기
-                    console.log(gemListArry)
+                    //console.log(gemListArry)
                     let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                     let coolValue = gemType[`level${gemListArry.level}`];
                     let weight = Math.pow(2, gemListArry.level - 1);
@@ -4251,7 +4304,7 @@ async function calculateGemData(data) {
             // 가중 평균 쿨감 수치 계산
             let averageValue = coolGemCount > 0 ? weightedCoolValueSum / coolGemTotalWeight : 0;
 
-            console.log("평균값 : " + averageValue) // <= 보석 쿨감 평균값
+            //console.log("평균값 : " + averageValue) // <= 보석 쿨감 평균값
 
             let etcAverageValue;
             let dmgGemTotal = 0;
