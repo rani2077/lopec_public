@@ -1645,5 +1645,3 @@ function devilDamageCheck() {
 
 // 함수 실행하여 기능 활성화
 devilDamageCheck();
-
-

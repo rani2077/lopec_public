@@ -2685,11 +2685,28 @@ async function selectCreate(data, Modules) {
                         <span class="skill tooltip-text">${gemElementObj.skill}</span>
                     </div>`;
             })
+            customHtml += `
+                <div class="gem-box radius free-set">
+                    <span class="save">저 장</span>
+                    <span class="load">로 드</span>
+                    <span class="reset">리 셋</span>
+                    <span class="blind level">9</span>
+                    <i style="display:none;">3</i>
+                </div>`
             element.innerHTML = customHtml;
             sortGemInfo(".gem-area")
         } else {
-            element.innerHTML = `<span style="display: flex;width: 100%;height: 100%;justify-content: center;align-items: center;font-size:18px;">보석없음</span>`;
+            // element.innerHTML = `<span style="display: flex;width: 100%;height: 100%;justify-content: center;align-items: center;font-size:18px;">보석없음</span>`;
+            element.innerHTML = `
+                <div  iv class="gem-box radius free-set">
+                    <span class="save">저 장</span>
+                    <span class="load">로 드</span>
+                    <span class="reset">리 셋</span>
+                    <span class="blind level">9</span>
+                    <i style="display:none;">3</i>
+                </div>`;
         }
+        Modules.component.gemFreeSetSave(data.ArmoryGem)
     }
     userGemEquipmentToOption()
 
@@ -4316,18 +4333,18 @@ async function calculateGemData(data) {
             let excludeSkills = ['수호의 연주', '신성한 보호'];
 
             //console.log("제외할 스킬 목록:", excludeSkills);
-        
+
             // 특정 스킬 제외한 쿨감 계산
             let excludedCoolGemCount = 0;
             let sumCoolValues = 0;
             let excludedGems = [];
-            
+
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && 
-                    gemListArry.level != null && 
-                    gemListArry.level >= 1 && 
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") &&
+                    gemListArry.level != null &&
+                    gemListArry.level >= 1 &&
                     gemListArry.skill !== "직업보석이 아닙니다") {
-                    
+
                     // 제외할 스킬인지 확인
                     if (excludeSkills.includes(gemListArry.skill)) {
                         // 제외된 보석 정보 수집
@@ -4357,23 +4374,23 @@ async function calculateGemData(data) {
             let careSkillGemCount = 0;
             let sumCareSkillCoolValues = 0;
             let careSkillGems = [];
-            
+
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && 
-                    gemListArry.level != null && 
-                    gemListArry.level >= 1 && 
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") &&
+                    gemListArry.level != null &&
+                    gemListArry.level >= 1 &&
                     gemListArry.skill !== "직업보석이 아닙니다") {
-                    
+
                     // 원하는 스킬인지 확인 (이 부분이 중요 - 포함여부 확인)
                     if (careSkills.includes(gemListArry.skill)) {
                         // 원하는 스킬의 보석 정보 수집
                         let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                         let coolValue = gemType[`level${gemListArry.level}`];
-                        
+
                         // 원하는 스킬의 쿨감 수치 누적
                         sumCareSkillCoolValues += coolValue;
                         careSkillGemCount++;
-                        
+
                         careSkillGems.push({
                             name: gemListArry.name,
                             skill: gemListArry.skill,
@@ -4383,13 +4400,13 @@ async function calculateGemData(data) {
                     }
                 }
             });
-            
+
             // 원하는 스킬들만의 평균 쿨감 계산
             let careSkillAverageValue = careSkillGemCount > 0 ? sumCareSkillCoolValues / careSkillGemCount : 0;
-            
-           //console.log("원하는 스킬 보석 수:", careSkillGemCount);
-           //console.log("원하는 스킬들의 평균 쿨감:", careSkillAverageValue);
-           //console.log("원하는 스킬 보석 정보:", careSkillGems);
+
+            //console.log("원하는 스킬 보석 수:", careSkillGemCount);
+            //console.log("원하는 스킬들의 평균 쿨감:", careSkillAverageValue);
+            //console.log("원하는 스킬 보석 정보:", careSkillGems);
 
             //console.log("평균값 : " + averageValue) // <= 보석 쿨감 평균값
 

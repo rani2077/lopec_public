@@ -78,7 +78,6 @@ async function mainSearchFunction() {
 
     console.log("스펙포인트", specPoint)
     // console.log("오리진obj", extractValue);
-    Modules.component.gemFreeSetSave(data.ArmoryGem)
 
     await Modules.fetchApi.clearLostarkApiCache(nameParam, document.querySelector(".sc-info .spec-area span.reset"));
 
@@ -256,6 +255,16 @@ async function mainSearchFunction() {
                     <span class="detail">${gemDealInfo}</span>
                     <i style="display:none;">${sortTag}</i>
                 </div>`
+                if (gemArray.length === (idx + 1)) {
+                    gemBox += `
+                        <div class="gem-box radius free-set">
+                            <span class="save">저 장</span>
+                            <span class="load">로 드</span>
+                            <span class="reset">리 셋</span>
+                            <span class="blind level">9</span>
+                            <i style="display:none;">3</i>
+                        </div>`
+                }
             })
             element.innerHTML = gemBox;
         } else if (gemArray.length === 0) {
@@ -268,9 +277,18 @@ async function mainSearchFunction() {
                     <i style="display:none;">1</i>
                 </div>`
             }
+            gemBox += `
+                <div class="gem-box radius free-set">
+                    <span class="save">저 장</span>
+                    <span class="load">로 드</span>
+                    <span class="reset">리 셋</span>
+                    <span class="blind level">9</span>
+                    <i style="display:none;">3</i>
+                </div>`
             element.innerHTML = gemBox;
 
         }
+        Modules.component.gemFreeSetSave(data.ArmoryGem)
 
     }
     gemAreaCreate()

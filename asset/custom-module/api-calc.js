@@ -49,9 +49,10 @@ let Modules = await importModuleManager();
 // console.log(Modules)
 export async function apiCalcValue(inputName) {
     let data = await Modules.fetchApi.lostarkApiCall(inputName);
+    // 보석 프리셋 불러오기
     let gemSaveData = JSON.parse(localStorage.getItem('gemSlot'));
-    if (gemSaveData) {
-        console.log(gemSaveData)
+    let gemSetCheck = JSON.parse(localStorage.getItem('gemSet'));
+    if (gemSetCheck) {
         data.ArmoryGem = gemSaveData;
     }
     let extractValue = await Modules.transValue.getCharacterProfile(data);

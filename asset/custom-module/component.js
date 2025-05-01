@@ -680,14 +680,36 @@ async function manageExpeditionData(inputName) {
 
 
 export async function gemFreeSetSave(gemSlotData) {
-
-    // 'q' 키를 눌렀을 때 로컬 스토리지에 저장하는 이벤트 리스너 추가
-    window.addEventListener('keydown', (event) => {
-        if (event.key === 'q' || event.key === 'Q') {
+    let saveElement = document.querySelector(".gem-box .save");
+    let loadElement = document.querySelector(".gem-box .load");
+    let resetElement = document.querySelector(".gem-box .reset");
+    if (saveElement && loadElement && resetElement) {
+        saveElement.addEventListener("click", () => {
             const gemSlotString = JSON.stringify(gemSlotData);
-            localStorage.setItem('gemSlot', gemSlotString);
-            console.log("'q' 키 입력 감지: gemSlot 데이터가 로컬 스토리지에 저장되었습니다.", gemSlotString);
-        }
-    });
+            if (confirm("현재 장착중인 보석을 저장합니다.(저장은 최대 1개까지 가능합니다.)\n보석설정을 저장하시겠습니까?")) {
+                localStorage.setItem('gemSlot', gemSlotString);
+            }
+        })
+        loadElement.addEventListener("click", () => {
+            localStorage.setItem('gemSet', "true");
+            if (confirm("보석설정을 로드했습니다.\n새로고침 후 적용됩니다.\n지금 바로 새로고침 하시겠습니까?")) {
+                location.reload();
+            }
+        })
+        resetElement.addEventListener("click", () => {
+            window.localStorage.removeItem("gemSet");
+            if (confirm("보석설정을 취소했습니다.\n새로고침 후 적용됩니다.\n지금 바로 새로고침 하시겠습니까?")) {
+                location.reload();
+            }
+        })
+    }
+    // 'q' 키를 눌렀을 때 로컬 스토리지에 저장하는 이벤트 리스너 추가
+    // window.addEventListener('keydown', (event) => {
+    //     if (event.key === 'q' || event.key === 'Q') {
+    //         const gemSlotString = JSON.stringify(gemSlotData);
+    //         localStorage.setItem('gemSlot', gemSlotString);
+    //         console.log("'q' 키 입력 감지: gemSlot 데이터가 로컬 스토리지에 저장되었습니다.", gemSlotString);
+    //     }
+    // });
 }
 
