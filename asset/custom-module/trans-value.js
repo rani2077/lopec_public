@@ -365,10 +365,10 @@ export async function getCharacterProfile(data, dataBase) {
 
     //defaultObj.haste = 1852
     //defaultObj.special = 643
-    defaultObj.haste = 1802
-    defaultObj.special = 693
+    //defaultObj.haste = 1802
+    //defaultObj.special = 693
     //defaultObj.haste = 1752
-    ///defaultObj.special = 743
+    //defaultObj.special = 743
     //defaultObj.haste = 1702
     //defaultObj.special = 793
     //defaultObj.haste = 1652
@@ -663,7 +663,7 @@ export async function getCharacterProfile(data, dataBase) {
     })
     let devilCheck = localStorage.getItem("devilDamage");
     // if (devilCheck !== "true") {
-    console.log(bangleObj)
+    // console.log(bangleObj)
     if (devilCheck === "true") {
         // bangleObj.devilDamagerPer = 1;
         bangleObj.finalDamagePer = bangleObj.finalDamagePer * bangleObj.devilDamagePer;
@@ -1206,7 +1206,6 @@ export async function getCharacterProfile(data, dataBase) {
 
         })
     })
-    console.log(elixirObj.utilityPower)
     Modules.originFilter.elixirCalFilter.forEach(function (arr) {
 
     })
@@ -1934,8 +1933,86 @@ export async function getCharacterProfile(data, dataBase) {
             let averageValue = coolGemCount > 0 ? weightedCoolValueSum / coolGemTotalWeight : 0;
 
 
+            let excludeSkills = ['수호의 연주', '신성한 보호'];
 
-            // console.log("평균값 : "+averageValue)
+            //console.log("제외할 스킬 목록:", excludeSkills);
+        
+            // 특정 스킬 제외한 쿨감 계산
+            let excludedCoolGemCount = 0;
+            let sumCoolValues = 0;
+            let excludedGems = [];
+            
+            gemSkillArry.forEach(function (gemListArry) {
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && 
+                    gemListArry.level != null && 
+                    gemListArry.level >= 1 && 
+                    gemListArry.skill !== "직업보석이 아닙니다") {
+                    
+                    // 제외할 스킬인지 확인
+                    if (excludeSkills.includes(gemListArry.skill)) {
+                        // 제외된 보석 정보 수집
+                        excludedGems.push({
+                            name: gemListArry.name,
+                            skill: gemListArry.skill,
+                            level: gemListArry.level
+                        });
+                        // 제외된 보석은 계산에서 제외
+                    } else {
+                        // 제외 대상이 아닌 보석만 계산에 포함
+                        let gemType = gemPerObj.find(g => g.name === gemListArry.name);
+                        let coolValue = gemType[`level${gemListArry.level}`];
+                        
+                        // 단순히 쿨감 수치 합산 (가중치 없음)
+                        sumCoolValues += coolValue;
+                        excludedCoolGemCount++;
+                    }
+                }
+            });
+
+
+            let excludedAverageValue = excludedCoolGemCount > 0 ? sumCoolValues / excludedCoolGemCount : 0;
+            
+
+
+            let careSkills = ['수호의 연주', '윈드 오브 뮤직', '빛의 광시곡', '천상의 연주', '필법 : 흩뿌리기', '필법 : 콩콩이', '묵법 : 환영의 문', '묵법 : 해그리기', '묵법 : 미리내', '천상의 축복', '신성 지역', '신의 율법', '신성한 보호'];
+
+            // 특정 스킬만 대상으로 하는 쿨감 계산
+            let careSkillGemCount = 0;
+            let sumCareSkillCoolValues = 0;
+            let careSkillGems = [];
+            
+            gemSkillArry.forEach(function (gemListArry) {
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && 
+                    gemListArry.level != null && 
+                    gemListArry.level >= 1 && 
+                    gemListArry.skill !== "직업보석이 아닙니다") {
+                    
+                    // 원하는 스킬인지 확인 (이 부분이 중요 - 포함여부 확인)
+                    if (careSkills.includes(gemListArry.skill)) {
+                        // 원하는 스킬의 보석 정보 수집
+                        let gemType = gemPerObj.find(g => g.name === gemListArry.name);
+                        let coolValue = gemType[`level${gemListArry.level}`];
+                        
+                        // 원하는 스킬의 쿨감 수치 누적
+                        sumCareSkillCoolValues += coolValue;
+                        careSkillGemCount++;
+                        
+                        careSkillGems.push({
+                            name: gemListArry.name,
+                            skill: gemListArry.skill,
+                            level: gemListArry.level,
+                            coolValue: coolValue
+                        });
+                    }
+                }
+            });
+            
+            // 원하는 스킬들만의 평균 쿨감 계산
+            let careSkillAverageValue = careSkillGemCount > 0 ? sumCareSkillCoolValues / careSkillGemCount : 0;
+            
+            //console.log("원하는 스킬 보석 수:", careSkillGemCount);
+            //console.log("원하는 스킬들의 평균 쿨감:", careSkillAverageValue);
+            //console.log("원하는 스킬 보석 정보:", careSkillGems);
 
             let etcAverageValue;
             let dmgGemTotal = 0;
@@ -2026,6 +2103,8 @@ export async function getCharacterProfile(data, dataBase) {
                 gemValue: (gemValue * specialSkillCalc()) / 100 + 1,
                 gemAvg: averageValue,
                 etcAverageValue: etcAverageValue / 100 + 1,
+                excludedGemAvg: excludedAverageValue,
+                careSkillAvg: careSkillAverageValue
             }
         } catch (error) {
             console.log(error)
@@ -2035,6 +2114,8 @@ export async function getCharacterProfile(data, dataBase) {
                 gemValue: 1,
                 gemAvg: 0,
                 etcAverageValue: 1,
+                excludedGemAvg: 0
+                
             }
 
         }
@@ -2388,7 +2469,7 @@ export async function getCharacterProfile(data, dataBase) {
         const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
 
         // 결과 로깅 (필요시 주석 해제)
-        //console.log("카르마 추정 결과:", result.bestResult);
+        console.log("카르마 추정 결과:", result.bestResult);
         //console.log("모든 가능성:", result.allResults);
 
         etcObj.evolutionkarmaRank = '미등록'; // 기본값 설정
@@ -2705,7 +2786,7 @@ export async function getCharacterProfile(data, dataBase) {
     //console.log(karmaInputData)
     // --- estimateKarmaLevel 함수 호출 및 결과 출력 ---
     const estimatedBestKarmaLevel = estimateKarmaLevel(karmaInputData);
-    //console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
+    console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
 
     // 추후 estimatedBestKarmaLevel 값을 etcObj 등에 저장하여 활용 가능
     // etcObj.estimatedEnlightKarmaLevel = estimatedBestKarmaLevel;
