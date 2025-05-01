@@ -507,6 +507,14 @@ let noticeArry = [
         &nbsp;&nbsp; 이제 공지사항을 보지 않더라도 구간 별 중앙값을 간편하게 확인하실 수 있습니다.`
     },
     {
+        name: `25년 4월 4주차 중앙값 통계`,
+        desc:
+        `4월 4주차 중앙값 통계입니다.
+        
+        <img src="/asset/image/median-20250422.png">`
+        
+    },
+    {
         name: `2025-04-22 업데이트 안내`,
         desc:
             `● 로펙딸깍의 '딸깍 검색' 베타서비스를 시작합니다.
@@ -537,15 +545,7 @@ let noticeArry = [
           &nbsp;&nbsp; 더불어, 현재 다른 광고 차단 프로그램과는 충돌이 없는 것으로 확인되었습니다.`
     },
     {
-        name: `25년 4월 4주차 중앙값 통계`,
-        desc:
-        `4월 4주차 중앙값 통계입니다.
-        
-        <img src="/asset/image/median-20250422.png">`
-        
-    },
-    {
-        name: `<em style="font-weight:900;font-size:17px;">2025-04-25 업데이트 안내</em>`,
+        name: `2025-04-25 업데이트 안내`,
         desc:
             `● 로펙의 소중한 후원자분들을 위한 뱃지가 추가되었습니다.
             &nbsp;&nbsp; 이제 닉네임 옆에서 귀여운 친구들을 만나보세요! 
@@ -569,6 +569,14 @@ let noticeArry = [
 
             앞서 말씀드렸듯 늦어도 열흘 이내에 작업을 완료할 예정이라,
             조금만 기다려주시면 감사드리겠습니다.`
+    },
+    {
+        name: `<em style="font-weight:900;font-size:17px;">25년 4월 5주차 중앙값 통계</em>`,
+        desc:
+        `4월 5주차 중앙값 통계입니다.
+        
+        <img src="/asset/image/median-20250501.png">`
+        
     },
 ]
 
