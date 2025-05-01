@@ -401,7 +401,7 @@ function userBookmarkSave(userName) {
     let userBookmarkList = JSON.parse(localStorage.getItem("userBookmark")) || []           //북마크 리스트
     function bookmarkToggle(el) {
         // el.target.classList.toggle("active");                                                 //북마크 아이콘 토글  
-        if (userBookmarkList.length < 5 && !el.target.classList.contains("active")) {
+        if (userBookmarkList.length < 6 && !el.target.classList.contains("active")) {
             userBookmarkList.push(userName)                                                 //북마크 추가하기
             localStorage.setItem("userBookmark", JSON.stringify(userBookmarkList))
             starAnimation();
@@ -412,7 +412,7 @@ function userBookmarkSave(userName) {
             starAnimation();
             // alert("북마크 저장2")
 
-        } else if (userBookmarkList.length >= 5) {
+        } else if (userBookmarkList.length >= 6) {
             el.target.classList.remove("active");                                             //북마크 아이콘 토글  
             alert("즐겨찾기는 5개까지 저장됩니다.");
             return;

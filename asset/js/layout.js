@@ -95,7 +95,7 @@ function scHeaderCreate() {
             nameListStorage.push(nameParam)
             localStorage.setItem('nameList', JSON.stringify(nameListStorage));
         } else {
-            if (nameListStorage.length >= 5) {
+            if (nameListStorage.length >= 6) {
                 nameListStorage.shift();
             }
             nameListStorage.push(nameParam);
