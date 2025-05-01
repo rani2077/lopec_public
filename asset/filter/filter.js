@@ -1754,9 +1754,9 @@ export let engravingCheckFilter = [
     { name: '구슬동자', grade: "유물", level: 4, finalDamagePer: 0, engBonusPer: 3.8, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, carePower: 0, utilityPower: 18, cdrPercent: 0, awakencdrPercent: 0 },
 
 
-    { name: '공격속도 감소', grade: "고대", level: 0, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '이동속도 감소', grade: "고대", level: 0, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '공격력 감소', grade: "고대", level: 0, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
+    { name: '공격속도 감소', grade: "고대", level: 0, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '이동속도 감소', grade: "고대", level: 0, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '공격력 감소', grade: "고대", level: 0, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
 
 
 ]
@@ -1854,17 +1854,17 @@ export let stoneCheckFilter = [
     { name: '타격의 대가', level: 3, finalDamagePer: 5.25, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, engBonusPer: 0, cdrPercent: 0, awakencdrPercent: 0, carePower: 0, utilityPower: 0 },
     { name: '타격의 대가', level: 4, finalDamagePer: 6, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, engBonusPer: 0, cdrPercent: 0, awakencdrPercent: 0, carePower: 0, utilityPower: 0 },
 
-    { name: '공격속도 감소', level: -1, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: -2, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '공격속도 감소', level: -2, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: -4, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '공격속도 감소', level: -3, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: -6, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
+    { name: '공격속도 감소', level: -1, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: -2, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '공격속도 감소', level: -2, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: -4, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '공격속도 감소', level: -3, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: -6, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
 
-    { name: '이동속도 감소', level: -1, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: -2, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '이동속도 감소', level: -2, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: -4, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '이동속도 감소', level: -3, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: -6, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
+    { name: '이동속도 감소', level: -1, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: -2, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '이동속도 감소', level: -2, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: -4, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '이동속도 감소', level: -3, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: -6, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
 
-    { name: '공격력 감소', level: -1, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: -2, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '공격력 감소', level: -2, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: -4, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
-    { name: '공격력 감소', level: -3, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: -6, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0 },
+    { name: '공격력 감소', level: -1, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: -2, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '공격력 감소', level: -2, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: -4, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
+    { name: '공격력 감소', level: -3, engBonusPer: 0, finalDamagePer: 0, criticalChancePer: 0, criticalDamagePer: 0, atkPer: -6, atkSpeed: 0, moveSpeed: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
 
 
 

@@ -2765,15 +2765,15 @@ export async function getCharacterProfile(data, dataBase) {
                 
                 if (closestMatch) {
                     // 가장 근접한 값의 정보 출력
-                    console.log(`  - 실제 공격력과 가장 근접한 조합: 내실=${closestMatch.internalStat}, 카르마=${closestMatch.kLevel}`);
-                    console.log(`    -> 계산된 스탯: ${closestMatch.calculatedStat}`);
-                    console.log(`    -> 계산된 무공: ${closestMatch.calculatedWeaponAtk} (Raw: ${closestMatch.calculatedWeaponAtkRaw.toFixed(2)})`);
-                    console.log(`    -> 계산된 Base공: ${closestMatch.baseAttack.toFixed(2)}`);
-                    console.log(`    -> 계산된 최종 공격력: ${Math.floor(closestMatch.calculatedAttackPower)} (Raw: ${closestMatch.calculatedAttackPower.toFixed(2)})`);
-                    console.log(`  - 비교 대상 입력 공격력: ${observedAttackPowerFloored} (Raw: ${observedAttackPower})`);
-                    console.log(`  - 차이: ${closestMatch.diff}`);
+                    //console.log(`  - 실제 공격력과 가장 근접한 조합: 내실=${closestMatch.internalStat}, 카르마=${closestMatch.kLevel}`);
+                    //console.log(`    -> 계산된 스탯: ${closestMatch.calculatedStat}`);
+                    //console.log(`    -> 계산된 무공: ${closestMatch.calculatedWeaponAtk} (Raw: ${closestMatch.calculatedWeaponAtkRaw.toFixed(2)})`);
+                    //console.log(`    -> 계산된 Base공: ${closestMatch.baseAttack.toFixed(2)}`);
+                    //console.log(`    -> 계산된 최종 공격력: ${Math.floor(closestMatch.calculatedAttackPower)} (Raw: ${closestMatch.calculatedAttackPower.toFixed(2)})`);
+                    //console.log(`  - 비교 대상 입력 공격력: ${observedAttackPowerFloored} (Raw: ${observedAttackPower})`);
+                    //console.log(`  - 차이: ${closestMatch.diff}`);
                 } else {
-                    console.warn("estimateKarmaLevel: 유효한 조합을 찾을 수 없습니다.");
+                    //console.warn("estimateKarmaLevel: 유효한 조합을 찾을 수 없습니다.");
                 }
             } catch (e) {
                 console.error("estimateKarmaLevel: 가장 근접한 값 계산 중 오류 발생:", e);
@@ -2823,7 +2823,7 @@ export async function getCharacterProfile(data, dataBase) {
     console.log(karmaInputData)
     // --- estimateKarmaLevel 함수 호출 및 결과 출력 ---
     const estimatedBestKarmaLevel = estimateKarmaLevel(karmaInputData);
-    console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
+    //console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
 
     // 추후 estimatedBestKarmaLevel 값을 etcObj 등에 저장하여 활용 가능
     // etcObj.estimatedEnlightKarmaLevel = estimatedBestKarmaLevel;

@@ -97,7 +97,7 @@ export async function specPointCalc(inputObj) {
     let bangleValue = ((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2)
 
 
-    console.log(((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2))
+    //console.log(((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2))
 
 
 
@@ -148,8 +148,6 @@ export async function specPointCalc(inputObj) {
 
     let specialIdentity = (inputObj.defaultObj.special/27.96/100+1) // 특화 딜증
     let identityUptime = ((((20.05 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercentNoneCare)) / 100)).toFixed(4) //아덴 가동률
-    console.log(cdrPercentNoneCare)
-
 
     let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
     let hyperUptime = ((24.45 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
@@ -183,11 +181,6 @@ export async function specPointCalc(inputObj) {
 
     let supportCombinedPower = (supportBuffPower ** 0.92) * (supportCarePower ** 0.05) * (supportUtilityPower ** 0.03)
     let supportSpecPoint = (supportCombinedPower ** 4.29) * 33.4
-
-    console.log(((supportBuffPower ** 0.92)) ** 4.29 * 33.4);
-    console.log(((supportCarePower ** 0.05)) ** 4.29 * 33.4);
-    console.log(((supportUtilityPower ** 0.03)) ** 4.29 * 33.4);
-
 
 
     /* **********************************************************************************************************************
