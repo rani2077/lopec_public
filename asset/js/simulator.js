@@ -1009,7 +1009,8 @@ async function simulatorInputCalc() {
     // let gemCalcResultAllInfo = await calculateGemData(cachedData);
     function gemInfoChangeToJson() {
         let elements = document.querySelectorAll(".gem-area .gem-box");
-        elements.forEach(element => {
+        elements.forEach((element, idx) => {
+            if (elements.length === idx + 1) return;
             let index = Number(element.getAttribute("data-index"));
             let level = Number(element.querySelector(".level").value);
             let gem = element.querySelector(".gems").value;

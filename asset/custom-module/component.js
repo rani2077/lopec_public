@@ -691,7 +691,12 @@ export async function gemFreeSetSave(gemSlotData) {
             }
         })
         loadElement.addEventListener("click", () => {
-            localStorage.setItem('gemSet', "true");
+            if (localStorage.getItem('gemSlot')) {
+                localStorage.setItem('gemSet', "true");
+            } else {
+                alert("저장된 보석이 없습니다. 보석을 저장후 눌러주세요");
+                return;
+            }
             if (confirm("보석설정을 로드했습니다.\n새로고침 후 적용됩니다.\n지금 바로 새로고침 하시겠습니까?")) {
                 location.reload();
             }
