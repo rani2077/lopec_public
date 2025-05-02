@@ -566,10 +566,10 @@ export let stoneFilter = [
     { name: '폭발물 전문가', level: 4, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
 
     { name: '구슬동자', level: 0, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0 },
-    { name: '구슬동자', level: 1, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.2 },
-    { name: '구슬동자', level: 2, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.3 },
-    { name: '구슬동자', level: 3, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.4 },
-    { name: '구슬동자', level: 4, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.5 },
+    { name: '구슬동자', level: 1, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 17 },
+    { name: '구슬동자', level: 2, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 19 },
+    { name: '구슬동자', level: 3, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 21 },
+    { name: '구슬동자', level: 4, finalDamagePer: 0, carePower: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 23 },
 
 
 ]

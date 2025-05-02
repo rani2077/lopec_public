@@ -246,7 +246,7 @@ export async function specPointCalc(inputObj) {
     let calcSupportUtilityPower = finalUtilityPower / 100 + 1
 
     let calcSupportCombinedPower = (calcSupportBuffPower ** 0.935) * (calcSupportCarePower ** 0.035) * (calcSupportUtilityPower ** 0.03)
-    let supportSpecPoint = (calcSupportCombinedPower ** 4.285) * 33.4
+    let supportSpecPoint = (calcSupportCombinedPower ** 4.285) * 32.1
 
 
     /* **********************************************************************************************************************
@@ -256,34 +256,40 @@ export async function specPointCalc(inputObj) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
 
+    const bangleHealth = parseInt(inputObj?.htmlObj?.bangleInfo?.normalStatsArray?.[0]?.match(/체력 \+(\d+)/)?.[1] || '0', 10);
+    let totalHealth_MinusBangle = Number(((inputObj.etcObj.healthStatus - bangleHealth + inputObj.hyperObj.statHp + inputObj.elixirObj.statHp + inputObj.accObj.statHp) * inputObj.defaultObj.hpActive * 1.07).toFixed(0));
+
+    let calcHaste_MinusBangle = (inputObj.defaultObj.haste + inputObj.defaultObj.special - inputObj.bangleObj.haste - inputObj.bangleObj.special) * 0.75
+    let calcSpecial_MinusBangle = (inputObj.defaultObj.haste + inputObj.defaultObj.special - inputObj.bangleObj.haste - inputObj.bangleObj.special) * 0.25
+
     let totalAtk3 = ((minusBangleStat * minusBangleWeaponAtk / 6) ** 0.5) * attackBonus //팔찌 제외 기본 공격력
     let atkBuff_MinusBangle = (1 + ((inputObj.accObj.atkBuff + inputObj.elixirObj.atkBuff + inputObj.hyperObj.atkBuff + inputObj.gemObj.atkBuff) / 100)) // 팔찌 제외 아공강 
     let finalAtkBuff_MinusBangle = (totalAtk3 * 0.15 * atkBuff_MinusBangle) // 최종 공증
     let damageBuff_MinusBangle = (inputObj.accObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 팔찌 제외 아피강
     let hyperBuff_MinusBangle = (10 * ((inputObj.accObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
-    let statDamageBuff_MinusBangle = ((inputObj.defaultObj.special - inputObj.bangleObj.special) / 19.971) / 100 + 1 // 팔찌 제외 특화 딜증
+    let statDamageBuff_MinusBangle = ((calcSpecial_MinusBangle) / 20.791) / 100 + 1 // 팔찌 제외 특화 딜증
     let finalDamageBuff_MinusBangle = (13 * damageBuff_MinusBangle * statDamageBuff_MinusBangle) / 100 + 1 // 팔찌 제외 최종 피증
     let carePower_MinusBangle = (1 + (inputObj.engObj.carePower + inputObj.accObj.carePower + inputObj.elixirObj.carePower)) // 케어력
-    let finalCarePower_MinusBangle = (((totalHealth * 0.3) * carePower_MinusBangle) / 260000) * 100 //최종 케어력
+    let finalCarePower_MinusBangle = (((totalHealth_MinusBangle * 0.3) * carePower_MinusBangle) / 330000) * 100 //최종 케어력
     let allTimeBuff_MinusBangle = (finalStigmaPer / 100 + 1) * 1.0965 // 팔찌 제외 상시 피증증
 
 
     let duration_A_MinusBangle = inputObj.supportSkillObj.atkBuffADuration // 팔찌 제외 스킬A 지속시간 (천상, 신분, 해그)
-    let cd_A_MinusBangle = (inputObj.supportSkillObj.atkBuffACool) * (1 - (inputObj.defaultObj.haste - inputObj.bangleObj.haste) * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffACdr / 100)
+    let cd_A_MinusBangle = (inputObj.supportSkillObj.atkBuffACool) * (1 - (calcHaste_MinusBangle) * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffACdr / 100)
     let duration_B_MinusBangle = inputObj.supportSkillObj.atkBuffBDuration // 팔찌 제외 스킬B 지속시간 (음진, 천축, 해우물)
-    let cd_B_MinusBangle = (inputObj.supportSkillObj.atkBuffBCool) * (1 - (inputObj.defaultObj.haste - inputObj.bangleObj.haste) * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffBCdr / 100)
+    let cd_B_MinusBangle = (inputObj.supportSkillObj.atkBuffBCool) * (1 - (calcHaste_MinusBangle) * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffBCdr / 100)
 
     let t_buff_MinusBangle = duration_A_MinusBangle + duration_B_MinusBangle;
     let t_cycle_MinusBangle = Math.max(duration_A_MinusBangle + duration_B_MinusBangle, cd_A_MinusBangle, cd_B_MinusBangle);
     let atkBuffUptime_MinusBangle = t_buff_MinusBangle / t_cycle_MinusBangle;
 
-    let cdrPercent_MinusBangle = (1 - ((1 - (inputObj.defaultObj.haste - inputObj.bangleObj.haste) * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))).toFixed(3)
-    let awakenIdentity_MinusBangle = ((1 / ((1 - inputObj.engObj.awakencdrPercent) * (1 - (inputObj.defaultObj.haste - inputObj.bangleObj.haste) * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent))) - 1) * 0.15 + 1;
+    let cdrPercent_MinusBangle = (1 - ((1 - (calcHaste_MinusBangle) * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))).toFixed(3)
+    let awakenIdentity_MinusBangle = ((1 / ((1 - inputObj.engObj.awakencdrPercent) * (1 - (calcHaste_MinusBangle) * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent))) - 1) * 0.15 + 1;
 
-    let specialIdentity_MinusBangle = ((inputObj.defaultObj.special - inputObj.bangleObj.special) / 27.96 / 100 + 1)
+    let specialIdentity_MinusBangle = ((calcSpecial_MinusBangle) / 30.2 / 100 + 1)
     let identityUptime_MinusBangle = (((20.05 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity_MinusBangle) * awakenIdentity_MinusBangle) / (1 - cdrPercent_MinusBangle)) / 100).toFixed(4)
 
-    let hyperCdrPercent_MinusBangle = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent) * (1 - (inputObj.defaultObj.haste - inputObj.bangleObj.haste) * 0.0214739 / 100))).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
+    let hyperCdrPercent_MinusBangle = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent) * (1 - (calcHaste_MinusBangle) * 0.0214739 / 100))).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
     let hyperUptime_MinusBangle = ((24.45 / (1 - hyperCdrPercent_MinusBangle)) / 100).toFixed(4) // 초각성 가동률
 
     let defaultAtkBuff_MinusBangle = ((110000 + finalAtkBuff_MinusBangle * atkBuffUptime_MinusBangle)) / 110000 //기준딜러 공증 상승량
@@ -308,12 +314,7 @@ export async function specPointCalc(inputObj) {
     let noBuffPower_MinusBangle = allTimeBuff_MinusBangle
 
     let avgBuffPower_MinusBangle = ((doubleBuffUptime_MinusBangle * doubleBuffPower_MinusBangle) + (onlyIdentityUptime_MinusBangle * onlyIdentityPower_MinusBangle) + (onlyHyperUptime_MinusBangle * onlyHyperPower_MinusBangle) + (noBuffUptime_MinusBangle * noBuffPower_MinusBangle)) * defaultAtkBuff_MinusBangle
-    //서폿 최종 환산 V2
-    let supportBangleValue = ((avgBuffPower - avgBuffPower_MinusBangle) / avgBuffPower_MinusBangle * 100) * 3
-
-
-
-
+    let supportBangleValue = ((avgBuffPower - avgBuffPower_MinusBangle) / avgBuffPower_MinusBangle * 100) * 2.7
 
 
 

@@ -1912,10 +1912,10 @@ export let stoneCheckFilter = [
     { name: '폭발물 전문가', level: 3, engBonusPer: 0.4, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0, carePower: 0 },
     { name: '폭발물 전문가', level: 4, engBonusPer: 0.5, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0, carePower: 0 },
 
-    { name: '구슬동자', level: 1, engBonusPer: 0.9, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.2, carePower: 0 },
-    { name: '구슬동자', level: 2, engBonusPer: 1.1, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.3, carePower: 0 },
-    { name: '구슬동자', level: 3, engBonusPer: 1.3, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.4, carePower: 0 },
-    { name: '구슬동자', level: 4, engBonusPer: 1.5, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 0.5, carePower: 0 },
+    { name: '구슬동자', level: 1, engBonusPer: 0.9, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 17, carePower: 0 },
+    { name: '구슬동자', level: 2, engBonusPer: 1.1, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 19, carePower: 0 },
+    { name: '구슬동자', level: 3, engBonusPer: 1.3, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 21, carePower: 0 },
+    { name: '구슬동자', level: 4, engBonusPer: 1.5, criticalChancePer: 0, criticalDamagePer: 0, atkPer: 0, atkSpeed: 0, moveSpeed: 0, finalDamagePer: 0, cdrPercent: 0, awakencdrPercent: 0, utilityPower: 23, carePower: 0 },
 ]
 
 
