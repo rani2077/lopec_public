@@ -130,6 +130,12 @@ export async function specPointCalc(inputObj) {
     let finalUtilityPower = (inputObj.engObj.utilityPower + inputObj.elixirObj.utilityPower + inputObj.accObj.utilityPower) 
     let allTimeBuff = (finalStigmaPer / 100 + 1) * 1.0965 * inputObj.bangleObj.atkBuffPlus
 
+    console.log(inputObj.engObj.carePower)
+    console.log(inputObj.accObj.carePower)
+    console.log(inputObj.elixirObj.carePower)
+    console.log(inputObj.bangleObj.carePower)
+    console.log(totalHealth)
+
     let duration_A = inputObj.supportSkillObj.atkBuffADuration // A스킬 지속시간 (천상, 신분, 해그)
     let cd_A = (inputObj.supportSkillObj.atkBuffACool) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.gemObj.atkBuffACdr / 100) // A스킬 쿨감 
     let duration_B = inputObj.supportSkillObj.atkBuffBDuration // B스킬 지속시간 (음진, 천축, 해우물)

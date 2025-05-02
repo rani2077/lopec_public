@@ -414,7 +414,7 @@ export async function getCharacterProfile(data, dataBase) {
     //defaultObj.haste = 652
     //defaultObj.special = 1843
     defaultObj.special = Math.min(defaultObj.special, 1200)
-    
+
 
 
     etcObj.expeditionStats = Math.floor((data.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5 // 원정대 힘민지
@@ -993,6 +993,7 @@ export async function getCharacterProfile(data, dataBase) {
         utilityPower: 0,
         cdrPercent: 0,
         awakencdrPercent: 0,
+        dealpport: "false",
     }
 
 
@@ -1066,6 +1067,19 @@ export async function getCharacterProfile(data, dataBase) {
             })
 
         })
+    }
+
+    //딜폿 검증
+    function checkDealpport(arkPassiveEffects) {
+        if ((!arkPassiveEffects) || !Array.isArray(arkPassiveEffects)) {
+            return false
+        }
+        return arkPassiveEffects.some(effect => effect && effect.Name === "원한");
+    }
+    const checkDealer = checkDealpport(data.ArmoryEngraving?.ArkPassiveEffects)
+
+    if (checkDealer === true) {
+        engObj.dealpport = true
     }
 
 
@@ -1631,6 +1645,8 @@ export async function getCharacterProfile(data, dataBase) {
         { name: "멸화", level1: 3, level2: 6, level3: 9, level4: 12, level5: 15, level6: 18, level7: 21, level8: 24, level9: 30, level10: 40 },
         { name: "홍염", level1: 2, level2: 4, level3: 6, level4: 8, level5: 10, level6: 12, level7: 14, level8: 16, level9: 18, level10: 20 },
         { name: "작열", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
+        { name: "딜광휘", level1: 8, level2: 12, level3: 16, level4: 20, level5: 24, level6: 28, level7: 32, level8: 36, level9: 40, level10: 44 },
+        { name: "쿨광휘", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
     ]
 
     let gemSkillArry = [];
@@ -1660,8 +1676,8 @@ export async function getCharacterProfile(data, dataBase) {
                     let etcGemValue = results[idx + 2].substring(0, results[idx + 2].indexOf('"'))
                     let gemName;
                     let level = null;
-                    if (results[1].match(/홍염|작열|멸화|겁화/) != null) {
-                        gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                    if (results[1].match(/홍염|작열|멸화|겁화|광휘/) != null) {
+                        gemName = results[1].match(/홍염|작열|멸화|겁화|딜광휘|쿨광휘/)[0];
                         level = Number(results[1].match(/(\d+)레벨/)[1])
                     } else {
                         gemName = "기타보석"
@@ -1675,8 +1691,8 @@ export async function getCharacterProfile(data, dataBase) {
                     //console.log(toolTip)
                     let gemName;
                     let level = null;
-                    if (results[1].match(/홍염|작열|멸화|겁화/) != null) {
-                        gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                    if (results[1].match(/홍염|작열|멸화|겁화|광휘/) != null) {
+                        gemName = results[1].match(/홍염|작열|멸화|겁화|딜광휘|쿨광휘/)[0];
                         level = Number(results[1].match(/(\d+)레벨/)[1])
                     } else {
                         gemName = "기타보석"
@@ -1692,7 +1708,6 @@ export async function getCharacterProfile(data, dataBase) {
 
     }
     htmlObj.gemSkillArry = gemSkillArry;
-    //console.log("gemSkillArry",gemSkillArry)
 
     // 같은 스킬에 멸화/겁화 또는 작열/홍염이 중복되는 경우 처리하는 함수
     function filterDuplicateGems() {
@@ -1716,7 +1731,7 @@ export async function getCharacterProfile(data, dataBase) {
             const gems = skillGroups[skillName];
 
             // 멸화/겁화 보석만 필터링
-            const dmgGems = gems.filter(gem => gem.name === "멸화" || gem.name === "겁화");
+            const dmgGems = gems.filter(gem => gem.name === "멸화" || gem.name === "겁화" || gem.name === "딜광휘");
 
             // 멸화/겁화 보석이 2개 이상인 경우에만 처리
             if (dmgGems.length >= 2) {
@@ -1748,7 +1763,7 @@ export async function getCharacterProfile(data, dataBase) {
             }
 
             // 작열/홍염 보석 필터링 및 처리
-            const coolGems = gems.filter(gem => gem.name === "작열" || gem.name === "홍염");
+            const coolGems = gems.filter(gem => gem.name === "작열" || gem.name === "홍염" || gem.name === "쿨광휘");
 
             // 작열/홍염 보석이 2개 이상인 경우 처리
             if (coolGems.length >= 2) {
@@ -1785,8 +1800,8 @@ export async function getCharacterProfile(data, dataBase) {
 
     if (true) {
 
-        let per = "홍염|작열";
-        let dmg = "겁화|멸화";
+        let per = "홍염|작열|쿨광휘";
+        let dmg = "겁화|멸화|딜광휘";
 
         function skillCheck(arr, ...nameAndGem) {
             for (let i = 0; i < nameAndGem.length; i += 2) {
@@ -1794,6 +1809,8 @@ export async function getCharacterProfile(data, dataBase) {
                 const gemPattern = nameAndGem[i + 1];
                 const regex = new RegExp(gemPattern);
                 const found = arr.some(item => item.skill === name && regex.test(item.name));
+                console.log(arr)
+                console.log(found)
                 if (!found) return false;
             }
             return true;
@@ -1916,7 +1933,7 @@ export async function getCharacterProfile(data, dataBase) {
             let weightedCoolValueSum = 0; // 가중치가 적용된 쿨감 수치 합계
 
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열" || gemListArry.name == "쿨광휘") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
                     // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
                     // 해당 보석의 실제 쿨감 수치 가져오기
                     let gemType = gemPerObj.find(g => g.name === gemListArry.name);
@@ -1937,18 +1954,18 @@ export async function getCharacterProfile(data, dataBase) {
             let excludeSkills = ['수호의 연주', '신성한 보호'];
 
             //console.log("제외할 스킬 목록:", excludeSkills);
-        
+
             // 특정 스킬 제외한 쿨감 계산
             let excludedCoolGemCount = 0;
             let sumCoolValues = 0;
             let excludedGems = [];
-            
+
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && 
-                    gemListArry.level != null && 
-                    gemListArry.level >= 1 && 
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열" || gemListArry.name == "쿨광휘") &&
+                    gemListArry.level != null &&
+                    gemListArry.level >= 1 &&
                     gemListArry.skill !== "직업보석이 아닙니다") {
-                    
+
                     // 제외할 스킬인지 확인
                     if (excludeSkills.includes(gemListArry.skill)) {
                         // 제외된 보석 정보 수집
@@ -1962,7 +1979,7 @@ export async function getCharacterProfile(data, dataBase) {
                         // 제외 대상이 아닌 보석만 계산에 포함
                         let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                         let coolValue = gemType[`level${gemListArry.level}`];
-                        
+
                         // 단순히 쿨감 수치 합산 (가중치 없음)
                         sumCoolValues += coolValue;
                         excludedCoolGemCount++;
@@ -1972,7 +1989,7 @@ export async function getCharacterProfile(data, dataBase) {
 
 
             let excludedAverageValue = excludedCoolGemCount > 0 ? sumCoolValues / excludedCoolGemCount : 0;
-            
+
 
 
             let careSkills = ['수호의 연주', '윈드 오브 뮤직', '빛의 광시곡', '천상의 연주', '필법 : 흩뿌리기', '필법 : 콩콩이', '묵법 : 환영의 문', '묵법 : 해그리기', '묵법 : 미리내', '천상의 축복', '신성 지역', '신의 율법', '신성한 보호'];
@@ -1981,23 +1998,23 @@ export async function getCharacterProfile(data, dataBase) {
             let careSkillGemCount = 0;
             let sumCareSkillCoolValues = 0;
             let careSkillGems = [];
-            
+
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && 
-                    gemListArry.level != null && 
-                    gemListArry.level >= 1 && 
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열" || gemListArry.name == "쿨광휘") &&
+                    gemListArry.level != null &&
+                    gemListArry.level >= 1 &&
                     gemListArry.skill !== "직업보석이 아닙니다") {
-                    
+
                     // 원하는 스킬인지 확인 (이 부분이 중요 - 포함여부 확인)
                     if (careSkills.includes(gemListArry.skill)) {
                         // 원하는 스킬의 보석 정보 수집
                         let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                         let coolValue = gemType[`level${gemListArry.level}`];
-                        
+
                         // 원하는 스킬의 쿨감 수치 누적
                         sumCareSkillCoolValues += coolValue;
                         careSkillGemCount++;
-                        
+
                         careSkillGems.push({
                             name: gemListArry.name,
                             skill: gemListArry.skill,
@@ -2007,10 +2024,10 @@ export async function getCharacterProfile(data, dataBase) {
                     }
                 }
             });
-            
+
             // 원하는 스킬들만의 평균 쿨감 계산
             let careSkillAverageValue = careSkillGemCount > 0 ? sumCareSkillCoolValues / careSkillGemCount : 0;
-            
+
             //console.log("원하는 스킬 보석 수:", careSkillGemCount);
             //console.log("원하는 스킬들의 평균 쿨감:", careSkillAverageValue);
             //console.log("원하는 스킬 보석 정보:", careSkillGems);
@@ -2027,7 +2044,7 @@ export async function getCharacterProfile(data, dataBase) {
 
                 gemSkillArry.forEach(function (gemListArry) {
                     // 멸화 또는 겁화 보석이고, 유효한 레벨을 가진 경우
-                    if ((gemListArry.name == "멸화" || gemListArry.name == "겁화") && gemListArry.level != null && gemListArry.level >= 1) {
+                    if ((gemListArry.name == "멸화" || gemListArry.name == "겁화" || gemListArry.name == "딜광휘") && gemListArry.level != null && gemListArry.level >= 1) {
                         // 해당 보석의 실제 딜 증가율 가져오기
                         let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                         let dmgPer = gemType[`level${gemListArry.level}`];
@@ -2060,7 +2077,7 @@ export async function getCharacterProfile(data, dataBase) {
                 skillArray.forEach(skill => {
                     if (skill.per != "etc") {
                         skill.gem.forEach(gem => {
-                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화"));
+                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화" || gem.name == "딜광휘"));
                             if (!(gemObj == undefined)) {
                                 let level = gemObj[`level${gem.level}`];
                                 result.push({ skill: skill.name, gem: gem.name, per: level, skillPer: skill.per });
@@ -2068,7 +2085,7 @@ export async function getCharacterProfile(data, dataBase) {
                         });
                     } else if (skill.per == "etc") {
                         skill.gem.forEach(gem => {
-                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화"));
+                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화" || gem.name == "딜광휘"));
                             if (!(gemObj == undefined)) {
                                 let level = gemObj[`level${gem.level}`];
                                 result.push({ skill: skill.name, gem: gem.name, per: level, skillPer: etcValue / etcLength });
@@ -2116,7 +2133,7 @@ export async function getCharacterProfile(data, dataBase) {
                 gemAvg: 0,
                 etcAverageValue: 1,
                 excludedGemAvg: 0
-                
+
             }
 
         }
@@ -2203,13 +2220,13 @@ export async function getCharacterProfile(data, dataBase) {
 
             // 기존 코드 유지
             atkBuff.forEach(function (buffSkill) {
-                if (skill == buffSkill && type.includes("겁화")) {
+                if (skill == buffSkill && (type.includes("겁화") || type.includes("딜광휘"))) {
                     gemObj.atkBuff += Number(level)
                 }
             })
 
             damageBuff.forEach(function (buffSkill) {
-                if (skill == buffSkill && type.includes("겁화")) {
+                if (skill == buffSkill && (type.includes("겁화") || type.includes("딜광휘"))) {
                     gemObj.damageBuff += Number(level)
                 }
             })
@@ -2217,9 +2234,12 @@ export async function getCharacterProfile(data, dataBase) {
             // 작열/홍염 보석에 대한 실제 값 계산
             atkBuffACdr.forEach(function (buffSkill) {
                 if (skill == buffSkill) {
-                    if (type.includes("작열") || type.includes("홍염")) {
+                    if (type.includes("작열") || type.includes("홍염") || type.includes("쿨광휘")) {
                         // gemPerObj에서 해당 보석 타입 찾기
-                        const gemType = type.includes("작열") ? "작열" : "홍염";
+                        let gemType = "";
+                        if (type.includes("작열")) gemType = "작열";
+                        else if (type.includes("홍염")) gemType = "홍염";
+                        else if (type.includes("쿨광휘")) gemType = "쿨광휘";
                         const gemData = gemPerObj.find(g => g.name === gemType);
 
                         if (gemData && level) {
@@ -2235,9 +2255,13 @@ export async function getCharacterProfile(data, dataBase) {
             atkBuffBCdr.forEach(function (buffSkill) {
                 if (skill == buffSkill) {
 
-                    if (type.includes("작열") || type.includes("홍염")) {
+                    if (type.includes("작열") || type.includes("홍염") || type.includes("쿨광휘")) {
                         // gemPerObj에서 해당 보석 타입 찾기
-                        const gemType = type.includes("작열") ? "작열" : "홍염";
+                        let gemType = "";
+                        if (type.includes("작열")) gemType = "작열";
+                        else if (type.includes("홍염")) gemType = "홍염";
+                        else if (type.includes("쿨광휘")) gemType = "쿨광휘";
+
                         const gemData = gemPerObj.find(g => g.name === gemType);
 
 
@@ -2384,10 +2408,10 @@ export async function getCharacterProfile(data, dataBase) {
         let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
         let vitalityRate = defaultObj.hpActive;
 
-        console.log (cardHP);
-        console.log (maxHealth);
-        console.log (baseHealth);
-        console.log (vitalityRate);
+        //console.log (cardHP);
+        //console.log (maxHealth);
+        //console.log (baseHealth);
+        //console.log (vitalityRate);
 
         function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
             const KARMA_HP_PER_LEVEL = 400;
@@ -2625,17 +2649,17 @@ export async function getCharacterProfile(data, dataBase) {
         console.debug("[estimateKarmaLevel] Input Data:", JSON.stringify(inputData, null, 2));
 
         // --- 유효성 검사 및 기본값 설정 ---
-        if (observedAttackPower === undefined || observedAttackPower <= 0 || isNaN(observedAttackPower)) { 
-            return null; 
+        if (observedAttackPower === undefined || observedAttackPower <= 0 || isNaN(observedAttackPower)) {
+            return null;
         }
         let validKarmaRank = (karmaRank === undefined || karmaRank === null || typeof karmaRank !== 'number' || isNaN(karmaRank)) ? 0 : karmaRank;
-        if (validKarmaRank < 0 || validKarmaRank > 6) { 
-            validKarmaRank = 0; 
+        if (validKarmaRank < 0 || validKarmaRank > 6) {
+            validKarmaRank = 0;
         }
         console.debug(`[estimateKarmaLevel] Using Karma Rank: ${validKarmaRank}`);
         const levelRange = KARMA_LEVEL_RANGES[validKarmaRank];
-        if (!levelRange) { 
-            return null; 
+        if (!levelRange) {
+            return null;
         }
         console.debug(`[estimateKarmaLevel] Karma Level Range: min=${levelRange.min}, max=${levelRange.max}`);
 
@@ -2679,7 +2703,7 @@ export async function getCharacterProfile(data, dataBase) {
             const maxLevel = levelRange.max;
             for (let kLevel = minLevel; kLevel <= maxLevel; kLevel++) {
                 combinationCount++;
-                
+
                 // 계산 로직 (기존과 동일)
                 const calculatedStat = Math.floor((knownBaseStatSum + internalStat) * (1 + safeAvatarStats));
                 const currentKarmaPercent = kLevel * 0.001;
@@ -2724,7 +2748,7 @@ export async function getCharacterProfile(data, dataBase) {
             try {
                 let closestDiff = Infinity;
                 let closestMatch = null;
-                
+
                 // 모든 조합을 검토하여 가장 근접한 값 찾기
                 for (const internalStat of achievableInternalStats) {
                     const minLevel = levelRange.min;
@@ -2732,41 +2756,41 @@ export async function getCharacterProfile(data, dataBase) {
                     for (let kLevel = minLevel; kLevel <= maxLevel; kLevel++) {
                         // 계산 로직
                         const calculatedStat = Math.floor((knownBaseStatSum + internalStat) * (1 + safeAvatarStats));
-                const currentKarmaPercent = kLevel * 0.001;
-                const calculatedWeaponAtkRaw = currentKnownFlatWeaponAtkSum * (1 + safeAccWeaponAtkPer + currentKarmaPercent);
-                const calculatedWeaponAtk = Math.floor(calculatedWeaponAtkRaw);
-                const baseAttackRaw = ((calculatedStat * calculatedWeaponAtk) / 6) ** 0.5;
-                
-                if (isNaN(baseAttackRaw) || !isFinite(baseAttackRaw)) {
-                    continue;
-                }
-                
-                const baseAttack = baseAttackRaw;
-                const flatBonus = safeElixirAtkPlus + safeHyperAtkPlus + safeAccAtkPlus;
-                const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
-                const calculatedAttackPower = (baseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
-                const calculatedAttackPowerFloored = Math.floor(calculatedAttackPower);
-                
+                        const currentKarmaPercent = kLevel * 0.001;
+                        const calculatedWeaponAtkRaw = currentKnownFlatWeaponAtkSum * (1 + safeAccWeaponAtkPer + currentKarmaPercent);
+                        const calculatedWeaponAtk = Math.floor(calculatedWeaponAtkRaw);
+                        const baseAttackRaw = ((calculatedStat * calculatedWeaponAtk) / 6) ** 0.5;
+
+                        if (isNaN(baseAttackRaw) || !isFinite(baseAttackRaw)) {
+                            continue;
+                        }
+
+                        const baseAttack = baseAttackRaw;
+                        const flatBonus = safeElixirAtkPlus + safeHyperAtkPlus + safeAccAtkPlus;
+                        const percentBonus = safeFlatAccAtkPer + safeElixirAtkPer;
+                        const calculatedAttackPower = (baseAttack * safeAttackBonus + flatBonus) * (1 + percentBonus);
+                        const calculatedAttackPowerFloored = Math.floor(calculatedAttackPower);
+
                         // 차이 계산
                         const diff = Math.abs(calculatedAttackPowerFloored - observedAttackPowerFloored);
-                        
+
                         // 가장 근접한 값 업데이트
                         if (diff < closestDiff) {
                             closestDiff = diff;
                             closestMatch = {
-                            internalStat,
-                            kLevel,
-                            calculatedStat,
-                            calculatedWeaponAtk,
+                                internalStat,
+                                kLevel,
+                                calculatedStat,
+                                calculatedWeaponAtk,
                                 calculatedWeaponAtkRaw,
                                 baseAttack: baseAttackRaw,
-                            calculatedAttackPower,
+                                calculatedAttackPower,
                                 diff
                             };
                         }
                     }
                 }
-                
+
                 if (closestMatch) {
                     // 가장 근접한 값의 정보 출력
                     //console.log(`  - 실제 공격력과 가장 근접한 조합: 내실=${closestMatch.internalStat}, 카르마=${closestMatch.kLevel}`);
@@ -2978,7 +3002,7 @@ export async function getCharacterProfile(data, dataBase) {
                         obj.name = text;
                         obj.level = betweenText[idx + 2].match(/\d+/)[0];
                         return obj
-            } else {
+                    } else {
                         return null;
                     }
                 }).filter(item => item !== null);

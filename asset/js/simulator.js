@@ -1115,13 +1115,13 @@ async function simulatorInputCalc() {
 
                 // 기존 코드 유지
                 atkBuff.forEach(function (buffSkill) {
-                    if (skill == buffSkill && type.includes("겁화")) {
+                    if (skill == buffSkill && (type.includes("겁화") || type.includes("딜광휘"))) {
                         result.atkBuff += Number(level)
                     }
                 })
 
                 damageBuff.forEach(function (buffSkill) {
-                    if (skill == buffSkill && type.includes("겁화")) {
+                    if (skill == buffSkill && (type.includes("겁화") || type.includes("딜광휘"))) {
                         result.damageBuff += Number(level)
                     }
                 })
@@ -1129,16 +1129,19 @@ async function simulatorInputCalc() {
                 // 작열/홍염 보석에 대한 실제 값 계산
                 atkBuffACdr.forEach(function (buffSkill) {
                     if (skill == buffSkill) {
-                        if (type.includes("작열") || type.includes("홍염")) {
+                        if (type.includes("작열") || type.includes("홍염") || type.includes("쿨광휘")) {
                             // gemPerObj에서 해당 보석 타입 찾기
-                            const gemType = type.includes("작열") ? "작열" : "홍염";
+                            let gemType = "";
+                            if (type.includes("작열")) gemType = "작열";
+                            else if (type.includes("홍염")) gemType = "홍염";
+                            else if (type.includes("쿨광휘")) gemType = "쿨광휘";
                             const gemData = gemPerObj.find(g => g.name === gemType);
 
                             if (gemData && level) {
                                 // 레벨에 맞는 실제 값 가져오기
                                 const coolValue = gemData[`level${level}`];
                                 result.atkBuffACdr += coolValue; // 레벨 대신 실제 값 사용
-                            } else {
+                            } else{
                             }
                         }
                     }
@@ -1147,16 +1150,19 @@ async function simulatorInputCalc() {
                 atkBuffBCdr.forEach(function (buffSkill) {
                     if (skill == buffSkill) {
 
-                        if (type.includes("작열") || type.includes("홍염")) {
+                        if (type.includes("작열") || type.includes("홍염") || type.includes("쿨광휘")) {
                             // gemPerObj에서 해당 보석 타입 찾기
-                            const gemType = type.includes("작열") ? "작열" : "홍염";
+                            let gemType = "";
+                            if (type.includes("작열")) gemType = "작열";
+                            else if (type.includes("홍염")) gemType = "홍염";
+                            else if (type.includes("쿨광휘")) gemType = "쿨광휘";
+
                             const gemData = gemPerObj.find(g => g.name === gemType);
 
 
                             if (gemData && level) {
                                 // 레벨에 맞는 실제 값 가져오기
                                 const coolValue = gemData[`level${level}`];
-
                                 result.atkBuffBCdr += coolValue; // 레벨 대신 실제 값 사용
                             } else {
                             }
@@ -1454,9 +1460,12 @@ async function simulatorInputCalc() {
             //     { name: "작열", level1: 0, level2: 0.05, level3: 0.1, level4: 0.2, level5: 0.3, level6: 0.45, level7: 0.6, level8: 0.8, level9: 1.00, level10: 1.2 },
             // ];
             let gemAttackBonus = [0, 0.05, 0.1, 0.2, 0.3, 0.45, 0.6, 0.8, 1.00, 1.2];
+            let gemAttackBonus2 = [0, 0.075, 0.15, 0.3, 0.45, 0.675, 0.9, 1.2, 1.5, 1.8];
             gemCalcResultAllInfo.gemSkillArry.forEach((gemTag, idx) => {
                 if (/겁화|작열/.test(gemTag.name)) {
                     result += gemAttackBonus[gemTag.level - 1];
+                } else if (/광휘/.test(gemTag.name)) {
+                    result += gemAttackBonus2[gemTag.level - 1];
                 }
             })
         }
@@ -2667,11 +2676,14 @@ async function selectCreate(data, Modules) {
                 if (/멸화|겁화/.test(gemElementObj.name)) {
                     gemTag = `
                         <option value="멸화">멸화</option>
-                        <option value="겁화">겁화</option>`;
+                        <option value="겁화">겁화</option>
+                        <option value="딜광휘">광휘</option>
+                        `;
                 } else if (/홍염|작열/.test(gemElementObj.name)) {
                     gemTag = `
                         <option value="홍염">홍염</option>
-                        <option value="작열">작열</option>`;
+                        <option value="작열">작열</option>;
+                        <option value="쿨광휘">광휘</option>`;
                 }
                 if (gemElementObj.skill.includes(":")) {
                     gemElementObj.skill = gemElementObj.skill.split(":")[1].trim()
@@ -4148,6 +4160,8 @@ async function calculateGemData(data) {
         { name: "멸화", level1: 3, level2: 6, level3: 9, level4: 12, level5: 15, level6: 18, level7: 21, level8: 24, level9: 30, level10: 40 },
         { name: "홍염", level1: 2, level2: 4, level3: 6, level4: 8, level5: 10, level6: 12, level7: 14, level8: 16, level9: 18, level10: 20 },
         { name: "작열", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
+        { name: "딜광휘", level1: 8, level2: 12, level3: 16, level4: 20, level5: 24, level6: 28, level7: 32, level8: 36, level9: 40, level10: 44 },
+        { name: "쿨광휘", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
     ];
 
 
@@ -4173,8 +4187,8 @@ async function calculateGemData(data) {
                 let etcGemValue = results[idx + 2].substring(0, results[idx + 2].indexOf('"'));
                 let gemName;
                 let level = null;
-                if (results[1].match(/홍염|작열|멸화|겁화/) != null) {
-                    gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                if (results[1].match(/홍염|작열|멸화|겁화|딜광휘|쿨광휘/) != null) {
+                    gemName = results[1].match(/홍염|작열|멸화|겁화|딜광휘|쿨광휘/)[0];
                     level = Number(results[1].match(/(\d+)레벨/)[1]);
                 } else {
                     gemName = "기타보석";
@@ -4184,8 +4198,8 @@ async function calculateGemData(data) {
             } else if (!(toolTip.includes(data.ArmoryProfile.CharacterClassName)) && /(^|[^"])\[([^\[\]"]+)\](?=$|[^"])/.test(toolTip) && toolTip.includes("Element")) {  // 자신의 직업이 아닌 보석을 장착중인 경우
                 let gemName;
                 let level = null;
-                if (results[1].match(/홍염|작열|멸화|겁화/) != null) {
-                    gemName = results[1].match(/홍염|작열|멸화|겁화/)[0];
+                if (results[1].match(/홍염|작열|멸화|겁화|딜광휘|쿨광휘/) != null) {
+                    gemName = results[1].match(/홍염|작열|멸화|겁화|딜광휘|쿨광휘/)[0];
                     level = Number(results[1].match(/(\d+)레벨/)[1]);
                 } else {
                     gemName = "기타보석";
@@ -4198,8 +4212,8 @@ async function calculateGemData(data) {
 
     // console.log(gemSkillArry) // <= 유저가 착용중인 보석 정보
 
-    let per = "홍염|작열";
-    let dmg = "겁화|멸화";
+    let per = "홍염|작열|쿨광휘";
+    let dmg = "겁화|멸화|딜광휘";
 
     function skillCheck(arr, ...nameAndGem) {
         for (let i = 0; i < nameAndGem.length; i += 2) {
@@ -4270,7 +4284,6 @@ async function calculateGemData(data) {
     }
 
     // console.log("보석전용 직업 : ", specialClass)
-
     gemSkillArry.forEach(function (gemSkill, idx) {
         let realClass = Modules.originFilter.classGemFilter.filter(item => item.class == specialClass);
         if (realClass.length == 0) {
@@ -4307,13 +4320,13 @@ async function calculateGemData(data) {
                 }
             }).filter(Boolean);
 
-            // console.log(realGemValue)
+            //console.log(realGemValue)
 
             let coolGemCount = 0;
             let coolGemTotalWeight = 0;
             let weightedCoolValueSum = 0; // 가중치가 적용된 쿨감 수치 합계
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열" || gemListArry.name == "쿨광휘") && gemListArry.level != null && gemListArry.level >= 1 && gemListArry.skill !== "직업보석이 아닙니다") {
                     // if ((gemListArry.name == "홍염" || gemListArry.name == "작열") && gemListArry.level != null && gemListArry.level >= 1) {
                     // 해당 보석의 실제 쿨감 수치 가져오기
                     //console.log(gemListArry)
@@ -4341,7 +4354,7 @@ async function calculateGemData(data) {
             let excludedGems = [];
 
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") &&
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열" || gemListArry.name == "쿨광휘") &&
                     gemListArry.level != null &&
                     gemListArry.level >= 1 &&
                     gemListArry.skill !== "직업보석이 아닙니다") {
@@ -4377,7 +4390,7 @@ async function calculateGemData(data) {
             let careSkillGems = [];
 
             gemSkillArry.forEach(function (gemListArry) {
-                if ((gemListArry.name == "홍염" || gemListArry.name == "작열") &&
+                if ((gemListArry.name == "홍염" || gemListArry.name == "작열" || gemListArry.name == "쿨광휘") &&
                     gemListArry.level != null &&
                     gemListArry.level >= 1 &&
                     gemListArry.skill !== "직업보석이 아닙니다") {
@@ -4420,10 +4433,9 @@ async function calculateGemData(data) {
                 let totalWeight = 0;
                 let dmgCount = 0;
                 let weightedDmgSum = 0; // 가중치가 적용된 딜 증가율 합계
-
                 gemSkillArry.forEach(function (gemListArry) {
                     // 멸화 또는 겁화 보석이고, 유효한 레벨을 가진 경우
-                    if ((gemListArry.name == "멸화" || gemListArry.name == "겁화") && gemListArry.level != null && gemListArry.level >= 1) {
+                    if ((gemListArry.name == "멸화" || gemListArry.name == "겁화" || gemListArry.name == "딜광휘") && gemListArry.level != null && gemListArry.level >= 1) {
                         // 해당 보석의 실제 딜 증가율 가져오기
                         let gemType = gemPerObj.find(g => g.name === gemListArry.name);
                         let dmgPer = gemType[`level${gemListArry.level}`];
@@ -4454,7 +4466,7 @@ async function calculateGemData(data) {
                 skillArray.forEach(skill => {
                     if (skill.per != "etc") {
                         skill.gem.forEach(gem => {
-                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화"));
+                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화" || gem.name == "딜광휘"));
                             if (!(gemObj == undefined)) {
                                 let level = gemObj[`level${gem.level}`];
                                 result.push({ skill: skill.name, gem: gem.name, per: level, skillPer: skill.per });
@@ -4462,7 +4474,7 @@ async function calculateGemData(data) {
                         });
                     } else if (skill.per == "etc") {
                         skill.gem.forEach(gem => {
-                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화"));
+                            let gemObj = gemPerObj.find(gemPerObj => gemPerObj.name == gem.name && (gem.name == "겁화" || gem.name == "멸화" || gem.name == "딜광휘"));
                             if (!(gemObj == undefined)) {
                                 let level = gemObj[`level${gem.level}`];
                                 result.push({ skill: skill.name, gem: gem.name, per: level, skillPer: etcValue / etcLength });
@@ -4472,7 +4484,7 @@ async function calculateGemData(data) {
                 });
                 return result;
             }
-            //console.log(getLevels(gemPerObj, realGemValue))
+            console.log(getLevels(gemPerObj, realGemValue))
             let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
                 return gemResultValue + finalGemValue.per * finalGemValue.skillPer;
             }, 0);
@@ -4514,7 +4526,7 @@ async function calculateGemData(data) {
             };
         }
     }
-    // console.log(gemCheckFnc())
+    console.log(gemCheckFnc())
     return gemCheckFnc()
 }
 
