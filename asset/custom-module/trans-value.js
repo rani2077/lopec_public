@@ -413,7 +413,8 @@ export async function getCharacterProfile(data, dataBase) {
     //defaultObj.special = 1793
     //defaultObj.haste = 652
     //defaultObj.special = 1843
-
+    defaultObj.special = Math.min(defaultObj.special, 1200)
+    
 
 
     etcObj.expeditionStats = Math.floor((data.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5 // 원정대 힘민지
@@ -2382,10 +2383,13 @@ export async function getCharacterProfile(data, dataBase) {
         let maxHealth = defaultObj.maxHp
         let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
         let vitalityRate = defaultObj.hpActive;
-        let healthValue = jobObj.healthPer;
-        const isSupport = etcObj.supportCheck === "서폿" || etcObj.supportCheck === "진실된 용맹" || etcObj.supportCheck === "회귀" || etcObj.supportCheck === "심판자"; // isSupport 값 계산
 
-        function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport) {
+        console.log (cardHP);
+        console.log (maxHealth);
+        console.log (baseHealth);
+        console.log (vitalityRate);
+
+        function calculateKarmaLevel(maxHealth, baseHealth, vitalityRate) {
             const KARMA_HP_PER_LEVEL = 400;
             // --- 단일 계산 (펫 0%, 방범대 0% 가정) ---
             const petPercent = 0;
@@ -2466,7 +2470,7 @@ export async function getCharacterProfile(data, dataBase) {
         // --- calculateKarmaLevel 함수 끝 ---
 
         // 함수 호출 및 결과 처리
-        const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate, healthValue, isSupport);
+        const result = calculateKarmaLevel(maxHealth, baseHealth, vitalityRate);
 
         // 결과 로깅 (필요시 주석 해제)
         console.log("카르마 추정 결과:", result.bestResult);
@@ -2810,8 +2814,7 @@ export async function getCharacterProfile(data, dataBase) {
         CalchyperWeaponAtkPlus: hyperObj.weaponAtkPlus || 0,
         CalcelixirWeaponAtkPlus: elixirObj.weaponAtkPlus || 0,
         CalcaccWeaponAtkPlus: accObj.weaponAtkPlus || 0,
-        //CalcbangleWeaponAtkPlus: bangleObj.weaponAtkPlus || 0,
-        CalcbangleWeaponAtkPlus: 0,
+        CalcbangleWeaponAtkPlus: bangleObj.weaponAtkPlus || 0,
         CalcaccWeaponAtkPer: (accObj.weaponAtkPer || 0) / 100, // 복원됨: 악세 무기 공격력 %
         CalcelixirAtkPlus: elixirObj.atkPlus || 0,
         CalchyperAtkPlus: hyperObj.atkPlus || 0,
@@ -2820,7 +2823,7 @@ export async function getCharacterProfile(data, dataBase) {
         CalcelixirAtkPer: (elixirObj.atkPer || 0) / 100,
         CalcattackBonus: (((etcObj.gemAttackBonus || 0) + (etcObj.abilityAttackBonus || 0)) / 100) + 1
     };
-    console.log(karmaInputData)
+    //console.log(karmaInputData)
     // --- estimateKarmaLevel 함수 호출 및 결과 출력 ---
     const estimatedBestKarmaLevel = estimateKarmaLevel(karmaInputData);
     //console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);
