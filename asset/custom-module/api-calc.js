@@ -51,9 +51,12 @@ export async function apiCalcValue(inputName) {
     let data = await Modules.fetchApi.lostarkApiCall(inputName);
     // 보석 프리셋 불러오기
     let gemSaveData = JSON.parse(localStorage.getItem('gemSlot'));
-    let gemSetCheck = JSON.parse(localStorage.getItem('gemSet'));
-    if (gemSetCheck) {
+    let gemSetCheck = localStorage.getItem('gemSet');
+    console.log(gemSetCheck)
+    if (gemSetCheck === inputName) {
         data.ArmoryGem = gemSaveData;
+    } else {
+        window.localStorage.removeItem("gemSet");
     }
     let extractValue = await Modules.transValue.getCharacterProfile(data);
     let calcValue = await Modules.calcValue.specPointCalc(extractValue);

@@ -685,14 +685,15 @@ export async function gemFreeSetSave(gemSlotData) {
     let resetElement = document.querySelector(".gem-box .reset");
     if (saveElement && loadElement && resetElement) {
         saveElement.addEventListener("click", () => {
-            const gemSlotString = JSON.stringify(gemSlotData);
+            const gemSlotString = JSON.stringify(gemSlotData.ArmoryGem);
             if (confirm("현재 장착중인 보석을 저장합니다.(저장은 최대 1개까지 가능합니다.)\n보석설정을 저장하시겠습니까?")) {
                 localStorage.setItem('gemSlot', gemSlotString);
             }
         })
         loadElement.addEventListener("click", () => {
             if (localStorage.getItem('gemSlot')) {
-                localStorage.setItem('gemSet', "true");
+                localStorage.setItem('gemSet', gemSlotData.ArmoryProfile.CharacterName);
+                // localStorage.setItem('gemSet', "청염각");
             } else {
                 alert("저장된 보석이 없습니다. 보석을 저장후 눌러주세요");
                 return;

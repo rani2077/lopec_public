@@ -2719,7 +2719,7 @@ async function selectCreate(data, Modules) {
                     <i style="display:none;">3</i>
                 </div>`;
         }
-        Modules.component.gemFreeSetSave(data.ArmoryGem)
+        Modules.component.gemFreeSetSave(data)
     }
     userGemEquipmentToOption()
 

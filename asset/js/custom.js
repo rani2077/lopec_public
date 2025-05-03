@@ -106,77 +106,6 @@ async function mainSearchFunction() {
         //에스더 1300+
 
         let gradeImageSrc = "";
-        // let nextTierValue = 0;
-        // let nowTierValue = 0;
-        // let tierIndex = 0;
-        // let tierNameArray = ['브론즈', '실버', '골드', '다이아몬드', '마스터', '에스더'];
-        // let tierNameEngArray = ['bronze', 'silver', 'gold', 'diamond', 'master', 'esther'];
-        // if (extractValue.etcObj.supportCheck !== "서폿") {
-        //     if (specPoint.completeSpecPoint >= 3000) {
-        //         gradeImageSrc = `${baseUrl}/image/esther.png`;
-        //         nextTierValue = 0;
-        //         nowTierValue = 0;
-        //         tierIndex = 5;
-        //     } else if (specPoint.completeSpecPoint >= 2400) {
-        //         gradeImageSrc = `${baseUrl}/image/master.png`;
-        //         nextTierValue = 3000;
-        //         nowTierValue = 2400;
-        //         tierIndex = 4;
-        //     } else if (specPoint.completeSpecPoint >= 1900) {
-        //         gradeImageSrc = `${baseUrl}/image/diamond.png`;
-        //         nextTierValue = 2400;
-        //         nowTierValue = 1900;
-        //         tierIndex = 3;
-        //     } else if (specPoint.completeSpecPoint >= 1600) {
-        //         gradeImageSrc = `${baseUrl}/image/gold.png`;
-        //         nextTierValue = 1900;
-        //         nowTierValue = 1600;
-        //         tierIndex = 2;
-        //     } else if (specPoint.completeSpecPoint >= 1400) {
-        //         gradeImageSrc = `${baseUrl}/image/silver.png`;
-        //         nextTierValue = 1600;
-        //         nowTierValue = 1400;
-        //         tierIndex = 1;
-        //     } else if (specPoint.completeSpecPoint < 1400) {
-        //         gradeImageSrc = `${baseUrl}/image/bronze.png`;
-        //         nextTierValue = 1400;
-        //         nowTierValue = 1;
-        //         tierIndex = 0;
-        //     }
-        // } else {
-        //     if (specPoint.completeSpecPoint >= 1300) {
-        //         gradeImageSrc = `${baseUrl}/image/esther.png`;
-        //         nextTierValue = 0;
-        //         nowTierValue = 0;
-        //         tierIndex = 5;
-        //     } else if (specPoint.completeSpecPoint >= 1000) {
-        //         gradeImageSrc = `${baseUrl}/image/master.png`;
-        //         nextTierValue = 1300;
-        //         nowTierValue = 1000;
-        //         tierIndex = 4;
-        //     } else if (specPoint.completeSpecPoint >= 800) {
-        //         gradeImageSrc = `${baseUrl}/image/diamond.png`;
-        //         nextTierValue = 1000;
-        //         nowTierValue = 800;
-        //         tierIndex = 3;
-        //     } else if (specPoint.completeSpecPoint >= 700) {
-        //         gradeImageSrc = `${baseUrl}/image/gold.png`;
-        //         nextTierValue = 800;
-        //         nowTierValue = 700;
-        //         tierIndex = 2;
-        //     } else if (specPoint.completeSpecPoint >= 400) {
-        //         gradeImageSrc = `${baseUrl}/image/silver.png`;
-        //         nextTierValue = 700;
-        //         nowTierValue = 400;
-        //         tierIndex = 1;
-        //     } else if (specPoint.completeSpecPoint < 400) {
-        //         gradeImageSrc = `${baseUrl}/image/bronze.png`;
-        //         nextTierValue = 400;
-        //         nowTierValue = 1;
-        //         tierIndex = 0;
-        //     }
-        // }
-        // let totalStatus = 0;
         console.log(specPoint.tierInfoObj)
         let gaugePercent = (specPoint.completeSpecPoint - specPoint.tierInfoObj.nowTierValue) / (specPoint.tierInfoObj.nextTierValue - specPoint.tierInfoObj.nowTierValue) * 100;
         let gauge = "";
@@ -198,7 +127,7 @@ async function mainSearchFunction() {
         }
 
         gaugeElement.innerHTML = gauge;
-        nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2);
+        if (localStorage.getItem("gemSet")) nowSpecElement.style.color = "#e44103";
         nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2).replace(/\.(\d{2})$/, ".<i style='font-size:20px'>$1</i>");
 
 
@@ -255,17 +184,15 @@ async function mainSearchFunction() {
                     <span class="detail">${gemDealInfo}</span>
                     <i style="display:none;">${sortTag}</i>
                 </div>`
-                if (gemArray.length === (idx + 1)) {
-                    gemBox += `
-                        <div class="gem-box radius free-set">
-                            <span class="save">저 장</span>
-                            <span class="load">로 드</span>
-                            <span class="reset">리 셋</span>
-                            <span class="blind level">9</span>
-                            <i style="display:none;">3</i>
-                        </div>`
-                }
             })
+            gemBox += `
+                <div class="gem-box radius free-set">
+                    <span class="save">저 장</span>
+                    <span class="load">로 드</span>
+                    <span class="reset">리 셋</span>
+                    <span class="blind level">9</span>
+                    <i style="display:none;">3</i>
+                </div>`
             element.innerHTML = gemBox;
         } else if (gemArray.length === 0) {
             for (let i = 0; i < 11; i++) {
@@ -288,7 +215,7 @@ async function mainSearchFunction() {
             element.innerHTML = gemBox;
 
         }
-        Modules.component.gemFreeSetSave(data.ArmoryGem)
+        Modules.component.gemFreeSetSave(data)
 
     }
     gemAreaCreate()
