@@ -275,6 +275,8 @@ export async function getCharacterProfile(data, dataBase) {
         maxHp: 0,
         statHp: 0,
         hpActive: 0,
+        estherDeal: 1,
+        estherSupport: 1,
     }
     data.ArmoryProfile.Stats.forEach(function (statsArry) {
         if (statsArry.Type == "공격력") {
@@ -305,7 +307,14 @@ export async function getCharacterProfile(data, dataBase) {
     data.ArmoryEquipment.forEach(function (equip) {
         if (equip.Type == "무기") {
             let quality = JSON.parse(equip.Tooltip).Element_001.value.qualityValue;
+            let esther = JSON.parse(equip.Tooltip).Element_001.value.leftStr0;
+
+            if (esther && esther.includes("에스더")) {
+                defaultObj.estherDeal = 1.01
+                defaultObj.estherSupport = 1.005
+            }
             defaultObj.addDamagePer += 10 + 0.002 * (quality ** 2);
+
         } else if (/투구|상의|하의|장갑|어깨/.test(equip.Type)) { // 방어구 5종
             try {
                 let tooltipJson = JSON.parse(equip.Tooltip);
@@ -413,10 +422,6 @@ export async function getCharacterProfile(data, dataBase) {
     //defaultObj.special = 1793
     //defaultObj.haste = 652
     //defaultObj.special = 1843
-    defaultObj.special = Math.min(defaultObj.special, 1200)
-
-
-
     etcObj.expeditionStats = Math.floor((data.ArmoryProfile.ExpeditionLevel - 1) / 2) * 5 + 5 // 원정대 힘민지
 
 
@@ -2823,7 +2828,20 @@ export async function getCharacterProfile(data, dataBase) {
     }
 
     // 전투 레벨 스탯 계산 (전투레벨 50 이상 가정)
-    let fightLevelStatValue = 477
+    let fightLevelStatValue = 0
+    if (characterLevel === 60) fightLevelStatValue = 429;
+    if (characterLevel === 61) fightLevelStatValue = 433;
+    if (characterLevel === 62) fightLevelStatValue = 437;
+    if (characterLevel === 63) fightLevelStatValue = 441;
+    if (characterLevel === 64) fightLevelStatValue = 445;
+    if (characterLevel === 65) fightLevelStatValue = 450;
+    if (characterLevel === 66) fightLevelStatValue = "???";
+    if (characterLevel === 67) fightLevelStatValue = "???";
+    if (characterLevel === 68) fightLevelStatValue = "???";
+    if (characterLevel === 69) fightLevelStatValue = 471;
+    if (characterLevel === 70) fightLevelStatValue = 477;
+
+    console.log(fightLevelStatValue)
 
 
     const karmaInputData = {
@@ -2849,7 +2867,7 @@ export async function getCharacterProfile(data, dataBase) {
         CalcelixirAtkPer: (elixirObj.atkPer || 0) / 100,
         CalcattackBonus: (((etcObj.gemAttackBonus || 0) + (etcObj.abilityAttackBonus || 0)) / 100) + 1
     };
-    //console.log(karmaInputData)
+    console.log(karmaInputData)
     // --- estimateKarmaLevel 함수 호출 및 결과 출력 ---
     const estimatedBestKarmaLevel = estimateKarmaLevel(karmaInputData);
     //console.log("[깨달음 카르마 레벨 최종 추정 결과 (최고 내실 우선)]:", estimatedBestKarmaLevel);

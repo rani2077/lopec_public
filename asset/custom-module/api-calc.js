@@ -52,7 +52,7 @@ export async function apiCalcValue(inputName) {
     // 보석 프리셋 불러오기
     let gemSaveData = JSON.parse(localStorage.getItem('gemSlot'));
     let gemSetCheck = localStorage.getItem('gemSet');
-    console.log(gemSetCheck)
+    //console.log(gemSetCheck)
     if (gemSetCheck === inputName) {
         data.ArmoryGem = gemSaveData;
     } else {
