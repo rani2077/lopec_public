@@ -1108,7 +1108,7 @@ async function mainSearchFunction() {
                 <span class="button" onclick="document.querySelector('.sc-info .detail-area').classList.toggle('on');"></span>`;
         }
         // extractValue.etcObj.supportCheck !== "서폿"
-        if (!/서폿|회귀|심판자|진실된 용맹/.test(extractValue.etcObj.supportCheck) || (extractValue.engObj.dealpport = true)) {
+        if (!/서폿|회귀|심판자|진실된 용맹/.test(extractValue.etcObj.supportCheck) || (extractValue.engObj.dealpport === "true")) {
             result += infoWrap("점수 통계", specPointInfo);
             result += infoWrap("장비 효과", armorInfo);
             result += infoWrap("아크패시브", arkPassiveInfo);

@@ -1079,7 +1079,9 @@ export async function getCharacterProfile(data, dataBase) {
     const checkDealer = checkDealpport(data.ArmoryEngraving?.ArkPassiveEffects)
 
     if (checkDealer === true) {
-        engObj.dealpport = true
+        engObj.dealpport = "true";
+    } else {
+        engObj.dealpport = "false";
     }
 
 
