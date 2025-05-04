@@ -1,7 +1,12 @@
 // // /* ############################## character insert */
 // // api 결과 받은 시점에 파싱 후 각 개별값을 넘겨주면 디비에 저장
 
-
+/* **********************************************************************************************************************
+ * name		              :	  
+ * description            :   api이전으로 인한 미사용예정
+ * response				  :   JSON
+ * USE_TN                 :   미사용
+ *********************************************************************************************************************** */
 export async function dataBaseWrite(data, extractValue, specPoint) {
 	let totalStatus = 0;
 	if (extractValue.etcObj.supportCheck === "서폿") {
@@ -31,7 +36,12 @@ export async function dataBaseWrite(data, extractValue, specPoint) {
 	return result;
 }
 
-
+/* **********************************************************************************************************************
+ * name		              :	  
+ * description            :   api이전으로 인한 미사용예정
+ * response				  :   JSON
+ * USE_TN                 :   미사용
+ *********************************************************************************************************************** */
 export var insertLopecCharacters = function (lchaCharacterNickname, lchaCharacterLevel, lchaCharacterClass, lchaCharacterImage
 	, lchaServer, lchaLevel, lchaGuild, lchaTitle, lchaTotalsum, lchaTotalsumSupport
 	, lchaAlltimebuff, lchaFullbuff, lchaEvoKarma, lchaVersion) {
@@ -73,8 +83,9 @@ export var insertLopecCharacters = function (lchaCharacterNickname, lchaCharacte
 			, karma: null
 			, version: "2.0"
 		}
-
-		fetch("https://lopec.o-r.kr/api/character", {
+		console.log(saveDatas)
+		console.log(JSON.stringify(saveDatas))
+		fetch("https://api.lopec.kr/api/character", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -115,9 +126,16 @@ export var insertLopecCharacters = function (lchaCharacterNickname, lchaCharacte
 	});
 }
 
-
+/* **********************************************************************************************************************
+ * name		              :	  fetchLostArkRankingData
+ * description            :   DB에 저장된 캐릭터의 직업랭킹 및 전체랭킹을 받아옴
+ * response				  :   JSON
+ * USE_TN                 :   사용
+ * name					  :	  닉네임
+ * job					  :   직업명(1차직업 + 뿌리직업)
+ *********************************************************************************************************************** */
 async function fetchLostArkRankingData(name, job) {
-	const url = `https://lopec.o-r.kr/api/ranking?nickname=${name}&characterClass=${job}`;
+	const url = `https://api.lopec.kr/api/ranking?nickname=${name}&characterClass=${job}`;
 	const headers = {
 		'Accept': 'application/json'
 	};
@@ -151,19 +169,85 @@ async function fetchLostArkRankingData(name, job) {
 	}
 }
 
-
-// 요청
+/* **********************************************************************************************************************
+ * name		              :	  evoKarmaDataBase
+ * description            :   진화 카르마 계산에 필요한 값들을 백엔드 서버로 전송
+ * response				  :   http status 204 no_content
+ * USE_TN                 :   사용
+ * inputName			  :	  닉네임
+ * extractValue			  :   진화 카르마 계산에 필요한 값이 담긴 객체
+ *********************************************************************************************************************** */
 //POST http://localhost:8080/api/karma/enlight
 //Content-Type: application/json
-export async function enlightenmentKarmaDataBase() {
-	const url = `https://lopec.o-r.kr/api/karma/enlight`;
-	const headers = {
-		'Accept': 'application/json'
-	};
-	const response = await fetch(url, {
-		method: 'POST',
-		headers: headers
-	});
+export async function evoKarmaDataBase(inputName, extractValue) {
+	let postObj = {
+		EVO_KARMA: {
+			nickname: inputName,
+			cardHP: extractValue.etcObj.evoKarmaMaterial.cardHP,
+			maxHealth: extractValue.etcObj.evoKarmaMaterial.maxHealth,
+			baseHealth: extractValue.etcObj.evoKarmaMaterial.baseHealth,
+			vitalityRate: extractValue.etcObj.evoKarmaMaterial.vitalityRate
+		}
+	}
+	fetch("https://api.lopec.kr/api/karma/evo", {
+		method: "POST",
+		headers: { "Content-Type": 'application/json' },
+		body: JSON.stringify(postObj)
+	})
+}
 
+/* **********************************************************************************************************************
+ * name		              :	  dataBaseResponse
+ * description            :   DB에 저장된 캐릭터의 스펙포인트 및 특성합 값을 받아옴
+ * response				  :   JSON
+ * USE_TN                 :   사용
+ * inputName			  :	  닉네임
+ * extractValue			  :   특성합
+ *********************************************************************************************************************** */
+export async function dataBaseResponse(inputName, extractValue) {
 
+	let characterInfoObj = {
+		nickname: inputName,
+		characterClass: `${extractValue.etcObj.supportCheck} ${extractValue.etcObj.characterClass}`,
+		totalStatus: extractValue.defaultObj.totalStatus,
+		statusSpecial: extractValue.defaultObj.statusSpecial,
+		statusHaste: extractValue.defaultObj.statusHaste,
+	}
+	let response = await fetch("https://api.lopec.kr/api/character/stats", {
+		method: "POST",
+		headers: { "Content-Type": 'application/json' },
+		body: JSON.stringify(characterInfoObj)
+	})
+
+	let responseData = await response.json()
+	let rankData = await fetchLostArkRankingData(inputName, `${extractValue.etcObj.supportCheck} ${extractValue.etcObj.characterClass}`)
+	responseData.classRank = rankData.classRank;
+	responseData.totalRank = rankData.totalRank;
+	return responseData;
+}
+
+/* **********************************************************************************************************************
+ * name		              :	  specPointUpdate
+ * description            :   DB에 저장된 캐릭터의 스펙포인트를 업데이트 함
+ * response				  :   http status 204 no_content
+ * USE_TN                 :   사용
+ * inputName			  :	  닉네임
+ * extractValue			  :   
+ *********************************************************************************************************************** */
+export async function specPointUpdate(inputName, extractValue, calcValue) {
+	let characterInfoObj = {
+		nickname: inputName,
+		characterClass: `${extractValue.etcObj.supportCheck} ${extractValue.etcObj.characterClass}`,
+		totalSum: calcValue.completeSpecPoint
+	}
+	// let characterInfoObj = {
+	// 	nickname: "청염각",
+	// 	characterClass: "일격 스트라이커",
+	// 	totalSum: 1000
+	// }
+	fetch("https://api.lopec.kr/api/character/best", {
+		method: "POST",
+		headers: { "Content-Type": 'application/json' },
+		body: JSON.stringify(characterInfoObj)
+	})
 }

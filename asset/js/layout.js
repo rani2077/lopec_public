@@ -542,7 +542,6 @@ async function scLopecClickCreate() {
                             <span class="name result">닉네임</span>
                             <span class="job result">직업</span>
                             <span class="point result">점수</span>
-                            <span class="change result">딜러환산</span>
                             <span class="del result"></span>
                         </div>
                     </div>
@@ -1071,16 +1070,18 @@ async function lopecClickSearch() {
             // alert(`${inputName} 캐릭터 정보를 조회하는데 실패했습니다.`);
             return; // 함수 종료
         }
-        let extractValue = await Modules.transValue.getCharacterProfile(data);
-
-        let calcValue = await Modules.calcValue.specPointCalc(extractValue);
-        let dataBaseResponse = await Modules.dataBase.dataBaseWrite(data, extractValue, calcValue);
-        if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-        } else if (dataBaseResponse.totalStatusSupport !== 0) {
-            extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-        }
-        calcValue = await Modules.calcValue.specPointCalc(extractValue);
+        let apiCalc = await Modules.apiCalcValue.apiCalcValue(inputName);
+        let extractValue = apiCalc.extractValue;
+        let calcValue = apiCalc.calcValue;
+        // let extractValue = await Modules.transValue.getCharacterProfile(data); <==DB통신모듈 통합및 이전으로 인해 삭제예정
+        // let calcValue = await Modules.calcValue.specPointCalc(extractValue);
+        // let dataBaseResponse = await Modules.dataBase.dataBaseWrite(data, extractValue, calcValue);
+        // if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
+        //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
+        // } else if (dataBaseResponse.totalStatusSupport !== 0) {
+        //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
+        // }
+        // calcValue = await Modules.calcValue.specPointCalc(extractValue);
 
         let supportMinMedianValue = extractValue.htmlObj.medianInfo.supportMinMedianValue;
         let supportMaxMedianValue = extractValue.htmlObj.medianInfo.supportMaxMedianValue;
@@ -1120,7 +1121,6 @@ async function lopecClickSearch() {
             <span class="name result">${inputName}</span>
             <span class="job result">${extractValue.etcObj.supportCheck}</span>
             <span class="point result">${calcValue.completeSpecPoint.toFixed(2)}</span>
-            <span class="change result" style="text-align:${convertValue == "-" ? "center" : "auto"}">${convertValue}</span>
             <span class="del result">삭제</span>
         </div>`;
         //❌삭제 유니코드 저장용

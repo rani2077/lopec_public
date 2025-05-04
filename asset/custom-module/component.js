@@ -106,7 +106,7 @@ export async function scProfile(userData, extractValue, response) {
     let jobPercent = response.classRank.percentage;
     let totalPercent = response.totalRank.percentage;
 
-    let patreonBadge = await fetch(`https://lopec.o-r.kr/api/character/badge?nickname=${userName}`);
+    let patreonBadge = await fetch(`https://api.lopec.kr/api/character/badge?nickname=${userName}`);
     patreonBadge = await patreonBadge.json();
     // console.log(patreonBadge)
     // patreonBadge = { // <== 응답값 예시
@@ -176,43 +176,6 @@ export async function scProfile(userData, extractValue, response) {
 //<span class="name">전체랭킹 : ${totalRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${totalPercent}</em></span>
 //<span class="name">직업랭킹 : ${jobRankVariable}<em style="margin-left:2px;font-size:11px;opacity:0.8;">${jobPercent}</em></span>
 
-
-/* **********************************************************************************************************************
-* function name		:	
-* description       :   함수를 이전하여 더이상 사용되지 않음
-*********************************************************************************************************************** */
-// export async function dataBaseWrite(data, extractValue, specPoint) {
-//     let Module = await import("../js/character.js");
-//     // console.log(Module);
-//     // console.log(extractValue);
-//     // console.log(extractValue.etcObj.supportCheck)
-//     let totalStatus = 0;
-//     if (extractValue.etcObj.supportCheck === "서폿") {
-//         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
-//     } else {
-//         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
-//     }
-//     // await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam); <== 삭제예정
-//     // console.log(totalStatus)
-//     let result = await Modules.dataBase.insertLopecCharacters(
-//         data.ArmoryProfile.CharacterName,                                               // 닉네임 
-//         data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
-//         extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
-//         totalStatus,                                                                    // 프로필 이미지 
-//         data.ArmoryProfile.ServerName,                                                  // 서버 
-//         parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
-//         data.ArmoryProfile.GuildName,                                                   // 길드 
-//         data.ArmoryProfile.Title,                                                       // 칭호 
-//         specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
-//         specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
-//         specPoint.supportAllTimeBuff,                                                   // 상시버프 
-//         specPoint.supportFullBuff,                                                      // 풀버프 
-//         null,                                                                           // 진화 카르마 랭크                  
-//         "2.0"                                                                           // 현재 버전 
-//     );
-//     // console.log(result)
-//     return result;
-// }
 
 /* **********************************************************************************************************************
 * function name		:	profileImagePosition
@@ -610,7 +573,7 @@ async function scHistorySkeleton() {
 * description       : 	히스토리 컴포넌트
 *********************************************************************************************************************** */
 async function scHistory() {
-    let response = await fetch("https://lopec.o-r.kr/api/score-history?nickname=로스트다람쥐&characterClass=황후 아르카나")
+    let response = await fetch("https://api.lopec.kr/api/score-history?nickname=로스트다람쥐&characterClass=황후 아르카나")
     let historyData = await response.json()
     console.log(historyData)
     return `
@@ -719,3 +682,7 @@ export async function gemFreeSetSave(gemSlotData) {
     // });
 }
 
+/* **********************************************************************************************************************
+* function name		:	manageExpeditionData
+* description       : 	원정대 데이터 로컬스토리지 저장
+*********************************************************************************************************************** */

@@ -130,10 +130,8 @@ async function mainSearchFunction() {
         if (localStorage.getItem("gemSet")) nowSpecElement.style.color = "#e44103";
         nowSpecElement.innerHTML = (specPoint.completeSpecPoint).toFixed(2).replace(/\.(\d{2})$/, ".<i style='font-size:20px'>$1</i>");
 
-
         // bestSpecElement.innerHTML = "다이아몬드 티어<br> 마스터까지 앞으로 100점!";
         tierImageElement.setAttribute("src", `${baseUrl}/image/${specPoint.tierInfoObj.tierNameEng}.png`);
-
     }
     specAreaCreate()
 
@@ -884,11 +882,19 @@ async function mainSearchFunction() {
     * description       : 	karma-area 상세정보의 내용을 생성함
     *********************************************************************************************************************** */
     function karmaAreaCreate() {
-        let element = document.querySelector(".sc-info .group-system .karma-area .karma");
-        let rank = extractValue.etcObj.evolutionkarmaRank;
-        let level = extractValue.etcObj.evolutionkarmaPoint;
+        let elements = document.querySelectorAll(".sc-info .group-system .karma-area .karma");
+        let evolutionKarmaRankElement = elements[0].querySelector(".rank");
+        let enlightenmentKarmaRankElement = elements[1].querySelector(".rank");
+        let leapKarmaRankElement = elements[2].querySelector(".rank");
 
-        element.innerHTML = `<em style="color:#f00;font-weight:600;">${rank}</em>랭크` + " " + `<em style="color:#f00;font-weight:600;">${level}</em>레벨`;
+        // 자바스크립트에서 0을 false로 취급하기 때문에 +1
+        let evolutionKarmaRankText = extractValue.karmaObj.evolutionKarmaRank + 1 ? `${extractValue.karmaObj.evolutionKarmaRank}랭크` : "미등록"
+        let enlightenmentKarmaRankText = extractValue.karmaObj.enlightKarmaRank + 1 ? `${extractValue.karmaObj.enlightKarmaRank}랭크` : "미등록"
+        let leapKarmaRankText = extractValue.karmaObj.leapKarmaRank + 1 ? `${extractValue.karmaObj.leapKarmaRank}랭크` : "미등록"
+
+        evolutionKarmaRankElement.textContent = evolutionKarmaRankText;
+        enlightenmentKarmaRankElement.textContent = enlightenmentKarmaRankText;
+        leapKarmaRankElement.textContent = leapKarmaRankText;
     }
     karmaAreaCreate();
     /* **********************************************************************************************************************
@@ -912,8 +918,8 @@ async function mainSearchFunction() {
                             ${object.name}
                             ${object.question ?
                         `<div class="question" style="margin-left:5px;">
-                            <span class="detail" style="${mobilePos};width:200px;white-space:wrap;">${object.question}</span>
-                        </div>` : ""}
+                                <span class="detail" style="${mobilePos};width:200px;white-space:wrap;">${object.question}</span>
+                            </div>` : ""}
                         </span>
                         <span class="text">${object.value}</span>
                     </div>`;
@@ -937,6 +943,22 @@ async function mainSearchFunction() {
 
             // 'YY.MM.DD' 형식의 문자열을 생성합니다.
             return `${year}.${month}.${day}`;
+        }
+        // 오늘 날짜를 YYYYMMDDHHmmss형식으로 가져옴
+        function nowDate() {
+            const now = new Date(); // 현재 날짜와 시간을 가지는 Date 객체 생성
+
+            const year = now.getFullYear(); // 년도 (예: 2025)
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // 월 (0부터 시작하므로 +1 필요), 두 자릿수로 패딩
+            const day = now.getDate().toString().padStart(2, '0'); // 일, 두 자릿수로 패딩
+            const hours = now.getHours().toString().padStart(2, '0'); // 시, 두 자릿수로 패딩 (24시간 형식)
+            const minutes = now.getMinutes().toString().padStart(2, '0'); // 분, 두 자릿수로 패딩
+            const seconds = now.getSeconds().toString().padStart(2, '0'); // 초, 두 자릿수로 패딩
+
+            // 모든 구성 요소를 결합하여 "YYYYMMDDHHmmss" 형식의 문자열 생성
+            const formattedDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+
+            return formattedDateTime;
         }
 
         let dealerMedianValue = extractValue.htmlObj.medianInfo.dealerMedianValue;
@@ -962,10 +984,28 @@ async function mainSearchFunction() {
         // 5. 최종 딜러 환산 점수 계산
         let dealerSupportConversion = dealerMinMedianValue + (normalizedSupport * dealerRange);
 
+        let bestSpecPoint;
+        let archiveDate;
+
+        let gemSetCheck = localStorage.getItem('gemSet');
+        let devilDmgCheck = localStorage.getItem("devilDamage")
+        if (
+            apiData.calcValue.completeSpecPoint > apiData.dataBase.totalSum &&          // 계산된 스펙포인트가 DB값보다 큰 경우
+            devilDmgCheck !== "true" &&                                                 // 악추피 체크를 안한 경우
+            !gemSetCheck                                                                // 저장된 보석설정을 로드한 경우
+
+        ) {
+            bestSpecPoint = apiData.calcValue.completeSpecPoint;
+            archiveDate = formatDate(nowDate());
+        } else {
+            bestSpecPoint = apiData.dataBase.totalSum;
+            archiveDate = formatDate(apiData.dataBase.achieveDate);
+        }
+
         let specPointInfo = [
-            { name: "달성 최고 점수", value: dataBaseResponse.totalSum, icon: "medal-solid" },
+            { name: "달성 최고 점수", value: (bestSpecPoint).toFixed(2), icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: dealerMedianValue, icon: "chart-simple-solid" },
-            { name: "최고 점수 달성일", value: formatDate(dataBaseResponse.achieveDate), icon: "calendar-check-solid" },
+            { name: "최고 점수 달성일", value: archiveDate, icon: "calendar-check-solid" },
         ]
         let armorInfo = [
             { name: "공격력", value: Number(specPoint.dealerAttackPowResult).toFixed(0), icon: "bolt-solid" },
@@ -998,10 +1038,10 @@ async function mainSearchFunction() {
         }
 
         let supportSpecPointInfo = [
-            { name: "달성 최고 점수", value: dataBaseResponse.totalSumSupport, icon: "medal-solid" },
+            { name: "달성 최고 점수", value: bestSpecPoint, icon: "medal-solid" },
             { name: "현재 레벨 중앙값", value: "수집 중", icon: "chart-simple-solid" }, //value: supportMedianValue
             //{ name: "딜러 환산 점수", value: dealerSupportConversion.toFixed(2), icon: "arrows-left-right-to-line-solid" },
-            { name: "최고 점수 달성일", value: formatDate(dataBaseResponse.achieveDate), icon: "calendar-check-solid" },
+            { name: "최고 점수 달성일", value: archiveDate, icon: "calendar-check-solid" },
         ]
         let supportImportantBuffInfo = [
             //{ name: "공격력 증가", value: Number(specPoint.supportFinalAtkBuff).toFixed(0) /* 추가됨 */, icon: "bolt-solid" },
@@ -1050,43 +1090,6 @@ async function mainSearchFunction() {
         element.innerHTML = result;
     }
     detailAreaCreate()
-    /* **********************************************************************************************************************
-    * function name		:	dataBaseWrite
-    * description       : 	유저정보를 db로 보내 저장하게 함
-    * useDevice         :   component.js로 리팩토링을 하여 미사용
-    *********************************************************************************************************************** */
-    // async function dataBaseWrite() {
-    //     // console.log(extractValue.defaultObj.haste)
-    //     let totalStatus = 0
-    //     if (extractValue.etcObj.supportCheck === "서폿") {
-    //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special - extractValue.bangleObj.haste - extractValue.bangleObj.special)
-    //     } else {
-    //         totalStatus = (extractValue.defaultObj.haste + extractValue.defaultObj.special + extractValue.defaultObj.crit - extractValue.bangleObj.haste - extractValue.bangleObj.crit - extractValue.bangleObj.special)
-    //     }
-    //     //console.log(totalStatus)
-    //     await Modules.userDataWriteDeviceLog.insertLopecSearch(nameParam);
-    //     let result = await Modules.userDataWriteDetailInfo.insertLopecCharacters(
-    //         nameParam,                                                                      // 닉네임 
-    //         data.ArmoryProfile.CharacterLevel,                                              // 캐릭터 레벨 
-    //         extractValue.etcObj.supportCheck + " " + data.ArmoryProfile.CharacterClassName, // 직업 풀네임 
-    //         totalStatus,                                                                    // 프로필 이미지 
-    //         data.ArmoryProfile.ServerName,                                                  // 서버 
-    //         parseFloat(data.ArmoryProfile.ItemMaxLevel.replace(/,/g, '')),                  // 아이템 레벨 
-    //         data.ArmoryProfile.GuildName,                                                   // 길드 
-    //         data.ArmoryProfile.Title,                                                       // 칭호 
-    //         specPoint.dealerlastFinalValue,                                                 // 딜러 통합 스펙포인트 
-    //         specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
-    //         specPoint.supportAllTimeBuff,                                                   // 상시버프 
-    //         specPoint.supportFullBuff,                                                      // 풀버프 
-    //         null,                                                                           // 진화 카르마 랭크                  
-    //         "2.0"                                                                           // 현재 버전 
-    //     );
-    //     // console.log(result)
-    //     return result;
-    // }
-    // if (/lopec.kr/.test(window.location.host)) {
-    // }
-    // setTimeout(async () => { await dataBaseWrite() }, 0);
 
 }
 mainSearchFunction()

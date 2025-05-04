@@ -242,6 +242,7 @@ export async function getCharacterProfile(data, dataBase) {
         healthStatus: 0,
         avatarStats: 1,
         supportCheck: supportCheck(),
+        characterClass: data.ArmoryProfile.CharacterClassName,
         gemCheckFnc: {
             specialSkill: 1,
             originGemValue: 1,
@@ -551,6 +552,7 @@ export async function getCharacterProfile(data, dataBase) {
         atkBuff: 0,
         atkBuffPlus: 1,
         damageBuff: 0,
+        leapPoint:0,
 
         crit: 0,
         special: 0,
@@ -624,6 +626,34 @@ export async function getCharacterProfile(data, dataBase) {
         // bangleObj.devilDamagerPer = 1;
         bangleObj.finalDamagePer = bangleObj.finalDamagePer * bangleObj.devilDamagePer;
     }
+
+
+    function leapPoint() {
+        let result = 0;
+        data.ArmoryEquipment.forEach(function (armor) {
+
+            if (/^(팔찌)$/.test(armor.Type)) {
+
+
+                if (armor.Tooltip && typeof armor.Tooltip === 'string') {
+                    const allMatches = armor.Tooltip.match(/도약 \+\d+/g);
+
+                    if (allMatches) {
+                        allMatches.forEach(matchText => {
+                            const numberMatch = matchText.match(/\d+/);
+
+                            if (numberMatch) {
+                                result += Number(numberMatch[0]);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        return result;
+    }
+    bangleObj.leapPoint = leapPoint()
+
     /* **********************************************************************************************************************
      * name		              :	  bangleBlockStats
      * version                :   2.0
@@ -644,6 +674,8 @@ export async function getCharacterProfile(data, dataBase) {
             bangleObj.str = 0;
             bangleObj.dex = 0;
         }
+        defaultObj.statusSpecial =  (defaultObj.special - bangleObj.special)
+        defaultObj.statusHaste = (defaultObj.haste - bangleObj.haste)
         if (supportCheck() === "서폿") {
             defaultObj.totalStatus = (defaultObj.haste + defaultObj.special - bangleObj.haste - bangleObj.special)
         } else {
@@ -1800,13 +1832,15 @@ export async function getCharacterProfile(data, dataBase) {
             specialClass = "크블 포식";
         } else if (classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)) {
             specialClass = "6M 피메";
+        } else if (classCheck("잔재") && !skillCheck(gemSkillArry, "터닝 슬래쉬", dmg) && skillCheck(gemSkillArry, "어스 슬래쉬", per)) {
+            specialClass = "어슬 작열 잔재";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "데스 센텐스", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg) && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg)) {
             specialClass = "슈차 7멸 잔재";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
             specialClass = "슈차 터닝 잔재";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
             specialClass = "슈차 잔재";
-        } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "방천격", dmg)) {
+        } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
             specialClass = "4멸 일격";
         } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
             specialClass = "풍신 일격";
@@ -1829,7 +1863,7 @@ export async function getCharacterProfile(data, dataBase) {
         }
 
     }
-    //console.log("보석전용 직업 : ",specialClass)
+    console.log("보석전용 직업 : ", specialClass)
 
 
     gemSkillArry.forEach(function (gemSkill, idx) {
@@ -2359,31 +2393,38 @@ export async function getCharacterProfile(data, dataBase) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
 
+    let karmaObj = {
+        evolutionKarmaRank : null,
+        enlightKarmaRank : null,
+        leapKarmaRank : null
+    }
+    
+    let enlightKarmaRankValue = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);
+    arkObj.weaponAtkPer = 1;
+    if (enlightKarmaRankValue >= 6) arkObj.weaponAtkPer = 1.021;
+    else if (enlightKarmaRankValue >= 5) arkObj.weaponAtkPer = 1.017;
+    else if (enlightKarmaRankValue >= 4) arkObj.weaponAtkPer = 1.013;
+    else if (enlightKarmaRankValue >= 3) arkObj.weaponAtkPer = 1.009;
+    else if (enlightKarmaRankValue >= 2) arkObj.weaponAtkPer = 1.005;
+    else if (enlightKarmaRankValue >= 1) arkObj.weaponAtkPer = 1.001;
+
+    let leapKarmaRankValue = (arkPassiveValue(2) - (data.ArmoryProfile.CharacterLevel - 50) * 2 - bangleObj.leapPoint)/2;
+
+    karmaObj.enlightKarmaRank = enlightKarmaRankValue;
+    karmaObj.leapKarmaRank = leapKarmaRankValue
+
     function karmaPointCalc() {
-        let cardHP = totalMaxHpBonus
-        let maxHealth = defaultObj.maxHp
+        let cardHP = totalMaxHpBonus;
+        let maxHealth = defaultObj.maxHp;
         let baseHealth = defaultObj.statHp + elixirObj.statHp + accObj.statHp + hyperObj.statHp + bangleObj.statHp;
         let vitalityRate = defaultObj.hpActive;
-
-        //    // 랭크 계산;
-        //    if (etcObj.evolutionkarmaPoint >= 21) etcObj.evolutionkarmaRank = 6;
-        //    else if (etcObj.evolutionkarmaPoint >= 17) etcObj.evolutionkarmaRank = 5;
-        //    else if (etcObj.evolutionkarmaPoint >= 13) etcObj.evolutionkarmaRank = 4;
-        //    else if (etcObj.evolutionkarmaPoint >= 9) etcObj.evolutionkarmaRank = 3;
-        //    else if (etcObj.evolutionkarmaPoint >= 5) etcObj.evolutionkarmaRank = 2;
-        //    else if (etcObj.evolutionkarmaPoint >= 1) etcObj.evolutionkarmaRank = 1;
-        //    else etcObj.evolutionkarmaRank = '미등록';
-
-        // 깨달음 포인트 및 무기 공격력 계산
-        let enlightkarmaRank = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);
-        arkObj.weaponAtkPer = 1;
-        if (enlightkarmaRank >= 6) arkObj.weaponAtkPer = 1.021;
-        else if (enlightkarmaRank >= 5) arkObj.weaponAtkPer = 1.017;
-        else if (enlightkarmaRank >= 4) arkObj.weaponAtkPer = 1.013;
-        else if (enlightkarmaRank >= 3) arkObj.weaponAtkPer = 1.009;
-        else if (enlightkarmaRank >= 2) arkObj.weaponAtkPer = 1.005;
-        else if (enlightkarmaRank >= 1) arkObj.weaponAtkPer = 1.001;
-        etcObj.enlightkarmaRank = enlightkarmaRank;
+        let materialObj = {
+            cardHP: cardHP,
+            maxHealth: maxHealth,
+            baseHealth: baseHealth,
+            vitalityRate: vitalityRate
+        }
+        etcObj.evoKarmaMaterial = materialObj;
     };
     karmaPointCalc();
 
@@ -2392,58 +2433,58 @@ export async function getCharacterProfile(data, dataBase) {
      * name		              :	  calculatePossiblePotionSums
      * version                :   2.0
      * description            :   깨달음 카르마 추론 알고리즘
-     * USE_TN                 :   사용
+     * USE_TN                 :   미사용
      *********************************************************************************************************************** */
     // 직업 주 스탯 확인
-    let mainStatTypeForKarma = 'str'; // 기본값
-    let userClassForKarma = data.ArmoryProfile.CharacterClassName;
-    let bangleJobFilterForKarma = Modules.originFilter.bangleJobFilter;
-    let vailedStatInfoForKarma = bangleJobFilterForKarma.find(item => item.job === userClassForKarma);
-    if (vailedStatInfoForKarma) {
-        mainStatTypeForKarma = vailedStatInfoForKarma.stats;
-    }
+    //let mainStatTypeForKarma = 'str'; // 기본값
+    //let userClassForKarma = data.ArmoryProfile.CharacterClassName;
+    //let bangleJobFilterForKarma = Modules.originFilter.bangleJobFilter;
+    //let vailedStatInfoForKarma = bangleJobFilterForKarma.find(item => item.job === userClassForKarma);
+    //if (vailedStatInfoForKarma) {
+    //    mainStatTypeForKarma = vailedStatInfoForKarma.stats;
+    //}
+//
+    //// 전투 레벨 스탯 계산 (전투레벨 50 이상 가정)
+    //let fightLevelStatValue = 0
+    //if (characterLevel === 60) fightLevelStatValue = 429;
+    //if (characterLevel === 61) fightLevelStatValue = 433;
+    //if (characterLevel === 62) fightLevelStatValue = 437;
+    //if (characterLevel === 63) fightLevelStatValue = 441;
+    //if (characterLevel === 64) fightLevelStatValue = 445;
+    //if (characterLevel === 65) fightLevelStatValue = 450;
+    //if (characterLevel === 66) fightLevelStatValue = "???";
+    //if (characterLevel === 67) fightLevelStatValue = "???";
+    //if (characterLevel === 68) fightLevelStatValue = "???";
+    //if (characterLevel === 69) fightLevelStatValue = 471;
+    //if (characterLevel === 70) fightLevelStatValue = 477;
 
-    // 전투 레벨 스탯 계산 (전투레벨 50 이상 가정)
-    let fightLevelStatValue = 0
-    if (characterLevel === 60) fightLevelStatValue = 429;
-    if (characterLevel === 61) fightLevelStatValue = 433;
-    if (characterLevel === 62) fightLevelStatValue = 437;
-    if (characterLevel === 63) fightLevelStatValue = 441;
-    if (characterLevel === 64) fightLevelStatValue = 445;
-    if (characterLevel === 65) fightLevelStatValue = 450;
-    if (characterLevel === 66) fightLevelStatValue = "???";
-    if (characterLevel === 67) fightLevelStatValue = "???";
-    if (characterLevel === 68) fightLevelStatValue = "???";
-    if (characterLevel === 69) fightLevelStatValue = 471;
-    if (characterLevel === 70) fightLevelStatValue = 477;
-
-    console.log(fightLevelStatValue)
+    //console.log(fightLevelStatValue)
 
 
-    const karmaInputData = {
-        realAttackPower: defaultObj.attackPow,
-        CalcarmorStatus: etcObj.armorStatus || 0,
-        CalcfightLevelStats: fightLevelStatValue,
-        CalcexpeditionStats: etcObj.expeditionStats || 0,
-        CalchyperStr: hyperObj[mainStatTypeForKarma] || 0,
-        CalcelixirStr: elixirObj[mainStatTypeForKarma] || 0,
-        CalcbangleStr: bangleObj[mainStatTypeForKarma] || 0,
-        CalcavatarStats: (etcObj.avatarStats || 1) - 1,
-        CalckarmaRank: etcObj.enlightkarmaRank,
-        CalcdefaultWeaponAtk: defaultObj.weaponAtk || 0,
-        CalchyperWeaponAtkPlus: hyperObj.weaponAtkPlus || 0,
-        CalcelixirWeaponAtkPlus: elixirObj.weaponAtkPlus || 0,
-        CalcaccWeaponAtkPlus: accObj.weaponAtkPlus || 0,
-        CalcbangleWeaponAtkPlus: bangleObj.weaponAtkPlus || 0,
-        CalcaccWeaponAtkPer: (accObj.weaponAtkPer || 0) / 100, // 복원됨: 악세 무기 공격력 %
-        CalcelixirAtkPlus: elixirObj.atkPlus || 0,
-        CalchyperAtkPlus: hyperObj.atkPlus || 0,
-        CalcaccAtkPlus: accObj.atkPlus || 0,
-        CalcaccAtkPer: (accObj.atkPer || 0) / 100,          // 복원됨: 악세 공격력 %
-        CalcelixirAtkPer: (elixirObj.atkPer || 0) / 100,
-        CalcattackBonus: (((etcObj.gemAttackBonus || 0) + (etcObj.abilityAttackBonus || 0)) / 100) + 1
-    };
-    console.log(karmaInputData)
+    //const karmaInputData = {
+    //    realAttackPower: defaultObj.attackPow,
+    //    CalcarmorStatus: etcObj.armorStatus || 0,
+    //    CalcfightLevelStats: fightLevelStatValue,
+    //    CalcexpeditionStats: etcObj.expeditionStats || 0,
+    //    CalchyperStr: hyperObj[mainStatTypeForKarma] || 0,
+    //    CalcelixirStr: elixirObj[mainStatTypeForKarma] || 0,
+    //    CalcbangleStr: bangleObj[mainStatTypeForKarma] || 0,
+    //    CalcavatarStats: (etcObj.avatarStats || 1) - 1,
+    //    CalckarmaRank: etcObj.enlightkarmaRank,
+    //    CalcdefaultWeaponAtk: defaultObj.weaponAtk || 0,
+    //    CalchyperWeaponAtkPlus: hyperObj.weaponAtkPlus || 0,
+    //    CalcelixirWeaponAtkPlus: elixirObj.weaponAtkPlus || 0,
+    //    CalcaccWeaponAtkPlus: accObj.weaponAtkPlus || 0,
+    //    CalcbangleWeaponAtkPlus: bangleObj.weaponAtkPlus || 0,
+    //    CalcaccWeaponAtkPer: (accObj.weaponAtkPer || 0) / 100, // 복원됨: 악세 무기 공격력 %
+    //    CalcelixirAtkPlus: elixirObj.atkPlus || 0,
+    //    CalchyperAtkPlus: hyperObj.atkPlus || 0,
+    //    CalcaccAtkPlus: accObj.atkPlus || 0,
+    //    CalcaccAtkPer: (accObj.atkPer || 0) / 100,          // 복원됨: 악세 공격력 %
+    //    CalcelixirAtkPer: (elixirObj.atkPer || 0) / 100,
+    //    CalcattackBonus: (((etcObj.gemAttackBonus || 0) + (etcObj.abilityAttackBonus || 0)) / 100) + 1
+    //};
+    //console.log(karmaInputData)
 
 
     /* **********************************************************************************************************************
@@ -2948,6 +2989,7 @@ export async function getCharacterProfile(data, dataBase) {
         gemObj,
         supportSkillObj,
         etcObj,
+        karmaObj,
         htmlObj,
     }
     return extractValue

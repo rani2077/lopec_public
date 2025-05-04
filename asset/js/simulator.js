@@ -105,18 +105,6 @@ async function simulatorInputCalc() {
      * description			: 	사용자의 기본 스펙포인트를 표시해줌
      *********************************************************************************************************************** */
     async function originSpecPointToHtml(originSpecPoint, extractValue) {
-        // let extractValue = await Modules.transValue.getCharacterProfile(cachedData);
-        // let originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        // dataBaseResponse = await Modules.component.dataBaseWrite(cachedData, extractValue, originSpecPoint);
-        // if (extractValue.etcObj.supportCheck !== "서폿" && dataBaseResponse.totalStatus !== 0) {
-        //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatus;
-        // } else if (dataBaseResponse.totalStatusSupport !== 0) {
-        //     extractValue.defaultObj.totalStatus = dataBaseResponse.totalStatusSupport;
-        // } else {
-        //     dataBaseResponse.totalStatus = extractValue.defaultObj.totalStatus;
-        // }
-        // originSpecPoint = await Modules.calcValue.specPointCalc(extractValue);
-        // console.log(dataBaseResponse)
         let element = document.querySelector(".sc-info .group-info .spec-area .gauge-box span.desc.spec");
         let specPoint = Number(originSpecPoint.completeSpecPoint).toFixed(2);
         document.querySelector(".sc-profile").outerHTML = await Modules.component.scProfile(cachedData, extractValue, dataBaseResponse);
@@ -385,7 +373,7 @@ async function simulatorInputCalc() {
             }, {});
         }
     }
-    //console.log(bangleStatsNumberCalc())
+    console.log(bangleStatsNumberCalc())
 
     /* **********************************************************************************************************************
      * function name		:	bangleOptionCalc()
@@ -2711,7 +2699,7 @@ async function selectCreate(data, Modules) {
         } else {
             // element.innerHTML = `<span style="display: flex;width: 100%;height: 100%;justify-content: center;align-items: center;font-size:18px;">보석없음</span>`;
             element.innerHTML = `
-                <div  iv class="gem-box radius free-set">
+                <div  class="gem-box radius free-set" style="margin-left:auto;">
                     <span class="save">저 장</span>
                     <span class="load">로 드</span>
                     <span class="reset">리 셋</span>
@@ -4255,6 +4243,8 @@ async function calculateGemData(data) {
         specialClass = "크블 포식";
     } else if (classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)) {
         specialClass = "6M 피메";
+    } else if (classCheck("잔재") && !skillCheck(gemSkillArry, "터닝 슬래쉬", dmg) && skillCheck(gemSkillArry, "어스 슬래쉬", per)) {
+        specialClass = "어슬 작열 잔재";
     } else if (classCheck("잔재") && skillCheck(gemSkillArry, "데스 센텐스", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg) && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg)) {
         specialClass = "슈차 7멸 잔재";
     } else if (classCheck("잔재") && skillCheck(gemSkillArry, "터닝 슬래쉬", dmg) && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {

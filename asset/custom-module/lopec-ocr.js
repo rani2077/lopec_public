@@ -1381,9 +1381,9 @@ const LopecOCR = (function () {
 
             startTimer('OCR API 호출');
             updateStatus('OCR API 호출 중...');
-            addDebug(`서버 OCR API 호출 시작 (https://lopec.o-r.kr/api/images)`);
+            addDebug(`서버 OCR API 호출 시작 (https://api.lopec.kr/api/images)`);
 
-            const response = await fetch('https://lopec.o-r.kr/api/images', requestOptions);
+            const response = await fetch('https://api.lopec.kr/api/images', requestOptions);
             if (!response.ok) {
                 alert("현재 요청이 폭주하여 지연되고 있습니다. 잠시 후에 다시 시도해주세요.")
                 const errorResponse = await response.text();

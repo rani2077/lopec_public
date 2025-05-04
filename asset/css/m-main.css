@@ -726,6 +726,44 @@
     right: 5px;
 }
 
+.sc-info .group-info .spec-area .devil-box {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 3;
+    gap: 5px;
+}
+
+.sc-info .group-info .spec-area .devil-box .icon {
+    width: 25px;
+    height: 25px;
+    display: block;
+    background: url("/asset/image/devil-icon.svg") center center / cover no-repeat;
+    position: relative;
+}
+
+.sc-info .group-info .spec-area .devil-box .icon:hover:after {
+    content: "악추피 팔찌 포함\A 체크 및 해제시 새로고침 됩니다.";
+    white-space: pre-wrap;
+    width: 180px;
+    text-align: left;
+    ;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: #f0f3f5;
+    color: #000;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.sc-info .group-info .spec-area .devil-box input {
+    width: 15px;
+    height: 15px;
+}
+
 .sc-info .group-info .reset-area {
     display: block;
     margin-top: 20px;
@@ -870,6 +908,28 @@
     text-align: center;
     color: #fff;
     border-radius: 3px;
+}
+
+.sc-info .gem-area .gem-box.free-set {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #9e9e9e;
+}
+
+.sc-info .gem-area .gem-box.free-set span {
+    height: calc(100% / 3);
+    border: 1px solid #9e9e9e;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    background: rgba(158, 158, 158, 0);
+    transition: background 150ms;
+}
+
+.sc-info .gem-area .gem-box.free-set span:hover {
+    background: rgba(158, 158, 158, 1);
+    /* color: #fff; */
 }
 
 
@@ -1382,9 +1442,48 @@
     border-radius: 3px;
 }
 
-.dark-mode .sc-info .karma-area {
-    background: #2f2f2f !important;
-    color: #fff !important;
+.sc-info .karma-area {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.sc-info .karma-area .karma-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sc-info .karma-area .karma-box .karma {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sc-info .karma-area .karma-box .tag {
+    padding: 4px 7px;
+    border-radius: 4px;
+    border: 1px solid rgb(194, 194, 194);
+    color: #fff;
+    display: inline-block;
+}
+
+.sc-info .karma-area .karma-box .tag.evolution {
+    background: #bd9b4c
+}
+
+.sc-info .karma-area .karma-box .tag.enlightenment {
+    background: #59b4c9
+}
+
+.sc-info .karma-area .karma-box .tag.leap {
+    background: #a4c44d
+}
+
+.sc-info .karma-area .report-box {
+    text-align: center;
 }
 
 

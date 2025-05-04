@@ -32,7 +32,7 @@ export async function specPointCalc(inputObj) {
      * description            :   스펙 포인트 계산을 위한 변수 모음
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
-    let totalStatus = 0
+    //let totalStatus = 0
     let totalHealth = Number(((inputObj.etcObj.healthStatus + inputObj.hyperObj.statHp + inputObj.elixirObj.statHp + inputObj.bangleObj.statHp + inputObj.accObj.statHp) * inputObj.defaultObj.hpActive * 1.07).toFixed(0));
 
     let attackBonus = ((inputObj.etcObj.gemAttackBonus + inputObj.etcObj.abilityAttackBonus) / 100) + 1 // 기본 공격력 증가(보석, 어빌리티 스톤)
@@ -78,7 +78,7 @@ export async function specPointCalc(inputObj) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
     //최종 환산
-    let lastFinalValue = ((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3)) * inputObj.defaultObj.estherDeal
+    let lastFinalValue = (((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3)) * inputObj.defaultObj.estherDeal) /202000
 
     //악세 효율 
     let minusAccValue = ((minusAccAtk) * evolutionDamageResult * minusAccFinal * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3))
@@ -190,10 +190,14 @@ export async function specPointCalc(inputObj) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
 
-    let finalSpecial = Math.min(inputObj.defaultObj.special, 1200)
+    let finalSpecial = Math.min(inputObj.defaultObj.statusSpecial + inputObj.bangleObj.special, 1200)
 
-    let calcHaste = (inputObj.defaultObj.haste + finalSpecial) * 0.75
-    let calcSpecial = (inputObj.defaultObj.haste + finalSpecial) * 0.25
+    let calcHaste = (inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste + finalSpecial) * 0.75
+    let calcSpecial = (inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste + finalSpecial) * 0.25
+
+    console.log(inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste)
+    console.log(inputObj.defaultObj.statusSpecial + inputObj.bangleObj.special)
+
 
     let calcStatDamageBuff = (calcSpecial / 20.791) / 100 + 1 // 특화 딜증
 
@@ -247,7 +251,7 @@ export async function specPointCalc(inputObj) {
     let calcSupportUtilityPower = finalUtilityPower / 100 + 1
 
     let calcSupportCombinedPower = (calcSupportBuffPower ** 0.935) * (calcSupportCarePower ** 0.035) * (calcSupportUtilityPower ** 0.03)
-    let supportSpecPoint = (calcSupportCombinedPower ** 4.285) * 32.67
+    let supportSpecPoint = ((calcSupportCombinedPower ** 4.285) * 32.67)/100
 
 
     /* **********************************************************************************************************************
@@ -435,12 +439,15 @@ export async function specPointCalc(inputObj) {
     highTierSpecPointObj.supportTotalStatus = (inputObj.defaultObj.haste + inputObj.defaultObj.special);
     highTierSpecPointObj.supportgemsCoolAvg = (cdrPercent * 100);
     // 최종 스펙 포인트
-    highTierSpecPointObj.dealerlastFinalValue = (lastFinalValue / 2020).toFixed(2) //딜러 스펙포인트
-    highTierSpecPointObj.supportSpecPoint = (supportSpecPoint).toFixed(2) //서폿 스펙포인트
+    //highTierSpecPointObj.dealerlastFinalValue = (lastFinalValue / 202000).toFixed(2) //딜러 스펙포인트
+    //highTierSpecPointObj.supportSpecPoint = (supportSpecPoint / 100).toFixed(2) //서폿 스펙포인트
+    //highTierSpecPointObj.supportSpecPoint = (supportSpecPoint).toFixed(2) //서폿 스펙포인트
     // 스펙포인트 db저장 통합
     if (!(inputObj.etcObj.supportCheck == "서폿")) {   // 딜러
-        highTierSpecPointObj.completeSpecPoint = lastFinalValue / 2020
+        //highTierSpecPointObj.completeSpecPoint = lastFinalValue / 2020
+        highTierSpecPointObj.completeSpecPoint = lastFinalValue
     } else if (inputObj.etcObj.supportCheck == "서폿") {
+        //highTierSpecPointObj.completeSpecPoint = supportSpecPoint
         highTierSpecPointObj.completeSpecPoint = supportSpecPoint
     }
     highTierSpecPointObj.supportSpecPoint = isNaN(highTierSpecPointObj.supportSpecPoint) ? 0 : highTierSpecPointObj.supportSpecPoint;
