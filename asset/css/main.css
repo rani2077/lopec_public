@@ -343,11 +343,13 @@
 }
 
 .sc-info .group-info .spec-area .devil-box .icon:hover:after {
-    content: "대악마 피해 ☏체크/해제 시 새로고침 됩니다.☏";
+    content: "악추피 팔찌 포함\A 체크 및 해제시 새로고침 됩니다.";
+    white-space: pre-wrap;
+    width: 180px;
+    text-align: left;;
     position: absolute;
     left: 0;
     top: 100%;
-    white-space: nowrap;
     background: #f0f3f5;
     color: #000;
     padding: 5px;

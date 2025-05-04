@@ -24,7 +24,7 @@ export async function dataBaseWrite(data, extractValue, specPoint) {
 		specPoint.supportSpecPoint,                                                     // 서폿 통합 스펙포인트 
 		specPoint.supportAllTimeBuff,                                                   // 상시버프 
 		specPoint.supportFullBuff,                                                      // 풀버프 
-		null,                                                                           // 진화 카르마 랭크                  
+		null,                                                                           // 진화 카르마 랭크 <== 제거예정                 
 		"2.0"                                                                           // 현재 버전 
 	);
 	// console.log(result)
@@ -149,4 +149,21 @@ async function fetchLostArkRankingData(name, job) {
 		// 에러를 호출자에게 다시 throw하여 호출한 코드에서 에러 처리를 할 수 있도록 합니다.
 		throw error;
 	}
+}
+
+
+// 요청
+//POST http://localhost:8080/api/karma/enlight
+//Content-Type: application/json
+export async function enlightenmentKarmaDataBase() {
+	const url = `https://lopec.o-r.kr/api/karma/enlight`;
+	const headers = {
+		'Accept': 'application/json'
+	};
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: headers
+	});
+
+
 }
