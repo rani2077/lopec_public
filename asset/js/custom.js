@@ -888,7 +888,7 @@ async function mainSearchFunction() {
         let leapKarmaRankElement = elements[2].querySelector(".rank");
 
         // 자바스크립트에서 0을 false로 취급하기 때문에 +1
-        let evolutionKarmaRankText = extractValue.karmaObj.evolutionKarmaRank + 1 ? `${extractValue.karmaObj.evolutionKarmaRank}랭크` : "미등록"
+        let evolutionKarmaRankText = extractValue.karmaObj.evolutionKarmaRank !== null ? `${extractValue.karmaObj.evolutionKarmaRank}랭크` : "미등록"
         let enlightenmentKarmaRankText = extractValue.karmaObj.enlightKarmaRank + 1 ? `${extractValue.karmaObj.enlightKarmaRank}랭크` : "미등록"
         let leapKarmaRankText = extractValue.karmaObj.leapKarmaRank + 1 ? `${extractValue.karmaObj.leapKarmaRank}랭크` : "미등록"
 
