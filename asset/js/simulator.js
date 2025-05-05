@@ -479,6 +479,7 @@ async function simulatorInputCalc() {
         extractValue.defaultObj.special = bangleStatsNumberCalc().special;
         extractValue.defaultObj.haste = bangleStatsNumberCalc().haste;
         extractValue.defaultObj.crit = bangleStatsNumberCalc().crit;
+        extractValue.defaultObj.totalStatus = cachedDetailInfo.extractValue.defaultObj.totalStatus;
         // let result = { <== 로직 수정으로 인한 미사용 추후 삭제
         //     addDamagePer: defaultObjAddDamgerPerEdit(),
         //     weaponAtk: armorWeaponStatsObj.weaponStats,
@@ -1520,6 +1521,7 @@ async function simulatorInputCalc() {
         etcObjChangeValue()
     }
     simulatorDataToExtractValue()
+    console.log("totalStatus", extractValue.defaultObj.totalStatus)
     console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
