@@ -476,10 +476,13 @@ async function simulatorInputCalc() {
     function defaultObjChangeValue() {
         extractValue.defaultObj.addDamagePer = defaultObjAddDamgerPerEdit();
         extractValue.defaultObj.weaponAtk = armorWeaponStatsObj.weaponStats;
-        extractValue.defaultObj.special = bangleStatsNumberCalc().special;
-        extractValue.defaultObj.haste = bangleStatsNumberCalc().haste;
-        extractValue.defaultObj.crit = bangleStatsNumberCalc().crit;
+        //extractValue.defaultObj.special = bangleStatsNumberCalc().special; <== 로직 변경으로 인한 미사용
+        //extractValue.defaultObj.haste = bangleStatsNumberCalc().haste;
+        //extractValue.defaultObj.crit = bangleStatsNumberCalc().crit;
         extractValue.defaultObj.totalStatus = cachedDetailInfo.extractValue.defaultObj.totalStatus;
+        extractValue.defaultObj.statusSpecial = cachedDetailInfo.extractValue.defaultObj.statusSpecial;
+        extractValue.defaultObj.statusHaste = cachedDetailInfo.extractValue.defaultObj.statusHaste;
+
         // let result = { <== 로직 수정으로 인한 미사용 추후 삭제
         //     addDamagePer: defaultObjAddDamgerPerEdit(),
         //     weaponAtk: armorWeaponStatsObj.weaponStats,

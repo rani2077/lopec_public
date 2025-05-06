@@ -1798,8 +1798,8 @@ export async function getCharacterProfile(data, dataBase) {
                 const gemPattern = nameAndGem[i + 1];
                 const regex = new RegExp(gemPattern);
                 const found = arr.some(item => item.skill === name && regex.test(item.name));
-                console.log(arr)
-                console.log(found)
+                //console.log(arr)
+                //console.log(found)
                 if (!found) return false;
             }
             return true;

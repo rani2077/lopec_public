@@ -32,7 +32,6 @@ export async function specPointCalc(inputObj) {
      * description            :   스펙 포인트 계산을 위한 변수 모음
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
-    console.log(inputObj.defaultObj.totalStatus)
     //let totalStatus = 0
     let totalHealth = Number(((inputObj.etcObj.healthStatus + inputObj.hyperObj.statHp + inputObj.elixirObj.statHp + inputObj.bangleObj.statHp + inputObj.accObj.statHp) * inputObj.defaultObj.hpActive * 1.07).toFixed(0));
 
@@ -83,8 +82,7 @@ export async function specPointCalc(inputObj) {
 
     //악세 효율 
     let minusAccValue = ((minusAccAtk) * evolutionDamageResult * minusAccFinal * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3))
-    let accValue = ((lastFinalValue - minusAccValue) / minusAccValue * 100).toFixed(2)
-    //console.log(accValue) 
+    let accValue = (((totalAtk-minusAccAtk)/minusAccAtk)*100) * inputObj.accObj.finalDamagePer * (inputObj.accObj.addDamagePer/100+1) * 1.65
 
     //초월 효율
     let minusHyperValue = ((minusHyperAtk) * evolutionDamageResult * minusHyperFinal * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3))
@@ -196,8 +194,8 @@ export async function specPointCalc(inputObj) {
     let calcHaste = (inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste + finalSpecial) * 0.75
     let calcSpecial = (inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste + finalSpecial) * 0.25
 
-    console.log(calcHaste)
-    console.log(calcSpecial)
+    //console.log(calcHaste)
+    //console.log(calcSpecial)
 
 
     let calcStatDamageBuff = (calcSpecial / 20.791) / 100 + 1 // 특화 딜증
