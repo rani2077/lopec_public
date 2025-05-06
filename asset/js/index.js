@@ -579,6 +579,15 @@ let noticeArry = [
             조금만 기다려주시면 감사드리겠습니다.`
     },
     {
+        name: `<em style="font-weight:900;font-size:17px;">시뮬레이터 분석기 출시 안내 (Feat.해널)</em>`,
+        desc:
+            `● 시뮬레이터 분석기 확장프로그램이 출시되었습니다.
+            굳은 작업을 도맡아 해주신 개발자 '해널'님께 매우 감사의 말씀드립니다.
+            확장 프로그램은 크롬에서 사용 가능하며, 아래 링크에서 다운로드 가능합니다.
+
+            <a href="https://chromewebstore.google.com/search/%EB%A1%9C%ED%8E%99?hl=ko" target="_blink" style="color:blue;text-decoration:underline;">로펙 시뮬레이터 분석기</a>`
+    },
+    {
         name: `<em style="font-weight:900;font-size:17px;">★중요★ 진화 카르마 사전 등록기간 안내</em>`,
         desc:
             `안녕하세요, 개발자 청염각입니다.
@@ -605,6 +614,11 @@ let noticeArry = [
             &nbsp;&nbsp; - 보석 정보를 저장/로드 할 수 있는 기능을 추가하였습니다.
             &nbsp;&nbsp; - PC 및 모바일에서 각각 저장하셔야 합니다.
             &nbsp;&nbsp; - 프리셋은 현재 하나만 제공되고 있습니다.
+
+            ● 악추피 팔찌 점수 오적용 이슈 수정
+            &nbsp;&nbsp; - 악추피 팔찌의 점수가 한 단계 높은 등급으로 적용되는 오류를 수정했습니다.
+            &nbsp;&nbsp; - 최대 점수 초기화가 필요하신 경우, 문의시 즉시 처리해드리겠습니다.
+            &nbsp;&nbsp; - 죄송합니다. ㅠㅠ
 
             ● 악추피 체크박스 추가
             &nbsp;&nbsp; - 스펙포인트 좌측 상단에 악추피 체크박스를 추가하였습니다.

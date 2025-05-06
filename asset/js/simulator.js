@@ -373,7 +373,7 @@ async function simulatorInputCalc() {
             }, {});
         }
     }
-    console.log(bangleStatsNumberCalc())
+    //console.log(bangleStatsNumberCalc())
 
     /* **********************************************************************************************************************
      * function name		:	bangleOptionCalc()
@@ -1078,6 +1078,7 @@ async function simulatorInputCalc() {
         let gemPerObj = [
             { name: "홍염", level1: 2, level2: 4, level3: 6, level4: 8, level5: 10, level6: 12, level7: 14, level8: 16, level9: 18, level10: 20 },
             { name: "작열", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
+            { name: "쿨광휘", level1: 6, level2: 8, level3: 10, level4: 12, level5: 14, level6: 16, level7: 18, level8: 20, level9: 22, level10: 24 },
         ]
 
         if (!(cachedData.ArmoryGem.Gems == null) && supportCheck == "서폿") {
@@ -1106,6 +1107,7 @@ async function simulatorInputCalc() {
                 atkBuff.forEach(function (buffSkill) {
                     if (skill == buffSkill && (type.includes("겁화") || type.includes("딜광휘"))) {
                         result.atkBuff += Number(level)
+                        //console.log(result.atkBuff)
                     }
                 })
 
@@ -1521,7 +1523,7 @@ async function simulatorInputCalc() {
         etcObjChangeValue()
     }
     simulatorDataToExtractValue()
-    console.log("totalStatus", extractValue.defaultObj.totalStatus)
+    //console.log("totalStatus", extractValue.defaultObj.totalStatus)
     console.log("오리진OBJ", extractValue)
 
     /* **********************************************************************************************************************
@@ -4476,7 +4478,7 @@ async function calculateGemData(data) {
                 });
                 return result;
             }
-            console.log(getLevels(gemPerObj, realGemValue))
+            //console.log(getLevels(gemPerObj, realGemValue))
             let gemValue = getLevels(gemPerObj, realGemValue).reduce((gemResultValue, finalGemValue) => {
                 return gemResultValue + finalGemValue.per * finalGemValue.skillPer;
             }, 0);
@@ -4518,7 +4520,7 @@ async function calculateGemData(data) {
             };
         }
     }
-    console.log(gemCheckFnc())
+    //console.log(gemCheckFnc())
     return gemCheckFnc()
 }
 
