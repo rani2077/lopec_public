@@ -263,9 +263,9 @@ export async function specPointCalc(inputObj) {
     const bangleHealth = parseInt(inputObj?.htmlObj?.bangleInfo?.normalStatsArray?.[0]?.match(/체력 \+(\d+)/)?.[1] || '0', 10);
     let totalHealth_MinusBangle = Number(((inputObj.etcObj.healthStatus - bangleHealth + inputObj.hyperObj.statHp + inputObj.elixirObj.statHp + inputObj.accObj.statHp) * inputObj.defaultObj.hpActive * 1.07).toFixed(0));
 
-    let finalSpecial_MinusBangle = Math.min(inputObj.defaultObj.special - inputObj.bangleObj.special, 1200)
-    let calcHaste_MinusBangle = (inputObj.defaultObj.haste - inputObj.bangleObj.haste + finalSpecial_MinusBangle) * 0.75
-    let calcSpecial_MinusBangle = (inputObj.defaultObj.haste - inputObj.bangleObj.haste + finalSpecial_MinusBangle) * 0.25
+    let finalSpecial_MinusBangle = Math.min(inputObj.defaultObj.statusSpecial, 1200)
+    let calcHaste_MinusBangle = (inputObj.defaultObj.statusHaste + finalSpecial_MinusBangle) * 0.75
+    let calcSpecial_MinusBangle = (inputObj.defaultObj.statusHaste + finalSpecial_MinusBangle) * 0.25
 
     let totalAtk3 = ((minusBangleStat * minusBangleWeaponAtk / 6) ** 0.5) * attackBonus //팔찌 제외 기본 공격력
     let atkBuff_MinusBangle = (1 + ((inputObj.accObj.atkBuff + inputObj.elixirObj.atkBuff + inputObj.hyperObj.atkBuff + inputObj.gemObj.atkBuff) / 100)) // 팔찌 제외 아공강 
