@@ -79,7 +79,7 @@ export async function specPointCalc(inputObj) {
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
     //최종 환산
-    let lastFinalValue = (((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3)) * inputObj.defaultObj.estherDeal) /202000
+    let lastFinalValue = (((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3)) * inputObj.defaultObj.estherDeal) /2020
 
     //악세 효율 
     let minusAccValue = ((minusAccAtk) * evolutionDamageResult * minusAccFinal * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3))
@@ -252,7 +252,7 @@ export async function specPointCalc(inputObj) {
     let calcSupportUtilityPower = finalUtilityPower / 100 + 1
 
     let calcSupportCombinedPower = (calcSupportBuffPower ** 0.935) * (calcSupportCarePower ** 0.035) * (calcSupportUtilityPower ** 0.03)
-    let supportSpecPoint = ((calcSupportCombinedPower ** 4.285) * 32.67)/100
+    let supportSpecPoint = ((calcSupportCombinedPower ** 4.285) * 32.67)
 
 
     /* **********************************************************************************************************************

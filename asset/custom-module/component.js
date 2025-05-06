@@ -641,7 +641,10 @@ async function manageExpeditionData(inputName) {
     }
 }
 
-
+/* **********************************************************************************************************************
+* function name		:	gemFreeSetSave
+* description       : 	보석 프리셋 저장, 로드, 리셋을 하는 함수
+*********************************************************************************************************************** */
 export async function gemFreeSetSave(gemSlotData) {
     let saveElement = document.querySelector(".gem-box .save");
     let loadElement = document.querySelector(".gem-box .load");
