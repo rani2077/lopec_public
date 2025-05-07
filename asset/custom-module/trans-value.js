@@ -1574,21 +1574,21 @@ export async function getCharacterProfile(data, dataBase) {
     } else if (arkPassiveValue(2) >= 68) {
 
         arkObj.leapDamage += 1.14
-        arkObj.leapBuff += 1.049
+        arkObj.leapBuff += 1.04545
     } else if (arkPassiveValue(2) >= 66) {
 
         arkObj.leapDamage += 1.13
-        arkObj.leapBuff += 1.048
+        arkObj.leapBuff += 1.04535
 
     } else if (arkPassiveValue(2) >= 64) {
 
         arkObj.leapDamage += 1.12
-        arkObj.leapBuff += 1.047
+        arkObj.leapBuff += 1.04525
 
     } else if (arkPassiveValue(2) >= 62) {
 
         arkObj.leapDamage += 1.11
-        arkObj.leapBuff += 1.046
+        arkObj.leapBuff += 1.04515
 
     } else if (arkPassiveValue(2) >= 60) {
 

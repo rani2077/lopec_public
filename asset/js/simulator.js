@@ -189,7 +189,8 @@ async function simulatorInputCalc() {
             carePower: 0,
             cdrPercent: 0,
             awakencdrPercent: 0,
-            utilityPower: 0
+            utilityPower: 0,
+            dealpport: ""
         };
         let matchingFilters
         inputValueObjArr.forEach(function (inputValue) {
@@ -257,9 +258,11 @@ async function simulatorInputCalc() {
             result.utilityPower += eng.utilityPower
         });
 
+        extractValue.engObj.dealpport = cachedDetailInfo.extractValue.engObj.dealpport;
+        console.log(cachedDetailInfo.extractValue.engObj.dealpport)
+        console.log(extractValue.engObj.dealpport)
+
         // console.log("최종결과:", result);
-
-
         // result.finalDamagePer *= stoneOutputCalc().finalDamagePer;
         // result.engBonusPer *= stoneOutputCalc().engBonusPer;
 
@@ -1346,16 +1349,16 @@ async function simulatorInputCalc() {
             result.leapBuff += 1.051
         } else if (leapElement >= 68) {
             result.leapDamage += 1.14
-            result.leapBuff += 1.049
+            result.leapBuff += 1.04545
         } else if (leapElement >= 66) {
             result.leapDamage += 1.13
-            result.leapBuff += 1.048
+            result.leapBuff += 1.04535
         } else if (leapElement >= 64) {
             result.leapDamage += 1.12
-            result.leapBuff += 1.047
+            result.leapBuff += 1.04525
         } else if (leapElement >= 62) {
             result.leapDamage += 1.11
-            result.leapBuff += 1.046
+            result.leapBuff += 1.04515
         } else if (leapElement >= 60) {
             result.leapDamage += 1.10
             result.leapBuff += 1.045
@@ -1727,7 +1730,7 @@ async function simulatorInputCalc() {
                     <span class="button" onclick="document.querySelector('.sc-info .detail-area').classList.toggle('on');"></span>`;
         }
         // extractValue.etcObj.supportCheck !== "서폿"
-        if (!/서폿|회귀|심판자|진실된 용맹/.test(extractValue.etcObj.supportCheck)) {
+        if (!/서폿|회귀|심판자|진실된 용맹/.test(extractValue.etcObj.supportCheck) || (extractValue.engObj.dealpport === "true")) {
             result += infoWrap("장비 효과", armorInfo);
             result += infoWrap("아크패시브", arkPassiveInfo);
             result += infoWrap("보석 효과", gemInfo);
