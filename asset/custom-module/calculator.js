@@ -136,18 +136,21 @@ export async function specPointCalc(inputObj) {
     let t_cycle = Math.max(duration_A + duration_B, cd_A, cd_B);
     let atkBuffUptime = t_buff / t_cycle;
 
+    let fakeHaste = inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste
+    let fakeSpecial = inputObj.defaultObj.statusSpecial + inputObj.bangleObj.special
 
-    let cdrPercent = ((1 - ((1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 종합 쿨감
-    let cdrPercentNoneCare = ((1 - ((1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemCheckFnc.excludedGemAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 노아덴 스킬 제외 쿨감
-    let cdrPercentOnlyCare = ((1 - ((1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemCheckFnc.careSkillAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3)
+
+    let cdrPercent = ((1 - ((1 - fakeHaste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 종합 쿨감
+    let cdrPercentNoneCare = ((1 - ((1 - fakeHaste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemCheckFnc.excludedGemAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 노아덴 스킬 제외 쿨감
+    let cdrPercentOnlyCare = ((1 - ((1 - fakeHaste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemCheckFnc.careSkillAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3)
     //let cdrPercentOnlyCare = (inputObj.etcObj.gemCheckFnc.careSkillAvg / 100) * 0.2
 
-    let awakenIdentity = ((1 / ((1 - inputObj.engObj.awakencdrPercent) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent))) - 1) * 0.15 + 1; //각성기 가치
+    let awakenIdentity = ((1 / ((1 - inputObj.engObj.awakencdrPercent) * (1 - fakeHaste * 0.0214739 / 100) * (1 - inputObj.engObj.cdrPercent))) - 1) * 0.15 + 1; //각성기 가치
 
-    let specialIdentity = ((inputObj.defaultObj.special)/30.2/100+1) // 특화 수급 계수
+    let specialIdentity = ((fakeSpecial)/30.2/100+1) // 특화 수급 계수
     let identityUptime = ((((20.05 * ((inputObj.accObj.identityUptime + inputObj.elixirObj.identityUptime) * specialIdentity) * awakenIdentity) / (1 - cdrPercentNoneCare)) / 100)).toFixed(4) //아덴 가동률
 
-    let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent) * (1 - inputObj.defaultObj.haste * 0.0214739 / 100))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
+    let hyperCdrPercent = (1 - ((1 - inputObj.arkObj.cdrPercent) * (1 - inputObj.engObj.cdrPercent) * (1 - fakeHaste * 0.0214739 / 100))) / (1 + inputObj.bangleObj.skillCool).toFixed(3) // 초각성 가동률 계산을 위한 쿨감
     let hyperUptime = ((24.45 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
 
 
@@ -262,9 +265,9 @@ export async function specPointCalc(inputObj) {
     const bangleHealth = parseInt(inputObj?.htmlObj?.bangleInfo?.normalStatsArray?.[0]?.match(/체력 \+(\d+)/)?.[1] || '0', 10);
     let totalHealth_MinusBangle = Number(((inputObj.etcObj.healthStatus - bangleHealth + inputObj.hyperObj.statHp + inputObj.elixirObj.statHp + inputObj.accObj.statHp) * inputObj.defaultObj.hpActive * 1.07).toFixed(0));
 
-    let finalSpecial_MinusBangle = Math.min(inputObj.defaultObj.special - inputObj.bangleObj.special, 1200)
-    let calcHaste_MinusBangle = (inputObj.defaultObj.haste - inputObj.bangleObj.haste + finalSpecial_MinusBangle) * 0.75
-    let calcSpecial_MinusBangle = (inputObj.defaultObj.haste - inputObj.bangleObj.haste + finalSpecial_MinusBangle) * 0.25
+    let finalSpecial_MinusBangle = Math.min(inputObj.defaultObj.statusSpecial, 1200)
+    let calcHaste_MinusBangle = (inputObj.defaultObj.statusHaste + finalSpecial_MinusBangle) * 0.75
+    let calcSpecial_MinusBangle = (inputObj.defaultObj.statusHaste + finalSpecial_MinusBangle) * 0.25
 
     let totalAtk3 = ((minusBangleStat * minusBangleWeaponAtk / 6) ** 0.5) * attackBonus //팔찌 제외 기본 공격력
     let atkBuff_MinusBangle = (1 + ((inputObj.accObj.atkBuff + inputObj.elixirObj.atkBuff + inputObj.hyperObj.atkBuff + inputObj.gemObj.atkBuff) / 100)) // 팔찌 제외 아공강 

@@ -1574,21 +1574,21 @@ export async function getCharacterProfile(data, dataBase) {
     } else if (arkPassiveValue(2) >= 68) {
 
         arkObj.leapDamage += 1.14
-        arkObj.leapBuff += 1.049
+        arkObj.leapBuff += 1.04545
     } else if (arkPassiveValue(2) >= 66) {
 
         arkObj.leapDamage += 1.13
-        arkObj.leapBuff += 1.048
+        arkObj.leapBuff += 1.04535
 
     } else if (arkPassiveValue(2) >= 64) {
 
         arkObj.leapDamage += 1.12
-        arkObj.leapBuff += 1.047
+        arkObj.leapBuff += 1.04525
 
     } else if (arkPassiveValue(2) >= 62) {
 
         arkObj.leapDamage += 1.11
-        arkObj.leapBuff += 1.046
+        arkObj.leapBuff += 1.04515
 
     } else if (arkPassiveValue(2) >= 60) {
 
@@ -1856,7 +1856,7 @@ export async function getCharacterProfile(data, dataBase) {
             specialClass = "사멸 억모닉";
         } else if (classCheck("이슬비") && skillCheck(gemSkillArry, "뙤약볕", dmg) && skillCheck(gemSkillArry, "싹쓸바람", dmg) && skillCheck(gemSkillArry, "소용돌이", dmg) && skillCheck(gemSkillArry, "여우비 스킬", dmg) && skillCheck(gemSkillArry, "소나기", dmg) && skillCheck(gemSkillArry, "날아가기", dmg) && skillCheck(gemSkillArry, "센바람", dmg)) {
             specialClass = "7겁 이슬비";
-        } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류")) {
+        } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류") || classCheck("사시") || classCheck("비기")) {
             specialClass = "데이터 없음";
         } else {
             specialClass = supportCheck();
