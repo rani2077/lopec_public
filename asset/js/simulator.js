@@ -1135,7 +1135,7 @@ async function simulatorInputCalc() {
                                 // 레벨에 맞는 실제 값 가져오기
                                 const coolValue = gemData[`level${level}`];
                                 result.atkBuffACdr += coolValue; // 레벨 대신 실제 값 사용
-                            } else{
+                            } else {
                             }
                         }
                     }
@@ -3511,7 +3511,15 @@ async function selectCreate(data, Modules) {
             "pants": { "legendary": 0, "hero": 0 },
             "combo": { "legendary": 0, "hero": 0 },
         };
-
+        if (!data.ArmoryAvatars) {
+            let parentElement = document.querySelectorAll(".armor-area .armor-item")[6];
+            let noneElement = parentElement.querySelector(".none").querySelectorAll("input[type=radio]");
+            noneElement.forEach((input) => {
+                console.log(input)
+                input.checked = true;
+            })
+            return;
+        }
         data.ArmoryAvatars.forEach(avatar => {
             let betweenText = betweenTextExtract(avatar.Tooltip)
             if (/무기|머리|상의|하의/.test(avatar.Type)) {
