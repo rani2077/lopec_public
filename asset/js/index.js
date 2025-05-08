@@ -681,7 +681,7 @@ let noticeArry = [
         name: `<em style="font-weight:900;font-size:17px;">시뮬레이터 분석기 출시 안내 (Feat.해널)</em>`,
         desc:
             `● 시뮬레이터 분석기 확장프로그램이 출시되었습니다.
-            굳은 작업을 도맡아 해주신 개발자 '해널'님께 매우 감사의 말씀드립니다.
+            궂은 작업을 도맡아 해주신 개발자 '해널'님께 매우 감사의 말씀드립니다.
             확장 프로그램은 크롬에서 사용 가능하며, 아래 링크에서 다운로드 가능합니다
             <a href="https://chromewebstore.google.com/detail/hjandoglibodddfdpbpcfkcldghbalhl?utm_source=item-share-cb" target="_blink" style="color:blue;text-decoration:underline;">로펙 시뮬레이터 분석기</a>`
     },
