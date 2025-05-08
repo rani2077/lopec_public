@@ -1840,6 +1840,8 @@ export async function getCharacterProfile(data, dataBase) {
             specialClass = "슈차 터닝 잔재";
         } else if (classCheck("잔재") && skillCheck(gemSkillArry, "블리츠 러시", dmg)) {
             specialClass = "슈차 잔재";
+        } else if (classCheck("오의") && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 폭쇄진", dmg)) {
+            specialClass = "밸패 오의";
         } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
             specialClass = "4멸 일격";
         } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
@@ -1856,7 +1858,7 @@ export async function getCharacterProfile(data, dataBase) {
             specialClass = "사멸 억모닉";
         } else if (classCheck("이슬비") && skillCheck(gemSkillArry, "뙤약볕", dmg) && skillCheck(gemSkillArry, "싹쓸바람", dmg) && skillCheck(gemSkillArry, "소용돌이", dmg) && skillCheck(gemSkillArry, "여우비 스킬", dmg) && skillCheck(gemSkillArry, "소나기", dmg) && skillCheck(gemSkillArry, "날아가기", dmg) && skillCheck(gemSkillArry, "센바람", dmg)) {
             specialClass = "7겁 이슬비";
-        } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류") || classCheck("사시") || classCheck("비기")) {
+        } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류") || classCheck("사시") || classCheck("비기") || classCheck("교감")) {
             specialClass = "데이터 없음";
         } else {
             specialClass = supportCheck();
