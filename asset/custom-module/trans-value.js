@@ -1828,6 +1828,8 @@ export async function getCharacterProfile(data, dataBase) {
             specialClass = "6겁 광기";
         } else if (classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg)) {
             specialClass = "7겁 광기";
+        } else if (classCheck("포식") && skillCheck(gemSkillArry, "파이널 블로", dmg) && skillCheck(gemSkillArry, "마운틴 클리브", dmg)) {
+            specialClass = "마운틴 포식";
         } else if (classCheck("포식") && !skillCheck(gemSkillArry, "페이탈 소드", dmg)) {
             specialClass = "크블 포식";
         } else if (classCheck("피메") && !skillCheck(gemSkillArry, "대재앙", dmg)) {
@@ -1865,7 +1867,7 @@ export async function getCharacterProfile(data, dataBase) {
         }
 
     }
-    //console.log("보석전용 직업 : ", specialClass)
+    console.log("보석전용 직업 : ", specialClass)
 
 
     gemSkillArry.forEach(function (gemSkill, idx) {

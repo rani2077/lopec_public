@@ -2345,7 +2345,19 @@ export let classGemFilter = [
             { name: "퍼니싱 드로", per: 0.056 },
             { name: "마운틴 클리브", per: 0.056 },
             { name: "보정치", per: -0.112 },
+            // per 합계: 0.67
 
+        ],
+    },
+    {
+        class: "마운틴 포식",
+        skill: [
+            { name: "브루탈 임팩트", per: 0.171 },
+            { name: "볼케이노 이럽션", per: 0.132 },
+            { name: "길로틴", per: 0.132 },
+            { name: "퓨리어스 클로", per: 0.091 },
+            { name: "마운틴 클리브", per: 0.078 },
+            { name: "파이널 블로", per: 0.066 },
         ],
     },
     {
