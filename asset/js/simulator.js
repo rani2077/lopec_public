@@ -4255,6 +4255,10 @@ async function calculateGemData(data) {
         specialClass = "데이터 없음";
     } else if (classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg) && !skillCheck(gemSkillArry, "마운틴 크래쉬", dmg)) {
         specialClass = "6겁 광기";
+    } else if (classCheck("광기") && skillCheck(gemSkillArry, "소드 스톰", dmg) && skillCheck(gemSkillArry, "파워 브레이크", dmg)) {
+        specialClass = "파브 광기";
+    } else if (classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg) && skillCheck(gemSkillArry, "파워 브레이크", dmg)) {
+        specialClass = "7겁 파브 광기";
     } else if (classCheck("광기") && !skillCheck(gemSkillArry, "소드 스톰", dmg)) {
         specialClass = "7겁 광기";
     } else if (classCheck("포식") && skillCheck(gemSkillArry, "파이널 블로", dmg) && skillCheck(gemSkillArry, "마운틴 클리브", dmg)) {
@@ -4273,12 +4277,14 @@ async function calculateGemData(data) {
         specialClass = "슈차 잔재";
     } else if (classCheck("오의") && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 폭쇄진", dmg)) {
         specialClass = "밸패 오의";
-    } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "방천격", dmg)) {
+    } else if (classCheck("일격") && skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
         specialClass = "4멸 일격";
     } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg)) {
         specialClass = "풍신 일격";
     } else if (classCheck("일격") && !skillCheck(gemSkillArry, "오의 : 뇌호격", dmg) && !skillCheck(gemSkillArry, "오의 : 풍신초래", dmg) && skillCheck(gemSkillArry, "오의 : 호왕출현", dmg) && skillCheck(gemSkillArry, "오의 : 폭쇄진", dmg)) {
         specialClass = "호왕 폭쇄 일격";
+    } else if (classCheck("권왕") && !skillCheck(gemSkillArry, "천기심권", dmg) && skillCheck(gemSkillArry, "징벌의 파도", dmg)) {
+        specialClass = "징벌 권왕";
     } else if (classCheck("수라") && !skillCheck(gemSkillArry, "청월난무", dmg) && !skillCheck(gemSkillArry, "유성 낙하", dmg)) {
         specialClass = "4겁 수라";
     } else if (classCheck("수라") && skillCheck(gemSkillArry, "수라결 기본 공격", dmg) && skillCheck(gemSkillArry, "파천섬광", dmg) && skillCheck(gemSkillArry, "진 파공권", dmg) && skillCheck(gemSkillArry, "유성 낙하", dmg) && skillCheck(gemSkillArry, "청월난무", dmg) && skillCheck(gemSkillArry, "비상격", dmg)) {
@@ -4289,7 +4295,7 @@ async function calculateGemData(data) {
         specialClass = "사멸 억모닉";
     } else if (classCheck("이슬비") && skillCheck(gemSkillArry, "뙤약볕", dmg) && skillCheck(gemSkillArry, "싹쓸바람", dmg) && skillCheck(gemSkillArry, "소용돌이", dmg) && skillCheck(gemSkillArry, "여우비 스킬", dmg) && skillCheck(gemSkillArry, "소나기", dmg) && skillCheck(gemSkillArry, "날아가기", dmg) && skillCheck(gemSkillArry, "센바람", dmg)) {
         specialClass = "7겁 이슬비";
-    } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류") || classCheck("비기") || classCheck("사시") || classCheck("교감")) {
+    } else if (classCheck("환각") || classCheck("서폿") || classCheck("진실된 용맹") || classCheck("회귀") || classCheck("환류") || classCheck("비기") || classCheck("교감")) {
         specialClass = "데이터 없음";
     } else {
         specialClass = supportCheck;

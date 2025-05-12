@@ -1873,7 +1873,7 @@ export async function getCharacterProfile(data, dataBase) {
         }
 
     }
-    console.log("보석전용 직업 : ", specialClass)
+    //console.log("보석전용 직업 : ", specialClass)
 
 
     gemSkillArry.forEach(function (gemSkill, idx) {
