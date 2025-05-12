@@ -2581,6 +2581,15 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "징벌 권왕",
+        skill: [
+            { name: "파천섬광", per: 0.23 },
+            { name: "권왕십이식", per: 0.327 },
+            { name: "천기심권", per: 0.077 },
+            { name: "유성 낙하", per: 0.059 },
+        ],
+    },
+    {
         class: "수라",
         skill: [
             { name: "수라결 기본 공격", per: 0.473 },
