@@ -81,6 +81,7 @@ export async function specPointCalc(inputObj) {
     let lastFinalValue = (((totalAtk) * evolutionDamageResult * bangleFinalDamageResult * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3)) * inputObj.defaultObj.estherDeal)
 
     //악세 효율 
+    let accAddDamageValue = (bangleAddDamageResult - (bangleAddDamageResult - inputObj.accObj.addDamagePer / 100)) / bangleAddDamageResult
     let minusAccValue = ((minusAccAtk) * evolutionDamageResult * minusAccFinal * enlightResult * inputObj.arkObj.leapDamage * inputObj.etcObj.gemCheckFnc.gemValue * inputObj.etcObj.gemCheckFnc.etcAverageValue * gemsCoolValue * (((inputObj.defaultObj.totalStatus + inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1 + 0.3))
     let accValue = (((totalAtk-minusAccAtk)/minusAccAtk)*100) * inputObj.accObj.finalDamagePer * (inputObj.accObj.addDamagePer/100+1) * 1.65
 
@@ -93,7 +94,8 @@ export async function specPointCalc(inputObj) {
     let elixirValue = ((lastFinalValue - minusElixirValue) / minusElixirValue * 100).toFixed(2)
 
     //팔찌 효율
-    let bangleValue = ((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (inputObj.bangleObj.addDamagePer/100+1) * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2)
+    let bangleAddDamageValue = (bangleAddDamageResult - (bangleAddDamageResult - inputObj.bangleObj.addDamagePer / 100)) / bangleAddDamageResult
+    let bangleValue = ((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (bangleAddDamageValue + 1) * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2)
 
     //console.log(((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2))
 
@@ -116,12 +118,15 @@ export async function specPointCalc(inputObj) {
     //let hyperUptime = ((40 / (1 - hyperCdrPercent)) / 100).toFixed(4) // 초각성 가동률
 
     let totalAtk2 = ((totalStat * totalWeaponAtk / 6) ** 0.5) * attackBonus //기본 공격력
+    let fakeHaste = inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste
+    let fakeSpecial = inputObj.defaultObj.statusSpecial + inputObj.bangleObj.special
+
     let finalStigmaPer = ((10 * ((inputObj.accObj.stigmaPer + inputObj.arkObj.stigmaPer + inputObj.hyperObj.stigmaPer) / 100 + 1)).toFixed(1)) // 낙인력 
     let atkBuff = (1 + ((inputObj.accObj.atkBuff + inputObj.elixirObj.atkBuff + inputObj.hyperObj.atkBuff + inputObj.bangleObj.atkBuff + inputObj.gemObj.atkBuff) / 100)) // 아공강 
     let finalAtkBuff = (totalAtk2 * 0.15 * atkBuff) // 최종 공증
     let damageBuff = (inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff + inputObj.gemObj.damageBuff) / 100 + 1 // 아피강
     let hyperBuff = (10 * ((inputObj.accObj.damageBuff + inputObj.bangleObj.damageBuff) / 100 + 1)) / 100 + 1 // 초각성
-    let statDamageBuff = (inputObj.defaultObj.special / 20.791) / 100 + 1 // 특화 딜증
+    let statDamageBuff = (fakeSpecial / 20.791) / 100 + 1 // 특화 딜증
     let evolutionBuff = (inputObj.arkObj.evolutionBuff / 100) // 진화형 피해 버프
     let carePower = (1 + (inputObj.engObj.carePower + inputObj.accObj.carePower + inputObj.elixirObj.carePower + inputObj.bangleObj.carePower)) // 케어력
     let finalCarePower = ((((totalHealth * 0.3) * carePower) / 330000) * 100) //최종 케어력
@@ -135,9 +140,6 @@ export async function specPointCalc(inputObj) {
     let t_buff = duration_A + duration_B;
     let t_cycle = Math.max(duration_A + duration_B, cd_A, cd_B);
     let atkBuffUptime = t_buff / t_cycle;
-
-    let fakeHaste = inputObj.defaultObj.statusHaste + inputObj.bangleObj.haste
-    let fakeSpecial = inputObj.defaultObj.statusSpecial + inputObj.bangleObj.special
 
 
     let cdrPercent = ((1 - ((1 - fakeHaste * 0.0214739 / 100) * (1 - inputObj.etcObj.gemsCoolAvg / 100) * (1 - inputObj.engObj.cdrPercent))) / (1 + inputObj.bangleObj.skillCool)).toFixed(3) // 종합 쿨감

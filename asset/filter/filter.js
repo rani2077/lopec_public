@@ -2209,6 +2209,21 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "파브 광기",
+        skill: [
+            { name: "오버드라이브", per: 0.176 },
+            { name: "피니쉬 스트라이크", per: 0.137 },
+            { name: "헬 블레이드", per: 0.12 },
+            { name: "소드 스톰", per: 0.077 },
+            { name: "파워 브레이크", per: 0.044 },
+            { name: "템페스트 슬래쉬", per: 0.044 },
+            { name: "레드 더스트", per: 0.044 },
+            { name: "마운틴 크래쉬", per: 0.044 },
+            { name: "보정치", per: -0.088 },
+
+        ],
+    },
+    {
         class: "7겁 광기",
         skill: [
             { name: "오버드라이브", per: 0.175 },
@@ -2216,6 +2231,18 @@ export let classGemFilter = [
             { name: "헬 블레이드", per: 0.135 },
             { name: "템페스트 슬래쉬", per: 0.077 },
             { name: "브레이브 슬래쉬", per: 0.05 },
+            { name: "레드 더스트", per: 0.05 },
+            { name: "마운틴 크래쉬", per: 0.03 },
+        ],
+    },
+    {
+        class: "7겁 파브 광기",
+        skill: [
+            { name: "오버드라이브", per: 0.175 },
+            { name: "피니쉬 스트라이크", per: 0.144 },
+            { name: "헬 블레이드", per: 0.135 },
+            { name: "템페스트 슬래쉬", per: 0.067 },
+            { name: "파워 브레이크", per: 0.06 },
             { name: "레드 더스트", per: 0.05 },
             { name: "마운틴 크래쉬", per: 0.03 },
         ],
@@ -2583,10 +2610,9 @@ export let classGemFilter = [
     {
         class: "징벌 권왕",
         skill: [
-            { name: "파천섬광", per: 0.23 },
-            { name: "권왕십이식", per: 0.327 },
-            { name: "천기심권", per: 0.077 },
-            { name: "유성 낙하", per: 0.059 },
+            { name: "파천섬광", per: 0.2595 },
+            { name: "권왕십이식", per: 0.3565 },
+            { name: "징벌의 파도", per: 0.077 },
         ],
     },
     {
@@ -2777,14 +2803,13 @@ export let classGemFilter = [
     {
         class: "사시",
         skill: [
-            { name: "포커스 샷", per: 0.143 },
-            { name: "대재앙", per: 0.077 },
-            { name: "퍼펙트 샷", per: 0.057 },
-            { name: "타겟 다운", per: 0.110 },
-            { name: "레인 오브 불릿", per: 0.07 },
-            { name: "메테오 스트림", per: 0.042 },
-            { name: "AT02 유탄", per: 0.042 },
-            { name: "보정치", per: -0.03 },
+            { name: "로즈 블로섬", per: 0.395 },
+            { name: "포커스 샷", per: 0.133 },
+            { name: "대재앙", per: 0.07 },
+            { name: "퍼펙트 샷", per: 0.045 },
+            { name: "타겟 다운", per: 0.09 },
+            { name: "레인 오브 불릿", per: 0.065 },
+            { name: "스파이럴 플레임", per: 0.038 },
         ],
     },
     {
@@ -2954,7 +2979,7 @@ export let classGemFilter = [
             { name: "데스 센텐스", per: 0.112 },
             { name: "보이드 스트라이크", per: 0.113 },
             { name: "트윈 쉐도우", per: 0.095 },
-            { name: "터닝 슬래쉬", per: 0.063 },
+            { name: "어스 슬래쉬", per: 0.063 },
         ],
     },
     {

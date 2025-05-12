@@ -659,7 +659,7 @@ let noticeArry = [
             이 문제점에 대해서는 인지를 하고 있는 상태이며, 꼼꼼히 검토해보고 추후 개선이 필요하다고 판단되면 즉시 적용하도록 하겠습니다.`
     },
     {
-        name: `<em style="font-weight:900;font-size:17px;">2025-05-07 핫픽스 안내 (03:10 내용 추가)</em>`,
+        name: `2025-05-07 핫픽스 안내 (03:10 내용 추가)`,
         desc:
             `● 금일 로스트아크 밸런스 패치 대응 안내
             &nbsp;&nbsp; - 금일 밸런스 패치로 크게 구조가 개선된 직업군의 보석 점수를 
@@ -678,12 +678,20 @@ let noticeArry = [
             `
     },
     {
-        name: `<em style="font-weight:900;font-size:17px;">시뮬레이터 분석기 출시 안내 (Feat.해널)</em>`,
+        name: `시뮬레이터 분석기 출시 안내 (Feat.해널)`,
         desc:
             `● 시뮬레이터 분석기 확장프로그램이 출시되었습니다.
             궂은 작업을 도맡아 해주신 개발자 '해널'님께 매우 감사의 말씀드립니다.
             확장 프로그램은 크롬에서 사용 가능하며, 아래 링크에서 다운로드 가능합니다
             <a href="https://chromewebstore.google.com/detail/hjandoglibodddfdpbpcfkcldghbalhl?utm_source=item-share-cb" target="_blink" style="color:blue;text-decoration:underline;">로펙 시뮬레이터 분석기</a>`
+    },
+    {
+        name: `<em style="font-weight:900;font-size:17px;">2025-05-13 업데이트 안내</em>`,
+        desc:
+            `● 몇 직업군의 딜지분 데이터를 추가 및 정리하였습니다.
+            
+            ● 팔찌 효율 계산식의 오류를 발견하여 수정하였습니다.
+            &nbsp;&nbsp; 최종 점수에는 영향 없습니다.`
     },
     {
         name: `<em style="font-weight:900;font-size:17px;">★중요★ 진화 카르마 사전 등록기간 안내</em>`,
