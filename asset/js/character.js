@@ -234,11 +234,12 @@ export async function dataBaseResponse(inputName, extractValue) {
  * inputName			  :	  닉네임
  * extractValue			  :   
  *********************************************************************************************************************** */
-export async function specPointUpdate(inputName, extractValue, calcValue) {
+export async function specPointUpdate(inputName, data, extractValue, calcValue) {
 	let characterInfoObj = {
 		nickname: inputName,
 		characterClass: `${extractValue.etcObj.supportCheck} ${extractValue.etcObj.characterClass}`,
-		totalSum: calcValue.completeSpecPoint
+		totalSum: calcValue.completeSpecPoint,
+		itemLevel: Number(data.ArmoryProfile.ItemAvgLevel.replace(/,/g, ''))
 	}
 	// let characterInfoObj = {
 	// 	nickname: "청염각",

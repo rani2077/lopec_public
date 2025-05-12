@@ -109,7 +109,7 @@ export async function apiCalcValue(inputName) {
         !gemSetCheck                                                // 저장된 보석설정을 로드한 경우
     ) {
         // DB 저장 함수
-        Modules.dataBase.specPointUpdate(inputName, extractValue, calcValue);
+        Modules.dataBase.specPointUpdate(inputName, data, extractValue, calcValue);
     }
     let result = {};
     result.dataBase = dataBase;
