@@ -73,7 +73,7 @@ export async function specPointCalc(inputObj) {
     /* **********************************************************************************************************************
      * name		              :	  최종 계산식 for deal
      * version                :   2.0
-     * description            :   모든 변수를 취합하여 스펙 포인트 계산식 작성
+     * description            :   모든 변수를 취합하여 스펙 포인트 계산식 작성~
      * USE_TN                 :   사용
      *********************************************************************************************************************** */
     //최종 환산
@@ -96,10 +96,6 @@ export async function specPointCalc(inputObj) {
     let bangleAddDamageValue = (bangleAddDamageResult - (bangleAddDamageResult - inputObj.bangleObj.addDamagePer / 100)) / bangleAddDamageResult
     let bangleStatusValue = ((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1
     let bangleValue = ((((bangleAtkValue * inputObj.bangleObj.finalDamagePer * (bangleAddDamageValue + 1) * bangleStatusValue) - 1) * 100) * 1.065).toFixed(2)
-    console.log(bangleAtkValue)
-    console.log(inputObj.bangleObj.finalDamagePer)
-    console.log(bangleAddDamageValue+1)
-    console.log(bangleStatusValue)
     //let bangleValue = ((((1 * bangleAtkValue * inputObj.bangleObj.finalDamagePer * (bangleAddDamageValue + 1) * (((inputObj.bangleObj.crit + inputObj.bangleObj.haste + inputObj.bangleObj.special) / 100 * 2) / 100 + 1)) - 1) * 100) * 1.065).toFixed(2)
 
 
