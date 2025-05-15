@@ -552,7 +552,7 @@ export async function getCharacterProfile(data, dataBase) {
         atkBuff: 0,
         atkBuffPlus: 1,
         damageBuff: 0,
-        leapPoint:0,
+        leapPoint: 0,
 
         crit: 0,
         special: 0,
@@ -674,7 +674,7 @@ export async function getCharacterProfile(data, dataBase) {
             bangleObj.str = 0;
             bangleObj.dex = 0;
         }
-        defaultObj.statusSpecial =  (defaultObj.special - bangleObj.special)
+        defaultObj.statusSpecial = (defaultObj.special - bangleObj.special)
         defaultObj.statusHaste = (defaultObj.haste - bangleObj.haste)
         if (supportCheck() === "서폿") {
             defaultObj.totalStatus = (defaultObj.haste + defaultObj.special - bangleObj.haste - bangleObj.special)
@@ -2061,10 +2061,10 @@ export async function getCharacterProfile(data, dataBase) {
 
                 if (dmgCount > 0) {
                     // 가중 평균 딜 증가율 계산
-                    etcAverageValue = weightedDmgSum / totalWeight;
+                    etcAverageValue = (weightedDmgSum / totalWeight) / 100 + 1;
                 } else {
                     // 멸화/겁화 보석이 없는 경우
-                    etcAverageValue = 0;
+                    etcAverageValue = 1;
                 }
             } else {
                 etcAverageValue = 1;
@@ -2121,7 +2121,7 @@ export async function getCharacterProfile(data, dataBase) {
                 originGemValue: gemValue,
                 gemValue: (gemValue * specialSkillCalc()) / 100 + 1,
                 gemAvg: averageValue,
-                etcAverageValue: etcAverageValue / 100 + 1,
+                etcAverageValue: etcAverageValue,
                 excludedGemAvg: excludedAverageValue,
                 careSkillAvg: careSkillAverageValue
             }
@@ -2388,11 +2388,11 @@ export async function getCharacterProfile(data, dataBase) {
      *********************************************************************************************************************** */
 
     let karmaObj = {
-        evolutionKarmaRank : null,
-        enlightKarmaRank : null,
-        leapKarmaRank : null
+        evolutionKarmaRank: null,
+        enlightKarmaRank: null,
+        leapKarmaRank: null
     }
-    
+
     let enlightKarmaRankValue = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);
     arkObj.weaponAtkPer = 1;
     if (enlightKarmaRankValue >= 6) arkObj.weaponAtkPer = 1.021;
@@ -2402,7 +2402,7 @@ export async function getCharacterProfile(data, dataBase) {
     else if (enlightKarmaRankValue >= 2) arkObj.weaponAtkPer = 1.005;
     else if (enlightKarmaRankValue >= 1) arkObj.weaponAtkPer = 1.001;
 
-    let leapKarmaRankValue = (arkPassiveValue(2) - (data.ArmoryProfile.CharacterLevel - 50) * 2 - bangleObj.leapPoint)/2;
+    let leapKarmaRankValue = (arkPassiveValue(2) - (data.ArmoryProfile.CharacterLevel - 50) * 2 - bangleObj.leapPoint) / 2;
 
     karmaObj.enlightKarmaRank = enlightKarmaRankValue;
     karmaObj.leapKarmaRank = leapKarmaRankValue
@@ -2437,7 +2437,7 @@ export async function getCharacterProfile(data, dataBase) {
     //if (vailedStatInfoForKarma) {
     //    mainStatTypeForKarma = vailedStatInfoForKarma.stats;
     //}
-//
+    //
     //// 전투 레벨 스탯 계산 (전투레벨 50 이상 가정)
     //let fightLevelStatValue = 0
     //if (characterLevel === 60) fightLevelStatValue = 429;
