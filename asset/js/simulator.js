@@ -4469,10 +4469,10 @@ async function calculateGemData(data) {
 
                 if (dmgCount > 0) {
                     // 가중 평균 딜 증가율 계산
-                    etcAverageValue = weightedDmgSum / totalWeight;
+                    etcAverageValue = (weightedDmgSum / totalWeight) / 100 + 1;
                 } else {
                     // 멸화/겁화 보석이 없는 경우
-                    etcAverageValue = 0;
+                    etcAverageValue = 1;
                 }
             } else {
                 etcAverageValue = 1;
@@ -4523,7 +4523,7 @@ async function calculateGemData(data) {
                 originGemValue: gemValue,
                 gemValue: (gemValue * specialSkillCalc()) / 100 + 1,
                 gemAvg: averageValue,
-                etcAverageValue: etcAverageValue / 100 + 1,
+                etcAverageValue: etcAverageValue,
                 averageValue: averageValue,  // 보석 쿨감 평균값
                 gemSkillArry: gemSkillArry,    // 유저가 착용중인 보석
                 excludedGemAvg: excludedAverageValue,
