@@ -686,12 +686,19 @@ let noticeArry = [
             <a href="https://chromewebstore.google.com/detail/hjandoglibodddfdpbpcfkcldghbalhl?utm_source=item-share-cb" target="_blink" style="color:blue;text-decoration:underline;">로펙 시뮬레이터 분석기</a>`
     },
     {
-        name: `<em style="font-weight:900;font-size:17px;">2025-05-13 업데이트 안내</em>`,
+        name: `2025-05-13 업데이트 안내`,
         desc:
             `● 몇 직업군의 딜지분 데이터를 추가 및 정리하였습니다.
             
             ● 팔찌 효율 계산식의 오류를 발견하여 수정하였습니다.
             &nbsp;&nbsp; 최종 점수에는 영향 없습니다.`
+    },
+    {
+        name: `<em style="font-weight:900;font-size:17px;">2025년 5월 2주차 중앙값 통계</em>`,
+        desc:
+            `5월 2주차 중앙값 통계입니다.
+
+            <img src="/asset/image/median-202505016.png">`
     },
     {
         name: `<em style="font-weight:900;font-size:17px;">★중요★ 진화 카르마 사전 등록기간 안내</em>`,

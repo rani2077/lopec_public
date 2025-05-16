@@ -2706,8 +2706,6 @@ export let classGemFilter = [
             { name: "중력 폭발", per: 0.033 },
             { name: "공중 폭격", per: 0.053 },
             { name: "고압열탄", per: 0.053 },
-            { name: "보정치", per: -0.053 },
-
         ],
     },
     {
@@ -2736,7 +2734,6 @@ export let classGemFilter = [
             { name: "보정치", per: -0.032 },
         ],
     },
-
     {
         class: "두동",
         skill: [
@@ -2746,6 +2743,18 @@ export let classGemFilter = [
             { name: "차징 샷", per: 0.093 },
             { name: "샤프 슈터", per: 0.079 },
             { name: "애로우 해일", per: 0.056 },
+
+        ],
+    },
+    {
+        class: "블스 두동",
+        skill: [
+            { name: "실버호크 스킬", per: 0.216 },
+            { name: "스나이프", per: 0.158 },
+            { name: "호크 샷", per: 0.094 },
+            { name: "차징 샷", per: 0.093 },
+            { name: "샤프 슈터", per: 0.079 },
+            { name: "블레이드 스톰", per: 0.056 },
 
         ],
     },

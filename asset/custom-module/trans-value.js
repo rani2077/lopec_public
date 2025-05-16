@@ -1820,6 +1820,8 @@ export async function getCharacterProfile(data, dataBase) {
             specialClass = "7멸 핸건";
         } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)) {
             specialClass = "에필 포강";
+        } else if (classCheck("두동") && skillCheck(gemSkillArry, "블레이드 스톰", dmg)) {
+            specialClass = "블스 두동";
         } else if (classCheck("질풍") && !skillCheck(gemSkillArry, "여우비 스킬", dmg)) {
             specialClass = "5멸 질풍";
         } else if (classCheck("그믐") && !skillCheck(gemSkillArry, "소울 시너스", dmg)) {
@@ -2794,7 +2796,7 @@ export async function getCharacterProfile(data, dataBase) {
      *********************************************************************************************************************** */
     function medianInfoExtract() {
         let result = {
-            dealerMedianValue: 0,
+            dealerMedianValue: "미제공",
             supportMedianValue: 0,
             supportMinMedianValue: 469.23,
             supportMaxMedianValue: 1630.71,
@@ -2804,84 +2806,84 @@ export async function getCharacterProfile(data, dataBase) {
         };
         let itemLevel = Number(data.ArmoryProfile.ItemAvgLevel.replace(",", ""));
         if (itemLevel >= 1660 && itemLevel < 1665) {
-            result.dealerMedianValue = 853.43;
+            result.dealerMedianValue = 864.66;
         } else if (itemLevel >= 1665 && itemLevel < 1670) {
-            result.dealerMedianValue = 926.11;
+            result.dealerMedianValue = 938.66;
         } else if (itemLevel >= 1670 && itemLevel < 1675) {
-            result.dealerMedianValue = 968.32;
+            result.dealerMedianValue = 989.31;
         } else if (itemLevel >= 1675 && itemLevel < 1680) {
-            result.dealerMedianValue = 994.5;
+            result.dealerMedianValue = 1029.06;
         } else if (itemLevel >= 1680 && itemLevel < 1685) {
-            result.dealerMedianValue = 1339.4;
+            result.dealerMedianValue = 1377.50;
         } else if (itemLevel >= 1685 && itemLevel < 1690) {
-            result.dealerMedianValue = 1530.32;
+            result.dealerMedianValue = 1557.30;
         } else if (itemLevel >= 1690 && itemLevel < 1695) {
-            result.dealerMedianValue = 1594.32;
+            result.dealerMedianValue = 1626.78;
         } else if (itemLevel >= 1695 && itemLevel < 1700) {
-            result.dealerMedianValue = 1674.14;
+            result.dealerMedianValue = 1707.22;
         } else if (itemLevel >= 1700 && itemLevel < 1705) {
-            result.dealerMedianValue = 1762.73;
+            result.dealerMedianValue = 1795.70;
         } else if (itemLevel >= 1705 && itemLevel < 1710) {
-            result.dealerMedianValue = 1901.34;
+            result.dealerMedianValue = 1940.90;
         } else if (itemLevel >= 1710 && itemLevel < 1715) {
-            result.dealerMedianValue = 1985.97;
+            result.dealerMedianValue = 2022.13;
         } else if (itemLevel >= 1715 && itemLevel < 1720) {
-            result.dealerMedianValue = 2038.33;
+            result.dealerMedianValue = 2063.66;
         } else if (itemLevel >= 1720 && itemLevel < 1725) {
-            result.dealerMedianValue = 2199.68;
+            result.dealerMedianValue = 2230.37;
         } else if (itemLevel >= 1725 && itemLevel < 1730) {
-            result.dealerMedianValue = 2315.26;
+            result.dealerMedianValue = 2344.84;
         } else if (itemLevel >= 1730 && itemLevel < 1735) {
-            result.dealerMedianValue = 2447.93;
+            result.dealerMedianValue = 2488.23;
         } else if (itemLevel >= 1735 && itemLevel < 1740) {
-            result.dealerMedianValue = 2583.79;
+            result.dealerMedianValue = 2636.07;
         } else if (itemLevel >= 1740 && itemLevel < 1745) {
-            result.dealerMedianValue = 2768.81;
+            result.dealerMedianValue = 2820.99;
         } else if (itemLevel >= 1745 && itemLevel < 1750) {
-            result.dealerMedianValue = 2904.4;
+            result.dealerMedianValue = 3012.91;
         } else if (itemLevel >= 1750) {
-            result.dealerMedianValue = 3265.48;
+            result.dealerMedianValue = 3344.81;
         }
 
         // console.log(itemLevel)
         if (itemLevel >= 1660 && itemLevel < 1665) {
-            result.supportMedianValue = 469.23;
+            result.supportMedianValue = 1212.05;
         } else if (itemLevel >= 1665 && itemLevel < 1670) {
-            result.supportMedianValue = 493.21;
+            result.supportMedianValue = 1282.15;
         } else if (itemLevel >= 1670 && itemLevel < 1675) {
-            result.supportMedianValue = 520.34;
+            result.supportMedianValue = 1285.53;
         } else if (itemLevel >= 1675 && itemLevel < 1680) {
-            result.supportMedianValue = 523.45;
+            result.supportMedianValue = 1411.90;
         } else if (itemLevel >= 1680 && itemLevel < 1685) {
-            result.supportMedianValue = 663.2;
+            result.supportMedianValue = 1531.99;
         } else if (itemLevel >= 1685 && itemLevel < 1690) {
-            result.supportMedianValue = 720.22;
+            result.supportMedianValue = 1628.18;
         } else if (itemLevel >= 1690 && itemLevel < 1695) {
-            result.supportMedianValue = 745.2;
+            result.supportMedianValue = 1675.04;
         } else if (itemLevel >= 1695 && itemLevel < 1700) {
-            result.supportMedianValue = 779.76;
+            result.supportMedianValue = 1738.51;
         } else if (itemLevel >= 1700 && itemLevel < 1705) {
-            result.supportMedianValue = 833.05;
+            result.supportMedianValue = 1818.56;
         } else if (itemLevel >= 1705 && itemLevel < 1710) {
-            result.supportMedianValue = 908.35;
+            result.supportMedianValue = 1942.41;
         } else if (itemLevel >= 1710 && itemLevel < 1715) {
-            result.supportMedianValue = 952.08;
+            result.supportMedianValue = 2032.90;
         } else if (itemLevel >= 1715 && itemLevel < 1720) {
-            result.supportMedianValue = 986.3;
+            result.supportMedianValue = 2054.95;
         } else if (itemLevel >= 1720 && itemLevel < 1725) {
-            result.supportMedianValue = 1087.38;
+            result.supportMedianValue = 2214.75;
         } else if (itemLevel >= 1725 && itemLevel < 1730) {
-            result.supportMedianValue = 1237.03;
+            result.supportMedianValue = 2429.40;
         } else if (itemLevel >= 1730 && itemLevel < 1735) {
-            result.supportMedianValue = 1328.44;
+            result.supportMedianValue = 2589.92;
         } else if (itemLevel >= 1735 && itemLevel < 1740) {
-            result.supportMedianValue = 1407.41;
+            result.supportMedianValue = 2725.69;
         } else if (itemLevel >= 1740 && itemLevel < 1745) {
-            result.supportMedianValue = 1455.4;
+            result.supportMedianValue = 2821.42;
         } else if (itemLevel >= 1745 && itemLevel < 1750) {
-            result.supportMedianValue = 1500.55;
+            result.supportMedianValue = 2976.45;
         } else if (itemLevel >= 1750) {
-            result.supportMedianValue = 1630.71;
+            result.supportMedianValue = 3146.87;
         }
 
         return result;
