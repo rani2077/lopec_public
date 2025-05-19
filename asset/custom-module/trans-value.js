@@ -975,6 +975,8 @@ export async function getCharacterProfile(data, dataBase) {
 
     let engObj = {
         finalDamagePer: 1,
+        criticalChancePer: 0,
+        criticalDamagePer: 0,
         atkPer: 0,
         carePower: 0,
         utilityPower: 0,
@@ -994,6 +996,8 @@ export async function getCharacterProfile(data, dataBase) {
                     engCalMinus(checkArry.name, checkArry.finalDamagePer, checkArry.criticalChancePer, checkArry.criticalDamagePer, checkArry.atkPer, checkArry.atkSpeed, checkArry.moveSpeed, checkArry.carePower, checkArry.utilityPower, checkArry.engBonusPer)
 
                     engObj.finalDamagePer = (engObj.finalDamagePer * (checkArry.finalDamagePer / 100 + 1));
+                    engObj.criticalChancePer = (engObj.criticalChancePer + checkArry.criticalChancePer);
+                    engObj.criticalDamagePer = (engObj.criticalDamagePer + checkArry.criticalDamagePer);
                     engObj.atkPer = (engObj.atkPer + checkArry.atkPer);
                     engObj.carePower = (engObj.carePower + checkArry.carePower);
                     engObj.cdrPercent = (engObj.cdrPercent + checkArry.cdrPercent);
@@ -1043,13 +1047,14 @@ export async function getCharacterProfile(data, dataBase) {
                 if (stoneArry.AbilityStoneLevel == filterArry.level && stoneArry.Name == filterArry.name && stoneArry.Name == name) {
 
                     engObj.finalDamagePer = (engObj.finalDamagePer) / notZero(minusVal) //퐁트라이커기준 저주받은 인형(돌맹이) 제거값
-                    //engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) * ((filterArry.finalDamagePer / 100) + 1)));
                     engObj.finalDamagePer = (engObj.finalDamagePer * (notZero(minusVal) + (filterArry.finalDamagePer / 100)));
                     engObj.atkPer = (engObj.atkPer + filterArry.atkPer);
                     engObj.cdrPercent = (engObj.cdrPercent + filterArry.cdrPercent);
                     engObj.awakencdrPercent = (engObj.awakencdrPercent + filterArry.awakencdrPercent);
                     engObj.utilityPower = (engObj.utilityPower + filterArry.utilityPower);
                     engObj.carePower = (engObj.carePower + filterArry.carePower);
+                    engObj.criticalChancePer = (engObj.criticalChancePer + filterArry.criticalChancePer);
+                    engObj.criticalDamagePer = (engObj.criticalDamagePer + filterArry.criticalDamagePer);
                 }
             })
 

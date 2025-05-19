@@ -1040,7 +1040,7 @@ async function mainSearchFunction() {
 
         let supportSpecPointInfo = [
             { name: "달성 최고 점수", value: bestSpecPoint, icon: "medal-solid" },
-            { name: "현재 레벨 중앙값", value: "수집 중", icon: "chart-simple-solid" }, //value: supportMedianValue
+            { name: "현재 레벨 중앙값", value: supportMedianValue, icon: "chart-simple-solid" }, //value: supportMedianValue
             //{ name: "딜러 환산 점수", value: dealerSupportConversion.toFixed(2), icon: "arrows-left-right-to-line-solid" },
             { name: "최고 점수 달성일", value: archiveDate, icon: "calendar-check-solid" },
         ]
