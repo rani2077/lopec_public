@@ -359,7 +359,8 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .group-user-data .accessory-item,
 .dark-mode .group-user-data .gem-item,
 .dark-mode .group-user-data .engraving-item,
-.dark-mode .sc-info .karma-area {
+.dark-mode .sc-info .karma-area,
+.dark-mode .sc-main-search .group-search {
     background: #2f2f2f;
     color: #fff;
 }
@@ -369,7 +370,8 @@ html.dark-mode .sc-info .tag-list,
 .dark-mode .group-user-data .armory-item,
 .dark-mode .group-user-data .accessory-item,
 .dark-mode .group-user-data .gem-item,
-.dark-mode .group-user-data .engraving-item {
+.dark-mode .group-user-data .engraving-item,
+.dark-mode .sc-main-search .group-search {
     border: 1px solid #404040;
 }
 
@@ -1415,7 +1417,7 @@ i.lopec_badge_penguin:hover:after {
 .sc-lopec-click.on .group-category .devil-box {
     display: flex;
     align-items: center;
-    gap:3px;
+    gap: 3px;
 }
 
 /* **********************************************************************************************************************
