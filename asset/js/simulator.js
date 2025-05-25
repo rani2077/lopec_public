@@ -2579,10 +2579,10 @@ async function selectCreate(data, Modules) {
     *********************************************************************************************************************** */
     function evloutionKarmaRankSelected() {
         let karmaRankElements = document.querySelector(".ark-list.evolution .ark-item.karma-radio").querySelectorAll("input[type=radio]");
-        let karmaRank = cachedDetailInfo.extractValue.karmaObj.evolutionKarmaRank;
+        let karmaRank = cachedDetailInfo.extractValue.karmaObj.evolutionKarmaRank ? cachedDetailInfo.extractValue.karmaObj.evolutionKarmaRank : 0;
         let karmaLevelElement = document.querySelector(".ark-list.evolution .ark-item .input-number")
         karmaRankElements[karmaRank].checked = true;
-        karmaLevelElement.value = cachedDetailInfo.extractValue.karmaObj.evolutionKarmaLevel;
+        karmaLevelElement.value = cachedDetailInfo.extractValue.karmaObj.evolutionKarmaLevel ? cachedDetailInfo.extractValue.karmaObj.evolutionKarmaLevel : 0;
     }
     evloutionKarmaRankSelected();
 
