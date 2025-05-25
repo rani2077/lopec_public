@@ -861,6 +861,26 @@ i.shield-halved-solid {
     background-image: url("/asset/image/shield-halved-solid.svg");
 }
 
+i.circle-notch-solid {
+    background-image: url("/asset/image/circle-notch-solid.svg");
+}
+
+i.wand-magic-solid {
+    background-image: url("/asset/image/wand-magic-solid.svg");
+}
+
+i.hourglass-half-solid {
+    background-image: url("/asset/image/hourglass-half-solid.svg");
+}
+
+i.arrow-trend-up-solid {
+    background-image: url("/asset/image/arrow-trend-up-solid.svg");
+}
+
+i.gear-solid {
+    background-image: url("/asset/image/gear-solid.svg");
+}
+
 /* **********************************************************************************************************************
 * description	    : 	후원자 전용 뱃지
 *********************************************************************************************************************** */

@@ -79,7 +79,7 @@ input[type=number]::-ms-expand {
 .group-info .spec-area .gauge-box {
     display: flex;
     flex-direction: column;
-    gap:5px 0;
+    gap: 5px 0;
 }
 
 .group-info .reset-area {
@@ -430,4 +430,55 @@ input[type=number]::-ms-expand {
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.group-equip .ark-list .ark-item .input-number {
+    width: 80px;
+    padding: 0 12px;
+    vertical-align: top;
+    text-align: center;
+    outline: none;
+}
+
+.group-equip .ark-list .ark-item .input-number[type="number"]::-webkit-outer-spin-button,
+.group-equip .ark-list .ark-item .input-number[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    display: none;
+}
+
+.group-equip .ark-list .ark-item .input-number,
+.group-equip .ark-list .ark-item .input-number-decrement,
+.group-equip .ark-list .ark-item .input-number-increment {
+    border: 1px solid #ccc;
+    height: 40px;
+    user-select: none;
+}
+
+
+.group-equip .ark-list .ark-item .input-number-decrement,
+.group-equip .ark-list .ark-item .input-number-increment {
+    display: inline-block;
+    width: 30px;
+    line-height: 38px;
+    background: #f1f1f1;
+    color: #444;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.group-equip .ark-list .ark-item .input-number-decrement:active,
+.group-equip .ark-list .ark-item .input-number-increment:active {
+    background: #ddd;
+}
+
+.group-equip .ark-list .ark-item .input-number-decrement {
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.group-equip .ark-list .ark-item .input-number-increment {
+    border-left: none;
+    border-radius: 0 4px 4px 0;
 }

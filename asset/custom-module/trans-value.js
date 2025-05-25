@@ -1361,6 +1361,7 @@ export async function getCharacterProfile(data, dataBase) {
         leapBuff: 0,
         weaponAtkPer: 1,
         cdrPercent: 0,
+        statHp: 0,
     }
 
     data.ArkPassive.Effects.forEach(function (arkArry) {
@@ -1881,7 +1882,7 @@ export async function getCharacterProfile(data, dataBase) {
         }
 
     }
-    //console.log("보석전용 직업 : ", specialClass)
+    console.log("보석전용 직업 : ", specialClass)
 
 
     gemSkillArry.forEach(function (gemSkill, idx) {
@@ -2397,8 +2398,9 @@ export async function getCharacterProfile(data, dataBase) {
 
     let karmaObj = {
         evolutionKarmaRank: null,
+        evolutionKarmaLevel: null,
         enlightKarmaRank: null,
-        leapKarmaRank: null
+        leapKarmaRank: null,
     }
 
     let enlightKarmaRankValue = (arkPassiveValue(1) - (data.ArmoryProfile.CharacterLevel - 50) - accObj.enlightPoint - 14);

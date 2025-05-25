@@ -190,7 +190,7 @@ async function simulatorInputCalc() {
             cdrPercent: 0,
             awakencdrPercent: 0,
             utilityPower: 0,
-            dealpport: ""
+            dealpport: "false"
         };
         let matchingFilters
         inputValueObjArr.forEach(function (inputValue) {
@@ -258,10 +258,7 @@ async function simulatorInputCalc() {
             result.utilityPower += eng.utilityPower
         });
 
-        extractValue.engObj.dealpport = cachedDetailInfo.extractValue.engObj.dealpport;
-        console.log(cachedDetailInfo.extractValue.engObj.dealpport)
-        console.log(extractValue.engObj.dealpport)
-
+        result.dealpport = cachedDetailInfo.extractValue.engObj.dealpport;
         // console.log("최종결과:", result);
         // result.finalDamagePer *= stoneOutputCalc().finalDamagePer;
         // result.engBonusPer *= stoneOutputCalc().engBonusPer;
@@ -1192,17 +1189,17 @@ async function simulatorInputCalc() {
      * function name		:	evolutionKarmaRankToValue()
      * description			: 	진화 카르마 랭크를 변환 
      *********************************************************************************************************************** */
-    // function evolutionKarmaRankToValue() {
-    //     let elements = document.querySelectorAll(".ark-list.evolution .ark-item")[1].querySelectorAll("input[type=radio]");
-    //     let karmaRank = 0;
-    //     elements.forEach((element, idx) => {
-    //         if (element.checked) {
-    //             karmaRank = idx;
-    //         }
-    //     })
-    //     return karmaRank;
-    // }
-    // let evolutionKarmaRank = evolutionKarmaRankToValue();
+    function evolutionKarmaRankToValue() {
+        let elements = document.querySelectorAll(".ark-list.evolution .ark-item")[1].querySelectorAll("input[type=radio]");
+        let karmaRank = 0;
+        elements.forEach((element, idx) => {
+            if (element.checked) {
+                karmaRank = idx;
+            }
+        })
+        return karmaRank;
+    }
+    let evolutionKarmaRank = evolutionKarmaRankToValue();
 
     /* **********************************************************************************************************************
      * function name		:	gemAttackBonusValueCalc
@@ -1219,9 +1216,11 @@ async function simulatorInputCalc() {
             leapDamage: 0,
             leapBuff: 0,
             cdrPercent: 0,
+            statHp: 0,
         }
         let enlightElement = Number(document.querySelector(".ark-area .title-box.enlightenment .title").textContent);
         let evolutionElement = Number(document.querySelector(".ark-area .title-box.evolution .title").textContent);
+        let evolutionKarmaLevelElement = Number(document.querySelector(".ark-area .ark-list.evolution .ark-item .input-number").value);
         let leapElement = Number(document.querySelector(".ark-area .title-box.leap .title").textContent)
 
         if (evolutionElement >= 120) { //  == 진화수치
@@ -1242,29 +1241,29 @@ async function simulatorInputCalc() {
             result.evolutionDamage += 1
         }
 
-        // if (evolutionKarmaRank === 6) {
-        //     result.evolutionDamage += 0.00;
-        //     result.stigmaPer += 0
-        // } else if (evolutionKarmaRank === 5) {
-        //     result.evolutionDamage += 0.00;
-        //     result.stigmaPer += 0
-        // } else if (evolutionKarmaRank === 4) {
-        //     result.evolutionDamage += 0.00;
-        //     result.stigmaPer += 0
-        // } else if (evolutionKarmaRank === 3) {
-        //     result.evolutionDamage += 0.00;
-        //     result.stigmaPer += 0
-        // } else if (evolutionKarmaRank === 2) {
-        //     result.evolutionDamage += 0.00;
-        //     result.stigmaPer += 0
-        // } else if (evolutionKarmaRank === 1) {
-        //     result.evolutionDamage += 0.00;
-        //     result.stigmaPer += 0
-        // } else {
-        //     result.evolutionDamage += 0.00;
-        //     result.stigmaPer += 0
-        // }
-
+        if (evolutionKarmaRank === 6) {
+            result.evolutionDamage += 0.06;
+            result.stigmaPer += 6;
+        } else if (evolutionKarmaRank === 5) {
+            result.evolutionDamage += 0.05;
+            result.stigmaPer += 5;
+        } else if (evolutionKarmaRank === 4) {
+            result.evolutionDamage += 0.04;
+            result.stigmaPer += 4
+        } else if (evolutionKarmaRank === 3) {
+            result.evolutionDamage += 0.03;
+            result.stigmaPer += 3
+        } else if (evolutionKarmaRank === 2) {
+            result.evolutionDamage += 0.02;
+            result.stigmaPer += 2
+        } else if (evolutionKarmaRank === 1) {
+            result.evolutionDamage += 0.01;
+            result.stigmaPer += 1
+        } else {
+            result.evolutionDamage += 0.00;
+            result.stigmaPer += 0
+        }
+        result.statHp = evolutionKarmaLevelElement * 400;
 
 
         if (enlightElement >= 100) { // enlightElement == 깨달음수치
@@ -1375,7 +1374,7 @@ async function simulatorInputCalc() {
 
         result.weaponAtkPer = karmaRankToValue();
         result.evolutionBuff = evloutionArkCheck().evolutionBuff;
-        result.stigmaPer = evloutionArkCheck().stigmaPer;
+        result.stigmaPer += evloutionArkCheck().stigmaPer;
         result.cdrPercent = leapArkCheck().cdrPercent
         return result
     }
@@ -2574,17 +2573,105 @@ async function selectCreate(data, Modules) {
         }
     }
     collectToKarma()
-
     /* **********************************************************************************************************************
-    * function name		:	evloutionKarmaRankChange()
+    * function name		:	evloutionKarmaRankSelected()
     * description	    : 	진화 카르마 랭크를 유저에게 표시해줌
     *********************************************************************************************************************** */
-    // async function evloutionKarmaRankChange() {
-    //     let karmaElements = document.querySelector(".ark-list.evolution .ark-item.karma-radio").querySelectorAll("input[type=radio]");
-    //     let extractValue = await Modules.transValue.getCharacterProfile(data);
-    //     let karmaRank = extractValue.etcObj.evolutionkarmaRank;
-    //     karmaElements[karmaRank].checked = true;
-    // }
+    function evloutionKarmaRankSelected() {
+        let karmaRankElements = document.querySelector(".ark-list.evolution .ark-item.karma-radio").querySelectorAll("input[type=radio]");
+        let karmaRank = cachedDetailInfo.extractValue.karmaObj.evolutionKarmaRank;
+        let karmaLevelElement = document.querySelector(".ark-list.evolution .ark-item .input-number")
+        karmaRankElements[karmaRank].checked = true;
+        karmaLevelElement.value = cachedDetailInfo.extractValue.karmaObj.evolutionKarmaLevel;
+    }
+    evloutionKarmaRankSelected();
+
+    /* **********************************************************************************************************************
+    * function name		:	numberPlusMinusBtn
+    * description			: 	카르마 진화레벨을 +-할 수 있는 함수
+    *********************************************************************************************************************** */
+    function evolutionKarmaRangeLimited() {
+        let rankElements = document.querySelector(".ark-list.evolution .ark-item.karma-radio").querySelectorAll("input[type=radio]");
+        let count = 0;
+        rankElements.forEach(element => {
+            element.addEventListener("change", () => {
+                rangeChange();
+            })
+        })
+        function rangeChange() {
+            let rankValue = Array.from(rankElements).findIndex(element => element.checked === true);
+            let levelElement = document.querySelector(".ark-list.evolution .ark-item .input-number");
+            let levelValue = Number(levelElement.value);
+
+            const rankRanges = [
+                { rank: 0, min: 0, max: 0 },
+                { rank: 1, min: 1, max: 4 },
+                { rank: 2, min: 5, max: 8 },
+                { rank: 3, min: 9, max: 12 },
+                { rank: 4, min: 13, max: 16 },
+                { rank: 5, min: 17, max: 20 },
+                { rank: 6, min: 21, max: 30 }
+            ];
+            console.log(rankValue)
+            let currentRange = rankRanges.find(range => range.rank === rankValue);
+            if (currentRange) {
+                levelElement.setAttribute('min', String(currentRange.min));
+                levelElement.setAttribute('max', String(currentRange.max));
+            } else {
+                levelElement.setAttribute('min', '0');
+                levelElement.setAttribute('max', '0');
+            }
+            if (count !== 0) {
+                levelElement.value = currentRange.min;
+            } else {
+                count++;
+            }
+        }
+        rangeChange();
+    }
+    evolutionKarmaRangeLimited();
+
+    /* **********************************************************************************************************************
+    * function name		:	numberPlusMinusBtn
+    * description			: 	카르마 진화레벨을 +-할 수 있는 함수
+    *********************************************************************************************************************** */
+    function numberPlusMinusBtn() {
+        const decrementButton = document.querySelector('.group-equip .input-number-decrement');
+        const incrementButton = document.querySelector('.group-equip .input-number-increment');
+        const inputNumber = document.querySelector('.group-equip .input-number');
+
+        decrementButton.addEventListener('click', () => {
+            let currentValue = parseInt(inputNumber.value);
+            let min = parseInt(inputNumber.getAttribute('min'));
+            if (currentValue > min) {
+                inputNumber.value = currentValue - 1;
+                inputNumber.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+
+        incrementButton.addEventListener('click', () => {
+            let currentValue = parseInt(inputNumber.value);
+            let max = parseInt(inputNumber.getAttribute('max'));
+            if (currentValue < max) {
+                inputNumber.value = currentValue + 1;
+                inputNumber.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+
+        inputNumber.addEventListener('change', () => {
+            let currentValue = parseInt(inputNumber.value);
+            let min = parseInt(inputNumber.getAttribute('min'));
+            let max = parseInt(inputNumber.getAttribute('max'));
+
+            if (isNaN(currentValue) || currentValue < min) {
+                inputNumber.value = min;
+            } else if (currentValue > max) {
+                inputNumber.value = max;
+            }
+        });
+
+    }
+    numberPlusMinusBtn()
     /* **********************************************************************************************************************
     * function name		:	enlightValueChange()
     * description	    : 	깨달음 포인트를 유저에게 표시해줌
@@ -4553,7 +4640,7 @@ async function calculateGemData(data) {
 /* **********************************************************************************************************************
 * function name		:   optionElementAutoCheck(element, selectValue, tag)
 * description	    :   조건과 일치하는 option값을 자동으로 선택함
-
+ 
 * parameter         :   element
 * description       :   선택할 select 요소
 * parameter         :   selectValue
@@ -4587,7 +4674,7 @@ function optionElementAutoCheck(element, selectValue, tag) {
 /* **********************************************************************************************************************
 * function name		:   betweenTextExtract
 * description	    :   >< 사이의 텍스트 문자열을 배열로 추출함
-
+ 
 * parameter         :   inputString
 * description       :   텍스트 문자열
 *********************************************************************************************************************** */
@@ -4890,6 +4977,7 @@ function simulatorReset() {
     element.addEventListener("click", () => { location.reload() })
 }
 simulatorReset()
+
 /* **********************************************************************************************************************
  * function name		:	createTooltip() <== layout.js로 이전함
  * description			: 	.tooltip-text 클래스를 가진 요소에 마우스 오버 시 툴팁을 생성하고, select 요소의 경우 선택된 option의 텍스트를 표시합니다.

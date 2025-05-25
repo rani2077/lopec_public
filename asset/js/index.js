@@ -701,7 +701,7 @@ let noticeArry = [
             <img src="/asset/image/median-202505016.png">`
     },
     {
-        name: `<em style="font-weight:900;font-size:17px;">2025-05-21 라이브 방송 LOPEC-ON 안내</em>`,
+        name: `2025-05-21 라이브 방송 LOPEC-ON 안내`,
         desc:
             `안녕하세요, 로펙 개발자 청염각입니다.
             오늘 오후 7시에 라이브 방송을 진행해볼 예정입니다.
@@ -720,7 +720,7 @@ let noticeArry = [
     
     },
     {
-        name: `<em style="font-weight:900;font-size:17px;">★중요★ 진화 카르마 사전 등록기간 안내</em>`,
+        name: `진화 카르마 사전 등록기간 안내`,
         desc:
             `안녕하세요, 개발자 청염각입니다.
             펫효과와 방범대가 존재하는 이상, 진화 카르마 알고리즘의 정확도 100% 달성은 
@@ -728,11 +728,36 @@ let noticeArry = [
             그러나 아주 간단한 조건을 추가하면, 완벽하게 추출이 가능합니다.
             아래 링크를 참조해주시기 바랍니다.
 
-            <a href="https://www.notion.so/1e9758f0e8da803abad5ffb1b1de506c" target="_blink" style="color:blue;text-decoration:underline;">진화 카르마 등록 방법 안내</a>
+            <a href="https://cool-kiss-ec2.notion.site/1e9758f0e8da803abad5ffb1b1de506c?pvs=4" target="_blink" style="color:blue;text-decoration:underline;">진화 카르마 등록 방법 안내</a>
 
             진화 카르마는 2주 간의 사전 등록 기간을 거친 후 점수에 적용할 예정입니다.
             사전 등록 기간이 끝나도 언제든지 등록 및 갱신이 가능합니다.
             감사합니다.`
+    },
+        {
+        name: `<em style="font-weight:900;font-size:17px;">2025-05-25 업데이트 안내</em>`,
+        desc:
+            `● 진화 카르마 랭크가 점수에 포함됩니다.
+            &nbsp;&nbsp; 진화 카르마로 획득한 진피, 낙인력, 최생이 점수에 포함됩니다.
+            &nbsp;&nbsp; 시뮬레이터에서도 진화 카르마를 조율할 수 있습니다.
+            &nbsp;&nbsp; <a href="https://cool-kiss-ec2.notion.site/1e9758f0e8da803abad5ffb1b1de506c?pvs=4" target="_blink" style="color:blue;text-decoration:underline;">진화 카르마 등록하러 가기</a>
+
+            ● 서폿 중앙값 오류 수정 
+            &nbsp;&nbsp; 서폿 직업군의 중앙값이 '수집 중'으로 뜨던 오류를 수정하였습니다.
+
+            ● 캐릭터 공격력 계산식 오류 수정 및 고도화 작업
+            &nbsp;&nbsp; 공격력을 계산식의 서순 문제로 발생한 약 0.1~0.2% 정도의 오차를 바로잡았습니다.
+            
+            ● 서폿 팔찌 딜증 오류 수정
+            &nbsp;&nbsp; 서폿 이중옵 팔찌를 착용한 딜러의 점수가 다소 뻥튀기 되던 오류를 수정하였습니다.
+
+            ● 딜지분 데이터가 없는 직업군의 보석 점수 오류 수정
+
+            ● 시뮬레이터에서 딜러 세팅 서폿의 상세정보가 서폿용으로 뜨던 이슈 수정
+
+            ● 모바일 페이지에서 상세정보 아이콘이 제대로 뜨지 않던 이슈 수정
+            
+            ● 중앙 검색창 추가`
     },
 ]
 
