@@ -694,11 +694,30 @@ let noticeArry = [
             &nbsp;&nbsp; 최종 점수에는 영향 없습니다.`
     },
     {
-        name: `<em style="font-weight:900;font-size:17px;">2025년 5월 2주차 중앙값 통계</em>`,
+        name: `2025년 5월 2주차 중앙값 통계`,
         desc:
             `5월 2주차 중앙값 통계입니다.
 
             <img src="/asset/image/median-202505016.png">`
+    },
+    {
+        name: `<em style="font-weight:900;font-size:17px;">2025-05-21 라이브 방송 LOPEC-ON 안내</em>`,
+        desc:
+            `안녕하세요, 로펙 개발자 청염각입니다.
+            오늘 오후 7시에 라이브 방송을 진행해볼 예정입니다.
+
+            1. 라방 후기
+            2. 환산 개발자가 보는 현 보석 시스템의 문제점
+            3. 앞으로 로펙의 방향
+
+            현재 로스트아크의 보석 시스템은 정말 치명적인 문제가 있다고 생각하는 편입니다.
+            그래서 오늘 방송은 약간 매운맛이 될 것 같습니다.
+
+            많관부!
+    
+            <a href="https://chzzk.naver.com/addbdedc025f2cffeb2c4855c43a65e9" target="_blink" style="color:blue;text-decoration:underline;"> 방송 링크는 여기를 클릭!</a>
+            `
+    
     },
     {
         name: `<em style="font-weight:900;font-size:17px;">★중요★ 진화 카르마 사전 등록기간 안내</em>`,

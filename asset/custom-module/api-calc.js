@@ -53,13 +53,33 @@ let Modules = await importModuleManager();
  * USE_TN                 :   사용
  *********************************************************************************************************************** */
 function evoKarmaRank(evoKarma, extractValue) {
-    if (evoKarma >= 21) extractValue.karmaObj.evolutionKarmaRank = 6;
-    else if (evoKarma >= 17) extractValue.karmaObj.evolutionKarmaRank = 5;
-    else if (evoKarma >= 13) extractValue.karmaObj.evolutionKarmaRank = 4;
-    else if (evoKarma >= 9) extractValue.karmaObj.evolutionKarmaRank = 3;
-    else if (evoKarma >= 5) extractValue.karmaObj.evolutionKarmaRank = 2;
-    else if (evoKarma >= 1) extractValue.karmaObj.evolutionKarmaRank = 1;
-    else if (evoKarma === 0) extractValue.karmaObj.evolutionKarmaRank = 0;
+    if (evoKarma >= 21) {
+        extractValue.karmaObj.evolutionKarmaRank = 6;
+        extractValue.arkObj.evolutionDamage += 0.06;
+    }
+    else if (evoKarma >= 17) {
+        extractValue.karmaObj.evolutionKarmaRank = 5;
+        extractValue.arkObj.evolutionDamage += 0.05;
+    }
+    else if (evoKarma >= 13) {
+        extractValue.karmaObj.evolutionKarmaRank = 4;
+        extractValue.arkObj.evolutionDamage += 0.04;
+    }
+    else if (evoKarma >= 9) {
+        extractValue.karmaObj.evolutionKarmaRank = 3;
+        extractValue.arkObj.evolutionDamage += 0.03;
+    }
+    else if (evoKarma >= 5) {
+        extractValue.karmaObj.evolutionKarmaRank = 2;
+        extractValue.arkObj.evolutionDamage += 0.02;
+    }
+    else if (evoKarma >= 1) {
+        extractValue.karmaObj.evolutionKarmaRank = 1;
+        extractValue.arkObj.evolutionDamage += 0.01;
+    }
+    else if (evoKarma === 0) {
+        extractValue.karmaObj.evolutionKarmaRank = 0;
+    }
     else extractValue.karmaObj.evolutionKarmaRank = null; //미등록
 }
 

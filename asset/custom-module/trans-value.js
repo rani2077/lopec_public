@@ -1446,6 +1446,7 @@ export async function getCharacterProfile(data, dataBase) {
 
 
 
+
     if (arkPassiveValue(1) >= 100) { // arkPassiveValue(1) == 깨달음수치
 
         arkObj.enlightenmentDamage += 1.42
@@ -2428,7 +2429,6 @@ export async function getCharacterProfile(data, dataBase) {
         etcObj.evoKarmaMaterial = materialObj;
     };
     karmaPointCalc();
-
 
     /* **********************************************************************************************************************
      * name		              :	  calculatePossiblePotionSums
