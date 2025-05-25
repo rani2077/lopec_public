@@ -4334,6 +4334,8 @@ async function calculateGemData(data) {
         specialClass = "5겁 역천";
     } else if (classCheck("핸건") && skillCheck(gemSkillArry, "데스파이어", dmg)) {
         specialClass = "7멸 핸건";
+    } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per) && skillCheck(gemSkillArry, "중력 폭발", dmg) && skillCheck(gemSkillArry, "공중 폭격", dmg) && skillCheck(gemSkillArry, "고압열탄", dmg)) {
+        specialClass = "에필 5겁 포강";
     } else if (classCheck("포강") && skillCheck(gemSkillArry, "에너지 필드", per)) {
         specialClass = "에필 포강";
     } else if (classCheck("질풍") && !skillCheck(gemSkillArry, "여우비 스킬", dmg)) {

@@ -2698,6 +2698,16 @@ export let classGemFilter = [
         ],
     },
     {
+        class: "에필 5겁 포강",
+        skill: [
+            { name: "포격 스킬", per: 0.405 },
+            { name: "미사일 폭격", per: 0.053 },
+            { name: "중력 폭발", per: 0.033 },
+            { name: "공중 폭격", per: 0.053 },
+            { name: "고압열탄", per: 0.053 },
+        ],
+    },
+        {
         class: "에필 포강",
         skill: [
             { name: "포격 스킬", per: 0.405 },
@@ -2705,6 +2715,7 @@ export let classGemFilter = [
             { name: "중력 폭발", per: 0.033 },
             { name: "공중 폭격", per: 0.053 },
             { name: "고압열탄", per: 0.053 },
+            { name: "보정치", per: -0.053 },
         ],
     },
     {
