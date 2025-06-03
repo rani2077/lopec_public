@@ -760,11 +760,19 @@ let noticeArry = [
             ● 중앙 검색창 추가`
     },
     {
-        name: `<em style="font-weight:900;font-size:17px;">25년 5월 4주차 중앙값 통계</em>`,
+        name: `25년 5월 4주차 중앙값 통계`,
         desc:
         `5월 4주차 중앙값 통계입니다.
         
         <img src="/asset/image/median-20250529.png">`
+        
+    },
+    {
+        name: `<em style="font-weight:900;font-size:17px;">25년 6월 1주차 중앙값 통계</em>`,
+        desc:
+        `6월 1주차 중앙값 통계입니다.
+        
+        <img src="/asset/image/median-20250604.png">`
         
     },
 ]
