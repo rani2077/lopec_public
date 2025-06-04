@@ -735,7 +735,7 @@ let noticeArry = [
             감사합니다.`
     },
         {
-        name: `<em style="font-weight:900;font-size:17px;">2025-05-25 업데이트 안내</em>`,
+        name: `2025-05-25 업데이트 안내`,
         desc:
             `● 진화 카르마 랭크가 점수에 포함됩니다.
             &nbsp;&nbsp; 진화 카르마로 획득한 진피, 낙인력, 최생이 점수에 포함됩니다.
@@ -758,6 +758,22 @@ let noticeArry = [
             ● 모바일 페이지에서 상세정보 아이콘이 제대로 뜨지 않던 이슈 수정
             
             ● 중앙 검색창 추가`
+    },
+    {
+        name: `25년 5월 4주차 중앙값 통계`,
+        desc:
+        `5월 4주차 중앙값 통계입니다.
+        
+        <img src="/asset/image/median-20250529.png">`
+        
+    },
+    {
+        name: `<em style="font-weight:900;font-size:17px;">25년 6월 1주차 중앙값 통계</em>`,
+        desc:
+        `6월 1주차 중앙값 통계입니다.
+        
+        <img src="/asset/image/median-20250604.png">`
+        
     },
 ]
 
