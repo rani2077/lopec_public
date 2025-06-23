@@ -1,12 +1,18 @@
-*복사본*
-
+#더이상 사용돼지 않음
 config.js
 applications
+
+#메모용 문서
 temp.md
+
+#백업 및 기타설정
 .back
 .vscode
-lopec-ocr.js
-trans-value.js
-fetchApi.js
-calculator.js
-dmgcalculator.js
+*복사본*
+
+#주요 프로젝트 정보
+asset/custom-module/lopec-ocr.js
+asset/custom-module/trans-value.js
+asset/custom-module/fetchApi.js
+asset/custom-module/calculator.js
+asset/custom-module/dmgcalculator.js
