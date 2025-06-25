@@ -204,7 +204,7 @@ https://github.com/user-attachments/assets/72abc05c-2e9d-4fcf-a5a7-afdfe5efa169
 * **골드 효율 계산:** 로스트아크 최신 시세를 반영하여 스펙업에 필요한 골드와 점수당 골드 효율을 비교하여 최적의 스펙업 경로를 제시합니다.
 * **개인화된 스펙업 가이드:** 사용자의 현재 스펙에 맞춰 반지 교체, 보석 구매 등 가장 효율적인 스펙업 방안을 추천합니다.
 
-[**다운로드 링크**](https://chromewebstore.google.com/detail/%EB%A1%9C%ED%8E%99-%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%ED%84%B0-%EC%A0%90%EC%88%98-%EB%B6%84%EC%84%9D%EA%B8%B0/hjandoglibodddfdpbpcfkcldghbalhl?hl=ko)
+[**다운로드 링크**](https://chromewebstore.google.com/detail/%EB%A1%9C%ED%8E%99-%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%ED%84%B0-%EC%A0%90%EC%88%98-%EB%B6%84%EC%84%9D%EA%B8%B0/hjandoglibodddfdpbpcfkcldghbalhl?hl=ko)  
 [**사용 방법**](https://www.inven.co.kr/board/lostark/6271/1906480)
 
 ---
